@@ -1,4 +1,4 @@
-import "./App.css";
+// import "./App.css";
 import { useState } from "react";
 import { unitList } from "./components/Units";
 import { useCustomMapping } from "./components/useCustomMapping";
@@ -15,7 +15,7 @@ import Feet from "./components/Feet";
 import Picas from "./components/Picas";
 import Points from "./components/Points";
 
-function App() {
+export default function App() {
 
   const keyMappings = ["p", "r", "e", "t", "b", "i", "m", "c", "f", "s", "o"];
   const [val, setVal] = useState(0)
@@ -85,4 +85,10 @@ function App() {
   );
 }
 
-export default App;
+// export default function App() {
+//   return (
+//     <div className="App">
+//         <p>Hello, world!</p>
+//     </div>
+//   );
+// }
