@@ -19,7 +19,8 @@ export default function Inches({ value, unit }) {
   return (
     <div>
       <span>Inches:</span>{" "}
-      <span id={units.Inches}>{result}</span>
+      <span id={units.Inches}>{result}</span>{" "}
+      <span><small>space + i</small></span>
     </div>
   )
 }

@@ -19,7 +19,8 @@ export default function Feet({ value, unit }) {
   return (
     <div>
       <span>Feet:</span>{" "}
-      <span id={units.Feet}>{result}</span>
+      <span id={units.Feet}>{result}</span>{" "}
+      <span><small>space + f</small></span>
     </div>
   )
 }

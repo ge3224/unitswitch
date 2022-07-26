@@ -20,7 +20,8 @@ export default function Ems({ value, unit }) {
     <div>
       <span>Ems:</span>{" "}
       <span id={units.Ems}>{result}</span>{" "}
-      <span>(Based on font-size of 16)</span>
+      <span>(Based on font-size of 16)</span>{" "}
+      <span><small>space + e</small></span>
     </div>
   )
 }

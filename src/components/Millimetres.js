@@ -19,7 +19,8 @@ export default function Millimetres({ value, unit }) {
   return (
     <div>
       <span>Millimetres:</span>{" "}
-      <span id={units.Millimetres}>{result}</span>
+      <span id={units.Millimetres}>{result}</span>{" "}
+      <span><small>space + m</small></span>
     </div>
   )
 }

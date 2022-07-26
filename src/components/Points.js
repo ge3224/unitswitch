@@ -19,7 +19,8 @@ export default function Points({ value, unit }) {
   return (
     <div>
       <span>Points:</span>{" "}
-      <span id={units.Points}>{result}</span>
+      <span id={units.Points}>{result}</span>{" "}
+      <span><small>space + o</small></span>
     </div>
   )
 }

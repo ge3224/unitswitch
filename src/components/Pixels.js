@@ -12,15 +12,17 @@ import { cmToPx } from "./Centimetres"
 import { ptToPx } from "./Points"
 import { bsToPx } from "./Bootstrap"
 import { dpi } from "./standards"
+import { converter } from "./converter"
 
 export default function Pixels({ value, unit }) {
 
-  const result = useConverter(pxConverter, value, unit)
+  const result = useConverter(pixelConversion, value, unit)
 
   return (
     <div>
       <span>Pixels:</span>{" "}
-      <span id={units.Pixels}>{result}</span>
+      <span id={units.Pixels}>{result}</span>{" "}
+      <span><small className="cunits__keymap">space + p</small></span>
     </div>
   )
 }
@@ -30,7 +32,7 @@ Pixels.defaultProps = {
   unit: PropTypes.string,
 }
 
-const pxConverter = (value, unit) => {
+function pixelConversion(value, unit) {
   const input = parseFloat(value)
   let val = null
 
@@ -83,3 +85,19 @@ export const pxToPts = (px) => px * 0.74999943307122
 export const pxToRems = (px) => px * 0.0625
 export const pxToTw = (px) => remToTw(pxToRems(px))
 export const pxToBs = (px) => remToBs(pxToRems(px))
+
+const pixelCM = new Map([
+  [units.Centimetres, (px) => px * 0.02645833],
+  [units.Ems, (px) => px * 0.0627343677238],
+  [units.Feet, (px) => px * 0.00086805544619423],
+  [units.Inches, (px) => px / dpi],
+  [units.Millimetres, (px) => px * 0.2645833],
+  [units.Picas, (px) => px * 0.062499992175197],
+  [units.Points, (px) => px * 0.74999943307122],
+  [units.Rems, (px) => px * 0.0625],
+  [units.Bootstrap, (px) => remToBs(pxToRems(px))],
+  [units.Tailwind, (px) => remToTw(pxToRems(px))],
+]);
+
+export const pixelConverter = converter(pixelCM);
+// console.log("test", pixelConverter(200, units.Inches));

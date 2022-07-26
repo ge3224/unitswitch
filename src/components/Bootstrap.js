@@ -29,7 +29,8 @@ export default function Bootstrap({ value, unit }) {
     <div>
       <span>Bootstrap:</span>{" "}
       <span id={units.Bootstrap}>{pretty(result)}</span>{" "}
-      {result !== "N/A" ? <span>(e.g. <code>class="p-{pretty(result)}"</code>)</span> : ""}
+      {result !== "N/A" ? <span>(<code>p-{pretty(result)}</code>)</span> : ""}{" "}
+      <span><small>space + b</small></span>
     </div>
   )
 }

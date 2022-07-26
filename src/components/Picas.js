@@ -19,7 +19,8 @@ export default function Picas({ value, unit }) {
   return (
     <div>
       <span>Picas:</span>{" "}
-      <span id={units.Picas}>{result}</span>
+      <span id={units.Picas}>{result}</span>{" "}
+      <span><small>space + a</small></span>
     </div>
   )
 }

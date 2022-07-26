@@ -19,7 +19,8 @@ export default function Centimetres({ value, unit }) {
   return (
     <div>
       <span>Centimetres:</span>{" "}
-      <span id={units.Centimetres}>{result}</span>
+      <span id={units.Centimetres}>{result}</span>{" "}
+      <span><small>space + c</small></span>
     </div>
   )
 }

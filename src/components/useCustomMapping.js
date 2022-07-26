@@ -1,5 +1,5 @@
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
-import { useModifiedKeypress } from "./useModifyKeypress";
+import { useModifiedKeypress } from "./useModifiedKeypress";
 
 export const useKeyMappings = (leader, keyset, callback) => {
 

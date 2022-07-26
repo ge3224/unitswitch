@@ -40,7 +40,8 @@ export default function Tailwind({ value, unit }) {
     <div>
       <span>Tailwind :</span>{" "}
       <span id={units.Tailwind}>{pretty(result)}</span>{" "}
-      {result !== "N/A" ? <span>(e.g. <code>class="m-{pretty(result)}"</code>)</span> : ""}
+      {result !== "N/A" ? <span>(<code>m-{pretty(result)}</code>)</span> : ""}{" "}
+      <span><small>space + t</small></span>
     </div>
   )
 }

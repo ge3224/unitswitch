@@ -21,7 +21,8 @@ export default function Rems({ value, unit }) {
     <div>
       <span>Rems:</span>{" "}
       <span id={units.Rems}>{result}</span>{" "}
-      <span>(Based on a root font-size of 16)</span>
+      <span>(Based on a root font-size of 16)</span>{" "}
+      <span><small>space + r</small></span>
     </div>
   )
 }
