@@ -20,7 +20,7 @@ export default function Rems({ value, unit }) {
   return (
     <div>
       <span>Rems:</span>{" "}
-      <span id={units.Rem}>{result}</span>{" "}
+      <span id={units.Rems}>{result}</span>{" "}
       <span>(Based on a root font-size of 16)</span>
     </div>
   )
@@ -92,10 +92,10 @@ const remConverter = (value, unit) => {
     case units.Points:
       val = ptToRems(input)
       break
-    case units.Rem:
+    case units.Rems:
       val = input
       break
-    case units.Em:
+    case units.Ems:
       val = emToRems(input)
       break
     case units.Tailwind:

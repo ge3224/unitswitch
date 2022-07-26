@@ -59,10 +59,10 @@ const bsConverter = (value, unit) => {
     case units.Pixels:
       val = bsRanges(pxToBs(input))
       break
-    case units.Rem:
+    case units.Rems:
       val = bsRanges(Rems.remToBs(input))
       break
-    case units.Em:
+    case units.Ems:
       val = bsRanges(emToBs(input))
       break
     case units.Tailwind:

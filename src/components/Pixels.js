@@ -41,10 +41,10 @@ const pxConverter = (value, unit) => {
     case units.Inches:
       val = inToPx(input)
       break
-    case units.Rem:
+    case units.Rems:
       val = remToPx(input)
       break
-    case units.Em:
+    case units.Ems:
       val = emToPx(input)
       break
     case units.Feet:

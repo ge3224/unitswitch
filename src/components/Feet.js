@@ -41,10 +41,10 @@ const ftConverter = (value, unit) => {
     case units.Pixels:
       val = pxToFt(input)
       break
-    case units.Rem:
+    case units.Rems:
       val = remToFt(input)
       break
-    case units.Em:
+    case units.Ems:
       val = emToFt(input)
       break
     case units.Tailwind:

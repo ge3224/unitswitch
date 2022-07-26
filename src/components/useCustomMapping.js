@@ -1,21 +1,16 @@
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
-import { useModifyKeypress } from "./useModifyKeypress";
+import { useModifiedKeypress } from "./useModifyKeypress";
 
-export const useCustomMapping = (leaderKey, maps, callback) => {
+export const useKeyMappings = (leader, keyset, callback) => {
 
   const callbackRef = useRef(callback);
-  const [leaderPressed, setLeaderKeyDown] = useState(false);
-
-  useLayoutEffect(() => {
-    callbackRef.current = callback;
-  });
-
+  const [leaderDown, setLeaderDown] = useState(false);
   const handleKeyPresses = useCallback(
     (e) => {
-      if (e.key === leaderKey) {
-        setLeaderKeyDown(true);
+      if (e.key === leader) {
+        setLeaderDown(true);
       }
-
+      // look for all available mod keys to have been pressed
       if (
         e.shiftKey === true &&
         e.altKey === true &&
@@ -23,10 +18,15 @@ export const useCustomMapping = (leaderKey, maps, callback) => {
         e.metaKey === true
       ) {
         callbackRef.current(e)
-        setLeaderKeyDown(false);
+        setLeaderDown(false);
       }
 
-    }, [leaderKey, leaderPressed]);
+    }, [leader, leaderDown]);
 
-  useModifyKeypress(maps, leaderPressed, handleKeyPresses)
+  useLayoutEffect(() => {
+    callbackRef.current = callback;
+  });
+
+  useModifiedKeypress(keyset, leaderDown, handleKeyPresses)
 }
+

@@ -19,7 +19,7 @@ export default function Ems({ value, unit }) {
   return (
     <div>
       <span>Ems:</span>{" "}
-      <span id={units.Em}>{result}</span>{" "}
+      <span id={units.Ems}>{result}</span>{" "}
       <span>(Based on font-size of 16)</span>
     </div>
   )
@@ -56,10 +56,10 @@ const emConverter = (value, unit) => {
     case units.Points:
       val = ptToEms(input)
       break
-    case units.Rem:
+    case units.Rems:
       val = remToEms(input)
       break
-    case units.Em:
+    case units.Ems:
       val = input
       break
     case units.Tailwind:

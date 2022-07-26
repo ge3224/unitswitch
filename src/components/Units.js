@@ -1,7 +1,7 @@
 export const unitList = [
   "Pixels",
-  "Rem",
-  "Em",
+  "Rems",
+  "Ems",
   "Tailwind",
   "Bootstrap",
   "Inches",

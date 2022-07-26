@@ -55,10 +55,10 @@ const inchConverter = (value, unit) => {
     case units.Points:
       val = ptToIn(input)
       break
-    case units.Rem:
+    case units.Rems:
       val = remToIn(input)
       break
-    case units.Em:
+    case units.Ems:
       val = emToIn(input)
       break
     case units.Tailwind:

@@ -91,10 +91,10 @@ const twConverter = (value, unit) => {
     case units.Points:
       val = twRanges(ptToTw(input))
       break
-    case units.Rem:
+    case units.Rems:
       val = Rems.remToTw(input)
       break
-    case units.Em:
+    case units.Ems:
       val = twRanges(emToTw(input))
       break
     case units.Tailwind:

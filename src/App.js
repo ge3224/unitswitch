@@ -1,7 +1,7 @@
-// import "./App.css";
 import { useState } from "react";
 import { unitList } from "./components/Units";
-import { useCustomMapping } from "./components/useCustomMapping";
+import { useKeyMappings } from "./components/useCustomMapping";
+import { units } from "./components/Units";
 import UserInput from "./components/UserInput";
 import Inches from "./components/Inches";
 import Pixels from "./components/Pixels";
@@ -15,9 +15,38 @@ import Feet from "./components/Feet";
 import Picas from "./components/Picas";
 import Points from "./components/Points";
 
-export default function App() {
+// leaderKey is a custom mod key that initiates app actions
+const leaderKey = " ";
 
-  const keyMappings = ["p", "r", "e", "t", "b", "i", "m", "c", "f", "s", "o"];
+// keyBindings is a map of hotkeys
+const keyBindings = new Map([
+  ["P", () => selectInputUnit(units.Pixels)], 
+  ["p", () => copyConvertedValue(units.Pixels)], 
+  ["R", () => selectInputUnit(units.Rems)], 
+  ["r", () => copyConvertedValue(units.Rems)], 
+  ["E", () => selectInputUnit(units.Ems)], 
+  ["e", () => copyConvertedValue(units.Ems)], 
+  ["T", () => selectInputUnit(units.Tailwind)], 
+  ["t", () => copyConvertedValue(units.Tailwind)], 
+  ["B", () => selectInputUnit(units.Bootstrap)], 
+  ["b", () => copyConvertedValue(units.Bootstrap)], 
+  ["I", () => selectInputUnit(units.Inches)], 
+  ["i", () => copyConvertedValue(units.Inches)], 
+  ["M", () => selectInputUnit(units.Millimetres)], 
+  ["m", () => copyConvertedValue(units.Millimetres)], 
+  ["C", () => selectInputUnit(units.Centimetres)], 
+  ["c", () => copyConvertedValue(units.Centimetres)], 
+  ["F", () => selectInputUnit(units.Feet)], 
+  ["f", () => copyConvertedValue(units.Feet)], 
+  ["A", () => selectInputUnit(units.Picas)], 
+  ["a", () => copyConvertedValue(units.Picas)], 
+  ["O", () => selectInputUnit(units.Points)], 
+  ["o", () => copyConvertedValue(units.Points)], 
+  ["i", () => focusOnInput()], 
+]);
+
+export default function App() {
+  const keyMappings = new Set(keyBindings.keys());
   const [val, setVal] = useState(0)
   const [uni, setUni] = useState(unitList[0])
 
@@ -26,46 +55,14 @@ export default function App() {
     setUni(unit)
   }
 
-  const onHotKeyPress = (e) => {
-   switch (e.key) {
-     case "p":
-       console.log(`pixels ${e.key}`);
-       break;
-     case "r":
-       console.log(`rems ${e.key}`);
-       break;
-     case "e":
-       console.log(`ems ${e.key}`);
-       break;
-     case "t":
-       console.log(`Tailwind ${e.key}`);
-       break;
-     case "b":
-       console.log(`Bootstrap ${e.key}`);
-       break;
-     case "i":
-       console.log(`inches ${e.key}`);
-       break;
-     case "m":
-       console.log(`millimetres ${e.key}`);
-       break;
-     case "c":
-       console.log(`centimetres ${e.key}`);
-       break;
-     case "f":
-       console.log(`feet ${e.key}`);
-       break;
-     case "s":
-       console.log(`picas ${e.key}`);
-       break;
-     case "o":
-       console.log(`points ${e.key}`);
-       break;
-     default: // do nothing
-   }
+  const onHotkeyPress = (e) => {
+    const keymaps = new Set(keyBindings.keys())
+    if (keymaps.has(e.key)) {
+      keyBindings.get(e.key)();
+    }
   }
 
-  useCustomMapping(" ", keyMappings, onHotKeyPress);
+  useKeyMappings(leaderKey, keyMappings, onHotkeyPress);
 
   return (
     <div>
@@ -85,10 +82,36 @@ export default function App() {
   );
 }
 
-// export default function App() {
-//   return (
-//     <div className="App">
-//         <p>Hello, world!</p>
-//     </div>
-//   );
-// }
+function focusOnInput() {
+  const id = "input";
+  const input = document.getElementById(id);
+  if (input === null || input === undefined || input === void 0) {
+    console.error(`An element with an ID of '${id}' could not be found.`);
+    return
+  }
+  // TODO figure out how to clear the input field; the following don't work. Why?
+  // input.setAttribute("value", "");
+  // input.value = "";
+  input.focus();
+}
+
+function selectInputUnit(unit) {
+  const id = "units";
+  const el = document.getElementById(id);
+  if (el === null || el === undefined || el === void 0) {
+    console.error(`An element with an ID of '${id}' could not be found.`);
+    return
+  }
+  el.childNodes.forEach(option => {
+    if (option.value === unit) option.selected = true;
+  })
+}
+
+function copyConvertedValue(unit) {
+  const el = document.getElementById(unit);
+  if (el === null || el === undefined || el === void 0) {
+    console.error(`An element with an ID of '${unit}' could not be found.`);
+    return
+  }
+  navigator.clipboard.writeText(el.textContent);
+}

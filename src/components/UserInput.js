@@ -10,6 +10,7 @@ export default function UserInput({ units, onEnter }) {
       <label>Input: </label>
       <input
         type="number"
+        id="input"
         value={num}
         onChange={(e) => {
           setNum(e.target.value)

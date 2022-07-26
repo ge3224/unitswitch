@@ -1,33 +1,34 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react"
 
-export const useModifyKeypress = (keys, leaderPressed, callback, node = null) => {
-
+// useModifiedKeypress produces a new keyboard event if the "leader key" has
+// been pressed. It passes the new event as an argument to the "callback"
+// parameter. The event created is a clone of a natural keyboard event, but
+// with all of the available mod keys enabled. For example, an key press of "a"
+// will become a key press of, "ctrl + shift + alt + meta + a".
+export const useModifiedKeypress = (keySet, leaderPressed, callback, node = null) => {
   const callbackRef = useRef(callback);
 
   useLayoutEffect(() => {
     callbackRef.current = callback;
   });
 
-  const handleKeyPress = useCallback(
-    (e) => {
-
-      if (leaderPressed) {
-        if (keys.some((key) => e.key === key)) {
-          e.preventDefault()
-          e.stopPropagation();
-          const newE = customKeyboardEvent(e, {
-            ctrlKey: true,
-            shiftKey: true,
-            altKey: true,
-            metaKey: true 
-          })
-          callbackRef.current(newE)
-        }
-      } else {
-        callbackRef.current(e)
+  const handleKeyPress = useCallback((e) => {
+    if (leaderPressed) {
+      if (keySet.has(e.key)) {
+        e.preventDefault()
+        e.stopPropagation();
+        const newEvent = customKeyboardEvent(e, {
+          ctrlKey: true,
+          shiftKey: true,
+          altKey: true,
+          metaKey: true
+        })
+        callbackRef.current(newEvent)
       }
-
-    }, [keys, leaderPressed]);
+    } else {
+      callbackRef.current(e)
+    }
+  }, [keySet, leaderPressed]);
 
   useEffect(() => {
     const targetNode = node ?? document;

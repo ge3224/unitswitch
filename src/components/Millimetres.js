@@ -40,10 +40,10 @@ const mmConverter = (value, unit) => {
     case units.Pixels:
       val = pxToMm(input)
       break
-    case units.Rem:
+    case units.Rems:
       val = remToMm(input)
       break
-    case units.Em:
+    case units.Ems:
       val = emToMm(input)
       break
     case units.Taiwind:

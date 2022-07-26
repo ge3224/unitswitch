@@ -52,10 +52,10 @@ const ptConverter = (value, unit) => {
     case units.Pixels:
       val = pxToPts(input)
       break
-    case units.Rem:
+    case units.Rems:
       val = remToPts(input)
       break
-    case units.Em:
+    case units.Ems:
       val = emToPts(input)
       break
     case units.Tailwind:

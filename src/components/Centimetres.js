@@ -41,10 +41,10 @@ const cmConverter = (value, unit) => {
     case units.Pixels:
       val = pxToCm(input)
       break
-    case units.Rem:
+    case units.Rems:
       val = remToCm(input)
       break
-    case units.Em:
+    case units.Ems:
       val = emToCm(input)
       break
     case units.Tailwind:

@@ -53,10 +53,10 @@ const picaConverter = (value, unit) => {
     case units.Pixels:
       val = pxToPicas(input)
       break
-    case units.Rem:
+    case units.Rems:
       val = remToPicas(input)
       break
-    case units.Em:
+    case units.Ems:
       val = emToPicas(input)
       break
     case units.Tailwind:
