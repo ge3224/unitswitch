@@ -1,20 +1,10 @@
-import * as Rems from "./Rems"
 import PropTypes from "prop-types";
-import { bsToTw } from "./Bootstrap";
-import { cmToTw } from "./Centimetres";
-import { emToTw } from "./Ems";
-import { ftToTw } from "./Feet";
-import { inToTw } from "./Inches";
-import { mmToTw } from "./Millimetres";
-import { pToTw } from "./Picas";
-import { ptToTw } from "./Points";
-import { pxToTw } from "./Pixels";
 import { units } from "./Units";
 import { useConverter } from "./useConverter";
+import { converter } from "./converter";
 
 export default function Tailwind({ value, unit }) {
-
-  const result = useConverter(twConverter, value, unit)
+  const result = useConverter(units.Tailwind, value, unit)
 
   const pretty = (value) => {
     let num = parseFloat(value)
@@ -66,57 +56,35 @@ export function twRanges(value) {
   return null
 }
 
-const twConverter = (value, unit) => {
-  const input = parseFloat(value)
-  let val = null
-
-  switch (unit) {
-    case units.Inches:
-      val = twRanges(inToTw(input))
-      break
-    case units.Pixels:
-      val = twRanges(pxToTw(input))
-      break
-    case units.Millimetres:
-      val = twRanges(mmToTw(input))
-      break
-    case units.Centimetres:
-      val = twRanges(cmToTw(input))
-      break
-    case units.Feet:
-      val = twRanges(ftToTw(input))
-      break
-    case units.Picas:
-      val = twRanges(pToTw(input))
-      break
-    case units.Points:
-      val = twRanges(ptToTw(input))
-      break
-    case units.Rems:
-      val = Rems.remToTw(input)
-      break
-    case units.Ems:
-      val = twRanges(emToTw(input))
-      break
-    case units.Tailwind:
-      val = twRanges(input)
-      break
-    case units.Bootstrap:
-      val = bsToTw(input)
-      break
-    default: // do nothing
+const convertToBootstrapSpacing = (tw) => {
+  switch (tw) {
+    case 0:
+      return 0
+    case 1:
+      return 1
+    case 2:
+      return 2
+    case 4:
+      return 3
+    case 6:
+      return 4
+    case 12:
+      return 5
+    default:
+      return null
   }
-
-  return val
 }
 
-export const twToCm = (tw) => twRanges(tw) ? Rems.remToCm(twToRems(tw)) : null
-export const twToEms = (tw) => twRanges(tw) ? Rems.remToEms(twToRems(tw)) : null
-export const twToFt = (tw) => twRanges(tw) ? Rems.remToFt(twToRems(tw)) : null
-export const twToIn = (tw) => twRanges(tw) ? Rems.remToIn(twToRems(tw)) : null
-export const twToMm = (tw) => twRanges(tw) !== null ? Rems.remToMm(twToRems(tw)) : null
-export const twToPicas = (tw) => twRanges(tw) !== null ? Rems.remToPicas(twToRems(tw)) : null
-export const twToPts = (tw) => twRanges(tw) !== null ? Rems.remToPts(twToRems(tw)) : null
-export const twToPx = (tw) => twRanges(tw) !== null ? tw * 4 : null
-export const twToRems = (tw) => twRanges(tw) !== null ? tw * 0.25 : null
-export const twToBs = (tw) => twRanges(tw) !== null ? Rems.remToBs(twToRems(tw)) : null
+export const tailwindConverter = converter(new Map([
+  [units.Bootstrap, (tw) => twRanges(tw) ? convertToBootstrapSpacing(tw) : null],
+  [units.Centimetres, (tw) => twRanges(tw) ? (tw * 0.25) * 0.42333328 : null],
+  [units.Ems, (tw) => twRanges(tw) ? tw * 0.25 : null], // TODO revisit this
+  [units.Feet, (tw) => twRanges(tw) ? (tw * 0.25) * 0.013888887139108 : null],
+  [units.Inches, (tw) => twRanges(tw) ? (tw * 0.25) * 0.16666664566929 : null],
+  [units.Millimetres, (tw) => twRanges(tw) ? (tw * 0.25) * 4.2333328 : null],
+  [units.Picas, (tw) => twRanges(tw) ? (tw * 0.25) * 0.99999987480315 : null],
+  [units.Pixels, (tw) => twRanges(tw) ? tw * 4 : null],
+  [units.Points, (tw) => twRanges(tw) ? (tw * 0.25) * 11.99999092914 : null],
+  [units.Rems, (tw) => twRanges(tw) ? tw * 0.25 : null],
+  [units.Tailwind, (tw) => tw],
+]));

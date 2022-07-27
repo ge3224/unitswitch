@@ -1,20 +1,12 @@
 import PropTypes from "prop-types"
 import { units } from "./Units"
 import { useConverter } from "./useConverter"
-import { remToTw, remToBs, remToFt } from "./Rems"
-import { pxToFt } from "./Pixels"
-import { emToFt } from "./Ems"
-import { bsToFt } from "./Bootstrap"
-import { twToFt } from "./Tailwind"
-import { inToFt } from "./Inches"
-import { mmToFt } from "./Millimetres"
-import { cmToFt } from "./Centimetres"
-import { pToFt } from "./Picas"
-import { ptToFt } from "./Points"
+import { twRanges } from "./Tailwind"
+import { converter } from "./converter";
 
 export default function Feet({ value, unit }) {
 
-  const result = useConverter(ftConverter, value, unit)
+  const result = useConverter(units.Feet, value, unit)
 
   return (
     <div>
@@ -30,58 +22,36 @@ Feet.defaultProps = {
   unit: PropTypes.string,
 }
 
-
-const ftConverter = (value, unit) => {
-  const input = parseFloat(value)
-  let val = null
-
-  switch (unit) {
-    case units.Feet:
-      val = input
-      break
-    case units.Pixels:
-      val = pxToFt(input)
-      break
-    case units.Rems:
-      val = remToFt(input)
-      break
-    case units.Ems:
-      val = emToFt(input)
-      break
-    case units.Tailwind:
-      val = twToFt(input)
-      break
-    case units.Bootstrap:
-      val = bsToFt(input)
-      break
-    case units.Inches:
-      val = inToFt(input)
-      break
-    case units.Millmetres:
-      val = mmToFt(input)
-      break
-    case units.Centimetres:
-      val = cmToFt(input)
-      break
-    case units.Picas:
-      val = pToFt(input)
-      break
-    case units.Points:
-      val = ptToFt(input)
-      break
-    default: // do nothing
+const convertToBootstrapSpacing = (ft) => {
+  const fixed = parseFloat((ft).toFixed(3));
+  switch (fixed) {
+    case 0.000:
+      return 0
+    case 0.003:
+      return 1
+    case 0.007:
+      return 2
+    case 0.014:
+      return 3
+    case 0.021:
+      return 4
+    case 0.042:
+      return 5
+    default:
+      return null
   }
-
-  return val
 }
 
-export const ftToCm = (ft) => ft * 30.48
-export const ftToEms = (ft) => ft * 72.2700007227
-export const ftToIn = (ft) => ft * 12
-export const ftToMm = (ft) => ft * 304.8
-export const ftToPicas = (ft) => ft * 72.000000056693
-export const ftToPts = (ft) => ft * 863.99945574837
-export const ftToPx = (ft) => ft * 1152.0001451339
-export const ftToRems = (ft) => ft * 72.000009070867
-export const ftToTw = (ft) => remToTw(ftToRems(ft))
-export const ftToBs = (ft) => remToBs(ftToRems(ft))
+export const ftConverter = converter(new Map([
+  [units.Bootstrap, (ft) => convertToBootstrapSpacing(ft)],
+  [units.Centimetres, (ft) => ft * 30.48],
+  [units.Ems, (ft) => ft * 72.2700007227],
+  [units.Feet, (ft) => ft],
+  [units.Inches, (ft) => ft * 12],
+  [units.Millimetres, (ft) => ft * 304.8],
+  [units.Picas, (ft) => ft * 72.000000056693],
+  [units.Pixels, (ft) => Math.ceil(ft * 1152.0001451339)],
+  [units.Points, (ft) => ft * 863.99945574837],
+  [units.Rems, (ft) => ft * 72.000009070867],
+  [units.Tailwind, (ft) => twRanges(parseFloat(((ft * 72.000009070867)/0.25).toFixed(3)))],
+]));
