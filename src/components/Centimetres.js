@@ -17,7 +17,6 @@ export default function Centimetres({ value, unit }) {
 }
 
 Centimetres.defaultProps = {
-  target: PropTypes.string,
   value: PropTypes.string,
   unit: PropTypes.string,
 }
