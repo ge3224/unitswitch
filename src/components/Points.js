@@ -3,7 +3,7 @@ import { units } from "./Units"
 import { useConverter } from "./useConverter"
 import { twRanges } from "./Tailwind"
 import { converter } from "./converter";
-import { useKeyMappings } from "./useCustomMapping";
+import { useKeyMappings } from "./useKeyMappings";
 
 export default function Points({ value, unit, keymap }) {
   const result = useConverter(units.Points, value, unit)
@@ -32,6 +32,7 @@ export default function Points({ value, unit, keymap }) {
 Points.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
+  keymap: PropTypes.object,
 }
 
 const convertToBootstrapSpacing = (cm) => {

@@ -3,16 +3,16 @@ import { converter } from "./converter";
 import { fontSize } from "./standards";
 import { twRanges } from "./Tailwind"
 import { units } from "./Units";
-import { useKeyMappings } from "./useCustomMapping";
+import { useKeyMappings } from "./useKeyMappings";
 import { useConverter } from "./useConverter";
 
-export default function Rems({ value, unit, keymap}) {
+export default function Rems({ value, unit, keymap }) {
   const result = useConverter(units.Rems, value, unit)
 
   const onHotkeyPress = (e) => {
-        if (e.key === keymap.toClipboard) {
+    if (e.key === keymap.toClipboard) {
       navigator.clipboard.writeText(result);
-    } 
+    }
   }
 
   useKeyMappings(
@@ -23,10 +23,12 @@ export default function Rems({ value, unit, keymap}) {
 
   return (
     <div>
-      <span>Rems:</span>{" "}
-      <span id={units.Rems}>{result}</span>{" "}
-      <span>(Based on a root font-size of 16)</span>{" "}
-      <span><small>space + r</small></span>
+      <p>
+        <span>Rems:</span>{" "}
+        <span id={units.Rems}>{result}</span>{" "}
+        <span>(Based on a root font-size of 16)</span>{" "}
+        <span><small>space + r</small></span>
+      </p>
     </div>
   )
 }
@@ -34,6 +36,7 @@ export default function Rems({ value, unit, keymap}) {
 Rems.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
+  keymap: PropTypes.object,
 }
 
 const convertToBootstrapSpacing = (rems) => {

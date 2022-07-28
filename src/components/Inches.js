@@ -4,15 +4,15 @@ import { units } from "./Units";
 import { twRanges } from "./Tailwind";
 import { useConverter } from "./useConverter";
 import { converter } from "./converter";
-import { useKeyMappings } from "./useCustomMapping";
+import { useKeyMappings } from "./useKeyMappings";
 
 export default function Inches({ value, unit, keymap }) {
   const result = useConverter(units.Inches, value, unit)
 
   const onHotkeyPress = (e) => {
-        if (e.key === keymap.toClipboard) {
+    if (e.key === keymap.toClipboard) {
       navigator.clipboard.writeText(result);
-    } 
+    }
   }
 
   useKeyMappings(
@@ -23,9 +23,11 @@ export default function Inches({ value, unit, keymap }) {
 
   return (
     <div>
-      <span>Inches:</span>{" "}
-      <span id={units.Inches}>{result}</span>{" "}
-      <span><small>space + i</small></span>
+      <p>
+        <span>Inches:</span>{" "}
+        <span id={units.Inches}>{result}</span>{" "}
+        <span><small>space + i</small></span>
+      </p>
     </div>
   )
 }
@@ -33,6 +35,7 @@ export default function Inches({ value, unit, keymap }) {
 Inches.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
+  keymap: PropTypes.object,
 }
 
 const convertToBootstrapSpacing = (inches) => {
@@ -66,5 +69,5 @@ export const inchConverter = converter(new Map([
   [units.Pixels, (inches) => Math.ceil(inches * dpi)],
   [units.Points, (inches) => inches * 71.999954645698],
   [units.Rems, (inches) => inches * 6.0000007559056],
-  [units.Tailwind, (inches) => twRanges((inches * 6.0000007559056)/0.25)],
+  [units.Tailwind, (inches) => twRanges((inches * 6.0000007559056) / 0.25)],
 ]));

@@ -3,15 +3,15 @@ import { units } from "./Units"
 import { useConverter } from "./useConverter"
 import { twRanges } from "./Tailwind"
 import { converter } from "./converter";
-import { useKeyMappings } from "./useCustomMapping";
+import { useKeyMappings } from "./useKeyMappings";
 
 export default function Picas({ value, unit, keymap }) {
   const result = useConverter(units.Picas, value, unit)
 
   const onHotkeyPress = (e) => {
-        if (e.key === keymap.toClipboard) {
+    if (e.key === keymap.toClipboard) {
       navigator.clipboard.writeText(result);
-    } 
+    }
   }
 
   useKeyMappings(
@@ -22,9 +22,11 @@ export default function Picas({ value, unit, keymap }) {
 
   return (
     <div>
-      <span>Picas:</span>{" "}
-      <span id={units.Picas}>{result}</span>{" "}
-      <span><small>space + a</small></span>
+      <p>
+        <span>Picas:</span>{" "}
+        <span id={units.Picas}>{result}</span>{" "}
+        <span><small>space + a</small></span>
+      </p>
     </div>
   )
 }
@@ -32,6 +34,7 @@ export default function Picas({ value, unit, keymap }) {
 Picas.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
+  keymap: PropTypes.object,
 }
 
 const convertToBootstrapSpacing = (cm) => {
@@ -65,5 +68,5 @@ export const picaConverter = converter(new Map([
   [units.Pixels, (p) => Math.ceil(p * 16.00000200315)],
   [units.Points, (p) => p * 11.999992431501],
   [units.Rems, (p) => p * 1.0000001251969],
-  [units.Tailwind, (p) => twRanges(parseFloat(((p * 1.0000001251969)/0.25).toFixed(2)))],
+  [units.Tailwind, (p) => twRanges(parseFloat(((p * 1.0000001251969) / 0.25).toFixed(2)))],
 ]));

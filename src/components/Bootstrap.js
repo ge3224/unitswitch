@@ -3,15 +3,15 @@ import { converter } from "./converter";
 import { dpi } from "./standards";
 import { units } from "./Units";
 import { useConverter } from "./useConverter";
-import { useKeyMappings } from "./useCustomMapping";
+import { useKeyMappings } from "./useKeyMappings";
 
 export default function Bootstrap({ value, unit, keymap }) {
   const result = useConverter(units.Bootstrap, value, unit)
 
   const onHotkeyPress = (e) => {
-        if (e.key === keymap.toClipboard) {
+    if (e.key === keymap.toClipboard) {
       navigator.clipboard.writeText(result);
-    } 
+    }
   }
 
   useKeyMappings(
@@ -31,10 +31,12 @@ export default function Bootstrap({ value, unit, keymap }) {
 
   return (
     <div>
-      <span>Bootstrap:</span>{" "}
-      <span id={units.Bootstrap}>{pretty(result)}</span>{" "}
-      {result !== "N/A" ? <span>(<code>p-{pretty(result)}</code>)</span> : ""}{" "}
-      <span><small>space + b</small></span>
+      <p>
+        <span>Bootstrap:</span>{" "}
+        <span id={units.Bootstrap}>{pretty(result)}</span>{" "}
+        {result !== "N/A" ? <span>(<code>p-{pretty(result)}</code>)</span> : ""}{" "}
+        <span><small>space + b</small></span>
+      </p>
     </div>
   )
 }
@@ -42,6 +44,7 @@ export default function Bootstrap({ value, unit, keymap }) {
 Bootstrap.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
+  keymap: PropTypes.object,
 }
 
 const convertToRems = (bs) => {
@@ -124,7 +127,7 @@ export const bootstrapConverter = converter(new Map([
   [units.Bootstrap, (bs) => bs],
   [units.Centimetres, (bs) => convertByInchRatio(bs, 2.54)],
   [units.Ems, (bs) => convertToRems(bs)], // TODO revisit this
-  [units.Feet, (bs) => convertByInchRatio(bs, 1/12)],
+  [units.Feet, (bs) => convertByInchRatio(bs, 1 / 12)],
   [units.Inches, (bs) => convertByInchRatio(bs, 1)],
   [units.Millimetres, (bs) => convertByInchRatio(bs, 25.4)],
   [units.Picas, (bs) => convertByInchRatio(bs, 6)],

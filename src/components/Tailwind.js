@@ -2,15 +2,15 @@ import PropTypes from "prop-types";
 import { units } from "./Units";
 import { useConverter } from "./useConverter";
 import { converter } from "./converter";
-import { useKeyMappings } from "./useCustomMapping";
+import { useKeyMappings } from "./useKeyMappings";
 
-export default function Tailwind({ value, unit, keymap}) {
+export default function Tailwind({ value, unit, keymap }) {
   const result = useConverter(units.Tailwind, value, unit)
 
   const onHotkeyPress = (e) => {
-        if (e.key === keymap.toClipboard) {
+    if (e.key === keymap.toClipboard) {
       navigator.clipboard.writeText(result);
-    } 
+    }
   }
 
   useKeyMappings(
@@ -41,10 +41,12 @@ export default function Tailwind({ value, unit, keymap}) {
 
   return (
     <div>
-      <span>Tailwind :</span>{" "}
-      <span id={units.Tailwind}>{pretty(result)}</span>{" "}
-      {result !== "N/A" ? <span>(<code>m-{pretty(result)}</code>)</span> : ""}{" "}
-      <span><small>space + t</small></span>
+      <p>
+        <span>Tailwind :</span>{" "}
+        <span id={units.Tailwind}>{pretty(result)}</span>{" "}
+        {result !== "N/A" ? <span>(<code>m-{pretty(result)}</code>)</span> : ""}{" "}
+        <span><small>space + t</small></span>
+      </p>
     </div>
   )
 }
@@ -52,6 +54,7 @@ export default function Tailwind({ value, unit, keymap}) {
 Tailwind.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
+  keymap: PropTypes.object,
 }
 
 export function twRanges(value) {

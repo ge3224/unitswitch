@@ -3,15 +3,15 @@ import { units } from "./Units"
 import { useConverter } from "./useConverter"
 import { twRanges } from "./Tailwind"
 import { converter } from "./converter"
-import { useKeyMappings } from "./useCustomMapping";
+import { useKeyMappings } from "./useKeyMappings";
 
 export default function Millimetres({ value, unit, keymap }) {
   const result = useConverter(units.Millimetres, value, unit)
 
   const onHotkeyPress = (e) => {
-        if (e.key === keymap.toClipboard) {
+    if (e.key === keymap.toClipboard) {
       navigator.clipboard.writeText(result);
-    } 
+    }
   }
 
   useKeyMappings(
@@ -22,9 +22,11 @@ export default function Millimetres({ value, unit, keymap }) {
 
   return (
     <div>
-      <span>Millimetres:</span>{" "}
-      <span id={units.Millimetres}>{result}</span>{" "}
-      <span><small>space + m</small></span>
+      <p>
+        <span>Millimetres:</span>{" "}
+        <span id={units.Millimetres}>{result}</span>{" "}
+        <span><small>space + m</small></span>
+      </p>
     </div>
   )
 }
@@ -32,11 +34,12 @@ export default function Millimetres({ value, unit, keymap }) {
 Millimetres.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
+  keymap: PropTypes.object,
 }
 
 const convertToBootstrapSpacing = (mm) => {
   const fixed = parseFloat((mm).toFixed(3))
-  switch(fixed) {
+  switch (fixed) {
     case 0.000:
       return 0
     case 1.058:

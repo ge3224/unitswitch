@@ -3,15 +3,15 @@ import { units } from "./Units"
 import { useConverter } from "./useConverter"
 import { twRanges } from "./Tailwind"
 import { converter } from "./converter";
-import { useKeyMappings } from "./useCustomMapping";
+import { useKeyMappings } from "./useKeyMappings";
 
 export default function Feet({ value, unit, keymap }) {
   const result = useConverter(units.Feet, value, unit)
 
   const onHotkeyPress = (e) => {
-        if (e.key === keymap.toClipboard) {
+    if (e.key === keymap.toClipboard) {
       navigator.clipboard.writeText(result);
-    } 
+    }
   }
 
   useKeyMappings(
@@ -22,9 +22,11 @@ export default function Feet({ value, unit, keymap }) {
 
   return (
     <div>
-      <span>Feet:</span>{" "}
-      <span id={units.Feet}>{result}</span>{" "}
-      <span><small>space + f</small></span>
+      <p>
+        <span>Feet:</span>{" "}
+        <span id={units.Feet}>{result}</span>{" "}
+        <span><small>space + f</small></span>
+      </p>
     </div>
   )
 }
@@ -32,6 +34,7 @@ export default function Feet({ value, unit, keymap }) {
 Feet.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
+  keymap: PropTypes.object,
 }
 
 const convertToBootstrapSpacing = (ft) => {
@@ -65,5 +68,5 @@ export const ftConverter = converter(new Map([
   [units.Pixels, (ft) => Math.ceil(ft * 1152.0001451339)],
   [units.Points, (ft) => ft * 863.99945574837],
   [units.Rems, (ft) => ft * 72.000009070867],
-  [units.Tailwind, (ft) => twRanges(parseFloat(((ft * 72.000009070867)/0.25).toFixed(3)))],
+  [units.Tailwind, (ft) => twRanges(parseFloat(((ft * 72.000009070867) / 0.25).toFixed(3)))],
 ]));

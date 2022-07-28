@@ -3,15 +3,15 @@ import { converter } from "./converter";
 import { twRanges } from "./Tailwind";
 import { units } from "./Units";
 import { useConverter } from "./useConverter";
-import { useKeyMappings } from "./useCustomMapping";
+import { useKeyMappings } from "./useKeyMappings";
 
 export default function Centimetres({ value, unit, keymap }) {
   const result = useConverter(units.Centimetres, value, unit)
 
   const onHotkeyPress = (e) => {
-        if (e.key === keymap.toClipboard) {
+    if (e.key === keymap.toClipboard) {
       navigator.clipboard.writeText(result);
-    } 
+    }
   }
 
   useKeyMappings(
@@ -22,9 +22,11 @@ export default function Centimetres({ value, unit, keymap }) {
 
   return (
     <div>
-      <span>Centimetres:</span>{" "}
-      <span id={units.Centimetres}>{result}</span>{" "}
-      <span><small>space + c</small></span>
+      <p>
+        <span>Centimetres:</span>{" "}
+        <span id={units.Centimetres}>{result}</span>{" "}
+        <span><small>space + c</small></span>
+      </p>
     </div>
   )
 }
@@ -32,6 +34,7 @@ export default function Centimetres({ value, unit, keymap }) {
 Centimetres.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
+  keymap: PropTypes.object,
 }
 
 const convertToBootstrapSpacing = (cm) => {

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import { twRanges } from "./Tailwind"
-import { useKeyMappings } from "./useCustomMapping";
+import { useKeyMappings } from "./useKeyMappings";
 import { units } from "./Units"
 import { useConverter } from "./useConverter"
 import { dpi } from "./standards"
@@ -10,9 +10,9 @@ export default function Pixels({ value, unit, keymap }) {
   const result = useConverter(units.Pixels, value, unit)
 
   const onHotkeyPress = (e) => {
-        if (e.key === keymap.toClipboard) {
+    if (e.key === keymap.toClipboard) {
       navigator.clipboard.writeText(result);
-    } 
+    }
   }
 
   useKeyMappings(
@@ -23,9 +23,11 @@ export default function Pixels({ value, unit, keymap }) {
 
   return (
     <div>
-      <span>Pixels:</span>{" "}
-      <span id={units.Pixels}>{result}</span>{" "}
-      <span><small className="cunits__keymap">space + p</small></span>
+      <p>
+        <span>Pixels:</span>{" "}
+        <span id={units.Pixels}>{result}</span>{" "}
+        <span><small className="cunits__keymap">space + p</small></span>
+      </p>
     </div>
   )
 }
@@ -33,6 +35,7 @@ export default function Pixels({ value, unit, keymap }) {
 Pixels.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
+  keymap: PropTypes.object,
 }
 
 const convertToBootstrapSpacing = (pixels) => {

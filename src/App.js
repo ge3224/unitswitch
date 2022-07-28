@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { units } from "./components/Units";
 import UserInput from "./components/UserInput";
 import Inches from "./components/Inches";
@@ -12,25 +12,47 @@ import Centimetres from "./components/Centimetres";
 import Feet from "./components/Feet";
 import Picas from "./components/Picas";
 import Points from "./components/Points";
+import Golden from "./components/Golden";
+import RootTwoRect from "./components/RootTwoRect";
+import SixteenToNine from "./components/SixteenToNine";
 
 export default function App() {
+  const storageKey = "cunits"; // localStorage
 
-  // leaderKey is a custom mod key that is used in combination with a
-  // designated "hotkey" to initiate an app action.
-  const leaderKey = " ";
+  const [val, setVal] = useState(() => {
+    const data = JSON.parse(localStorage.getItem(storageKey));
+    if (data.value === null || data.value === undefined || data.value === void 0) {
+      return 0
+    }
+    return data.value;
+  });
 
-  const [val, setVal] = useState(0)
-  const [uni, setUni] = useState(units.Pixels)
+  const [uni, setUni] = useState(() => {
+    const data = JSON.parse(localStorage.getItem(storageKey));
+    if (data.unit === null || data.unit === undefined || data.unit === void 0) {
+      return units.Pixels
+    }
+    return data.unit
+  });
+
+  useEffect(() => {
+    localStorage.setItem(storageKey, JSON.stringify({ value: val, unit: uni }));
+  })
 
   const onUserInput = (value, unit) => {
     setVal(value)
     setUni(unit)
   }
 
+  // leaderKey is a custom mod key that is used in combination with a
+  // designated "hotkey" to initiate an app action.
+  const leaderKey = " ";
+
   return (
     <div>
       <UserInput
-        units={Object.keys(units)}
+        initialNum={val}
+        initialUnit={uni}
         onEnter={onUserInput}
         keymap={{ leader: leaderKey, input: "/", select: "s" }}
       />
@@ -89,6 +111,9 @@ export default function App() {
         unit={uni}
         keymap={{ leader: leaderKey, toClipboard: "o" }}
       />
+      <Golden value={val} />
+      <RootTwoRect value={val} />
+      <SixteenToNine value={val} />
     </div>
   );
 }
