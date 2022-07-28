@@ -3,10 +3,22 @@ import { units } from "./Units"
 import { useConverter } from "./useConverter"
 import { twRanges } from "./Tailwind"
 import { converter } from "./converter";
+import { useKeyMappings } from "./useCustomMapping";
 
-export default function Feet({ value, unit }) {
-
+export default function Feet({ value, unit, keymap }) {
   const result = useConverter(units.Feet, value, unit)
+
+  const onHotkeyPress = (e) => {
+        if (e.key === keymap.toClipboard) {
+      navigator.clipboard.writeText(result);
+    } 
+  }
+
+  useKeyMappings(
+    keymap.leader,
+    new Set(keymap.toClipboard),
+    onHotkeyPress,
+  );
 
   return (
     <div>

@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react"
 
-// useModifiedKeypress produces a new keyboard event if the "leader key" has
+// useKeypressSubstitute produces a new keyboard event if the "leader key" has
 // been pressed. It passes the new event as an argument to the "callback"
 // parameter. The event created is a clone of a natural keyboard event, but
 // with all of the available mod keys enabled. For example, a key press of "a"
 // will become a key press of, "ctrl + shift + alt + meta + a".
-export const useModifiedKeypress = (keySet, leaderPressed, callback, node = null) => {
+export const useKeypressSubstitute = (keySet, leaderPressed, callback, node = null) => {
   const callbackRef = useRef(callback);
 
   useLayoutEffect(() => {

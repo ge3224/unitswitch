@@ -3,9 +3,22 @@ import { converter } from "./converter";
 import { dpi } from "./standards";
 import { units } from "./Units";
 import { useConverter } from "./useConverter";
+import { useKeyMappings } from "./useCustomMapping";
 
-export default function Bootstrap({ value, unit }) {
+export default function Bootstrap({ value, unit, keymap }) {
   const result = useConverter(units.Bootstrap, value, unit)
+
+  const onHotkeyPress = (e) => {
+        if (e.key === keymap.toClipboard) {
+      navigator.clipboard.writeText(result);
+    } 
+  }
+
+  useKeyMappings(
+    keymap.leader,
+    new Set(keymap.toClipboard),
+    onHotkeyPress,
+  );
 
   const pretty = (value) => {
     let num = parseFloat(value)

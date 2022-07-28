@@ -3,9 +3,22 @@ import { converter } from "./converter";
 import { twRanges } from "./Tailwind";
 import { units } from "./Units";
 import { useConverter } from "./useConverter";
+import { useKeyMappings } from "./useCustomMapping";
 
-export default function Centimetres({ value, unit }) {
+export default function Centimetres({ value, unit, keymap }) {
   const result = useConverter(units.Centimetres, value, unit)
+
+  const onHotkeyPress = (e) => {
+        if (e.key === keymap.toClipboard) {
+      navigator.clipboard.writeText(result);
+    } 
+  }
+
+  useKeyMappings(
+    keymap.leader,
+    new Set(keymap.toClipboard),
+    onHotkeyPress,
+  );
 
   return (
     <div>

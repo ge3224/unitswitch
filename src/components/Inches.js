@@ -4,10 +4,22 @@ import { units } from "./Units";
 import { twRanges } from "./Tailwind";
 import { useConverter } from "./useConverter";
 import { converter } from "./converter";
+import { useKeyMappings } from "./useCustomMapping";
 
-export default function Inches({ value, unit }) {
-
+export default function Inches({ value, unit, keymap }) {
   const result = useConverter(units.Inches, value, unit)
+
+  const onHotkeyPress = (e) => {
+        if (e.key === keymap.toClipboard) {
+      navigator.clipboard.writeText(result);
+    } 
+  }
+
+  useKeyMappings(
+    keymap.leader,
+    new Set(keymap.toClipboard),
+    onHotkeyPress,
+  );
 
   return (
     <div>

@@ -2,9 +2,23 @@ import { converter } from "./converter";
 import PropTypes from "prop-types"
 import { units } from "./Units";
 import { useConverter } from "./useConverter";
+import { useKeyMappings } from "./useCustomMapping";
 
-export default function Ems({ value, unit }) {
+export default function Ems({ value, unit, keymap }) {
   const result = useConverter(units.Ems, value, unit)
+
+  const onHotkeyPress = (e) => {
+        if (e.key === keymap.toClipboard) {
+      navigator.clipboard.writeText(result);
+    } 
+  }
+
+  useKeyMappings(
+    keymap.leader,
+    new Set(keymap.toClipboard),
+    onHotkeyPress,
+  );
+
   return (
     <div>
       <span>Ems:</span>{" "}

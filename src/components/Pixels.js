@@ -1,13 +1,25 @@
 import PropTypes from "prop-types"
-import { remToTw, convertToBootstrapSpacing as remToBs } from "./Rems"
 import { twRanges } from "./Tailwind"
+import { useKeyMappings } from "./useCustomMapping";
 import { units } from "./Units"
 import { useConverter } from "./useConverter"
 import { dpi } from "./standards"
 import { converter } from "./converter"
 
-export default function Pixels({ value, unit }) {
+export default function Pixels({ value, unit, keymap }) {
   const result = useConverter(units.Pixels, value, unit)
+
+  const onHotkeyPress = (e) => {
+        if (e.key === keymap.toClipboard) {
+      navigator.clipboard.writeText(result);
+    } 
+  }
+
+  useKeyMappings(
+    keymap.leader,
+    new Set(keymap.toClipboard),
+    onHotkeyPress,
+  );
 
   return (
     <div>

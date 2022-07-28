@@ -3,11 +3,23 @@ import { converter } from "./converter";
 import { fontSize } from "./standards";
 import { twRanges } from "./Tailwind"
 import { units } from "./Units";
+import { useKeyMappings } from "./useCustomMapping";
 import { useConverter } from "./useConverter";
 
-export default function Rems({ value, unit }) {
-
+export default function Rems({ value, unit, keymap}) {
   const result = useConverter(units.Rems, value, unit)
+
+  const onHotkeyPress = (e) => {
+        if (e.key === keymap.toClipboard) {
+      navigator.clipboard.writeText(result);
+    } 
+  }
+
+  useKeyMappings(
+    keymap.leader,
+    new Set(keymap.toClipboard),
+    onHotkeyPress,
+  );
 
   return (
     <div>

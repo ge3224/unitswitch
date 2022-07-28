@@ -2,9 +2,22 @@ import PropTypes from "prop-types";
 import { units } from "./Units";
 import { useConverter } from "./useConverter";
 import { converter } from "./converter";
+import { useKeyMappings } from "./useCustomMapping";
 
-export default function Tailwind({ value, unit }) {
+export default function Tailwind({ value, unit, keymap}) {
   const result = useConverter(units.Tailwind, value, unit)
+
+  const onHotkeyPress = (e) => {
+        if (e.key === keymap.toClipboard) {
+      navigator.clipboard.writeText(result);
+    } 
+  }
+
+  useKeyMappings(
+    keymap.leader,
+    new Set(keymap.toClipboard),
+    onHotkeyPress,
+  );
 
   const pretty = (value) => {
     let num = parseFloat(value)
