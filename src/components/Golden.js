@@ -73,7 +73,8 @@ export default function Golden({ value }) {
             x={(left + height) + ((width - height) / 2)}
             y={top - 8}
             fill={highlight}
-            textAnchor="middle">
+            textAnchor="middle"
+          >
             {(shorter(value)).toFixed(3)}
           </text>
           <text

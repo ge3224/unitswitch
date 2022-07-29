@@ -9,7 +9,7 @@ export default function Tailwind({ value, unit, keymap }) {
 
   const onHotkeyPress = (e) => {
     if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
+      navigator.clipboard.writeText(parseFloat(result).toFixed(1));
     }
   }
 

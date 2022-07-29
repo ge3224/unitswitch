@@ -16,8 +16,12 @@ import Golden from "./components/Golden";
 import RootTwoRect from "./components/RootTwoRect";
 import SixteenToNine from "./components/SixteenToNine";
 
-export default function App() {
-  const storageKey = "cunits"; // localStorage
+// CUnits is a single-page app that displays conversions from one unit of
+// measurement to other frequently-used units, as well as some aspect ratios.
+// The converted values can be individually copied to the clipboard by means
+// of keyboard shortcuts. 
+export default function CUnits() {
+  const storageKey = "cunits";
 
   const [val, setVal] = useState(() => {
     const data = JSON.parse(localStorage.getItem(storageKey));
