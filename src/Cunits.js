@@ -22,10 +22,10 @@ import "../public/css/app.css";
 // The converted values can be individually copied to the clipboard by means
 // of keyboard shortcuts. 
 export default function CUnits() {
-  const storageKey = "cunits";
+  const STORAGE_KEY = "cunits";
 
   const [data, setData] = useState(() => {
-    const data = JSON.parse(localStorage.getItem(storageKey));
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (data === null || data === undefined || data === void 0) {
       return { value: 1, unit: units.Pixels }
     }
@@ -33,7 +33,7 @@ export default function CUnits() {
   });
 
   useEffect(() => {
-    localStorage.setItem(storageKey, JSON.stringify({ value: data.value, unit: data.unit }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ value: data.value, unit: data.unit }));
   })
 
   const onUserInput = (value, unit) => {
