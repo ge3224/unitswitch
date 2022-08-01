@@ -27,7 +27,7 @@ export default function UserInput({ initialNum, initialUnit, onEnter, keymap }) 
   );
 
   return (
-    <div className="cunits__input">
+    <div>
       <label>Input: </label>
       <input
         type="number"

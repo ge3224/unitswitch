@@ -18,67 +18,65 @@ export default function SixteenToNine({ value }) {
       <p>
         <svg width="300" height="163" xmlns="<http://www.w3.org/2000/svg>">
           <rect
+            className="cunit__gfx_stroke"
             x={left}
             y={top}
             width={left + longSide}
             height={top + initial}
-            fill="none"
-            stroke={stroke}
           />
           <rect
+            className="cunit__gfx_stroke"
             x={left}
             y={top}
             width={left + initial}
             height={top + shortSide}
-            fill="none"
-            stroke={stroke}
           />
           <line
+            className="cunit__gfx_stroke--dashed"
             x1={left}
             y1={top}
             x2={left + longSide}
             y2={top + initial}
-            strokeWidth="1"
-            stroke={stroke}
             strokeDasharray={dash}
           />
           <line
+            className="cunit__gfx_stroke--highlight"
             x1={left}
-            y1={top + initial}
+            y1={top + 1 + initial}
             x2={left + longSide}
-            y2={top + initial}
-            strokeWidth="2"
-            stroke={highlight}
+            y2={top + 1 + initial}
           />
           <line
-            x1={left + initial}
+            className="cunit__gfx_stroke--highlight"
+            x1={left + 1 + initial}
             y1={top}
-            x2={left + initial}
+            x2={left + 1 + initial}
             y2={top + shortSide}
-            strokeWidth="2"
-            stroke={highlight}
           />
           <text
+            className="cunit__gfx_fill"
             x={left + initial / 2}
             y={top + shortSide + 21}
             textAnchor="middle"
           >{value}
           </text>
           <text
+            className="cunit__gfx_fill"
             x={left + longSide + 10}
             y={top + initial / 2}
           >{value}
           </text>
           <text
+            className="cunit__gfx_fill--highlight"
             x={left + initial + 10}
             y={top + shortSide / 2}
-            fill={highlight}
           >
             {(short(value)).toFixed(3)}
           </text>
           <text
-            x={left + longSide/2}
-            y={top + initial + 21 }
+            className="cunit__gfx_fill--highlight"
+            x={left + longSide / 2}
+            y={top + initial + 21}
             fill={highlight}
             textAnchor="middle"
           >

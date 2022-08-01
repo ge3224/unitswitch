@@ -26,7 +26,7 @@ export default function Pixels({ value, unit, keymap }) {
       <p>
         <span>Pixels:</span>{" "}
         <span id={units.Pixels}>{Math.ceil(parseFloat(result))}</span>{" "}
-        <span><small className="cunits__keymap">space + p</small></span>
+        <span><small>space + p</small></span>
       </p>
     </div>
   )

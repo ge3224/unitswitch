@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react"
 import PropTypes from "prop-types"
+import { useState, useEffect } from "react"
 import { bootstrapConverter } from "./Bootstrap";
 import { cmConverter } from "./Centimetres";
 import { emConverter } from "./Ems";
@@ -17,7 +17,6 @@ export function useConverter(target, value, unit) {
   const [val, setVal] = useState("N/A")
 
   useEffect(() => {
-
     const converter = (input, unit) => {
       const num = parseFloat(input)
 
@@ -54,12 +53,12 @@ export function useConverter(target, value, unit) {
     }
 
     const result = converter(value, unit)
-
     if (result === null || result === undefined || result === void 0) {
       setVal("N/A")
       return
     }
-    setVal(result.toFixed(3).toString())
+
+    setVal(result.toFixed(3));
   }, [value, unit])
 
   return val
