@@ -15,37 +15,29 @@ import Points from "./components/Points";
 import Golden from "./components/Golden";
 import RootTwoRect from "./components/RootTwoRect";
 import SixteenToNine from "./components/SixteenToNine";
+import "../public/css/app.css";
 
-// CUnits is a single-page app that displays conversions from one unit of
+// Cunits is a single-page app that displays conversions from one unit of
 // measurement to other frequently-used units, as well as some aspect ratios.
 // The converted values can be individually copied to the clipboard by means
 // of keyboard shortcuts. 
 export default function CUnits() {
-  const storageKey = "cunits";
+  const STORAGE_KEY = "cunits";
 
-  const [val, setVal] = useState(() => {
-    const data = JSON.parse(localStorage.getItem(storageKey));
-    if (data.value === null || data.value === undefined || data.value === void 0) {
-      return 0
+  const [data, setData] = useState(() => {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (data === null || data === undefined || data === void 0) {
+      return { value: 1, unit: units.Pixels }
     }
-    return data.value;
-  });
-
-  const [uni, setUni] = useState(() => {
-    const data = JSON.parse(localStorage.getItem(storageKey));
-    if (data.unit === null || data.unit === undefined || data.unit === void 0) {
-      return units.Pixels
-    }
-    return data.unit
+    return data
   });
 
   useEffect(() => {
-    localStorage.setItem(storageKey, JSON.stringify({ value: val, unit: uni }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ value: data.value, unit: data.unit }));
   })
 
   const onUserInput = (value, unit) => {
-    setVal(value)
-    setUni(unit)
+    setData({value: value, unit: unit});
   }
 
   // leaderKey is a custom mod key that is used in combination with a
@@ -55,69 +47,69 @@ export default function CUnits() {
   return (
     <div>
       <UserInput
-        initialNum={val}
-        initialUnit={uni}
+        initialNum={data.value}
+        initialUnit={data.unit}
         onEnter={onUserInput}
         keymap={{ leader: leaderKey, input: "/", select: "s" }}
       />
       <Pixels
-        value={val}
-        unit={uni}
+        value={data.value}
+        unit={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "p" }}
       />
       <Rems
-        value={val}
-        unit={uni}
+        value={data.value}
+        unit={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "r" }}
       />
       <Ems
-        value={val}
-        unit={uni}
+        value={data.value}
+        unit={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "e" }}
       />
       <Tailwind
-        value={val}
-        unit={uni}
+        value={data.value}
+        unit={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "t" }}
       />
       <Bootstrap
-        value={val}
-        unit={uni}
+        value={data.value}
+        unit={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "b" }}
       />
       <Inches
-        value={val}
-        unit={uni}
+        value={data.value}
+        unit={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "i" }}
       />
       <Millimetres
-        value={val}
-        unit={uni}
+        value={data.value}
+        unit={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "m" }}
       />
       <Centimetres
-        value={val}
-        unit={uni}
+        value={data.value}
+        unit={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "c" }}
       />
       <Feet
-        value={val}
-        unit={uni}
+        value={data.value}
+        unit={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "f" }}
       />
       <Picas
-        value={val}
-        unit={uni}
+        value={data.value}
+        unit={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "a" }}
       />
       <Points
-        value={val}
-        unit={uni}
+        value={data.value}
+        unit={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "o" }}
       />
-      <Golden value={val} />
-      <RootTwoRect value={val} />
-      <SixteenToNine value={val} />
+      <Golden value={data.value} />
+      <RootTwoRect value={data.value} />
+      <SixteenToNine value={data.value} />
     </div>
   );
 }

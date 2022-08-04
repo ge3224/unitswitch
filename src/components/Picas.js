@@ -1,25 +1,32 @@
 import PropTypes from "prop-types"
 import { units } from "./Units"
 import { useConverter } from "./useConverter"
-import { remToTw, remToBs, remToPicas } from "./Rems"
-import { pxToPicas } from "./Pixels"
-import { emToPicas } from "./Ems"
-import { twToPicas } from "./Tailwind"
-import { bsToPicas } from "./Bootstrap"
-import { inToPicas } from "./Inches"
-import { mmToPicas } from "./Millimetres"
-import { cmToPicas } from "./Centimetres"
-import { ftToPicas } from "./Feet"
-import { ptToPicas } from "./Points"
+import { twRanges } from "./Tailwind"
+import { converter } from "./converter";
+import { useKeyMappings } from "./useKeyMappings";
 
-export default function Picas({ value, unit }) {
+export default function Picas({ value, unit, keymap }) {
+  const result = useConverter(units.Picas, value, unit)
 
-  const result = useConverter(picaConverter, value, unit)
+  const onHotkeyPress = (e) => {
+    if (e.key === keymap.toClipboard) {
+      navigator.clipboard.writeText(result);
+    }
+  }
+
+  useKeyMappings(
+    keymap.leader,
+    new Set(keymap.toClipboard),
+    onHotkeyPress,
+  );
 
   return (
     <div>
-      <span>Picas:</span>{" "}
-      <span id={units.Picas}>{result}</span>
+      <p>
+        <span>Picas:</span>{" "}
+        <span id={units.Picas}>{result}</span>{" "}
+        <span><small>space + a</small></span>
+      </p>
     </div>
   )
 }
@@ -27,62 +34,39 @@ export default function Picas({ value, unit }) {
 Picas.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
+  keymap: PropTypes.object,
 }
 
-
-export const pToCm = (p) => p * 0.423333333
-export const pToEms = (p) => p * 1.0037500092471
-export const pToIn = (p) => p * 0.16666666653543
-export const pToMm = (p) => p * 4.23333333
-export const pToFt = (p) => p * 0.013888888877953
-export const pToPts = (p) => p * 11.999992431501
-export const pToPx = (p) => p * 16.00000200315
-export const pToRems = (p) => p * 1.0000001251969
-export const pToTw = (p) => remToTw(pToRems(p))
-export const pToBs = (p) => remToBs(pToRems(p))
-
-
-const picaConverter = (value, unit) => {
-  const input = parseFloat(value)
-  let val = null
-
-  switch (unit) {
-    case units.Picas:
-      val = input
-      break
-    case units.Pixels:
-      val = pxToPicas(input)
-      break
-    case units.Rems:
-      val = remToPicas(input)
-      break
-    case units.Ems:
-      val = emToPicas(input)
-      break
-    case units.Tailwind:
-      val = twToPicas(input)
-      break
-    case units.Bootstrap:
-      val = bsToPicas(input)
-      break
-    case units.Inches:
-      val = inToPicas(input)
-      break
-    case units.Millimetres:
-      val = mmToPicas(input)
-      break
-    case units.Centimetres:
-      val = cmToPicas(input)
-      break
-    case units.Feet:
-      val = ftToPicas(input)
-      break
-    case units.Points:
-      val = ptToPicas(input)
-      break
-    default: // do nothing
+const convertToBootstrapSpacing = (cm) => {
+  const fixed = parseFloat((cm).toFixed(3));
+  switch (fixed) {
+    case 0.000:
+      return 0
+    case 0.250:
+      return 1
+    case 0.500:
+      return 2
+    case 1.000:
+      return 3
+    case 1.500:
+      return 4
+    case 3.000:
+      return 5
+    default:
+      return null
   }
-
-  return val
 }
 
+export const picaConverter = converter(new Map([
+  [units.Bootstrap, (p) => convertToBootstrapSpacing(p)],
+  [units.Centimetres, (p) => p * 0.423333333],
+  [units.Ems, (p) => p * 1.0037500092471],
+  [units.Feet, (p) => p * 0.013888888877953],
+  [units.Inches, (p) => p * 0.16666666653543],
+  [units.Millimetres, (p) => p * 4.23333333],
+  [units.Picas, (p) => p],
+  [units.Pixels, (p) => Math.ceil(p * 16.00000200315)],
+  [units.Points, (p) => p * 11.999992431501],
+  [units.Rems, (p) => p * 1.0000001251969],
+  [units.Tailwind, (p) => twRanges(parseFloat(((p * 1.0000001251969) / 0.25).toFixed(2)))],
+]));

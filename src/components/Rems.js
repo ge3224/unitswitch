@@ -1,27 +1,34 @@
 import PropTypes from "prop-types";
-import { bsToRems } from "./Bootstrap";
-import { cmToRems } from "./Centimetres";
-import { emToRems } from "./Ems";
-import { ftToRems } from "./Feet";
-import { inToRems } from "./Inches";
-import { mmToRems } from "./Millimetres";
-import { pToRems } from "./Picas";
-import { pxToRems } from "./Pixels";
-import { ptToRems } from "./Points";
+import { converter } from "./converter";
 import { fontSize } from "./standards";
-import { twRanges, twToRems } from "./Tailwind"
+import { twRanges } from "./Tailwind"
 import { units } from "./Units";
+import { useKeyMappings } from "./useKeyMappings";
 import { useConverter } from "./useConverter";
 
-export default function Rems({ value, unit }) {
+export default function Rems({ value, unit, keymap }) {
+  const result = useConverter(units.Rems, value, unit)
 
-  const result = useConverter(remConverter, value, unit)
+  const onHotkeyPress = (e) => {
+    if (e.key === keymap.toClipboard) {
+      navigator.clipboard.writeText(result);
+    }
+  }
+
+  useKeyMappings(
+    keymap.leader,
+    new Set(keymap.toClipboard),
+    onHotkeyPress,
+  );
 
   return (
     <div>
-      <span>Rems:</span>{" "}
-      <span id={units.Rems}>{result}</span>{" "}
-      <span>(Based on a root font-size of 16)</span>
+      <p>
+        <span>Rems:</span>{" "}
+        <span id={units.Rems}>{result}</span>{" "}
+        <span>(Based on a root font-size of 16)</span>{" "}
+        <span><small>space + r</small></span>
+      </p>
     </div>
   )
 }
@@ -29,83 +36,38 @@ export default function Rems({ value, unit }) {
 Rems.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
+  keymap: PropTypes.object,
 }
 
-export const remToCm = (rems) => rems * 0.42333328
-export const remToEms = (rems) => rems * 1.0037498835808
-export const remToFt = (rems) => rems * 0.013888887139108
-export const remToIn = (rems) => rems * 0.16666664566929
-export const remToMm = (rems) => rems * 4.2333328
-export const remToPicas = (rems) => rems * 0.99999987480315
-export const remToPts = (rems) => rems * 11.99999092914
-export const remToPx = (rems) => rems * fontSize
-export const remToTw = (rems) => twRanges(rems / 0.25)
-export const remToBs = (rems) => {
-  let val = null
+const convertToBootstrapSpacing = (rems) => {
   switch (rems) {
     case 0:
-      val = 0
-      break
+      return 0
     case 0.25:
-      val = 1
-      break
+      return 1
     case 0.5:
-      val = 2
-      break
+      return 2
     case 1:
-      val = 3
-      break
+      return 3
     case 1.5:
-      val = 4
-      break
+      return 4
     case 3:
-      val = 5
-      break
-    default: // do nothing
+      return 5
+    default:
+      return null
   }
-  return val
 }
 
-const remConverter = (value, unit) => {
-  const input = parseFloat(value)
-  let val = null
-
-  switch (unit) {
-    case units.Inches:
-      val = inToRems(input)
-      break
-    case units.Pixels:
-      val = pxToRems(input)
-      break
-    case units.Millimetres:
-      val = mmToRems(input)
-      break
-    case units.Centimetres:
-      val = cmToRems(input)
-      break
-    case units.Feet:
-      val = ftToRems(input)
-      break
-    case units.Picas:
-      val = pToRems(input)
-      break
-    case units.Points:
-      val = ptToRems(input)
-      break
-    case units.Rems:
-      val = input
-      break
-    case units.Ems:
-      val = emToRems(input)
-      break
-    case units.Tailwind:
-      val = twToRems(input)
-      break
-    case units.Bootstrap:
-      val = bsToRems(input)
-      break
-    default: // do nothing
-  }
-
-  return val
-}
+export const remConverter = converter(new Map([
+  [units.Bootstrap, (rems) => convertToBootstrapSpacing(rems)],
+  [units.Centimetres, (rems) => rems * 0.42333328],
+  [units.Ems, (rems) => rems * 1.0037498835808],
+  [units.Feet, (rems) => rems * 0.013888887139108],
+  [units.Inches, (rems) => rems * 0.16666664566929],
+  [units.Millimetres, (rems) => rems * 4.2333328],
+  [units.Picas, (rems) => rems * 0.99999987480315],
+  [units.Pixels, (rems) => Math.ceil(rems * fontSize)],
+  [units.Points, (rems) => rems * 11.99999092914],
+  [units.Rems, (rems) => rems],
+  [units.Tailwind, (rems) => twRanges(rems / 0.25)],
+]));

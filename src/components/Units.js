@@ -1,4 +1,4 @@
-export const unitList = [
+const unitList = [
   "Pixels",
   "Rems",
   "Ems",

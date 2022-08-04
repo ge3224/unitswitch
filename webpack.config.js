@@ -13,6 +13,18 @@ module.exports = {
         use: {
           loader: "swc-loader",
         }
+      },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+            }
+          },
+        ]
       }
     ]
   },
