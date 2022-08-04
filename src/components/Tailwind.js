@@ -2,22 +2,10 @@ import PropTypes from "prop-types";
 import { units } from "./Units";
 import { useConverter } from "./useConverter";
 import { converter } from "./converter";
-import { useKeyMappings } from "./useKeyMappings";
 
-export default function Tailwind({ value, unit, keymap }) {
-  const result = useConverter(units.Tailwind, value, unit)
+export default function Tailwind({input, target}) {
 
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(parseFloat(result).toFixed(1));
-    }
-  }
-
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  const result = useConverter(units.Tailwind, input, target);
 
   const pretty = (value) => {
     let num = parseFloat(value)
@@ -40,14 +28,7 @@ export default function Tailwind({ value, unit, keymap }) {
   }
 
   return (
-    <div>
-      <p>
-        <span>Tailwind :</span>{" "}
-        <span id={units.Tailwind}>{pretty(result)}</span>{" "}
-        {result !== "N/A" ? <span>(<code>m-{pretty(result)}</code>)</span> : ""}{" "}
-        <span><small>space + t</small></span>
-      </p>
-    </div>
+    <div>{result !== "N/A" ? <span>Example: <code className="text-purple text-sm">class="m-{pretty(result)}"</code></span> : "Example Not Available"}</div>
   )
 }
 

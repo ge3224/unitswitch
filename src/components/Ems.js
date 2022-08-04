@@ -1,37 +1,15 @@
 import { converter } from "./converter";
 import PropTypes from "prop-types"
 import { units } from "./Units";
-import { useConverter } from "./useConverter";
-import { useKeyMappings } from "./useKeyMappings";
+import { fontSize } from "./standards";
 
-export default function Ems({ value, unit, keymap }) {
-  const result = useConverter(units.Ems, value, unit)
-
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
-    }
-  }
-
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
-
+export default function EmsDetails() {
   return (
-    <div>
-      <p>
-        <span>Ems:</span>{" "}
-        <span id={units.Ems}>{result}</span>{" "}
-        <span>(Based on font-size of 16)</span>{" "}
-        <span><small>space + e</small></span>
-      </p>
-    </div>
+    <div>Relative Font Size: <span className="font-bold">{fontSize}px</span></div>
   )
 }
 
-Ems.defaultProps = {
+EmsDetails.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
   keymap: PropTypes.object,

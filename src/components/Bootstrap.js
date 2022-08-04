@@ -3,22 +3,9 @@ import { converter } from "./converter";
 import { dpi } from "./standards";
 import { units } from "./Units";
 import { useConverter } from "./useConverter";
-import { useKeyMappings } from "./useKeyMappings";
 
-export default function Bootstrap({ value, unit, keymap }) {
-  const result = useConverter(units.Bootstrap, value, unit)
-
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(parseFloat(result).toFixed(0));
-    }
-  }
-
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+export default function BootstrapDetails({ input, target }) {
+  const result = useConverter(units.Bootstrap, input, target)
 
   const pretty = (value) => {
     let num = parseFloat(value)
@@ -31,20 +18,14 @@ export default function Bootstrap({ value, unit, keymap }) {
 
   return (
     <div>
-      <p>
-        <span>Bootstrap:</span>{" "}
-        <span id={units.Bootstrap}>{pretty(result)}</span>{" "}
-        {result !== "N/A" ? <span>(<code>p-{pretty(result)}</code>)</span> : ""}{" "}
-        <span><small>space + b</small></span>
-      </p>
+        {result !== "N/A" ? <span>Example: <code className="font-code text-purple text-sm">class="p-{pretty(result)}"</code></span> : "Example Not Available"}
     </div>
   )
 }
 
-Bootstrap.defaultProps = {
+BootstrapDetails.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
-  keymap: PropTypes.object,
 }
 
 const convertToRems = (bs) => {

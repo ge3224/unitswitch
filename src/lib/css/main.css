@@ -1,25 +1,3 @@
 @tailwind base;  
 @tailwind components;
 @tailwind utilities;
-
-@layer components {
-  .cunit__gfx_stroke {
-    @apply fill-transparent stroke-slate-600;
-  }
-
-  .cunit__gfx_stroke--dashed {
-    @apply stroke-slate-400;
-  }
-
-  .cunit__gfx_stroke--highlight {
-    @apply stroke-red-600 stroke-2;
-  }
-
-  .cunit__gfx_fill {
-    @apply fill-slate-700;
-  }
-
-  .cunit__gfx_fill--highlight {
-    @apply fill-red-500;
-  }
-}

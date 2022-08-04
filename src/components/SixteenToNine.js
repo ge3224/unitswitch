@@ -1,93 +1,111 @@
 import PropTypes from "prop-types"
 
-export default function SixteenToNine({ value }) {
-  const short = (x) => (9 * x) / 16;
-  const long = (x) => (16 * x) / 9;
-  const left = 1;
-  const top = 1;
-  const initial = 100;
-  const longSide = long(initial);
-  const shortSide = short(initial);
-  const stroke = "rgb(0, 0, 0)";
-  const highlight = "rgb(255, 0, 0)";
-  const dash = "5,5";
+export const sixteenToNineShorter = (x) => (9 * x) / 16;
+export const sixteenToNineLonger = (x) => (16 * x) / 9;
+
+export default function Sixteen2NineDetails({ input }) {
 
   return (
-    <div>
-      <p>16:9 Aspect Ratio</p>
-      <p>
-        <svg width="300" height="163" xmlns="<http://www.w3.org/2000/svg>">
-          <rect
-            className="cunit__gfx_stroke"
-            x={left}
-            y={top}
-            width={left + longSide}
-            height={top + initial}
-          />
-          <rect
-            className="cunit__gfx_stroke"
-            x={left}
-            y={top}
-            width={left + initial}
-            height={top + shortSide}
-          />
-          <line
-            className="cunit__gfx_stroke--dashed"
-            x1={left}
-            y1={top}
-            x2={left + longSide}
-            y2={top + initial}
-            strokeDasharray={dash}
-          />
-          <line
-            className="cunit__gfx_stroke--highlight"
-            x1={left}
-            y1={top + 1 + initial}
-            x2={left + longSide}
-            y2={top + 1 + initial}
-          />
-          <line
-            className="cunit__gfx_stroke--highlight"
-            x1={left + 1 + initial}
-            y1={top}
-            x2={left + 1 + initial}
-            y2={top + shortSide}
-          />
-          <text
-            className="cunit__gfx_fill"
-            x={left + initial / 2}
-            y={top + shortSide + 21}
-            textAnchor="middle"
-          >{value}
-          </text>
-          <text
-            className="cunit__gfx_fill"
-            x={left + longSide + 10}
-            y={top + initial / 2}
-          >{value}
-          </text>
-          <text
-            className="cunit__gfx_fill--highlight"
-            x={left + initial + 10}
-            y={top + shortSide / 2}
-          >
-            {(short(value)).toFixed(3)}
-          </text>
-          <text
-            className="cunit__gfx_fill--highlight"
-            x={left + longSide / 2}
-            y={top + initial + 21}
-            fill={highlight}
-            textAnchor="middle"
-          >
-            {(long(value)).toFixed(3)}
-          </text>
-        </svg>
-      </p>
+    <div className="flex justify-center pt-4">
+      <svg width="263"
+        height="149"
+        viewBox="0 0 263 149"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M203 1H59V79H203V1Z"
+          fill="#CFF9B9"
+          stroke="#156363"
+          strokeWidth="1.00157"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M203 37H125V79H203V37Z"
+          stroke="#156363"
+          strokeWidth="1.00157"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M59 1L203 79"
+          stroke="#156363"
+          strokeWidth="0.999999"
+          strokeDasharray="2 2"
+        />
+        <path
+          d="M203 110L59 110"
+          stroke="#4EBD85"
+        />
+        <path
+          d="M59 120.5V101"
+          stroke="#4EBD85"
+        />
+        <path
+          d="M203 120.5V101"
+          stroke="#4EBD85"
+        />
+        <path
+          d="M18 26V1"
+          stroke="#156363"
+        />
+        <path
+          d="M8 1H27.5"
+          stroke="#156363"
+        />
+        <path
+          d="M18 50L18 79"
+          stroke="#156363"
+        />
+        <path
+          d="M8 79H27.5"
+          stroke="#156363"
+        />
+        <path
+          d="M242 47V37"
+          stroke="#4EBD85"
+        />
+        <path
+          d="M232 37L251.5 37"
+          stroke="#4EBD85"
+        />
+        <path
+          d="M242 70V79"
+          stroke="#4EBD85"
+        />
+        <path
+          d="M232 79L251.5 79"
+          stroke="#4EBD85"
+        />
+        <text
+          className="fill-green-400 text-sm font-bold"
+          x="242"
+          y="63"
+          textAnchor="middle">{sixteenToNineShorter(input).toFixed(3)}
+        </text>
+        <text
+          className="fill-green-400 text-sm font-bold"
+          x="128"
+          y="140"
+          textAnchor="middle">{sixteenToNineLonger(input).toFixed(3)}
+        </text>
+        <text
+          className="fill-green-600 text-sm font-bold"
+          x="162"
+          y="27"
+          textAnchor="middle">{input}
+        </text>
+        <text
+          className="fill-green-600 text-sm font-bold"
+          x="18"
+          y="42"
+          textAnchor="middle">{input}
+        </text>
+      </svg>
     </div>
   )
 }
 
-SixteenToNine.defaultProps = {
+Sixteen2NineDetails.defaultProps = {
   value: PropTypes.number,
 }

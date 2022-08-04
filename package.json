@@ -4,7 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "start": "concurrently --kill-others \"webpack serve --mode development --env development\" \"npx tailwindcss -i ./src/lib/css/main.css -o ./public/css/app.css --watch\"",
+    "start": "webpack serve --mode development --env development",
     "start:css": "npx tailwindcss -i ./src/lib/css/main.css -o ./public/css/app.css --watch",
     "build": "webpack"
   },
@@ -14,7 +14,6 @@
   "devDependencies": {
     "@swc/core": "^1.2.218",
     "autoprefixer": "^10.4.8",
-    "concurrently": "^7.3.0",
     "css-loader": "^6.7.1",
     "swc-loader": "^0.2.3",
     "tailwindcss": "^3.1.6",

@@ -1,4 +1,4 @@
-# CUnits
+# Cunits
 
 Cunits is the source code for UnitSwitch, a single-page app that displays conversions from one unit of measurement to other frequently-used units, as well as some aspect ratios. Keyboard shortcuts are available to copy the desired conversion value to the clipboard.
 

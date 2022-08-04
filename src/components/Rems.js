@@ -3,37 +3,15 @@ import { converter } from "./converter";
 import { fontSize } from "./standards";
 import { twRanges } from "./Tailwind"
 import { units } from "./Units";
-import { useKeyMappings } from "./useKeyMappings";
-import { useConverter } from "./useConverter";
 
-export default function Rems({ value, unit, keymap }) {
-  const result = useConverter(units.Rems, value, unit)
-
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
-    }
-  }
-
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+export default function RemsDetails() {
 
   return (
-    <div>
-      <p>
-        <span>Rems:</span>{" "}
-        <span id={units.Rems}>{result}</span>{" "}
-        <span>(Based on a root font-size of 16)</span>{" "}
-        <span><small>space + r</small></span>
-      </p>
-    </div>
+    <div>Root Font Size: <span className="font-bold">{fontSize}px</span></div>
   )
 }
 
-Rems.defaultProps = {
+RemsDetails.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
   keymap: PropTypes.object,

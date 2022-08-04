@@ -1,38 +1,16 @@
 import PropTypes from "prop-types"
 import { twRanges } from "./Tailwind"
-import { useKeyMappings } from "./useKeyMappings";
 import { units } from "./Units"
-import { useConverter } from "./useConverter"
 import { dpi } from "./standards"
 import { converter } from "./converter"
 
-export default function Pixels({ value, unit, keymap }) {
-  const result = useConverter(units.Pixels, value, unit)
-
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
-    }
-  }
-
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
-
+export default function PixelDetails() {
   return (
-    <div>
-      <p>
-        <span>Pixels:</span>{" "}
-        <span id={units.Pixels}>{Math.ceil(parseFloat(result))}</span>{" "}
-        <span><small>space + p</small></span>
-      </p>
-    </div>
+    <div>DPI: <span className="font-bold">{dpi}</span></div>
   )
 }
 
-Pixels.defaultProps = {
+PixelDetails.defaultProps = {
   value: PropTypes.string,
   unit: PropTypes.string,
   keymap: PropTypes.object,
