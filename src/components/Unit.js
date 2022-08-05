@@ -40,8 +40,8 @@ export default function Unit({ base, input, target, callback, children, decimal 
 
   return (
     <div>
-      <div className="flex items-center border-b border-green-600">
-        <div className="mx-2">
+      <div className="flex items-center border-b border-green-600 lg:border lg:h-16 lg:items-stretch">
+        <div className="mx-2 lg:my-auto">
           {
             children ?
               <div ref={detailsBtn} className="w-6 flex justify-center" onClick={handleToggle}>
@@ -62,9 +62,9 @@ export default function Unit({ base, input, target, callback, children, decimal 
               </div>
           }
         </div>
-        <div className="w-28 bg-green-100 border-l border-r border-green-600 py-2 px-3 font-code font-bold text-sm text-green-500 text-right" id={units.Pixels}>
+        <div className="w-28 bg-green-100 border-l border-r border-green-600 py-2 px-3 font-code font-bold text-sm text-green-500 text-right lg:flex lg:items-center lg:justify-between lg:text-base" id={units.Pixels}>
           {Number.isNaN(parseFloat(result)) ? "N/A" : decimal ? parseFloat(result).toFixed(2) : parseInt(result)}
-          <span className="ml-2 md:hidden" onClick={handleCopyIco}>
+          <span className="ml-2" onClick={handleCopyIco}>
             <svg ref={copyIco} className="inline" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M5 4.7158V2.40625C5 1.6296 5.6296 1 6.40625 1H18.5938C19.3704 1 20 1.6296 20 2.40625V14.5938C20 15.3704 19.3704 16 18.5938 16H16.2582"
@@ -82,12 +82,12 @@ export default function Unit({ base, input, target, callback, children, decimal 
             </svg>
           </span>
         </div>
-        <div className="ml-2 mr-auto font-bold text-black">{base}</div>
-        <div className="hidden"><small>space + p</small></div>
+        <div className="ml-2 mr-auto font-bold text-black lg:my-auto">{base}</div>
+        <div className="hidden xl:block text-gray-200 lg:mr-4 lg:my-auto"><small>space + p</small></div>
       </div>
       {
         children ?
-          <div ref={details} className="border-b border-green-600 p-4 hidden">
+          <div ref={details} className="border-b border-green-600 p-4 hidden lg:border-x lg:rounded-b-lg">
             {children}
           </div>
           : ""

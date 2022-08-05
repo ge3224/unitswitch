@@ -49,7 +49,7 @@ export default function UnitSwitch() {
   const leaderKey = " ";
 
   return (
-    <div className="m-2 bg-green-50 border border-green-600 rounded-lg pb-4">
+    <div className="m-2 bg-green-50 border border-green-600 rounded-lg pb-4 lg:grid lg:grid-cols-3 lg:gap-5 lg:border-none lg:p-12">
       <UserInput
         initialNum={data.value}
         initialUnit={data.unit}
