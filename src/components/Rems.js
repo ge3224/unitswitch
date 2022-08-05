@@ -1,9 +1,9 @@
-import Conversion from "./Conversion";
+import Unit from "./Unit";
 import PropTypes from "prop-types";
 import { converter } from "./converter";
 import { fontSize } from "./standards";
 import { twRanges } from "./Tailwind"
-import { units } from "./Units";
+import { units } from "./units";
 import { useConverter } from "./useConverter";
 import { useKeyMappings } from "./useKeyMappings";
 
@@ -22,14 +22,14 @@ export default function Rems({ input, target, keymap }) {
     onHotkeyPress,
   );
   return (
-    <Conversion
+    <Unit
       base={units.Rems}
       input={input}
       target={target}
       callback={(input, target) => useConverter(units.Rems, input, target)}
     >
       <div>Root Font Size: <span className="font-bold">{fontSize}px</span></div>
-    </Conversion>
+    </Unit>
   )
 }
 

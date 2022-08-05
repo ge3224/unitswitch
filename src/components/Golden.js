@@ -1,5 +1,5 @@
 import "../../public/css/app.css";
-import Conversion from "./Conversion";
+import Unit from "./Unit";
 import PropTypes from "prop-types"
 import { useKeyMappings } from "./useKeyMappings";
 
@@ -20,7 +20,7 @@ export default function Golden({ input, target, keymap }) {
   );
 
   return (
-    <Conversion
+    <Unit
       base="Golden Ratio"
       input={input}
       target={target}
@@ -159,7 +159,7 @@ export default function Golden({ input, target, keymap }) {
           </text>
         </svg>
       </div>
-    </Conversion>
+    </Unit>
   )
 }
 

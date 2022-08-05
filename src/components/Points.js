@@ -1,6 +1,6 @@
-import Conversion from "./Conversion";
+import Unit from "./Unit";
 import PropTypes from "prop-types"
-import { units } from "./Units"
+import { units } from "./units"
 import { useConverter } from "./useConverter"
 import { twRanges } from "./Tailwind"
 import { converter } from "./converter";
@@ -22,7 +22,7 @@ export default function Points({ input, target, keymap }) {
   );
 
   return (
-    <Conversion
+    <Unit
       base={units.Points}
       input={input}
       target={target}

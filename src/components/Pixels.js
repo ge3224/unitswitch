@@ -1,9 +1,9 @@
-import Conversion from "./Conversion";
+import Unit from "./Unit";
 import PropTypes from "prop-types"
 import { converter } from "./converter"
 import { dpi } from "./standards"
 import { twRanges } from "./Tailwind"
-import { units } from "./Units"
+import { units } from "./units"
 import { useConverter } from "./useConverter";
 import { useKeyMappings } from "./useKeyMappings";
 
@@ -23,7 +23,7 @@ export default function Pixels({ input, target, keymap }) {
   );
 
   return (
-    <Conversion
+    <Unit
       base={units.Pixels}
       input={input}
       target={target}
@@ -31,7 +31,7 @@ export default function Pixels({ input, target, keymap }) {
       decimal={false}
     >
       <div>DPI: <span className="font-bold">{dpi}</span></div>
-    </Conversion>
+    </Unit>
   )
 }
 

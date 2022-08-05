@@ -14,26 +14,30 @@ import Root2 from "./components/Root2";
 import Tailwind from "./components/Tailwind";
 import UserInput from "./components/UserInput";
 import WideScreen from "./components/WideScreen";
-import { units } from "./components/Units";
+import { units } from "./components/units";
 import { useEffect, useState } from "react";
 
 // Cunits is a single-page app that displays conversions from one unit of
 // measurement to other frequently-used units, as well as some aspect ratios.
 // The converted values can be individually copied to the clipboard by means
 // of keyboard shortcuts. 
-export default function CUnits() {
+export default function UnitSwitch() {
   const STORAGE_KEY = "cunits";
 
   const [data, setData] = useState(() => {
     const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (data === null || data === undefined || data === void 0) {
-      return { value: 1, unit: units.Pixels }
+      return {
+        value: 1,
+        unit: units.Pixels,
+        lineup: [],
+      }
     }
     return data
   });
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ value: data.value, unit: data.unit }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ value: data.value, unit: data.unit, lineup: data.lineup }));
   })
 
   const onUserInput = (value, unit) => {
@@ -125,5 +129,3 @@ export default function CUnits() {
     </div >
   );
 }
-
-

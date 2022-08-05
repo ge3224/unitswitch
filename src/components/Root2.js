@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import "../../public/css/app.css";
-import Conversion from "./Conversion";
+import Unit from "./Unit";
 import { useKeyMappings } from "./useKeyMappings";
 
 const longer = (input) => input * 1.41;
@@ -20,7 +20,7 @@ export default function Root2({ input, target, keymap }) {
   );
 
   return (
-    <Conversion
+    <Unit
       base="Root 2 (A4)"
       input={input}
       target={target}
@@ -162,7 +162,7 @@ export default function Root2({ input, target, keymap }) {
           </text>
         </svg>
       </div>
-    </Conversion>
+    </Unit>
   )
 }
 

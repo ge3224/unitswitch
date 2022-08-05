@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useRef, useState } from "react";
 import { useKeyMappings } from "./useKeyMappings";
-import { units as appUnits } from "./Units";
+import { units as appUnits } from "./units";
 
 export default function UserInput({ initialNum, initialUnit, onEnter, keymap }) {
   const units = Object.keys(appUnits);

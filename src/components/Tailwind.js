@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
-import { units } from "./Units";
+import { units } from "./units";
 import { useConverter } from "./useConverter";
 import { useKeyMappings } from "./useKeyMappings";
 import { converter } from "./converter";
-import Conversion from "./Conversion";
+import Unit from "./Unit";
 
 export default function Tailwind({ input, target, keymap }) {
   const result = useConverter(units.Tailwind, input, target);
@@ -41,7 +41,7 @@ export default function Tailwind({ input, target, keymap }) {
   }
 
   return (
-    <Conversion
+    <Unit
       base={units.Tailwind}
       input={input}
       target={target}
@@ -55,7 +55,7 @@ export default function Tailwind({ input, target, keymap }) {
             "Example Not Available"
         }
       </div>
-    </Conversion>
+    </Unit>
   )
 }
 

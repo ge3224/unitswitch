@@ -1,8 +1,8 @@
-import Conversion from "./Conversion";
+import Unit from "./Unit";
 import PropTypes from "prop-types";
 import { converter } from "./converter";
 import { dpi } from "./standards";
-import { units } from "./Units";
+import { units } from "./units";
 import { useConverter } from "./useConverter";
 import { useKeyMappings } from "./useKeyMappings";
 
@@ -31,7 +31,7 @@ export default function Bootstrap({ input, target, keymap }) {
   }
 
   return (
-    <Conversion
+    <Unit
       base={units.Bootstrap}
       input={input}
       target={target}
@@ -39,7 +39,7 @@ export default function Bootstrap({ input, target, keymap }) {
       decimal={false}
     >
       {result !== "N/A" ? <span>Example: <code className="font-code text-purple text-sm">class="p-{pretty(result)}"</code></span> : "Example Not Available"}
-    </Conversion>
+    </Unit>
   )
 }
 

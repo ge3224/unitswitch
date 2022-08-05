@@ -1,9 +1,9 @@
-import Conversion from "./Conversion";
+import Unit from "./Unit";
 import PropTypes from "prop-types";
 import { converter } from "./converter";
 import { dpi } from "./standards";
 import { twRanges } from "./Tailwind";
-import { units } from "./Units";
+import { units } from "./units";
 import { useConverter } from "./useConverter";
 import { useKeyMappings } from "./useKeyMappings";
 
@@ -23,7 +23,7 @@ export default function Inches({ input, target, keymap }) {
   );
 
   return (
-    <Conversion
+    <Unit
       base={units.Inches}
       input={input}
       target={target}

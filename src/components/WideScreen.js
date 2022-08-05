@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import Conversion from "./Conversion";
+import Unit from "./Unit";
 import { useKeyMappings } from "./useKeyMappings";
 
 const shorter = (x) => (9 * x) / 16;
@@ -19,7 +19,7 @@ export default function WideScreen({ input, target, keymap }) {
   );
 
   return (
-    <Conversion
+    <Unit
         base="16:9 Aspect Ratio"
         input={input}
         target={target}
@@ -122,7 +122,7 @@ export default function WideScreen({ input, target, keymap }) {
         </text>
       </svg>
     </div>
-    </Conversion>
+    </Unit>
   )
 }
 

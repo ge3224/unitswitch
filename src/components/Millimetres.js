@@ -1,8 +1,8 @@
-import Conversion from "./Conversion";
+import Unit from "./Unit";
 import PropTypes from "prop-types"
 import { converter } from "./converter"
 import { twRanges } from "./Tailwind"
-import { units } from "./Units"
+import { units } from "./units"
 import { useConverter } from "./useConverter"
 import { useKeyMappings } from "./useKeyMappings";
 
@@ -22,7 +22,7 @@ export default function Millimetres({ input, target, keymap }) {
   );
 
   return (
-    <Conversion
+    <Unit
       base={units.Millimetres}
       input={input}
       target={target}
