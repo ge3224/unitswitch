@@ -1,22 +1,8 @@
 import PropTypes from "prop-types"
-import { useKeyMappings } from "./useKeyMappings";
 import { units } from "./Units"
-import { useConverter } from "./useConverter"
-
-export default function Unit({ baseUnit, keymap, input, target, children, decimal=true }) {
-  const result = useConverter(baseUnit, input, target)
-
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
-    }
-  }
-
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+96.000
+export default function Conversion({ base, input, target, callback, children, decimal = true }) {
+  const result = callback(input, target);
 
   return (
     <>
@@ -64,28 +50,36 @@ export default function Unit({ baseUnit, keymap, input, target, children, decima
             />
           </svg>
         </div>
-        <div className="ml-2 mr-auto font-bold text-black">{baseUnit}</div>
+        <div className="ml-2 mr-auto font-bold text-black">{base}</div>
         <div className="hidden"><small>space + p</small></div>
-        <div className="ml-0 mr-2">
-          <svg className="inline" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 7H14" stroke="#156363" strokeWidth="3" />
-            <path d="M7 0L7 14" stroke="#156363" strokeWidth="3" />
-          </svg>
-        </div>
+        {
+          children ?
+            <div className="ml-0 mr-2">
+              <svg className="inline" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 7H14" stroke="#156363" strokeWidth="3" />
+                <path d="M7 0L7 14" stroke="#156363" strokeWidth="3" />
+              </svg>
+            </div>
+            : ""
+        }
       </div>
-      {children ?
-        <div className="border-b border-green-600 p-4">
-          {children}
-        </div>
-        : ""
+      {
+        children ?
+          <div className="border-b border-green-600 p-4">
+            {children}
+          </div>
+          : ""
       }
     </>
   )
 }
 
-Unit.defaultProps = {
-  baseUnit: PropTypes.string,
-  input: PropTypes.string,
-  target: PropTypes.string,
+Conversion.defaultProps = {
+  base: PropTypes.string,
   keymap: PropTypes.object,
+  input: PropTypes.string,
+  callback: PropTypes.func,
+  target: PropTypes.string,
+  decimal: PropTypes.bool,
 }
+

@@ -1,3 +1,4 @@
+import Conversion from "./Conversion";
 import PropTypes from "prop-types"
 import { units } from "./Units"
 import { useConverter } from "./useConverter"
@@ -5,8 +6,8 @@ import { twRanges } from "./Tailwind"
 import { converter } from "./converter";
 import { useKeyMappings } from "./useKeyMappings";
 
-export default function Feet({ value, unit, keymap }) {
-  const result = useConverter(units.Feet, value, unit)
+export default function Feet({ input, target, keymap }) {
+  const result = useConverter(units.Feet, input, target)
 
   const onHotkeyPress = (e) => {
     if (e.key === keymap.toClipboard) {
@@ -21,19 +22,18 @@ export default function Feet({ value, unit, keymap }) {
   );
 
   return (
-    <div>
-      <p>
-        <span>Feet:</span>{" "}
-        <span id={units.Feet}>{result}</span>{" "}
-        <span><small>space + f</small></span>
-      </p>
-    </div>
+    <Conversion
+      base={units.Feet}
+      input={input}
+      target={target}
+      callback={(input, target) => useConverter(units.Feet, input, target)}
+    />
   )
 }
 
 Feet.defaultProps = {
-  value: PropTypes.string,
-  unit: PropTypes.string,
+  input: PropTypes.string,
+  target: PropTypes.string,
   keymap: PropTypes.object,
 }
 

@@ -1,3 +1,4 @@
+import Conversion from "./Conversion";
 import PropTypes from "prop-types"
 import { units } from "./Units"
 import { useConverter } from "./useConverter"
@@ -5,8 +6,8 @@ import { twRanges } from "./Tailwind"
 import { converter } from "./converter";
 import { useKeyMappings } from "./useKeyMappings";
 
-export default function Picas({ value, unit, keymap }) {
-  const result = useConverter(units.Picas, value, unit)
+export default function Picas({ input, target, keymap }) {
+  const result = useConverter(units.Picas, input, target)
 
   const onHotkeyPress = (e) => {
     if (e.key === keymap.toClipboard) {
@@ -21,19 +22,18 @@ export default function Picas({ value, unit, keymap }) {
   );
 
   return (
-    <div>
-      <p>
-        <span>Picas:</span>{" "}
-        <span id={units.Picas}>{result}</span>{" "}
-        <span><small>space + a</small></span>
-      </p>
-    </div>
+    <Conversion
+      base={units.Picas}
+      input={input}
+      target={target}
+      callback={(i, t) => useConverter(units.Picas, i, t)}
+    />
   )
 }
 
 Picas.defaultProps = {
-  value: PropTypes.string,
-  unit: PropTypes.string,
+  input: PropTypes.string,
+  target: PropTypes.string,
   keymap: PropTypes.object,
 }
 

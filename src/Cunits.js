@@ -1,23 +1,21 @@
-import { useEffect, useState } from "react";
-import { units } from "./components/Units";
-import Unit from "./components/Unit";
-import UserInput from "./components/UserInput";
-import Inches from "./components/Inches";
-import PixelDetails from "./components/Pixels";
-import RemsDetails from "./components/Rems";
-import EmsDetails from "./components/Ems";
-import TailwindDetails from "./components/Tailwind";
-import BootstrapDetails from "./components/Bootstrap";
-import Millimetres from "./components/Millimetres";
-import Centimetres from "./components/Centimetres";
-import Feet from "./components/Feet";
-import Picas from "./components/Picas";
-import Points from "./components/Points";
-import GoldenDetails, { goldenLonger } from "./components/Golden";
-import Root2Details, { root2Longer } from "./components/Root2";
-import Sixteen2NineDetails, { sixteenToNineLonger } from "./components/SixteenToNine";
-import Ratio from "./components/Ratio";
 import "../public/css/app.css";
+import Bootstrap from "./components/Bootstrap";
+import Centimetres from "./components/Centimetres";
+import Ems from "./components/Ems";
+import Feet from "./components/Feet";
+import Golden from "./components/Golden";
+import Inches from "./components/Inches";
+import Millimetres from "./components/Millimetres";
+import Picas from "./components/Picas";
+import Pixels from "./components/Pixels";
+import Points from "./components/Points";
+import Rems from "./components/Rems";
+import Root2 from "./components/Root2";
+import Tailwind from "./components/Tailwind";
+import UserInput from "./components/UserInput";
+import WideScreen from "./components/WideScreen";
+import { units } from "./components/Units";
+import { useEffect, useState } from "react";
 
 // Cunits is a single-page app that displays conversions from one unit of
 // measurement to other frequently-used units, as well as some aspect ratios.
@@ -54,111 +52,75 @@ export default function CUnits() {
         onEnter={onUserInput}
         keymap={{ leader: leaderKey, input: "/", select: "s" }}
       />
-      <Unit
-        baseUnit={units.Pixels}
+      <Pixels
+        input={data.value}
+        target={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "p" }}
+      />
+      <Rems
         input={data.value}
         target={data.unit}
-        decimal={false}
-      >
-        <PixelDetails />
-      </Unit>
-      <Unit
-        baseUnit={units.Rems}
         keymap={{ leader: leaderKey, toClipboard: "r" }}
+      />
+      <Ems
         input={data.value}
         target={data.unit}
-      >
-        <RemsDetails />
-      </Unit>
-      <Unit
-        baseUnit={units.Ems}
         keymap={{ leader: leaderKey, toClipboard: "e" }}
+      />
+      <Tailwind
         input={data.value}
         target={data.unit}
-      >
-        <EmsDetails />
-      </Unit>
-      <Unit
-        baseUnit={units.Tailwind}
         keymap={{ leader: leaderKey, toClipboard: "t" }}
+      />
+      <Bootstrap
         input={data.value}
         target={data.unit}
-        decimal={false}
-      >
-        <TailwindDetails input={data.value} target={data.unit} />
-      </Unit>
-      <Unit
-        baseUnit={units.Bootstrap}
         keymap={{ leader: leaderKey, toClipboard: "b" }}
+      />
+      <Golden
         input={data.value}
         target={data.unit}
-        decimal={false}
-      >
-        <BootstrapDetails input={data.value} target={data.unit} />
-      </Unit>
-      <Ratio
-        base="Golden Ratio"
         keymap={{ leader: leaderKey, toClipboard: "o" }}
+      />
+      <Root2
         input={data.value}
         target={data.unit}
-        callback={(input) => goldenLonger(input)}
-      >
-        <GoldenDetails input={data.value} />
-      </Ratio>
-      <Ratio
-        base="Root 2 (A4)"
-        keymap={{ leader: leaderKey, toClipboard: "o" }}
+        keymap={{ leader: leaderKey, toClipboard: "2" }}
+      />
+      <WideScreen
         input={data.value}
         target={data.unit}
-        callback={(input) => root2Longer(input)}
-      >
-        <Root2Details input={data.value} />
-      </Ratio>
-      <Ratio
-        base="16:9 Aspect Ratio"
-        keymap={{ leader: leaderKey, toClipboard: "o" }}
+        keymap={{ leader: leaderKey, toClipboard: "w" }}
+      />
+      <Inches
         input={data.value}
         target={data.unit}
-        callback={(input) => sixteenToNineLonger(input)}
-      >
-        <Sixteen2NineDetails input={data.value} />
-      </Ratio>
-      <Unit
-        baseUnit={units.Inches}
         keymap={{ leader: leaderKey, toClipboard: "i" }}
+      />
+      <Millimetres
         input={data.value}
         target={data.unit}
-      />
-      <Unit
-        baseUnit={units.Millimetres}
         keymap={{ leader: leaderKey, toClipboard: "m" }}
+      />
+      <Centimetres
         input={data.value}
         target={data.unit}
-      />
-      <Unit
-        baseUnit={units.Centimetres}
         keymap={{ leader: leaderKey, toClipboard: "c" }}
+      />
+      <Feet
         input={data.value}
         target={data.unit}
-      />
-      <Unit
-        baseUnit={units.Feet}
         keymap={{ leader: leaderKey, toClipboard: "f" }}
+      />
+      <Picas
         input={data.value}
         target={data.unit}
-      />
-      <Unit
-        baseUnit={units.Picas}
         keymap={{ leader: leaderKey, toClipboard: "a" }}
-        input={data.value}
-        target={data.unit}
       />
-      <Unit
-        baseUnit={units.Points}
-        keymap={{ leader: leaderKey, toClipboard: "o" }}
+      <Points
         input={data.value}
-        target={data.unit}
+        taret={data.unit}
+        keymap={{ leader: leaderKey, toClipboard: "o" }}
       />
     </div >
   );

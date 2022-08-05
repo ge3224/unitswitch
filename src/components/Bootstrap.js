@@ -1,11 +1,25 @@
+import Conversion from "./Conversion";
 import PropTypes from "prop-types";
 import { converter } from "./converter";
 import { dpi } from "./standards";
 import { units } from "./Units";
 import { useConverter } from "./useConverter";
+import { useKeyMappings } from "./useKeyMappings";
 
-export default function BootstrapDetails({ input, target }) {
-  const result = useConverter(units.Bootstrap, input, target)
+export default function Bootstrap({ input, target, keymap }) {
+  const result = useConverter(units.Tailwind, input, target);
+
+  const onHotkeyPress = (e) => {
+    if (e.key === keymap.toClipboard) {
+      navigator.clipboard.writeText(result);
+    }
+  }
+
+  useKeyMappings(
+    keymap.leader,
+    new Set(keymap.toClipboard),
+    onHotkeyPress,
+  );
 
   const pretty = (value) => {
     let num = parseFloat(value)
@@ -17,15 +31,22 @@ export default function BootstrapDetails({ input, target }) {
   }
 
   return (
-    <div>
-        {result !== "N/A" ? <span>Example: <code className="font-code text-purple text-sm">class="p-{pretty(result)}"</code></span> : "Example Not Available"}
-    </div>
+    <Conversion
+      base={units.Bootstrap}
+      input={input}
+      target={target}
+      callback={(input, target) => useConverter(units.Bootstrap, input, target)}
+      decimal={false}
+    >
+      {result !== "N/A" ? <span>Example: <code className="font-code text-purple text-sm">class="p-{pretty(result)}"</code></span> : "Example Not Available"}
+    </Conversion>
   )
 }
 
-BootstrapDetails.defaultProps = {
-  value: PropTypes.string,
-  unit: PropTypes.string,
+Bootstrap.defaultProps = {
+  input: PropTypes.string,
+  target: PropTypes.string,
+  keymap: PropTypes.object,
 }
 
 const convertToRems = (bs) => {

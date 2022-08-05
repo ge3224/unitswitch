@@ -1,3 +1,4 @@
+import Conversion from "./Conversion";
 import PropTypes from "prop-types"
 import { converter } from "./converter";
 import { twRanges } from "./Tailwind";
@@ -5,8 +6,8 @@ import { units } from "./Units";
 import { useConverter } from "./useConverter";
 import { useKeyMappings } from "./useKeyMappings";
 
-export default function Centimetres({ value, unit, keymap }) {
-  const result = useConverter(units.Centimetres, value, unit)
+export default function Centimetres({ input, target, keymap }) {
+  const result = useConverter(units.Centimetres, input, target)
 
   const onHotkeyPress = (e) => {
     if (e.key === keymap.toClipboard) {
@@ -21,19 +22,18 @@ export default function Centimetres({ value, unit, keymap }) {
   );
 
   return (
-    <div>
-      <p>
-        <span>Centimetres:</span>{" "}
-        <span id={units.Centimetres}>{result}</span>{" "}
-        <span><small>space + c</small></span>
-      </p>
-    </div>
+    <Conversion
+      base={units.Centimetres}
+      input={input}
+      target={target}
+      callback={(input, target) => useConverter(units.Centimetres, input, target)}
+    />
   )
 }
 
 Centimetres.defaultProps = {
-  value: PropTypes.string,
-  unit: PropTypes.string,
+  input: PropTypes.string,
+  target: PropTypes.string,
   keymap: PropTypes.object,
 }
 

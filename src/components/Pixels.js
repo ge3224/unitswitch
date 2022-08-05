@@ -1,18 +1,43 @@
+import Conversion from "./Conversion";
 import PropTypes from "prop-types"
+import { converter } from "./converter"
+import { dpi } from "./standards"
 import { twRanges } from "./Tailwind"
 import { units } from "./Units"
-import { dpi } from "./standards"
-import { converter } from "./converter"
+import { useConverter } from "./useConverter";
+import { useKeyMappings } from "./useKeyMappings";
 
-export default function PixelDetails() {
+export default function Pixels({ input, target, keymap }) {
+  const result = useConverter(units.Tailwind, input, target);
+
+  const onHotkeyPress = (e) => {
+    if (e.key === keymap.toClipboard) {
+      navigator.clipboard.writeText(result);
+    }
+  }
+
+  useKeyMappings(
+    keymap.leader,
+    new Set(keymap.toClipboard),
+    onHotkeyPress,
+  );
+
   return (
-    <div>DPI: <span className="font-bold">{dpi}</span></div>
+    <Conversion
+      base={units.Pixels}
+      input={input}
+      target={target}
+      callback={(input, target) => useConverter(units.Pixels, input, target)}
+      decimal={false}
+    >
+      <div>DPI: <span className="font-bold">{dpi}</span></div>
+    </Conversion>
   )
 }
 
-PixelDetails.defaultProps = {
-  value: PropTypes.string,
-  unit: PropTypes.string,
+Pixels.defaultProps = {
+  input: PropTypes.string,
+  target: PropTypes.string,
   keymap: PropTypes.object,
 }
 

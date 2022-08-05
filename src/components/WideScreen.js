@@ -1,11 +1,30 @@
 import PropTypes from "prop-types"
+import Conversion from "./Conversion";
+import { useKeyMappings } from "./useKeyMappings";
 
-export const sixteenToNineShorter = (x) => (9 * x) / 16;
-export const sixteenToNineLonger = (x) => (16 * x) / 9;
+const shorter = (x) => (9 * x) / 16;
+const longer = (x) => (16 * x) / 9;
 
-export default function Sixteen2NineDetails({ input }) {
+export default function WideScreen({ input, target, keymap }) {
+  const onHotkeyPress = (e) => {
+    if (e.key === keymap.toClipboard) {
+      navigator.clipboard.writeText(result);
+    }
+  }
+
+  useKeyMappings(
+    keymap.leader,
+    new Set(keymap.toClipboard),
+    onHotkeyPress,
+  );
 
   return (
+    <Conversion
+        base="16:9 Aspect Ratio"
+        input={input}
+        target={target}
+        callback={(input, target) => longer(input)} // target not needed but required in callback signature
+    >
     <div className="flex justify-center pt-4">
       <svg width="263"
         height="149"
@@ -81,13 +100,13 @@ export default function Sixteen2NineDetails({ input }) {
           className="fill-green-400 text-sm font-bold"
           x="242"
           y="63"
-          textAnchor="middle">{sixteenToNineShorter(input).toFixed(3)}
+          textAnchor="middle">{shorter(input).toFixed(2)}
         </text>
         <text
           className="fill-green-400 text-sm font-bold"
           x="128"
           y="140"
-          textAnchor="middle">{sixteenToNineLonger(input).toFixed(3)}
+          textAnchor="middle">{longer(input).toFixed(2)}
         </text>
         <text
           className="fill-green-600 text-sm font-bold"
@@ -103,9 +122,12 @@ export default function Sixteen2NineDetails({ input }) {
         </text>
       </svg>
     </div>
+    </Conversion>
   )
 }
 
-Sixteen2NineDetails.defaultProps = {
-  value: PropTypes.number,
+WideScreen.defaultProps = {
+  input: PropTypes.number,
+  target: PropTypes.string,
+  keymap: PropTypes.object,
 }

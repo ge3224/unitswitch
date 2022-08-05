@@ -1,13 +1,14 @@
+import Conversion from "./Conversion";
 import PropTypes from "prop-types";
-import { dpi } from "./standards";
-import { units } from "./Units";
-import { twRanges } from "./Tailwind";
-import { useConverter } from "./useConverter";
 import { converter } from "./converter";
+import { dpi } from "./standards";
+import { twRanges } from "./Tailwind";
+import { units } from "./Units";
+import { useConverter } from "./useConverter";
 import { useKeyMappings } from "./useKeyMappings";
 
-export default function Inches({ value, unit, keymap }) {
-  const result = useConverter(units.Inches, value, unit)
+export default function Inches({ input, target, keymap }) {
+  const result = useConverter(units.Inches, input, target)
 
   const onHotkeyPress = (e) => {
     if (e.key === keymap.toClipboard) {
@@ -22,19 +23,18 @@ export default function Inches({ value, unit, keymap }) {
   );
 
   return (
-    <div>
-      <p>
-        <span>Inches:</span>{" "}
-        <span id={units.Inches}>{result}</span>{" "}
-        <span><small>space + i</small></span>
-      </p>
-    </div>
+    <Conversion
+      base={units.Inches}
+      input={input}
+      target={target}
+      callback={(input, target) => useConverter(units.Inches, input, target)}
+    />
   )
 }
 
 Inches.defaultProps = {
-  value: PropTypes.string,
-  unit: PropTypes.string,
+  input: PropTypes.string,
+  target: PropTypes.string,
   keymap: PropTypes.object,
 }
 

@@ -1,19 +1,41 @@
+import Conversion from "./Conversion";
 import PropTypes from "prop-types";
 import { converter } from "./converter";
 import { fontSize } from "./standards";
 import { twRanges } from "./Tailwind"
 import { units } from "./Units";
+import { useConverter } from "./useConverter";
+import { useKeyMappings } from "./useKeyMappings";
 
-export default function RemsDetails() {
+export default function Rems({ input, target, keymap }) {
+  const result = useConverter(units.Tailwind, input, target);
 
+  const onHotkeyPress = (e) => {
+    if (e.key === keymap.toClipboard) {
+      navigator.clipboard.writeText(result);
+    }
+  }
+
+  useKeyMappings(
+    keymap.leader,
+    new Set(keymap.toClipboard),
+    onHotkeyPress,
+  );
   return (
-    <div>Root Font Size: <span className="font-bold">{fontSize}px</span></div>
+    <Conversion
+      base={units.Rems}
+      input={input}
+      target={target}
+      callback={(input, target) => useConverter(units.Rems, input, target)}
+    >
+      <div>Root Font Size: <span className="font-bold">{fontSize}px</span></div>
+    </Conversion>
   )
 }
 
-RemsDetails.defaultProps = {
-  value: PropTypes.string,
-  unit: PropTypes.string,
+Rems.defaultProps = {
+  input: PropTypes.string,
+  target: PropTypes.string,
   keymap: PropTypes.object,
 }
 

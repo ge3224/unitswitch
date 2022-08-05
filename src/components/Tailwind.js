@@ -1,11 +1,24 @@
 import PropTypes from "prop-types";
 import { units } from "./Units";
 import { useConverter } from "./useConverter";
+import { useKeyMappings } from "./useKeyMappings";
 import { converter } from "./converter";
+import Conversion from "./Conversion";
 
-export default function Tailwind({input, target}) {
-
+export default function Tailwind({ input, target, keymap }) {
   const result = useConverter(units.Tailwind, input, target);
+
+  const onHotkeyPress = (e) => {
+    if (e.key === keymap.toClipboard) {
+      navigator.clipboard.writeText(result);
+    }
+  }
+
+  useKeyMappings(
+    keymap.leader,
+    new Set(keymap.toClipboard),
+    onHotkeyPress,
+  );
 
   const pretty = (value) => {
     let num = parseFloat(value)
@@ -28,13 +41,27 @@ export default function Tailwind({input, target}) {
   }
 
   return (
-    <div>{result !== "N/A" ? <span>Example: <code className="text-purple text-sm">class="m-{pretty(result)}"</code></span> : "Example Not Available"}</div>
+    <Conversion
+      base={units.Tailwind}
+      input={input}
+      target={target}
+      callback={(input, target) => useConverter(units.Tailwind, input, target)}
+      decimal={false}
+    >
+      <div>
+        {
+          result !== "N/A" ?
+            <span>Example: <code className="text-purple text-sm">class="m-{pretty(result)}"</code></span> :
+            "Example Not Available"
+        }
+      </div>
+    </Conversion>
   )
 }
 
 Tailwind.defaultProps = {
-  value: PropTypes.string,
-  unit: PropTypes.string,
+  input: PropTypes.string,
+  target: PropTypes.string,
   keymap: PropTypes.object,
 }
 
