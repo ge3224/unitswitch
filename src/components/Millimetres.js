@@ -1,12 +1,13 @@
+import Unit from "./Unit";
 import PropTypes from "prop-types"
-import { units } from "./Units"
-import { useConverter } from "./useConverter"
-import { twRanges } from "./Tailwind"
 import { converter } from "./converter"
+import { twRanges } from "./Tailwind"
+import { units } from "./units"
+import { useConverter } from "./useConverter"
 import { useKeyMappings } from "./useKeyMappings";
 
-export default function Millimetres({ value, unit, keymap }) {
-  const result = useConverter(units.Millimetres, value, unit)
+export default function Millimetres({ input, target, keymap }) {
+  const result = useConverter(units.Millimetres, input, target)
 
   const onHotkeyPress = (e) => {
     if (e.key === keymap.toClipboard) {
@@ -21,19 +22,18 @@ export default function Millimetres({ value, unit, keymap }) {
   );
 
   return (
-    <div>
-      <p>
-        <span>Millimetres:</span>{" "}
-        <span id={units.Millimetres}>{result}</span>{" "}
-        <span><small>space + m</small></span>
-      </p>
-    </div>
+    <Unit
+      base={units.Millimetres}
+      input={input}
+      target={target}
+      callback={(input, target) => useConverter(units.Millimetres, input, target)}
+    />
   )
 }
 
 Millimetres.defaultProps = {
-  value: PropTypes.string,
-  unit: PropTypes.string,
+  input: PropTypes.string,
+  target: PropTypes.string,
   keymap: PropTypes.object,
 }
 

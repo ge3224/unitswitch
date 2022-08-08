@@ -1,13 +1,14 @@
+import Unit from "./Unit";
 import PropTypes from "prop-types";
 import { converter } from "./converter";
 import { fontSize } from "./standards";
 import { twRanges } from "./Tailwind"
-import { units } from "./Units";
-import { useKeyMappings } from "./useKeyMappings";
+import { units } from "./units";
 import { useConverter } from "./useConverter";
+import { useKeyMappings } from "./useKeyMappings";
 
-export default function Rems({ value, unit, keymap }) {
-  const result = useConverter(units.Rems, value, unit)
+export default function Rems({ input, target, keymap }) {
+  const result = useConverter(units.Tailwind, input, target);
 
   const onHotkeyPress = (e) => {
     if (e.key === keymap.toClipboard) {
@@ -20,22 +21,21 @@ export default function Rems({ value, unit, keymap }) {
     new Set(keymap.toClipboard),
     onHotkeyPress,
   );
-
   return (
-    <div>
-      <p>
-        <span>Rems:</span>{" "}
-        <span id={units.Rems}>{result}</span>{" "}
-        <span>(Based on a root font-size of 16)</span>{" "}
-        <span><small>space + r</small></span>
-      </p>
-    </div>
+    <Unit
+      base={units.Rems}
+      input={input}
+      target={target}
+      callback={(input, target) => useConverter(units.Rems, input, target)}
+    >
+      <div>Root Font Size: <span className="font-bold">{fontSize}px</span></div>
+    </Unit>
   )
 }
 
 Rems.defaultProps = {
-  value: PropTypes.string,
-  unit: PropTypes.string,
+  input: PropTypes.string,
+  target: PropTypes.string,
   keymap: PropTypes.object,
 }
 

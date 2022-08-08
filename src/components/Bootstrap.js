@@ -1,16 +1,17 @@
+import Unit from "./Unit";
 import PropTypes from "prop-types";
 import { converter } from "./converter";
 import { dpi } from "./standards";
-import { units } from "./Units";
+import { units } from "./units";
 import { useConverter } from "./useConverter";
 import { useKeyMappings } from "./useKeyMappings";
 
-export default function Bootstrap({ value, unit, keymap }) {
-  const result = useConverter(units.Bootstrap, value, unit)
+export default function Bootstrap({ input, target, keymap }) {
+  const result = useConverter(units.Tailwind, input, target);
 
   const onHotkeyPress = (e) => {
     if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(parseFloat(result).toFixed(0));
+      navigator.clipboard.writeText(result);
     }
   }
 
@@ -30,20 +31,21 @@ export default function Bootstrap({ value, unit, keymap }) {
   }
 
   return (
-    <div>
-      <p>
-        <span>Bootstrap:</span>{" "}
-        <span id={units.Bootstrap}>{pretty(result)}</span>{" "}
-        {result !== "N/A" ? <span>(<code>p-{pretty(result)}</code>)</span> : ""}{" "}
-        <span><small>space + b</small></span>
-      </p>
-    </div>
+    <Unit
+      base={units.Bootstrap}
+      input={input}
+      target={target}
+      callback={(input, target) => useConverter(units.Bootstrap, input, target)}
+      decimal={false}
+    >
+      {result !== "N/A" ? <span>Example: <code className="font-code text-purple text-sm">class="p-{pretty(result)}"</code></span> : "Example Not Available"}
+    </Unit>
   )
 }
 
 Bootstrap.defaultProps = {
-  value: PropTypes.string,
-  unit: PropTypes.string,
+  input: PropTypes.string,
+  target: PropTypes.string,
   keymap: PropTypes.object,
 }
 

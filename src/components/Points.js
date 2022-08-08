@@ -1,17 +1,18 @@
+import Unit from "./Unit";
 import PropTypes from "prop-types"
-import { units } from "./Units"
+import { units } from "./units"
 import { useConverter } from "./useConverter"
 import { twRanges } from "./Tailwind"
 import { converter } from "./converter";
 import { useKeyMappings } from "./useKeyMappings";
 
-export default function Points({ value, unit, keymap }) {
-  const result = useConverter(units.Points, value, unit)
+export default function Points({ input, target, keymap }) {
+  const result = useConverter(units.Points, input, target)
 
   const onHotkeyPress = (e) => {
-        if (e.key === keymap.toClipboard) {
+    if (e.key === keymap.toClipboard) {
       navigator.clipboard.writeText(result);
-    } 
+    }
   }
 
   useKeyMappings(
@@ -21,17 +22,18 @@ export default function Points({ value, unit, keymap }) {
   );
 
   return (
-    <div>
-      <span>Points:</span>{" "}
-      <span id={units.Points}>{result}</span>{" "}
-      <span><small>space + o</small></span>
-    </div>
+    <Unit
+      base={units.Points}
+      input={input}
+      target={target}
+      callback={(i, t) => useConverter(units.Points, i, t)}
+    />
   )
 }
 
 Points.defaultProps = {
-  value: PropTypes.string,
-  unit: PropTypes.string,
+  input: PropTypes.string,
+  target: PropTypes.string,
   keymap: PropTypes.object,
 }
 
@@ -66,5 +68,5 @@ export const pointConverter = converter(new Map([
   [units.Pixels, (pt) => Math.ceil(pt * 1.3333343412075)],
   [units.Points, (pt) => pt],
   [units.Rems, (pt) => pt * 0.083333396325467],
-  [units.Tailwind, (pt) => twRanges(parseFloat(((pt * 0.083333396325467)/0.25).toFixed(3)))],
+  [units.Tailwind, (pt) => twRanges(parseFloat(((pt * 0.083333396325467) / 0.25).toFixed(3)))],
 ]));

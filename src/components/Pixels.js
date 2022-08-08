@@ -1,13 +1,14 @@
+import Unit from "./Unit";
 import PropTypes from "prop-types"
-import { twRanges } from "./Tailwind"
-import { useKeyMappings } from "./useKeyMappings";
-import { units } from "./Units"
-import { useConverter } from "./useConverter"
-import { dpi } from "./standards"
 import { converter } from "./converter"
+import { dpi } from "./standards"
+import { twRanges } from "./Tailwind"
+import { units } from "./units"
+import { useConverter } from "./useConverter";
+import { useKeyMappings } from "./useKeyMappings";
 
-export default function Pixels({ value, unit, keymap }) {
-  const result = useConverter(units.Pixels, value, unit)
+export default function Pixels({ input, target, keymap }) {
+  const result = useConverter(units.Tailwind, input, target);
 
   const onHotkeyPress = (e) => {
     if (e.key === keymap.toClipboard) {
@@ -22,19 +23,21 @@ export default function Pixels({ value, unit, keymap }) {
   );
 
   return (
-    <div>
-      <p>
-        <span>Pixels:</span>{" "}
-        <span id={units.Pixels}>{Math.ceil(parseFloat(result))}</span>{" "}
-        <span><small>space + p</small></span>
-      </p>
-    </div>
+    <Unit
+      base={units.Pixels}
+      input={input}
+      target={target}
+      callback={(input, target) => useConverter(units.Pixels, input, target)}
+      decimal={false}
+    >
+      <div>DPI: <span className="font-bold">{dpi}</span></div>
+    </Unit>
   )
 }
 
 Pixels.defaultProps = {
-  value: PropTypes.string,
-  unit: PropTypes.string,
+  input: PropTypes.string,
+  target: PropTypes.string,
   keymap: PropTypes.object,
 }
 

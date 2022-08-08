@@ -1,43 +1,47 @@
-import { useEffect, useState } from "react";
-import { units } from "./components/Units";
-import UserInput from "./components/UserInput";
-import Inches from "./components/Inches";
-import Pixels from "./components/Pixels";
-import Rems from "./components/Rems";
-import Ems from "./components/Ems";
-import Tailwind from "./components/Tailwind";
-import Bootstrap from "./components/Bootstrap";
-import Millimetres from "./components/Millimetres";
-import Centimetres from "./components/Centimetres";
-import Feet from "./components/Feet";
-import Picas from "./components/Picas";
-import Points from "./components/Points";
-import Golden from "./components/Golden";
-import RootTwoRect from "./components/RootTwoRect";
-import SixteenToNine from "./components/SixteenToNine";
 import "../public/css/app.css";
+import Bootstrap from "./components/Bootstrap";
+import Centimetres from "./components/Centimetres";
+import Ems from "./components/Ems";
+import Feet from "./components/Feet";
+import Golden from "./components/Golden";
+import Inches from "./components/Inches";
+import Millimetres from "./components/Millimetres";
+import Picas from "./components/Picas";
+import Pixels from "./components/Pixels";
+import Points from "./components/Points";
+import Rems from "./components/Rems";
+import Root2 from "./components/Root2";
+import Tailwind from "./components/Tailwind";
+import UserInput from "./components/UserInput";
+import WideScreen from "./components/WideScreen";
+import { units } from "./components/units";
+import { useEffect, useState } from "react";
 
 // Cunits is a single-page app that displays conversions from one unit of
 // measurement to other frequently-used units, as well as some aspect ratios.
 // The converted values can be individually copied to the clipboard by means
 // of keyboard shortcuts. 
-export default function CUnits() {
+export default function UnitSwitch() {
   const STORAGE_KEY = "cunits";
 
   const [data, setData] = useState(() => {
     const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (data === null || data === undefined || data === void 0) {
-      return { value: 1, unit: units.Pixels }
+      return {
+        value: 1,
+        unit: units.Pixels,
+        lineup: [],
+      }
     }
     return data
   });
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ value: data.value, unit: data.unit }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ value: data.value, unit: data.unit, lineup: data.lineup }));
   })
 
   const onUserInput = (value, unit) => {
-    setData({value: value, unit: unit});
+    setData({ value: value, unit: unit });
   }
 
   // leaderKey is a custom mod key that is used in combination with a
@@ -45,7 +49,7 @@ export default function CUnits() {
   const leaderKey = " ";
 
   return (
-    <div>
+    <div className="m-2 bg-green-50 border border-green-600 rounded-lg pb-4 lg:grid lg:grid-cols-3 lg:gap-5 lg:border-none lg:p-12">
       <UserInput
         initialNum={data.value}
         initialUnit={data.unit}
@@ -53,63 +57,75 @@ export default function CUnits() {
         keymap={{ leader: leaderKey, input: "/", select: "s" }}
       />
       <Pixels
-        value={data.value}
-        unit={data.unit}
+        input={data.value}
+        target={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "p" }}
       />
       <Rems
-        value={data.value}
-        unit={data.unit}
+        input={data.value}
+        target={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "r" }}
       />
       <Ems
-        value={data.value}
-        unit={data.unit}
+        input={data.value}
+        target={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "e" }}
       />
       <Tailwind
-        value={data.value}
-        unit={data.unit}
+        input={data.value}
+        target={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "t" }}
       />
       <Bootstrap
-        value={data.value}
-        unit={data.unit}
+        input={data.value}
+        target={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "b" }}
       />
+      <Golden
+        input={data.value}
+        target={data.unit}
+        keymap={{ leader: leaderKey, toClipboard: "o" }}
+      />
+      <Root2
+        input={data.value}
+        target={data.unit}
+        keymap={{ leader: leaderKey, toClipboard: "2" }}
+      />
+      <WideScreen
+        input={data.value}
+        target={data.unit}
+        keymap={{ leader: leaderKey, toClipboard: "w" }}
+      />
       <Inches
-        value={data.value}
-        unit={data.unit}
+        input={data.value}
+        target={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "i" }}
       />
       <Millimetres
-        value={data.value}
-        unit={data.unit}
+        input={data.value}
+        target={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "m" }}
       />
       <Centimetres
-        value={data.value}
-        unit={data.unit}
+        input={data.value}
+        target={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "c" }}
       />
       <Feet
-        value={data.value}
-        unit={data.unit}
+        input={data.value}
+        target={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "f" }}
       />
       <Picas
-        value={data.value}
-        unit={data.unit}
+        input={data.value}
+        target={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "a" }}
       />
       <Points
-        value={data.value}
-        unit={data.unit}
+        input={data.value}
+        taret={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "o" }}
       />
-      <Golden value={data.value} />
-      <RootTwoRect value={data.value} />
-      <SixteenToNine value={data.value} />
-    </div>
+    </div >
   );
 }

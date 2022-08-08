@@ -1,4 +1,4 @@
-import { units } from "./Units";
+import { units } from "./units";
 
 // converter takes as an argument a Map<string, function> and returns a closure
 // that will convert a given value to a given unit, if said unit is found in

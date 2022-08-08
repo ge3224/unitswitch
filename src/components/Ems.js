@@ -1,11 +1,13 @@
-import { converter } from "./converter";
+import Unit from "./Unit";
 import PropTypes from "prop-types"
-import { units } from "./Units";
+import { converter } from "./converter";
+import { fontSize } from "./standards";
+import { units } from "./units";
 import { useConverter } from "./useConverter";
 import { useKeyMappings } from "./useKeyMappings";
 
-export default function Ems({ value, unit, keymap }) {
-  const result = useConverter(units.Ems, value, unit)
+export default function Ems({ input, target, keymap }) {
+  const result = useConverter(units.Tailwind, input, target);
 
   const onHotkeyPress = (e) => {
     if (e.key === keymap.toClipboard) {
@@ -20,20 +22,20 @@ export default function Ems({ value, unit, keymap }) {
   );
 
   return (
-    <div>
-      <p>
-        <span>Ems:</span>{" "}
-        <span id={units.Ems}>{result}</span>{" "}
-        <span>(Based on font-size of 16)</span>{" "}
-        <span><small>space + e</small></span>
-      </p>
-    </div>
+    <Unit
+      base={units.Ems}
+      input={input}
+      target={target}
+      callback={(input, target) => useConverter(units.Ems, input, target)}
+    >
+      <div>Relative Font Size: <span className="font-bold">{fontSize}px</span></div>
+    </Unit>
   )
 }
 
 Ems.defaultProps = {
-  value: PropTypes.string,
-  unit: PropTypes.string,
+  input: PropTypes.string,
+  target: PropTypes.string,
   keymap: PropTypes.object,
 }
 
