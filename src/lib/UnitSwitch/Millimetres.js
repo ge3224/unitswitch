@@ -38,7 +38,7 @@ Millimetres.defaultProps = {
 }
 
 const convertToBootstrapSpacing = (mm) => {
-  const fixed = parseFloat((mm).toFixed(3))
+  const fixed = parseFloat((mm).toFixed(4))
   switch (fixed) {
     case 0.000:
       return 0

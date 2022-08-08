@@ -10,10 +10,12 @@ module.exports = {
       "gray-200": "#9FBCB5",
       "green-50": "#FBFFF9",
       "green-100": "#EFFFE7",
+      "green-200": "#A8D9B9",
+      "green-300": "#CFF9B9",
       "green-400": "#4EBD85",
       "green-500": "#118A5F",
       "green-600": "#156363",
-      "purple": "#626584",
+      "purple": "#7982CD",
       "teal":"#B9E9E9",
     },
     fontFamily: {

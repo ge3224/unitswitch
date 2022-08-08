@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { useKeyMappings } from "./useKeyMappings";
 import { units as appUnits } from "./units";
 
+// UserInput is a component of UnitSwitch. It provides a user the ability to enter data.
 export default function UserInput({ initialNum, initialUnit, onEnter, keymap }) {
   const units = Object.keys(appUnits);
   const [num, setNum] = useState(initialNum);
@@ -27,8 +28,8 @@ export default function UserInput({ initialNum, initialUnit, onEnter, keymap }) 
   );
 
   return (
-    <div className="flex flex-col border-b border-green-600 pt-11 pb-8 px-10 lg:flex-row lg:justify-center lg:border lg:rounded-lg lg:col-span-3">
-      <div className="flex justify-center items-center mb-6 lg:ml-6">
+    <div className="flex flex-col border-b border-green-600 pt-11 pb-8 px-10 lg:flex-row lg:justify-center lg:border lg:col-span-2 lg:row-span-2">
+      <div className="flex justify-center items-center mb-6 lg:mb-0 lg:ml-6">
         <svg width="67" height="46" viewBox="0 0 67 46" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M26.0972 23.1105L17.0444 7.15912L1 16.2646L10.0527 32.2161"
@@ -50,7 +51,7 @@ export default function UserInput({ initialNum, initialUnit, onEnter, keymap }) 
         </svg>
         <h1 className="ml-1 text-4xl text-black font-bold">UnitSwitch</h1>
       </div>
-      <div className="max-w-sm md:mx-auto md:w-96 lg:ml-12">
+      <div className="flex flex-col justify-center max-w-sm md:mx-auto md:w-96 lg:ml-12">
         <div className="mb-2">
           <input
             className="w-full bg-green-100 border border-green-600 rounded-sm py-1 px-1.5 font-code font-bold text-green-500 focus:outline-none focus:ring focus:ring-teal"

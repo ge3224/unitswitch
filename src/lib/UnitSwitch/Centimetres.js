@@ -38,7 +38,7 @@ Centimetres.defaultProps = {
 }
 
 const convertToBootstrapSpacing = (cm) => {
-  const fixed = parseFloat((cm).toFixed(3));
+  const fixed = parseFloat((cm).toFixed(4));
   switch (fixed) {
     case 0.000:
       return 0
@@ -68,5 +68,5 @@ export const cmConverter = converter(new Map([
   [units.Pixels, (cm) => Math.ceil(cm * 37.795280352161)],
   [units.Points, (cm) => cm * 2.3622047262695],
   [units.Rems, (cm) => cm * 2.3622050220101],
-  [units.Tailwind, (cm) => twRanges(parseFloat((cm * 2.3622050220101).toFixed(3)))],
+  [units.Tailwind, (cm) => twRanges(parseFloat((cm * 2.3622050220101).toFixed(4)))],
 ]));

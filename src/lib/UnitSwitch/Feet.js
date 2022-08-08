@@ -38,7 +38,7 @@ Feet.defaultProps = {
 }
 
 const convertToBootstrapSpacing = (ft) => {
-  const fixed = parseFloat((ft).toFixed(3));
+  const fixed = parseFloat((ft).toFixed(4));
   switch (fixed) {
     case 0.000:
       return 0
@@ -68,5 +68,5 @@ export const ftConverter = converter(new Map([
   [units.Pixels, (ft) => Math.ceil(ft * 1152.0001451339)],
   [units.Points, (ft) => ft * 863.99945574837],
   [units.Rems, (ft) => ft * 72.000009070867],
-  [units.Tailwind, (ft) => twRanges(parseFloat(((ft * 72.000009070867) / 0.25).toFixed(3)))],
+  [units.Tailwind, (ft) => twRanges(parseFloat(((ft * 72.000009070867) / 0.25).toFixed(4)))],
 ]));

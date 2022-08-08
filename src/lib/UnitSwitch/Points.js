@@ -26,7 +26,7 @@ export default function Points({ input, target, keymap }) {
       base={units.Points}
       input={input}
       target={target}
-      callback={(i, t) => useConverter(units.Points, i, t)}
+      callback={(input, target) => useConverter(units.Points, input, target)}
     />
   )
 }
@@ -38,7 +38,7 @@ Points.defaultProps = {
 }
 
 const convertToBootstrapSpacing = (cm) => {
-  const fixed = parseFloat((cm).toFixed(3));
+  const fixed = parseFloat((cm).toFixed(4));
   switch (fixed) {
     case 0.000:
       return 0
@@ -68,5 +68,5 @@ export const pointConverter = converter(new Map([
   [units.Pixels, (pt) => Math.ceil(pt * 1.3333343412075)],
   [units.Points, (pt) => pt],
   [units.Rems, (pt) => pt * 0.083333396325467],
-  [units.Tailwind, (pt) => twRanges(parseFloat(((pt * 0.083333396325467) / 0.25).toFixed(3)))],
+  [units.Tailwind, (pt) => twRanges(parseFloat(((pt * 0.083333396325467) / 0.25).toFixed(4)))],
 ]));

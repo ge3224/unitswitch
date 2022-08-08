@@ -38,7 +38,7 @@ Picas.defaultProps = {
 }
 
 const convertToBootstrapSpacing = (cm) => {
-  const fixed = parseFloat((cm).toFixed(3));
+  const fixed = parseFloat((cm).toFixed(4));
   switch (fixed) {
     case 0.000:
       return 0

@@ -7,7 +7,7 @@ import { useConverter } from "./useConverter";
 import { useKeyMappings } from "./useKeyMappings";
 
 export default function Bootstrap({ input, target, keymap }) {
-  const result = useConverter(units.Tailwind, input, target);
+  const result = useConverter(units.Bootstrap, input, target);
 
   const onHotkeyPress = (e) => {
     if (e.key === keymap.toClipboard) {
@@ -38,7 +38,7 @@ export default function Bootstrap({ input, target, keymap }) {
       callback={(input, target) => useConverter(units.Bootstrap, input, target)}
       decimal={false}
     >
-      {result !== "N/A" ? <span>Example: <code className="font-code text-purple text-sm">class="p-{pretty(result)}"</code></span> : "Example Not Available"}
+      {result !== "N/A" ? <span>Example: <code className="font-code text-purple text-sm">class="p-{pretty(result)}"</code></span> : <span className="text-black">Example Not Available</span>}
     </Unit>
   )
 }

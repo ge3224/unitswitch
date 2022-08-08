@@ -28,7 +28,7 @@ export default function Rems({ input, target, keymap }) {
       target={target}
       callback={(input, target) => useConverter(units.Rems, input, target)}
     >
-      <div>Root Font Size: <span className="font-bold">{fontSize}px</span></div>
+      <div className="text-black">Based on a root font size of <span className="font-bold">{fontSize}px</span></div>
     </Unit>
   )
 }

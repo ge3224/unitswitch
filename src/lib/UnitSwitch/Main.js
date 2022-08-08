@@ -1,20 +1,20 @@
-import "../public/css/app.css";
-import Bootstrap from "./components/Bootstrap";
-import Centimetres from "./components/Centimetres";
-import Ems from "./components/Ems";
-import Feet from "./components/Feet";
-import Golden from "./components/Golden";
-import Inches from "./components/Inches";
-import Millimetres from "./components/Millimetres";
-import Picas from "./components/Picas";
-import Pixels from "./components/Pixels";
-import Points from "./components/Points";
-import Rems from "./components/Rems";
-import Root2 from "./components/Root2";
-import Tailwind from "./components/Tailwind";
-import UserInput from "./components/UserInput";
-import WideScreen from "./components/WideScreen";
-import { units } from "./components/units";
+import "../../../public/css/app.css";
+import Bootstrap from "./Bootstrap";
+import Centimetres from "./Centimetres";
+import Ems from "./Ems";
+import Feet from "./Feet";
+import Golden from "./Golden";
+import Inches from "./Inches";
+import Millimetres from "./Millimetres";
+import Picas from "./Picas";
+import Pixels from "./Pixels";
+import Points from "./Points";
+import Rems from "./Rems";
+import Root2 from "./Root2";
+import Tailwind from "./Tailwind";
+import UserInput from "./UserInput";
+import WideScreen from "./WideScreen";
+import { units } from "./units";
 import { useEffect, useState } from "react";
 
 // Cunits is a single-page app that displays conversions from one unit of
@@ -49,7 +49,7 @@ export default function UnitSwitch() {
   const leaderKey = " ";
 
   return (
-    <div className="m-2 bg-green-50 border border-green-600 rounded-lg pb-4 lg:grid lg:grid-cols-3 lg:gap-5 lg:border-none lg:p-12">
+    <div className="m-2 lg:mx-auto max-w-screen-xl bg-green-50 border border-green-600 rounded-lg pb-4 lg:grid lg:grid-cols-3 lg:gap-5 lg:border-none lg:p-12">
       <UserInput
         initialNum={data.value}
         initialUnit={data.unit}
@@ -96,11 +96,6 @@ export default function UnitSwitch() {
         target={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "w" }}
       />
-      <Inches
-        input={data.value}
-        target={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "i" }}
-      />
       <Millimetres
         input={data.value}
         target={data.unit}
@@ -111,6 +106,16 @@ export default function UnitSwitch() {
         target={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "c" }}
       />
+      <Points
+        input={data.value}
+        target={data.unit}
+        keymap={{ leader: leaderKey, toClipboard: "o" }}
+      />
+      <Inches
+        input={data.value}
+        target={data.unit}
+        keymap={{ leader: leaderKey, toClipboard: "i" }}
+      />
       <Feet
         input={data.value}
         target={data.unit}
@@ -120,11 +125,6 @@ export default function UnitSwitch() {
         input={data.value}
         target={data.unit}
         keymap={{ leader: leaderKey, toClipboard: "a" }}
-      />
-      <Points
-        input={data.value}
-        taret={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "o" }}
       />
     </div >
   );

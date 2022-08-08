@@ -7,6 +7,8 @@ import { units } from "./units";
 import { useConverter } from "./useConverter";
 import { useKeyMappings } from "./useKeyMappings";
 
+// Inches displays the equivalent in said unit from that which was entered in
+// by the user. 
 export default function Inches({ input, target, keymap }) {
   const result = useConverter(units.Inches, input, target)
 
@@ -28,7 +30,9 @@ export default function Inches({ input, target, keymap }) {
       input={input}
       target={target}
       callback={(input, target) => useConverter(units.Inches, input, target)}
-    />
+    >
+      <div className="text-black">Tape Measure: <span className="font-bold">{toFraction(result)}</span></div>
+    </Unit>
   )
 }
 
@@ -38,8 +42,43 @@ Inches.defaultProps = {
   keymap: PropTypes.object,
 }
 
+function toFraction(result) {
+  let output = "N/A";
+
+  const num = Number(parseFloat(result).toFixed(8));
+  if (Number.isNaN(num)) {
+    return output
+  }
+
+  const gcd = (a, b) => {
+    if (b < 0.0000001) return a;
+    return gcd(b, Math.floor(a % b));
+  }
+
+  const fraction = num - Math.floor(num);
+  const len = fraction.toString().length - 2;
+  let denominator = Math.pow(10, len);
+  let numerator = fraction * denominator;
+
+  const divisor = gcd(numerator, denominator);
+
+  numerator /= divisor;
+  denominator /= divisor;
+
+  const format = (numerator, denominator) => {
+    const whole = Math.floor(num);
+    return `${whole > 0 ? `${whole} ` : ""}${numerator}/${denominator}`
+  }
+
+  if (denominator > 1 && denominator <= 64) {
+    output = format(Math.floor(numerator), Math.floor(denominator));
+  }
+
+  return output
+}
+
 const convertToBootstrapSpacing = (inches) => {
-  const fixed = parseFloat(inches.toFixed(3));
+  const fixed = parseFloat(inches.toFixed(4));
   switch (fixed) {
     case 0.000:
       return 0

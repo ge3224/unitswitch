@@ -30,7 +30,7 @@ export default function Pixels({ input, target, keymap }) {
       callback={(input, target) => useConverter(units.Pixels, input, target)}
       decimal={false}
     >
-      <div>DPI: <span className="font-bold">{dpi}</span></div>
+      <div className="text-black">Based on a resolution of <span className="font-bold">{dpi} DPI</span></div>
     </Unit>
   )
 }
