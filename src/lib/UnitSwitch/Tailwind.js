@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { units } from "./units";
 import { useConverter } from "./useConverter";
-import { useKeyMappings } from "./useKeyMappings";
 import { converter } from "./converter";
 import Unit from "./Unit";
 import { useEffect } from "react";
