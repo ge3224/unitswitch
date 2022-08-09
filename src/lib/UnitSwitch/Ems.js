@@ -41,7 +41,7 @@ export default function Ems({ input, target, hotkey }) {
 Ems.defaultProps = {
   input: PropTypes.string,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }
 
 export const emConverter = converter(new Map([

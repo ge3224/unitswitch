@@ -44,7 +44,7 @@ export default function Inches({ input, target, hotkey }) {
 Inches.defaultProps = {
   input: PropTypes.string,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }
 
 function toFraction(result) {

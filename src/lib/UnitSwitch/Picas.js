@@ -40,7 +40,7 @@ export default function Picas({ input, target, hotkey }) {
 Picas.defaultProps = {
   input: PropTypes.string,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }
 
 const convertToBootstrapSpacing = (cm) => {

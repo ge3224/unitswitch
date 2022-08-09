@@ -171,5 +171,5 @@ export default function Golden({ input, target, hotkey }) {
 Golden.defaultProps = {
   input: PropTypes.number,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }

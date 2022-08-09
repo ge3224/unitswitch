@@ -165,5 +165,5 @@ export default function Root2({ input, target, hotkey }) {
 Root2.defaultProps = {
   input: PropTypes.number,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }

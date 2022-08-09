@@ -67,7 +67,7 @@ export default function Tailwind({ input, target, hotkey }) {
 Tailwind.defaultProps = {
   input: PropTypes.string,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }
 
 export function twRanges(value) {

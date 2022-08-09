@@ -129,5 +129,5 @@ export default function WideScreen({ input, target, hotkey }) {
 WideScreen.defaultProps = {
   input: PropTypes.number,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }

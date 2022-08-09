@@ -42,7 +42,7 @@ export default function Rems({ input, target, hotkey }) {
 Rems.defaultProps = {
   input: PropTypes.string,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }
 
 const convertToBootstrapSpacing = (rems) => {
