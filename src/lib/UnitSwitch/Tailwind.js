@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { units } from "./units";
 import { useConverter } from "./useConverter";
-import { useKeyMappings } from "./useKeyMappings";
 import { converter } from "./converter";
 import Unit from "./Unit";
 import { useEffect } from "react";
@@ -56,7 +55,7 @@ export default function Tailwind({ input, target, hotkey }) {
       <div>
         {
           result !== "N/A" ?
-            <span>Example: <code className="text-purple-500 text-sm">class="m-{pretty(result)}"</code></span> :
+            <span>Example: <code className="font-code text-purple-500 text-sm">class="m-{pretty(result)}"</code></span> :
             "Example Not Available"
         }
       </div>
@@ -67,7 +66,7 @@ export default function Tailwind({ input, target, hotkey }) {
 Tailwind.defaultProps = {
   input: PropTypes.string,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }
 
 export function twRanges(value) {

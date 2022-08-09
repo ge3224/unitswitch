@@ -66,7 +66,7 @@ export default function Unit({ base, input, target, hotkey, callback, children, 
 
   return (
     <div>
-      <div className="flex items-center border-b border-green-600 lg:border lg:h-16 lg:items-stretch">
+      <div className="flex items-center border-b border-green-600 lg:border lg:h-12 lg:items-stretch">
         <div className="mx-2 lg:my-auto lg:hidden">
           {
             children ?
@@ -133,7 +133,7 @@ export default function Unit({ base, input, target, hotkey, callback, children, 
 
 Unit.defaultProps = {
   base: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
   input: PropTypes.string,
   callback: PropTypes.func,
   target: PropTypes.string,

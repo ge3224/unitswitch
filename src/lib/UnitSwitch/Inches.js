@@ -36,7 +36,7 @@ export default function Inches({ input, target, hotkey }) {
       hotkey={"ctrl+" + hotkey}
       callback={(input, target) => useConverter(units.Inches, input, target)}
     >
-      <div className="text-black">Tape Measure: <span className="font-bold">{toFraction(result)}</span></div>
+      <div className="text-black">Tape Measure:&nbsp;&nbsp;<span className="font-code text-purple-500">{toFraction(result)}</span></div>
     </Unit>
   )
 }
@@ -44,7 +44,7 @@ export default function Inches({ input, target, hotkey }) {
 Inches.defaultProps = {
   input: PropTypes.string,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }
 
 function toFraction(result) {
@@ -72,10 +72,32 @@ function toFraction(result) {
 
   const format = (numerator, denominator) => {
     const whole = Math.floor(num);
-    return `${whole > 0 ? `${whole} ` : ""}${numerator}/${denominator}`
+    return `${whole > 0 ? `${whole} ` : ""}${numerator}/${denominator}"`
   }
 
-  if (denominator > 1 && denominator <= 64) {
+  let relevant = false;
+  switch (denominator) {
+    case 2:
+      relevant = true;
+      break
+    case 4:
+      relevant = true;
+      break
+    case 8:
+      relevant = true;
+      break
+    case 16:
+      relevant = true;
+      break
+    case 32:
+      relevant = true;
+      break
+    case 64:
+      relevant = true;
+      break
+  }
+
+  if (relevant) {
     output = format(Math.floor(numerator), Math.floor(denominator));
   }
 

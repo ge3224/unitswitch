@@ -39,7 +39,7 @@ export default function Centimetres({ input, target, hotkey }) {
 Centimetres.defaultProps = {
   input: PropTypes.string,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }
 
 const convertToBootstrapSpacing = (cm) => {

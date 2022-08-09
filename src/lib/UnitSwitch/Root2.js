@@ -133,9 +133,9 @@ export default function Root2({ input, target, hotkey }) {
           <text
             className="fill-green-400 text-sm font-bold"
             x="268"
-            y="74"
-            transform="rotate(-90,268,74)"
-            textAnchor="middle">{shorter(shorter(input)).toFixed(2)}
+            y="50"
+            transform="rotate(-90,268,50)"
+            textAnchor="end">{shorter(shorter(input)).toFixed(2)}
           </text>
           <text
             className="fill-green-400 text-sm font-bold"
@@ -165,5 +165,5 @@ export default function Root2({ input, target, hotkey }) {
 Root2.defaultProps = {
   input: PropTypes.number,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }

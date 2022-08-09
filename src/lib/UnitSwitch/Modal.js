@@ -42,11 +42,12 @@ export default function Modal({ initialUnit, callback, hotkey }) {
       return
     }
 
-    const unitSet = new Set(Object.values(units));
-    const unit = split[1];
+    const unitSet = new Set(Object.values(units).map(u => u.toLowerCase()));
+    const unit = split[1].toLowerCase();
 
     if (unitSet.has(unit)) {
-      callback(num, unit);
+      const u = unit.charAt(0).toUpperCase() + unit.slice(1);
+      callback(num, u);
     } else {
       callback(num, initialUnit);
     }

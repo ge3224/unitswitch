@@ -42,7 +42,6 @@ export default function UnitSwitch() {
   })
 
   const onUserInput = (value, unit) => {
-    console.log("this was called!", value, unit);
     setData({ value: value, unit: unit });
   }
 

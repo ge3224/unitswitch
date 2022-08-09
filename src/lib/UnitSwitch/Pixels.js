@@ -43,7 +43,7 @@ export default function Pixels({ input, target, hotkey }) {
 Pixels.defaultProps = {
   input: PropTypes.string,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }
 
 const convertToBootstrapSpacing = (pixels) => {

@@ -39,7 +39,7 @@ export default function Points({ input, target, hotkey }) {
 Points.defaultProps = {
   input: PropTypes.string,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }
 
 const convertToBootstrapSpacing = (cm) => {

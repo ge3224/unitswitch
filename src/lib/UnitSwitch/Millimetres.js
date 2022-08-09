@@ -39,7 +39,7 @@ export default function Millimetres({ input, target, hotkey }) {
 Millimetres.defaultProps = {
   input: PropTypes.string,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }
 
 const convertToBootstrapSpacing = (mm) => {

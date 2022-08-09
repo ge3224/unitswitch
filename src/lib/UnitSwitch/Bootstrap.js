@@ -51,7 +51,7 @@ export default function Bootstrap({ input, target, hotkey }) {
 Bootstrap.defaultProps = {
   input: PropTypes.string,
   target: PropTypes.string,
-  keymap: PropTypes.object,
+  hotkey: PropTypes.string,
 }
 
 const convertToRems = (bs) => {

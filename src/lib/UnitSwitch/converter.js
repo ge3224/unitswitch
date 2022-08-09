@@ -1,9 +1,10 @@
 import { units } from "./units";
 
 // converter takes as an argument a Map<string, function> and returns a closure
-// that will convert a given value to a given unit, if said unit is found in
-// the Map. The Map's keys can only be those contained in the Units
-// component, otherwise converter will log and error and return early. 
+// that will convert a given value to a corresponding value for a given unit, if
+// the unit that has been passed as an argument is found in the Map. The Map's
+// keys can only be those contained in the Units component, otherwise converter
+// will log and error and return early. 
 export const converter = (conversionMap) => {
   const u = new Set(Object.values(units));
 
