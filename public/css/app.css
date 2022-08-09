@@ -765,6 +765,11 @@ video {
   background-color: rgb(225 233 231 / var(--tw-bg-opacity));
 }
 
+.bg-green-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(21 99 99 / var(--tw-bg-opacity));
+}
+
 .fill-green-300 {
   fill: #CFF9B9;
 }
@@ -911,6 +916,21 @@ video {
 .text-green-500 {
   --tw-text-opacity: 1;
   color: rgb(17 138 95 / var(--tw-text-opacity));
+}
+
+.text-green-100 {
+  --tw-text-opacity: 1;
+  color: rgb(239 255 231 / var(--tw-text-opacity));
+}
+
+.text-green-50 {
+  --tw-text-opacity: 1;
+  color: rgb(251 255 249 / var(--tw-text-opacity));
+}
+
+.text-green-200 {
+  --tw-text-opacity: 1;
+  color: rgb(168 217 185 / var(--tw-text-opacity));
 }
 
 .opacity-40 {

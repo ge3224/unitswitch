@@ -56,7 +56,7 @@ export default function Tailwind({ input, target, hotkey }) {
       <div>
         {
           result !== "N/A" ?
-            <span>Example: <code className="text-purple-500 text-sm">class="m-{pretty(result)}"</code></span> :
+            <span>Example: <code className="font-code text-purple-500 text-sm">class="m-{pretty(result)}"</code></span> :
             "Example Not Available"
         }
       </div>
