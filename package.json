@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack serve --mode development --env development",
     "start:css": "npx tailwindcss -i ./src/lib/css/main.css -o ./public/css/app.css --watch",
-    "build": "webpack"
+    "build": "webpack",
+    "build:css": "npx tailwindcss -o ./public/css/app.css --minify"
   },
   "keywords": [],
   "author": "",
