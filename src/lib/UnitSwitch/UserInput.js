@@ -1,9 +1,8 @@
 import PropTypes from "prop-types";
 import { useRef } from "react";
-import { useKeyMappings } from "./useKeyMappings";
 import { units as appUnits } from "./units";
 
-// UserInput is a component of UnitSwitch. It provides a user the ability to enter data.
+// UserInput is a component of UnitSwitch. It provides a user the ability to enter values and unit types.
 export default function UserInput({ num, target, callback }) {
   const units = Object.keys(appUnits);
 
@@ -73,9 +72,4 @@ export default function UserInput({ num, target, callback }) {
 UserInput.propTypes = {
   units: PropTypes.arrayOf(PropTypes.string),
   callback: PropTypes.func,
-}
-
-function getSelectedOption(selectElement) {
-  // return selectElement.selectedOptions[0].text;
-  console.log("getSelectedOption", selectElement.selectedOptions[0].text);
 }
