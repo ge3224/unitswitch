@@ -5,30 +5,35 @@ import { dpi } from "./standards";
 import { twRanges } from "./Tailwind";
 import { units } from "./units";
 import { useConverter } from "./useConverter";
-import { useKeyMappings } from "./useKeyMappings";
+import { useEffect } from "react";
 
 // Inches displays the equivalent in said unit from that which was entered in
 // by the user. 
-export default function Inches({ input, target, keymap }) {
+export default function Inches({ input, target, hotkey }) {
   const result = useConverter(units.Inches, input, target)
 
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
+  const inchHotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigator.clipboard.writeText(parseFloat(result).toFixed(4));
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', inchHotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", inchHotkeyHandler);
+    }
+  })
 
   return (
     <Unit
       base={units.Inches}
       input={input}
       target={target}
+      hotkey={"ctrl+" + hotkey}
       callback={(input, target) => useConverter(units.Inches, input, target)}
     >
       <div className="text-black">Tape Measure: <span className="font-bold">{toFraction(result)}</span></div>

@@ -4,21 +4,26 @@ import { useConverter } from "./useConverter";
 import { useKeyMappings } from "./useKeyMappings";
 import { converter } from "./converter";
 import Unit from "./Unit";
+import { useEffect } from "react";
 
-export default function Tailwind({ input, target, keymap }) {
+export default function Tailwind({ input, target, hotkey }) {
   const result = useConverter(units.Tailwind, input, target);
 
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
+  const twHotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigator.clipboard.writeText(pretty(result));
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', twHotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", twHotkeyHandler);
+    }
+  })
 
   const pretty = (value) => {
     let num = parseFloat(value)
@@ -45,13 +50,13 @@ export default function Tailwind({ input, target, keymap }) {
       base={units.Tailwind}
       input={input}
       target={target}
+      hotkey={"ctrl+" + hotkey}
       callback={(input, target) => useConverter(units.Tailwind, input, target)}
-      decimal={false}
     >
       <div>
         {
           result !== "N/A" ?
-            <span>Example: <code className="text-purple text-sm">class="m-{pretty(result)}"</code></span> :
+            <span>Example: <code className="text-purple-500 text-sm">class="m-{pretty(result)}"</code></span> :
             "Example Not Available"
         }
       </div>

@@ -4,28 +4,33 @@ import { units } from "./units"
 import { useConverter } from "./useConverter"
 import { twRanges } from "./Tailwind"
 import { converter } from "./converter";
-import { useKeyMappings } from "./useKeyMappings";
+import { useEffect } from "react";
 
-export default function Points({ input, target, keymap }) {
+export default function Points({ input, target, hotkey }) {
   const result = useConverter(units.Points, input, target)
 
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
+  const ptHotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigator.clipboard.writeText(parseFloat(result).toFixed(1));
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', ptHotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", ptHotkeyHandler);
+    }
+  })
 
   return (
     <Unit
       base={units.Points}
       input={input}
       target={target}
+      hotkey={"ctrl+" + hotkey}
       callback={(input, target) => useConverter(units.Points, input, target)}
     />
   )

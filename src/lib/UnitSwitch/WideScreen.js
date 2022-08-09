@@ -1,28 +1,34 @@
 import PropTypes from "prop-types"
+import { useEffect } from "react";
 import Unit from "./Unit";
 import { useKeyMappings } from "./useKeyMappings";
 
 const shorter = (x) => (9 * x) / 16;
 const longer = (x) => (16 * x) / 9;
 
-export default function WideScreen({ input, target, keymap }) {
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
+export default function WideScreen({ input, target, hotkey }) {
+  const wideScreenHotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigator.clipboard.writeText((longer(input)).toFixed(3));
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', wideScreenHotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", wideScreenHotkeyHandler);
+    }
+  })
 
   return (
     <Unit
       base="16:9 Aspect Ratio"
       input={input}
       target={target}
+      hotkey={"ctrl+" + hotkey}
       callback={(input, target) => longer(input)} // target not needed but required in callback signature
     >
       <div className="flex justify-center pt-4">

@@ -4,28 +4,33 @@ import { units } from "./units"
 import { useConverter } from "./useConverter"
 import { twRanges } from "./Tailwind"
 import { converter } from "./converter";
-import { useKeyMappings } from "./useKeyMappings";
+import { useEffect } from "react";
 
-export default function Feet({ input, target, keymap }) {
+export default function Feet({ input, target, hotkey }) {
   const result = useConverter(units.Feet, input, target)
 
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
+  const ftHotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigator.clipboard.writeText(parseFloat(result).toFixed(4));
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', ftHotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", ftHotkeyHandler);
+    }
+  })
 
   return (
     <Unit
       base={units.Feet}
       input={input}
       target={target}
+      hotkey={"ctrl+" + hotkey}
       callback={(input, target) => useConverter(units.Feet, input, target)}
     />
   )

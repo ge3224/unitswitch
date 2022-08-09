@@ -5,28 +5,33 @@ import { dpi } from "./standards"
 import { twRanges } from "./Tailwind"
 import { units } from "./units"
 import { useConverter } from "./useConverter";
-import { useKeyMappings } from "./useKeyMappings";
+import { useEffect } from "react";
 
-export default function Pixels({ input, target, keymap }) {
-  const result = useConverter(units.Tailwind, input, target);
+export default function Pixels({ input, target, hotkey }) {
+  const result = useConverter(units.Pixels, input, target);
 
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
+  const pixelHotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigator.clipboard.writeText(parseFloat(result).toFixed(0));
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', pixelHotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", pixelHotkeyHandler);
+    }
+  })
 
   return (
     <Unit
       base={units.Pixels}
       input={input}
       target={target}
+      hotkey={"ctrl+" + hotkey}
       callback={(input, target) => useConverter(units.Pixels, input, target)}
       decimal={false}
     >

@@ -1,31 +1,37 @@
-import Unit from "./Unit";
 import PropTypes from "prop-types";
+import Unit from "./Unit";
 import { converter } from "./converter";
 import { fontSize } from "./standards";
 import { twRanges } from "./Tailwind"
 import { units } from "./units";
 import { useConverter } from "./useConverter";
-import { useKeyMappings } from "./useKeyMappings";
+import { useEffect } from "react";
 
-export default function Rems({ input, target, keymap }) {
-  const result = useConverter(units.Tailwind, input, target);
+export default function Rems({ input, target, hotkey }) {
+  const result = useConverter(units.Rems, input, target);
 
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
+  const remHotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigator.clipboard.writeText(parseFloat(result).toFixed(3));
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', remHotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", remHotkeyHandler);
+    }
+  })
+
   return (
     <Unit
       base={units.Rems}
       input={input}
       target={target}
+      hotkey={"ctrl+" + hotkey}
       callback={(input, target) => useConverter(units.Rems, input, target)}
     >
       <div className="text-black">Based on a root font size of <span className="font-bold">{fontSize}px</span></div>

@@ -14,6 +14,7 @@ import Root2 from "./Root2";
 import Tailwind from "./Tailwind";
 import UserInput from "./UserInput";
 import WideScreen from "./WideScreen";
+import Modal from "./Modal";
 import { units } from "./units";
 import { useEffect, useState } from "react";
 
@@ -41,91 +42,92 @@ export default function UnitSwitch() {
   })
 
   const onUserInput = (value, unit) => {
+    console.log("this was called!", value, unit);
     setData({ value: value, unit: unit });
   }
-
-  // leaderKey is a custom mod key that is used in combination with a
-  // designated "hotkey" to initiate an app action.
-  const leaderKey = " ";
 
   return (
     <div className="m-2 lg:mx-auto max-w-screen-xl bg-green-50 border border-green-600 rounded-lg pb-4 lg:grid lg:grid-cols-3 lg:gap-5 lg:border-none lg:p-12">
       <UserInput
-        initialNum={data.value}
-        initialUnit={data.unit}
-        onEnter={onUserInput}
-        keymap={{ leader: leaderKey, input: "/", select: "s" }}
+        num={data.value}
+        target={data.unit}
+        callback={onUserInput}
       />
       <Pixels
         input={data.value}
         target={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "p" }}
+        hotkey={"p"}
       />
       <Rems
         input={data.value}
         target={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "r" }}
+        hotkey={"r"}
       />
       <Ems
         input={data.value}
         target={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "e" }}
+        hotkey={"e"}
       />
       <Tailwind
         input={data.value}
         target={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "t" }}
+        hotkey={"1"}
       />
       <Bootstrap
         input={data.value}
         target={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "b" }}
+        hotkey={"b"}
       />
       <Golden
         input={data.value}
         target={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "o" }}
+        hotkey={"g"}
       />
       <Root2
         input={data.value}
         target={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "2" }}
+        hotkey={"2"}
       />
       <WideScreen
         input={data.value}
         target={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "w" }}
+        hotkey={"9"}
       />
       <Millimetres
         input={data.value}
         target={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "m" }}
+        hotkey={"m"}
       />
       <Centimetres
         input={data.value}
         target={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "c" }}
+        hotkey={"c"}
       />
       <Points
         input={data.value}
         target={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "o" }}
+        hotkey={"o"}
       />
       <Inches
         input={data.value}
         target={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "i" }}
+        hotkey={"i"}
       />
       <Feet
         input={data.value}
         target={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "f" }}
+        hotkey={"'"}
       />
       <Picas
         input={data.value}
         target={data.unit}
-        keymap={{ leader: leaderKey, toClipboard: "a" }}
+        hotkey={"6"}
       />
-    </div >
+      <Modal
+        initialUnit={data.unit}
+        callback={onUserInput}
+        hotkey={"k"}
+      />
+    </div>
   );
 }

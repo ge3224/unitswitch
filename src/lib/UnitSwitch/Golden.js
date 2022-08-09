@@ -1,29 +1,34 @@
 import "../../../public/css/app.css";
 import Unit from "./Unit";
 import PropTypes from "prop-types"
-import { useKeyMappings } from "./useKeyMappings";
+import { useEffect } from "react";
 
 const longer = (input) => input * 1.61803;
 const shorter = (input) => input / 1.61803;
 
-export default function Golden({ input, target, keymap }) {
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
+export default function Golden({ input, target, hotkey }) {
+  const goldenHotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigator.clipboard.writeText(longer(input));
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', goldenHotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", goldenHotkeyHandler);
+    }
+  })
 
   return (
     <Unit
       base="Golden Ratio"
       input={input}
       target={target}
+      hotkey={"ctrl+" + hotkey}
       callback={(input, target) => longer(input)} // target not needed but required to match callback signature
     >
       <div className="flex justify-center pt-4">

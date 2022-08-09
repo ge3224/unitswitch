@@ -4,28 +4,33 @@ import { converter } from "./converter";
 import { fontSize } from "./standards";
 import { units } from "./units";
 import { useConverter } from "./useConverter";
-import { useKeyMappings } from "./useKeyMappings";
+import { useEffect } from "react";
 
-export default function Ems({ input, target, keymap }) {
-  const result = useConverter(units.Tailwind, input, target);
+export default function Ems({ input, target, hotkey }) {
+  const result = useConverter(units.Ems, input, target);
 
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
+  const emHotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
       navigator.clipboard.writeText(result);
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', emHotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", emHotkeyHandler);
+    }
+  })
 
   return (
     <Unit
       base={units.Ems}
       input={input}
       target={target}
+      hotkey={"ctrl+" + hotkey}
       callback={(input, target) => useConverter(units.Ems, input, target)}
     >
       <div className="text-black">Based on a relative font size of <span className="font-bold">{fontSize}px</span></div>

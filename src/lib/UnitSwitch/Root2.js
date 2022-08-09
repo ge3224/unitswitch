@@ -1,4 +1,5 @@
 import PropTypes from "prop-types"
+import { useEffect } from "react";
 import "../../../public/css/app.css";
 import Unit from "./Unit";
 import { useKeyMappings } from "./useKeyMappings";
@@ -6,24 +7,29 @@ import { useKeyMappings } from "./useKeyMappings";
 const longer = (input) => input * 1.41;
 const shorter = (input) => input / 1.41;
 
-export default function Root2({ input, target, keymap }) {
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
+export default function Root2({ input, target, hotkey }) {
+  const root2HotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigator.clipboard.writeText(longer(input));
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', root2HotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", root2HotkeyHandler);
+    }
+  })
 
   return (
     <Unit
       base="Root 2 (A4)"
       input={input}
       target={target}
+      hotkey={"ctrl+" + hotkey}
       callback={(input, target) => longer(input)} // target not needed but required to match callback signature
     >
       <div className="flex justify-center pt-4">

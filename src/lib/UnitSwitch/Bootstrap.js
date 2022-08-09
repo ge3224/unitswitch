@@ -4,22 +4,26 @@ import { converter } from "./converter";
 import { dpi } from "./standards";
 import { units } from "./units";
 import { useConverter } from "./useConverter";
-import { useKeyMappings } from "./useKeyMappings";
+import { useEffect } from "react";
 
-export default function Bootstrap({ input, target, keymap }) {
+export default function Bootstrap({ input, target, hotkey }) {
   const result = useConverter(units.Bootstrap, input, target);
 
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
+  const bsHotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
       navigator.clipboard.writeText(result);
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', bsHotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", bsHotkeyHandler);
+    }
+  })
 
   const pretty = (value) => {
     let num = parseFloat(value)
@@ -35,10 +39,11 @@ export default function Bootstrap({ input, target, keymap }) {
       base={units.Bootstrap}
       input={input}
       target={target}
+    hotkey={"ctrl+"+hotkey}
       callback={(input, target) => useConverter(units.Bootstrap, input, target)}
       decimal={false}
     >
-      {result !== "N/A" ? <span>Example: <code className="font-code text-purple text-sm">class="p-{pretty(result)}"</code></span> : <span className="text-black">Example Not Available</span>}
+      {result !== "N/A" ? <span>Example: <code className="font-code text-purple-500 text-sm">class="p-{pretty(result)}"</code></span> : <span className="text-black">Example Not Available</span>}
     </Unit>
   )
 }

@@ -4,28 +4,33 @@ import { converter } from "./converter";
 import { twRanges } from "./Tailwind";
 import { units } from "./units";
 import { useConverter } from "./useConverter";
-import { useKeyMappings } from "./useKeyMappings";
+import { useEffect } from "react";
 
-export default function Centimetres({ input, target, keymap }) {
+export default function Centimetres({ input, target, hotkey }) {
   const result = useConverter(units.Centimetres, input, target)
 
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
+  const cmHotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigator.clipboard.writeText(parseFloat(result).toFixed(3));
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', cmHotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", cmHotkeyHandler);
+    }
+  })
 
   return (
     <Unit
       base={units.Centimetres}
       input={input}
       target={target}
+      hotkey={"ctrl+" + hotkey}
       callback={(input, target) => useConverter(units.Centimetres, input, target)}
     />
   )
