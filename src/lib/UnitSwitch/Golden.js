@@ -152,9 +152,9 @@ export default function Golden({ input, target, hotkey }) {
           <text
             className="fill-green-400 text-sm font-bold"
             x="297"
-            y="94"
-            transform="rotate(-90,297,94)"
-            textAnchor="right">{shorter(shorter(input)).toFixed(2)}
+            y="50"
+            transform="rotate(-90,297,50)"
+            textAnchor="end">{shorter(shorter(input)).toFixed(2)}
           </text>
           <text
             className="fill-green-400 text-sm font-bold"
