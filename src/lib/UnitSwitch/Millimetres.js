@@ -4,28 +4,33 @@ import { converter } from "./converter"
 import { twRanges } from "./Tailwind"
 import { units } from "./units"
 import { useConverter } from "./useConverter"
-import { useKeyMappings } from "./useKeyMappings";
+import { useEffect } from "react";
 
-export default function Millimetres({ input, target, keymap }) {
+export default function Millimetres({ input, target, hotkey }) {
   const result = useConverter(units.Millimetres, input, target)
 
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
+  const mmHotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigator.clipboard.writeText(parseFloat(result).toFixed(3));
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', mmHotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", mmHotkeyHandler);
+    }
+  })
 
   return (
     <Unit
       base={units.Millimetres}
       input={input}
       target={target}
+      hotkey={"ctrl+" + hotkey}
       callback={(input, target) => useConverter(units.Millimetres, input, target)}
     />
   )
@@ -38,7 +43,7 @@ Millimetres.defaultProps = {
 }
 
 const convertToBootstrapSpacing = (mm) => {
-  const fixed = parseFloat((mm).toFixed(3))
+  const fixed = parseFloat((mm).toFixed(4))
   switch (fixed) {
     case 0.000:
       return 0

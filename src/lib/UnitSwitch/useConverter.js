@@ -20,7 +20,7 @@ export function useConverter(target, value, unit) {
     const converter = (input, unit) => {
       const num = parseFloat(input)
 
-      if(unit === target) {
+      if (unit === target) {
         return num
       }
 
@@ -58,7 +58,7 @@ export function useConverter(target, value, unit) {
       return
     }
 
-    setVal(result.toFixed(3));
+    setVal(result.toFixed(4));
   }, [value, unit])
 
   return val

@@ -1,29 +1,35 @@
 import PropTypes from "prop-types"
-import "../../public/css/app.css";
+import { useEffect } from "react";
+import "../../../public/css/app.css";
 import Unit from "./Unit";
 import { useKeyMappings } from "./useKeyMappings";
 
 const longer = (input) => input * 1.41;
 const shorter = (input) => input / 1.41;
 
-export default function Root2({ input, target, keymap }) {
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
+export default function Root2({ input, target, hotkey }) {
+  const root2HotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigator.clipboard.writeText(longer(input));
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', root2HotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", root2HotkeyHandler);
+    }
+  })
 
   return (
     <Unit
       base="Root 2 (A4)"
       input={input}
       target={target}
+      hotkey={"ctrl+" + hotkey}
       callback={(input, target) => longer(input)} // target not needed but required to match callback signature
     >
       <div className="flex justify-center pt-4">
@@ -34,110 +40,101 @@ export default function Root2({ input, target, keymap }) {
           xmlns="http://www.w3.org/2000/svg">
           <path
             d="M53.5 78.5V1.45311H163.351V78.5H53.5Z"
-            fill="#CFF9B9"
-            stroke="#156363"
+            className="fill-green-300 stroke-green-600"
           />
           <path
             d="M53.8046 1.75771L163.231 78.1954"
-            stroke="#156363"
+            className="stroke-green-600"
             strokeWidth="0.999999"
             strokeDasharray="2 2"
           />
           <path
             d="M108.518 78.1954V0.953114"
-            stroke="#156363"
+            className="stroke-green-600"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
             d="M108.518 78.1954L164.036 1.75771"
-            stroke="#156363"
+            className="stroke-green-600"
             strokeWidth="0.999999"
             strokeDasharray="2 2"
           />
           <path
             d="M234.175 78.5L179.823 78.5L179.823 1.45309L234.175 1.45309L234.175 78.5Z"
-            fill="#CFF9B9"
-            stroke="#156363"
+            className="fill-green-300 stroke-green-600"
           />
           <path
             d="M179.506 78.8068L234.676 0.759884"
-            stroke="#156363"
+            className="stroke-green-600"
             strokeWidth="0.999999"
             strokeDasharray="2 2"
           />
           <path
             d="M233.953 40.3788L179.5 40.3788"
-            stroke="#156363"
+            className="stroke-green-600"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
             d="M234.841 40.3788L179.323 0.953082"
-            stroke="#156363"
+            className="stroke-green-600"
             strokeWidth="0.999999"
             strokeDasharray="2 2"
           />
           <path
-            d="M18 31V1"
-            stroke="#156363"
+            d="M32 0V80"
+            className="stroke-green-600"
           />
           <path
-            d="M8 1H27.5"
-            stroke="#156363"
+            d="M22 1H41.5"
+            className="stroke-green-600"
           />
           <path
-            d="M18 52L18 79"
-            stroke="#156363"
-          />
-          <path
-            d="M8 79H27.5"
-            stroke="#156363"
+            d="M22 79H41.5"
+            className="stroke-green-600"
           />
           <path
             d="M163 110H53"
-            stroke="#4EBD85"
+            className="stroke-green-400"
           />
           <path
             d="M53 120.5V101"
-            stroke="#4EBD85"
+            className="stroke-green-400"
           />
           <path
             d="M163 120.5V101"
-            stroke="#4EBD85"
+            className="stroke-green-400"
           />
           <path
             d="M234 110H180"
-            stroke="#4EBD85"
+            className="stroke-green-400"
           />
           <path
             d="M180 120.5V101"
-            stroke="#4EBD85"
+            className="stroke-green-400"
           />
           <path
             d="M234 120.5V101"
-            stroke="#4EBD85"
+            className="stroke-green-400"
           />
           <path
-            d="M272 10V1"
-            stroke="#4EBD85"
+            d="M263 1V40"
+            className="stroke-green-400"
           />
           <path
-            d="M262 1L281.5 1"
-            stroke="#4EBD85"
+            d="M252.5 1L273 1"
+            className="stroke-green-400"
           />
           <path
-            d="M272 32L272 40"
-            stroke="#4EBD85"
-          />
-          <path
-            d="M262 40L281.5 40"
-            stroke="#4EBD85"
+            d="M252.5 40L273 40"
+            className="stroke-green-400"
           />
           <text
             className="fill-green-400 text-sm font-bold"
-            x="270"
-            y="26"
+            x="268"
+            y="74"
+            transform="rotate(-90,268,74)"
             textAnchor="middle">{shorter(shorter(input)).toFixed(2)}
           </text>
           <text
@@ -149,10 +146,9 @@ export default function Root2({ input, target, keymap }) {
           <text
             className="fill-green-600 text-sm font-bold"
             x="18"
-            y="46"
-            textAnchor="middle"
-          >
-            {input}
+            y="40"
+            transform="rotate(-90,18,40)"
+            textAnchor="middle">{parseFloat(input).toFixed(2)}
           </text>
           <text
             className="fill-green-400 text-sm font-bold"

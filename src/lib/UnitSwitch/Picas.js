@@ -4,28 +4,34 @@ import { units } from "./units"
 import { useConverter } from "./useConverter"
 import { twRanges } from "./Tailwind"
 import { converter } from "./converter";
-import { useKeyMappings } from "./useKeyMappings";
+import { useEffect } from "react";
 
-export default function Picas({ input, target, keymap }) {
+export default function Picas({ input, target, hotkey }) {
   const result = useConverter(units.Picas, input, target)
 
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
+  const pcHotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigator.clipboard.writeText(parseFloat(result).toFixed(1));
+      console.log("pcHotkeyHandler");
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', pcHotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", pcHotkeyHandler);
+    }
+  })
 
   return (
     <Unit
       base={units.Picas}
       input={input}
       target={target}
+      hotkey={"ctrl+" + hotkey}
       callback={(i, t) => useConverter(units.Picas, i, t)}
     />
   )
@@ -38,7 +44,7 @@ Picas.defaultProps = {
 }
 
 const convertToBootstrapSpacing = (cm) => {
-  const fixed = parseFloat((cm).toFixed(3));
+  const fixed = parseFloat((cm).toFixed(4));
   switch (fixed) {
     case 0.000:
       return 0

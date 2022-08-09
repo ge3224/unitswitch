@@ -4,28 +4,33 @@ import { units } from "./units"
 import { useConverter } from "./useConverter"
 import { twRanges } from "./Tailwind"
 import { converter } from "./converter";
-import { useKeyMappings } from "./useKeyMappings";
+import { useEffect } from "react";
 
-export default function Feet({ input, target, keymap }) {
+export default function Feet({ input, target, hotkey }) {
   const result = useConverter(units.Feet, input, target)
 
-  const onHotkeyPress = (e) => {
-    if (e.key === keymap.toClipboard) {
-      navigator.clipboard.writeText(result);
+  const ftHotkeyHandler = (e) => {
+    if (e.key === hotkey && e.ctrlKey === true) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigator.clipboard.writeText(parseFloat(result).toFixed(4));
     }
   }
 
-  useKeyMappings(
-    keymap.leader,
-    new Set(keymap.toClipboard),
-    onHotkeyPress,
-  );
+  useEffect(() => {
+    document.addEventListener('keydown', ftHotkeyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", ftHotkeyHandler);
+    }
+  })
 
   return (
     <Unit
       base={units.Feet}
       input={input}
       target={target}
+      hotkey={"ctrl+" + hotkey}
       callback={(input, target) => useConverter(units.Feet, input, target)}
     />
   )
@@ -38,7 +43,7 @@ Feet.defaultProps = {
 }
 
 const convertToBootstrapSpacing = (ft) => {
-  const fixed = parseFloat((ft).toFixed(3));
+  const fixed = parseFloat((ft).toFixed(4));
   switch (fixed) {
     case 0.000:
       return 0
@@ -68,5 +73,5 @@ export const ftConverter = converter(new Map([
   [units.Pixels, (ft) => Math.ceil(ft * 1152.0001451339)],
   [units.Points, (ft) => ft * 863.99945574837],
   [units.Rems, (ft) => ft * 72.000009070867],
-  [units.Tailwind, (ft) => twRanges(parseFloat(((ft * 72.000009070867) / 0.25).toFixed(3)))],
+  [units.Tailwind, (ft) => twRanges(parseFloat(((ft * 72.000009070867) / 0.25).toFixed(4)))],
 ]));

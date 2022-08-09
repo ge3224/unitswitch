@@ -1,7 +1,6 @@
-
 import React from "react";
 import ReactDOM from "react-dom/client";
-import UnitSwitch from "./UnitSwitch";
+import UnitSwitch from "./lib/UnitSwitch/Main";
 // import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
