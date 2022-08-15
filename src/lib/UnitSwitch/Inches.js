@@ -36,7 +36,7 @@ export default function Inches({ input, target, hotkey }) {
       hotkey={"ctrl+" + hotkey}
       callback={(input, target) => useConverter(units.Inches, input, target)}
     >
-      <div className="text-black">Tape Measure:&nbsp;&nbsp;<span className="font-code text-purple-500">{toFraction(result)}</span></div>
+      <div className="font-space text-black-usw">Tape Measure:&nbsp;&nbsp;<span className="font-space-code text-purple-usw-500">{toFraction(result)}</span></div>
     </Unit>
   )
 }

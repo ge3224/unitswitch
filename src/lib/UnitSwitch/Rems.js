@@ -34,7 +34,7 @@ export default function Rems({ input, target, hotkey }) {
       hotkey={"ctrl+" + hotkey}
       callback={(input, target) => useConverter(units.Rems, input, target)}
     >
-      <div className="text-black">Based on a root font size of <span className="font-bold">{fontSize}px</span></div>
+      <div className="font-space text-black-usw">Based on a root font size of <span className="font-bold">{fontSize}px</span></div>
     </Unit>
   )
 }

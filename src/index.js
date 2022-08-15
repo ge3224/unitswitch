@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import UnitSwitch from "./lib/UnitSwitch/Main";
 // import reportWebVitals from "./reportWebVitals";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById("unitswitch"));
 root.render(
   <React.StrictMode>
     <UnitSwitch />

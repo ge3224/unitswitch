@@ -33,7 +33,7 @@ export default function Ems({ input, target, hotkey }) {
       hotkey={"ctrl+" + hotkey}
       callback={(input, target) => useConverter(units.Ems, input, target)}
     >
-      <div className="text-black">Based on a relative font size of <span className="font-bold">{fontSize}px</span></div>
+      <div className="font-space text-black-usw">Based on a relative font size of <span className="font-bold">{fontSize}px</span></div>
     </Unit>
   )
 }
