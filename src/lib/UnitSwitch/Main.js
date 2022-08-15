@@ -46,7 +46,7 @@ export default function UnitSwitch() {
   }
 
   return (
-    <div className="m-2 lg:mx-auto max-w-screen-xl bg-green-50 border border-green-600 rounded-lg pb-4 lg:grid lg:grid-cols-3 lg:gap-5 lg:border-none lg:p-12">
+    <div className="m-2 lg:mx-auto max-w-screen-xl bg-green-usw-50 border border-green-usw-600 rounded-lg pb-4 lg:grid lg:grid-cols-3 lg:gap-5 lg:border-none lg:p-12">
       <UserInput
         num={data.value}
         target={data.unit}

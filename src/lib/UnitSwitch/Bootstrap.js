@@ -43,7 +43,7 @@ export default function Bootstrap({ input, target, hotkey }) {
       callback={(input, target) => useConverter(units.Bootstrap, input, target)}
       decimal={false}
     >
-      {result !== "N/A" ? <span>Example: <code className="font-code text-purple-500 text-sm">class="p-{pretty(result)}"</code></span> : <span className="text-black">Example Not Available</span>}
+      {result !== "N/A" ? <span>Example: <code className="font-space-code text-purple-usw-500 text-sm">class="p-{pretty(result)}"</code></span> : <span className="font-space text-black-usw">Example Not Available</span>}
     </Unit>
   )
 }

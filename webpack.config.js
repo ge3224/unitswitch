@@ -32,7 +32,7 @@ module.exports = {
     extensions: [".js"],
   },
   output: {
-    filename: "cunits.js",
+    filename: "unitswitch.js",
     path: path.resolve(__dirname, "public"),
   },
 };

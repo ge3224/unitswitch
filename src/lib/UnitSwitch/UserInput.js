@@ -10,7 +10,7 @@ export default function UserInput({ num, target, callback }) {
   const selectElement = useRef();
 
   return (
-    <div className="flex flex-col border-b border-green-600 pt-11 pb-8 px-10 lg:flex-row lg:justify-center lg:border lg:col-span-2 lg:row-span-2">
+    <div className="flex flex-col border-b border-green-usw-600 pt-11 pb-8 px-10 lg:flex-row lg:justify-center lg:border lg:col-span-2 lg:row-span-2">
       <div className="flex justify-center items-center mb-6 lg:mb-0 lg:ml-6">
         <svg width="67" height="46" viewBox="0 0 67 46" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -31,12 +31,12 @@ export default function UserInput({ num, target, callback }) {
             strokeLinejoin="round"
           />
         </svg>
-        <h1 className="ml-1 text-4xl text-black font-bold">UnitSwitch</h1>
+        <h1 className="ml-1 font-space font-bold text-4xl text-black-usw">UnitSwitch</h1>
       </div>
       <div className="flex flex-col justify-center max-w-sm md:mx-auto md:w-96 lg:ml-12">
         <div className="mb-2">
           <input
-            className="w-full bg-green-100 border border-green-600 rounded-sm py-1 px-1.5 font-code font-bold text-green-500 focus:outline-none focus:ring focus:ring-teal"
+            className="w-full bg-green-usw-100 border border-green-usw-600 rounded-sm py-1 px-1.5 font-space-code font-bold text-green-usw-500 focus:outline-none focus:ring focus:ring-teal-usw-500"
             type="number"
             value={num}
             ref={inputField}
@@ -48,7 +48,7 @@ export default function UserInput({ num, target, callback }) {
         </div>
         <div>
           <select
-            className="bg-gray-50 border border-green-600 rounded-sm py-1 px-0.5 text-black focus:outline-none focus:ring focus:ring-teal"
+            className="bg-gray-usw-50 border border-green-usw-600 rounded-sm py-1 px-0.5 font-space text-black-usw focus:outline-none focus:ring focus:ring-teal-usw-500"
             name="units"
             value={target}
             ref={selectElement}
@@ -63,7 +63,7 @@ export default function UserInput({ num, target, callback }) {
             )}
           </select>
         </div>
-        <div className="text-gray-200 mt-1 hidden lg:block"><small><code>ctrl+k</code></small></div>
+        <div className="font-space-code text-gray-usw-200 mt-1 hidden lg:block"><small><code>ctrl+k</code></small></div>
       </div>
     </div>
   )
