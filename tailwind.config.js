@@ -54,6 +54,7 @@ module.exports = {
       fontFamily: {
         "serif": ["Georgia", "Times", "Times New Roman", "serif"],
         "sans": ["Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji"],
+        "code": ["SFMono-Regular", "Consolas", "Liberation Mono", "Menlo", "monospace"],
         "plex": ["IBM Plex Sans", "sans-serif"],
         "plex-narrow": ["IBM Plex Sans Condensed", "sans-serif"],
         "space" :["Space Grotesk", "sans-serif"],
