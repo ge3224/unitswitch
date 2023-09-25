@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Unit } from "@/types/units";
 import UnitWrapper from "@/unit_wrapper";
 import { Converter, DPI, FONT_SIZE } from "@/converters/index";
-import { roundToDecimal } from "@/shared/round_number";
+import { RoundingMethod, roundToDecimal } from "@/shared/round_number";
 
 /**
  * Pixels Component
@@ -27,7 +27,7 @@ export default function Pixels({
 }): JSX.Element {
   const result = toPixels.convert(from, input);
 
-  const pixelHotkeyHandler = (e: KeyboardEvent) => {
+  const hotkeyHandler = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
       e.stopPropagation();
@@ -36,10 +36,10 @@ export default function Pixels({
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", pixelHotkeyHandler);
+    document.addEventListener("keydown", hotkeyHandler);
 
     return () => {
-      document.removeEventListener("keydown", pixelHotkeyHandler);
+      document.removeEventListener("keydown", hotkeyHandler);
     };
   });
 
@@ -66,10 +66,6 @@ export default function Pixels({
  */
 const bootstrap = [0, 4, 8, 16, 24, 48];
 
-interface TW {
-  [key: number]: number;
-}
-
 /**
  * Pixel equivalent values for Tailwind CSS spacing and sizing classes.
  *
@@ -78,7 +74,9 @@ interface TW {
  * `tailwind[4]` corresponds to the 'p-4' Tailwind class, which would correspond to 16 pixels
  * of padding applied to an HTML element.
  */
-const tailwind: TW = {
+const tailwind: {
+  [key: number]: number;
+} = {
   0: 0,
   0.25: 1, // Corresponds to Tailwind's 'px' size, e.g. `m-px`.
   0.5: 2,
@@ -131,23 +129,23 @@ export const toPixels: Converter = {
           ? bootstrap[input]
           : -1;
       case Unit.Centimetres:
-        return roundToDecimal(input * (DPI / 2.54), 0);
+        return roundToDecimal(input * (DPI / 2.54), 0, RoundingMethod.Ceil);
       case Unit.Ems:
-        return roundToDecimal(input * FONT_SIZE, 0);
+        return roundToDecimal(input * FONT_SIZE, 0, RoundingMethod.Ceil);
       case Unit.Feet:
-        return roundToDecimal(input * 12 * DPI, 0);
+        return roundToDecimal(input * 12 * DPI, 0, RoundingMethod.Ceil);
       case Unit.Inches:
-        return roundToDecimal(input * DPI, 0);
+        return roundToDecimal(input * DPI, 0, RoundingMethod.Ceil);
       case Unit.Millimetres:
-        return roundToDecimal(input * (DPI / 25.4), 0);
+        return roundToDecimal(input * (DPI / 25.4), 0, RoundingMethod.Ceil);
       case Unit.Picas:
-        return roundToDecimal(input * (1 / 6) * DPI, 0);
+        return roundToDecimal(input * (1 / 6) * DPI, 0, RoundingMethod.Ceil);
       case Unit.Pixels:
-        return input;
+        return roundToDecimal(input, 0, RoundingMethod.Ceil);
       case Unit.Points:
-        return roundToDecimal(input * (DPI / 72), 0);
+        return roundToDecimal(input * (DPI / 72), 0, RoundingMethod.Ceil);
       case Unit.Rems:
-        return input * FONT_SIZE;
+        return roundToDecimal(input * FONT_SIZE, 0, RoundingMethod.Ceil);
       case Unit.Tailwind:
         return input in tailwind ? tailwind[input] : -1;
       default:
