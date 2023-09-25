@@ -1,30 +1,30 @@
 {
-  "name": "dev",
-  "version": "1.0.0",
-  "description": "",
+  "name": "unitswitch",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "webpack serve --mode development --env development",
-    "start:css": "npx tailwindcss -i ./src/lib/css/main.css -o ./public/css/app.css --watch",
-    "build": "webpack",
-    "build:css": "npx tailwindcss -o ./public/css/app.css --minify"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@swc/core": "^1.2.218",
-    "autoprefixer": "^10.4.8",
-    "css-loader": "^6.7.1",
-    "swc-loader": "^0.2.3",
-    "tailwindcss": "^3.1.6",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.9.3"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "prop-types": "^15.8.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@types/node": "20.6.5",
+    "@types/react": "18.2.22",
+    "@types/react-dom": "18.2.7",
+    "autoprefixer": "10.4.16",
+    "eslint": "8.50.0",
+    "eslint-config-next": "13.5.2",
+    "next": "13.5.2",
+    "postcss": "8.4.30",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "serve": "^14.2.1",
+    "tailwindcss": "3.3.3",
+    "typescript": "5.2.2"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.4"
   }
 }
