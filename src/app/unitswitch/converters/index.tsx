@@ -9,3 +9,4 @@ export interface Converter {
 }
 
 export { default as Pixels } from "@/converters/Pixels";
+export { default as Rems } from "@/converters/Rems";
