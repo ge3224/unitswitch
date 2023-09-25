@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { Unit } from "@/unitswitch/types/units";
-import UnitWrapper from "@/unitswitch/unit_wrapper";
+import { Unit } from "@/types/units";
+import UnitWrapper from "@/unit_wrapper";
 import { Converter, DPI, FONT_SIZE } from "@/converters/index";
-import { roundToDecimal } from "@/unitswitch/shared/round_number";
+import { roundToDecimal } from "@/shared/round_number";
 
 /**
  * Pixels Component

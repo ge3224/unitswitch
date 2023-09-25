@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useRef } from "react";
-import { Unit } from "@/unitswitch/types/units";
+import { Unit } from "@/types/units";
 import { Converter } from "@/converters/index";
 
 /**

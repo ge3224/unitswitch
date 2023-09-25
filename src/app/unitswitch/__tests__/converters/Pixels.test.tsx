@@ -1,6 +1,9 @@
 import { toPixels } from '@/converters/Pixels';
-import { Unit } from '@/unitswitch/types/units';
+import { Unit } from '@/types/units';
 
+/**
+ * @description Test suite for the toPixels.convert function.
+ */
 describe('toPixels', () => {
   it('should convert Bootstrap units correctly', () => {
     expect(toPixels.convert(Unit.Bootstrap, 0)).toEqual(0);

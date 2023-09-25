@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Unit, isUnit } from "@/unitswitch/types/units";
-import UserInput from "@/unitswitch/user_input";
-import { Pixels } from "@/unitswitch/converters";
+import { Unit, isUnit } from "@/types/units";
+import UserInput from "@/user_input";
+import { Pixels } from "@/converters";
+import Modal from "@/modal";
 
 type appData = {
   input: number;
@@ -87,6 +88,11 @@ export default function UnitSwitch() {
     <div className="rounded-lg border border-app-green-600 bg-app-green-50 pb-4 lg:grid lg:grid-cols-3 lg:gap-5 lg:border-none lg:p-12">
       <UserInput input={data.value} type={data.unit} callback={onUserInput} />
       <Pixels input={data.value} from={data.unit} hotkey={"p"} />
+      <Modal
+        type={data.unit}
+        callback={onUserInput}
+        hotkey={"k"}
+      />
     </div>
   );
 }
