@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { Unit } from "./units";
+import { Unit } from "@/unitswitch/types/units";
 
 /**
  * UserInput is a React component that provides an input field for numeric values and a dropdown select for units.
