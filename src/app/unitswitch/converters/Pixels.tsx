@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Unit } from "@/units";
-import UnitWrapper from "@/converters/wrapper";
+import Wrapper from "@/converters/Wrapper";
 import { Converter, DPI, FONT_SIZE } from "@/converters/index";
 import { RoundingMethod, roundToDecimal } from "@/shared/round_number";
 
@@ -44,7 +44,7 @@ export default function Pixels({
   });
 
   return (
-    <UnitWrapper
+    <Wrapper
       base={Unit.Pixels}
       input={input}
       from={from}
@@ -54,7 +54,7 @@ export default function Pixels({
       <div className="font-space text-app-black">
         Based on a resolution of <span className="font-bold">{DPI} DPI</span>
       </div>
-    </UnitWrapper>
+    </Wrapper>
   );
 }
 

@@ -3,7 +3,7 @@ import { Unit } from "@/units";
 import { Converter } from "@/converters/index";
 
 /**
- * UnitWrapper Component
+ * Wrapper Component
  *
  * This component displays a unit conversion result and provides functionality
  * to copy the result to the clipboard using a hotkey. It can also toggle
@@ -189,7 +189,7 @@ export default function Wrapper({
         <div
           ref={resultDiv}
           className="font-space-code w-32 border-l border-r border-app-green-600 bg-app-green-100 px-3 py-2 text-sm font-bold text-app-green-500 lg:flex lg:items-center lg:border-l-0 lg:text-base"
-          id={Unit.Pixels}
+          id={base}
         >
           <span className="mr-2 cursor-pointer" onClick={icoCopyHandler}>
             <svg

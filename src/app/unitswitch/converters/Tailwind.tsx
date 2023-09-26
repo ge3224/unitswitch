@@ -1,8 +1,8 @@
 import { Unit } from "@/units";
-import { Converter, DPI, FONT_SIZE } from "@/converters/index";
-import { roundToDecimal } from "@/shared/round_number";
+import { Converter } from "@/converters/index";
 import { useEffect } from "react";
-import UnitWrapper from "@/converters/wrapper";
+import Wrapper from "@/converters/Wrapper";
+import { propPosInArray } from "@/shared/arrays";
 
 /**
  * Tailwind Component
@@ -45,7 +45,7 @@ export default function Tailwind({
   });
 
   return (
-    <UnitWrapper
+    <Wrapper
       base={Unit.Tailwind}
       input={input}
       from={from}
@@ -56,7 +56,7 @@ export default function Tailwind({
         <span className="font-bold">0.25</span> is written "<code>px</code>"
         (e.g. <code>m-px</code>).
       </div>
-    </UnitWrapper>
+    </Wrapper>
   );
 }
 
@@ -71,43 +71,14 @@ const bootstrap = [0, 1, 2, 4, 6, 12];
 /**
  * An array representing the Tailwind CSS sizes for spacing.
  *
- * This array maps the index to the corresponding Tailwind CSS size value. For 
- * example, the value of `twSizes[4]`, 1, corresponds to the 'p-1' Tailwind 
+ * This array maps the index to the corresponding Tailwind CSS size value. For
+ * example, the value of `twSizes[4]`, 1, corresponds to the 'p-1' Tailwind
  * utility class.
  */
 const twSizes = [
   0, 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16,
   20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 72, 80, 96,
 ];
-
-
-/**
- * Converts a given size in some units units to the corresponding Tailwind CSS size.
- *
- * @param {number} input - The size in given units to be converted.
- * @returns {number} - The corresponding Tailwind CSS size, or -1 if not found.
- */
-function fromRange(input: number, last: number): number {
-  // Define the range of sizes in em units and their corresponding Tailwind CSS sizes
-  const rangeIn = [0, last];
-  const rangeOut = [0, 96];
-
-  // Check if the input size is within the range of em units
-  if (input >= rangeIn[0] && input <= rangeIn[1]) {
-    // Calculate the corresponding Tailwind CSS size using linear interpolation
-    const proportion = (input - rangeIn[0]) / (rangeIn[1] - rangeIn[0]);
-    const result = roundToDecimal(
-      rangeOut[0] + proportion * (rangeOut[1] - rangeOut[0]),
-      2, // Round to 2 decimal places
-    );
-
-    // Check if the result is a valid Tailwind CSS size
-    return twSizes.includes(result) ? result : -1;
-  } else {
-    // Handle the case where the input size is outside the range
-    return -1;
-  }
-}
 
 /**
  * toTailwind Converter
@@ -122,25 +93,26 @@ export const toTailwind: Converter = {
           ? bootstrap[input]
           : -1;
       case Unit.Centimetres:
-        return fromRange(input, 10.15999872);
+        return propPosInArray(input, twSizes, 0, 10.15999872);
       case Unit.Ems:
-        return fromRange(input, 24);
+        return propPosInArray(input, twSizes, 0, 24);
       case Unit.Feet:
-        return fromRange(input, 0.33333329133858);
+        return propPosInArray(input, twSizes, 0, 0.33333329133858);
       case Unit.Inches:
-        return fromRange(input, 3.999999496063);
+        return propPosInArray(input, twSizes, 0, 3.999999496063);
       case Unit.Millimetres:
-        return fromRange(input, 101.5999872);
+        return propPosInArray(input, twSizes, 0, 101.5999872);
       case Unit.Picas:
-        return fromRange(input, 23.999996995276);
+        return propPosInArray(input, twSizes, 0, 23.999996995276);
       case Unit.Pixels:
-        return fromRange(input, 384);
+        return propPosInArray(input, twSizes, 0, 384);
       case Unit.Points:
-        return fromRange(input, 287.99978229935);
+        return propPosInArray(input, twSizes, 0, 287.99978229935);
       case Unit.Rems:
-        return fromRange(input, 24);
+        return propPosInArray(input, twSizes, 0, 24);
       case Unit.Tailwind:
-        return input;
+        const included = twSizes.indexOf(input);
+        return included >= 0 ? input : -1;
       default:
         return -1;
     }

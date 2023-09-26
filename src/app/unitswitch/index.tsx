@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Unit, isUnit } from "@/units";
 import UserInput from "@/user_input";
-import { Ems, Pixels, Rems, Tailwind } from "@/converters";
+import { Bootstrap, Ems, Pixels, Rems, Tailwind } from "@/converters";
 import Modal from "@/modal";
 
 type appData = {
@@ -78,9 +78,9 @@ export default function UnitSwitch() {
           lineup: data.lineup,
         }),
       );
-      console.error(
-        "the code is not running in a browser or 'localStorage' is not available",
-      );
+      // console.error(
+      //   "the code is not running in a browser or 'localStorage' is not available",
+      // );
     }
   });
 
@@ -91,6 +91,7 @@ export default function UnitSwitch() {
       <Rems input={data.value} from={data.unit} hotkey={"r"} />
       <Ems input={data.value} from={data.unit} hotkey={"e"} />
       <Tailwind input={data.value} from={data.unit} hotkey={"1"} />
+      <Bootstrap input={data.value} from={data.unit} hotkey={"b"} />
       <Modal
         type={data.unit}
         callback={onUserInput}

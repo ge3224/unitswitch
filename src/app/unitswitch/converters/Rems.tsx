@@ -2,7 +2,7 @@ import { Unit } from "@/units";
 import { Converter, DPI, FONT_SIZE } from "@/converters/index";
 import { roundToDecimal } from "@/shared/round_number";
 import { useEffect } from "react";
-import UnitWrapper from "@/converters/wrapper";
+import Wrapper from "@/converters/Wrapper";
 
 /**
  * Rems Component
@@ -45,7 +45,7 @@ export default function Rems({
   });
 
   return (
-    <UnitWrapper
+    <Wrapper
       base={Unit.Rems}
       input={input}
       from={from}
@@ -56,7 +56,7 @@ export default function Rems({
         Based on a root font size of{" "}
         <span className="font-bold">{FONT_SIZE}px</span>
       </div>
-    </UnitWrapper>
+    </Wrapper>
   );
 }
 
