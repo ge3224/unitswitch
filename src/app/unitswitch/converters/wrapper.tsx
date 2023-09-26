@@ -17,7 +17,7 @@ import { Converter } from "@/converters/index";
  * @param children - Additional details or content to display when toggled.
  * @returns A React component for displaying unit conversion results.
  */
-export default function UnitWrapper({
+export default function Wrapper({
   base,
   input,
   from,

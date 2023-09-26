@@ -5,9 +5,9 @@ import { useEffect } from "react";
 import UnitWrapper from "@/converters/wrapper";
 
 /**
- * Rems Component
+ * Ems Component
  *
- * This component converts a value from various CSS unit systems to Rems (root Em units)
+ * This component converts a value from various CSS unit systems to Ems
  * and provides a hotkey to copy the converted value to the clipboard.
  *
  * @param {object} props - The component's properties.
@@ -15,9 +15,9 @@ import UnitWrapper from "@/converters/wrapper";
  * @param {Unit} props.from - The unit of the input value.
  * @param {string} props.hotkey - The hotkey combination to copy the result to the clipboard.
  *
- * @returns {JSX.Element} - A React element representing the Rems component.
+ * @returns {JSX.Element} - A React element representing the Ems component.
  */
-export default function Rems({
+export default function Ems({
   input,
   from,
   hotkey,
@@ -26,7 +26,7 @@ export default function Rems({
   from: Unit;
   hotkey: string;
 }): JSX.Element {
-  const result = toRems.convert(from, input);
+  const result = toEms.convert(from, input);
 
   const hotkeyHandler = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
@@ -46,11 +46,11 @@ export default function Rems({
 
   return (
     <UnitWrapper
-      base={Unit.Rems}
+      base={Unit.Ems}
       input={input}
       from={from}
       hotkey={"ctrl+" + hotkey}
-      callback={toRems}
+      callback={toEms}
     >
       <div className="font-space text-app-black">
         Based on a root font size of{" "}
@@ -64,16 +64,16 @@ export default function Rems({
  * Spacing values for the Bootstrap CSS framework.
  *
  * This array maps index values to spacing values used in Bootstrap CSS classes.
- * For example, `bootstrap[1]` corresponds to `p-1`, which adds padding of 0.25rem.
+ * For example, `bootstrap[1]` corresponds to `p-1`, which adds padding of 0.25em.
  */
 const bootstrap = [0, 0.25, 0.5, 1, 1.5, 3];
 
 /**
- * Rem equivalent values for Tailwind CSS spacing and sizing classes.
+ * Em equivalent values for Tailwind CSS spacing and sizing classes.
  *
  * Each key in this object corresponds to a specific size in a Tailwind CSS class name. The
  * values represent the pixel equivalent of that Tailwind size class. For example,
- * `tailwind[4]` corresponds to the 'p-4' Tailwind class, which would correspond to 1rem
+ * `tailwind[4]` corresponds to the 'p-4' Tailwind class, which would correspond to 1em
  * of padding applied to an HTML element.
  */
 const tailwind: {
@@ -117,11 +117,11 @@ const tailwind: {
 };
 
 /**
- * toRems Converter
+ * toEms Converter
  *
- * This object provides conversion functions from various unit systems to Rems.
+ * This object provides conversion functions from various unit systems to Ems.
  */
-const toRems: Converter = {
+const toEms: Converter = {
   convert: (from: Unit, input: number) => {
     switch (from) {
       case Unit.Bootstrap:

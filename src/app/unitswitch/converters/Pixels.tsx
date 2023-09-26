@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Unit } from "@/units";
-import UnitWrapper from "@/unit_wrapper";
+import UnitWrapper from "@/converters/wrapper";
 import { Converter, DPI, FONT_SIZE } from "@/converters/index";
 import { RoundingMethod, roundToDecimal } from "@/shared/round_number";
 
@@ -121,7 +121,7 @@ const tailwind: {
  * @param {number} input - The value to convert.
  * @returns {number} The converted value in pixels. Returns -1 if the unit is not supported.
  */
-export const toPixels: Converter = {
+const toPixels: Converter = {
   convert: (from: Unit, input: number) => {
     switch (from) {
       case Unit.Bootstrap:
