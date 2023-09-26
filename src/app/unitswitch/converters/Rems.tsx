@@ -10,6 +10,7 @@ import UnitWrapper from "@/unit_wrapper";
  * This component converts a value from various CSS unit systems to REMs (root em units)
  * and provides a hotkey to copy the converted value to the clipboard.
  *
+ * @param {object} props - The component's properties.
  * @param {number} props.input - The input value to be converted.
  * @param {Unit} props.from - The unit of the input value.
  * @param {string} props.hotkey - The hotkey combination to copy the result to the clipboard.
@@ -18,14 +19,14 @@ import UnitWrapper from "@/unit_wrapper";
  */
 export default function Rems({
   input,
-  type,
+  from,
   hotkey,
 }: {
   input: number;
-  type: Unit;
+  from: Unit;
   hotkey: string;
 }): JSX.Element {
-  const result = toRems.convert(type, input);
+  const result = toRems.convert(from, input);
 
   const hotkeyHandler = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
@@ -47,7 +48,7 @@ export default function Rems({
     <UnitWrapper
       base={Unit.Rems}
       input={input}
-      from={type}
+      from={from}
       hotkey={"ctrl+" + hotkey}
       callback={toRems}
     >
@@ -128,11 +129,11 @@ export const toRems: Converter = {
           ? bootstrap[input]
           : -1;
       case Unit.Centimetres:
-        return roundToDecimal(input * 0.393701 * DPI, 3);
+        return roundToDecimal(((input * 0.3937008) * DPI) / FONT_SIZE, 3);
       case Unit.Ems:
-        return roundToDecimal(input / FONT_SIZE, 3);
+        return roundToDecimal(input, 3);
       case Unit.Feet:
-        return roundToDecimal((input * 12 * DPI) / (FONT_SIZE * 72), 3);
+        return roundToDecimal(((input * 12) * DPI) / FONT_SIZE, 3);
       case Unit.Inches:
         return roundToDecimal((input * DPI) / FONT_SIZE, 3);
       case Unit.Millimetres:
@@ -142,7 +143,7 @@ export const toRems: Converter = {
       case Unit.Pixels:
         return roundToDecimal(input / FONT_SIZE, 3);
       case Unit.Points:
-        return roundToDecimal((input / 72) * FONT_SIZE, 3);
+        return roundToDecimal((input / 72) * (DPI / FONT_SIZE), 3);
       case Unit.Rems:
         return roundToDecimal(input, 3);
       case Unit.Tailwind:

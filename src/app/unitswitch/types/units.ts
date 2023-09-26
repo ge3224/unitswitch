@@ -1,15 +1,15 @@
 export enum Unit {
-  Pixels = "Pixels",
-  Rems = "Rems",
-  Ems = "Ems",
-  Tailwind = "Tailwind",
   Bootstrap = "Bootstrap",
+  Centimetres = "Centimetres",
+  Ems = "Ems",
+  Feet = "Feet",
   Inches = "Inches",
   Millimetres = "Millimetres",
-  Centimetres = "Centimetres",
-  Feet = "Feet",
   Picas = "Picas",
+  Pixels = "Pixels",
   Points = "Points",
+  Rems = "Rems",
+  Tailwind = "Tailwind",
 }
 
 export function isUnit(value: any): value is Unit {
