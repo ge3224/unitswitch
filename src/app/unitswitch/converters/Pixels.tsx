@@ -121,7 +121,7 @@ const tailwind: {
  * @param {number} input - The value to convert.
  * @returns {number} The converted value in pixels. Returns -1 if the unit is not supported.
  */
-const toPixels: Converter = {
+export const toPixels: Converter = {
   convert: (from: Unit, input: number) => {
     switch (from) {
       case Unit.Bootstrap:

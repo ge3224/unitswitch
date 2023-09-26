@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Unit, isUnit } from "@/units";
 import UserInput from "@/user_input";
-import { Ems, Pixels, Rems } from "@/converters";
+import { Ems, Pixels, Rems, Tailwind } from "@/converters";
 import Modal from "@/modal";
 
 type appData = {
@@ -90,6 +90,7 @@ export default function UnitSwitch() {
       <Pixels input={data.value} from={data.unit} hotkey={"p"} />
       <Rems input={data.value} from={data.unit} hotkey={"r"} />
       <Ems input={data.value} from={data.unit} hotkey={"e"} />
+      <Tailwind input={data.value} from={data.unit} hotkey={"1"} />
       <Modal
         type={data.unit}
         callback={onUserInput}

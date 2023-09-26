@@ -121,7 +121,7 @@ const tailwind: {
  *
  * This object provides conversion functions from various unit systems to Ems.
  */
-const toEms: Converter = {
+export const toEms: Converter = {
   convert: (from: Unit, input: number) => {
     switch (from) {
       case Unit.Bootstrap:
