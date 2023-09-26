@@ -75,7 +75,7 @@ const bootstrap = [0, 1, 2, 4, 6, 12];
  * example, the value of `twSizes[4]`, 1, corresponds to the 'p-1' Tailwind
  * utility class.
  */
-const twSizes = [
+export const tailwindSizes = [
   0, 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16,
   20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 72, 80, 96,
 ];
@@ -93,25 +93,25 @@ export const toTailwind: Converter = {
           ? bootstrap[input]
           : -1;
       case Unit.Centimetres:
-        return propPosInArray(input, twSizes, 0, 10.15999872);
+        return propPosInArray(input, tailwindSizes, 0, 10.15999872);
       case Unit.Ems:
-        return propPosInArray(input, twSizes, 0, 24);
+        return propPosInArray(input, tailwindSizes, 0, 24);
       case Unit.Feet:
-        return propPosInArray(input, twSizes, 0, 0.33333329133858);
+        return propPosInArray(input, tailwindSizes, 0, 0.33333329133858);
       case Unit.Inches:
-        return propPosInArray(input, twSizes, 0, 3.999999496063);
+        return propPosInArray(input, tailwindSizes, 0, 3.999999496063);
       case Unit.Millimetres:
-        return propPosInArray(input, twSizes, 0, 101.5999872);
+        return propPosInArray(input, tailwindSizes, 0, 101.5999872);
       case Unit.Picas:
-        return propPosInArray(input, twSizes, 0, 23.999996995276);
+        return propPosInArray(input, tailwindSizes, 0, 23.999996995276);
       case Unit.Pixels:
-        return propPosInArray(input, twSizes, 0, 384);
+        return propPosInArray(input, tailwindSizes, 0, 384);
       case Unit.Points:
-        return propPosInArray(input, twSizes, 0, 287.99978229935);
+        return propPosInArray(input, tailwindSizes, 0, 287.99978229935);
       case Unit.Rems:
-        return propPosInArray(input, twSizes, 0, 24);
+        return propPosInArray(input, tailwindSizes, 0, 24);
       case Unit.Tailwind:
-        const included = twSizes.indexOf(input);
+        const included = tailwindSizes.indexOf(input);
         return included >= 0 ? input : -1;
       default:
         return -1;

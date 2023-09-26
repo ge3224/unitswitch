@@ -40,6 +40,29 @@ export function propPosInArray(
   }
 }
 
+export function propPosInRange(
+  input: number,
+  model: Array<number>,
+  start: number,
+  end: number,
+): number {
+  // Check if the input is within the specified range
+  if (input >= model[0] && input <= model[model.length - 1]) {
+    // Calculate the proportion of the input within the model array
+    const proportion =
+      (input - model[0]) / (model[model.length - 1] - model[0]);
+
+    // Calculate the mapped result based on the specified range
+    const result = start + proportion * (end - start);
+
+    // Check if the result is within the specified range
+    return result >= start && result <= end ? result : -1;
+  } else {
+    // If the input is outside the range of the model array, return -1
+    return -1;
+  }
+}
+
 /**
  * Find the index in an array that has the nearest value to the given input 
  * within a specified tolerance.

@@ -125,15 +125,15 @@ export const toRems: Converter = {
   convert: (from: Unit, input: number) => {
     switch (from) {
       case Unit.Bootstrap:
-        return input >= 0 && input <= bootstrap.length - 1
+        return input >= 0 && input <= bootstrap.length - 1 && input % 1 === 0
           ? bootstrap[input]
           : -1;
       case Unit.Centimetres:
-        return roundToDecimal(((input * 0.3937008) * DPI) / FONT_SIZE, 3);
+        return roundToDecimal((input * 0.3937008 * DPI) / FONT_SIZE, 3);
       case Unit.Ems:
         return roundToDecimal(input, 3);
       case Unit.Feet:
-        return roundToDecimal(((input * 12) * DPI) / FONT_SIZE, 3);
+        return roundToDecimal((input * 12 * DPI) / FONT_SIZE, 3);
       case Unit.Inches:
         return roundToDecimal((input * DPI) / FONT_SIZE, 3);
       case Unit.Millimetres:

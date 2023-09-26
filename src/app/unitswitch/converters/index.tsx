@@ -13,3 +13,4 @@ export { default as Rems } from "@/converters/Rems";
 export { default as Ems } from "@/converters/Ems";
 export { default as Tailwind } from "@/converters/Tailwind";
 export { default as Bootstrap } from "@/converters/Bootstrap";
+export { default as Millimeters } from "@/converters/Millimetres";
