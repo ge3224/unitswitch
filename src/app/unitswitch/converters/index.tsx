@@ -1,4 +1,4 @@
-import { Unit } from "@/types/units";
+import { Unit } from "@/units";
 
 export const FIXED_POINT = 3;
 export const FONT_SIZE = 16

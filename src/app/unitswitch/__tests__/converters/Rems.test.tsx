@@ -1,5 +1,5 @@
 import { toRems } from "@/converters/Rems";
-import { Unit } from "@/types/units";
+import { Unit } from "@/units";
 
 describe("toRems Converter", () => {
   it("should convert Bootstrap units correctly", () => {

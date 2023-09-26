@@ -1,5 +1,5 @@
 import { toPixels } from '@/converters/Pixels';
-import { Unit } from '@/types/units';
+import { Unit } from '@/units';
 
 /**
  * @description Test suite for the toPixels.convert function.

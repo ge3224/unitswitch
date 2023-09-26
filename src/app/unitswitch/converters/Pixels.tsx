@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Unit } from "@/types/units";
+import { Unit } from "@/units";
 import UnitWrapper from "@/unit_wrapper";
 import { Converter, DPI, FONT_SIZE } from "@/converters/index";
 import { RoundingMethod, roundToDecimal } from "@/shared/round_number";

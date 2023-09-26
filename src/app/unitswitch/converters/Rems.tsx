@@ -1,4 +1,4 @@
-import { Unit } from "@/types/units";
+import { Unit } from "@/units";
 import { Converter, DPI, FONT_SIZE } from "@/converters/index";
 import { roundToDecimal } from "@/shared/round_number";
 import { useEffect } from "react";

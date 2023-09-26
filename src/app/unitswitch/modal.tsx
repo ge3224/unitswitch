@@ -1,4 +1,4 @@
-import { Unit } from "@/types/units";
+import { Unit } from "@/units";
 import React, { useEffect, useRef } from "react";
 
 /**

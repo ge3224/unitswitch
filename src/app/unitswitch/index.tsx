@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Unit, isUnit } from "@/types/units";
+import { Unit, isUnit } from "@/units";
 import UserInput from "@/user_input";
 import { Pixels, Rems } from "@/converters";
 import Modal from "@/modal";
