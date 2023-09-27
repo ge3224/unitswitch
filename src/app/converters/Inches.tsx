@@ -3,7 +3,6 @@ import { Converter, DPI, FONT_SIZE } from ".";
 import { useEffect } from "react";
 import Wrapper from "./Wrapper";
 import { roundToDecimal } from "@/shared/round_number";
-import { tailwindInPixels } from "./Pixels";
 import { getIntersectingValue } from "@/shared/arrays";
 import { tailwindSizes } from "./Tailwind";
 

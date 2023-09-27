@@ -4,6 +4,7 @@ import UserInput from "@/user_input";
 import { Bootstrap, Centimetres, Ems, Inches, Picas, Pixels, Points, Rems, Tailwind } from "@/converters";
 import Modal from "@/modal";
 import Millimetres from "./converters/Millimetres";
+import Feet from "./converters/Feet";
 
 type appData = {
   input: number;
@@ -95,6 +96,7 @@ export default function UnitSwitch() {
       <Points input={data.value} from={data.unit} hotkey={"o"} />
       <Picas input={data.value} from={data.unit} hotkey={"6"} />
       <Inches input={data.value} from={data.unit} hotkey={"i"} />
+      <Feet input={data.value} from={data.unit} hotkey={"f"} />
       <Modal
         type={data.unit}
         callback={onUserInput}
