@@ -12,6 +12,7 @@ export interface Converter {
 export { default as Bootstrap } from "@/converters/Bootstrap";
 export { default as Centimetres } from "@/converters/Centimetres";
 export { default as Ems } from "@/converters/Ems";
+export { default as Inches } from "@/converters/Inches";
 export { default as Millimetres } from "@/converters/Millimetres";
 export { default as Picas } from "@/converters/Picas";
 export { default as Pixels } from "@/converters/Pixels";

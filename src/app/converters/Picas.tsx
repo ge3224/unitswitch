@@ -65,7 +65,7 @@ export const toPicas = {
     if (input < 0) return -1;
     switch (from) {
       case Unit.Bootstrap:
-        const bs = [0, 0.015625, 0.03125, 0.0625, 0.09375, 0.1875];
+        const bs = [0, 0.125, 0.25, 0.5, 0.75, 1.5];
         return input <= bs.length - 1 && input % 1 === 0 ? bs[input] : -1;
       case Unit.Centimetres:
         return roundToDecimal(input / 2.3622, 4);
