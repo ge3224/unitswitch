@@ -46,7 +46,7 @@ export default function Bootstrap({
       input={input}
       from={from}
       hotkey={"ctrl+" + hotkey}
-      callback={toBootstrap}
+      converter={toBootstrap}
     >
       Only six possible values: <strong>0-5</strong>
     </Wrapper>
@@ -117,4 +117,21 @@ export const toBootstrap: Converter = {
         return -1;
     }
   },
+
+  /**
+   * The `render` function converts a converted value in Bootstrap sizes to a 
+   * string representation.
+   *
+   * @param {number} conversion - The converted value in Bootstrap sizes.
+   * @returns {string} - A string representation of the converted value, or 
+   *                     "N/A" if the conversion is not valid.
+   */
+  render: (conversion: number): string => {
+    if (conversion <= 0) return "N/A";
+
+    const str = conversion.toString();
+    return str.length < 8
+      ? str
+      : str.slice(0, 6) + "..";
+  }
 };

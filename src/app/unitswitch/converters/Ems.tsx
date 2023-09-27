@@ -1,5 +1,5 @@
 import { Unit } from "@/units";
-import { Converter, DPI, FONT_SIZE } from "@/converters/index";
+import { Converter, DPI, FONT_SIZE } from "@/converters";
 import { roundToDecimal } from "@/shared/round_number";
 import { useEffect } from "react";
 import Wrapper from "@/converters/Wrapper";
@@ -50,7 +50,7 @@ export default function Ems({
       input={input}
       from={from}
       hotkey={"ctrl+" + hotkey}
-      callback={toEms}
+      converter={toEms}
     >
       <div className="font-space text-app-black">
         Based on a root font size of{" "}
@@ -152,4 +152,21 @@ export const toEms: Converter = {
         return -1;
     }
   },
+
+  /**
+   * The `render` function converts a converted value in ems to a 
+   * string representation.
+   *
+   * @param {number} conversion - The converted value in ems.
+   * @returns {string} - A string representation of the converted value, or 
+   *                     "N/A" if the conversion is not valid.
+   */
+  render: (conversion: number): string => {
+    if (conversion <= 0) return "N/A";
+
+    const str = conversion.toString();
+    return str.length < 8
+      ? str
+      : str.slice(0, 6) + "..";
+  }
 };

@@ -1,14 +1,17 @@
 import { useEffect } from "react";
 import { Unit } from "@/units";
 import Wrapper from "@/converters/Wrapper";
-import { Converter, DPI, FONT_SIZE } from "@/converters/index";
+import { Converter, DPI, FONT_SIZE } from "@/converters";
 import { RoundingMethod, roundToDecimal } from "@/shared/round_number";
+import { getIntersectingValue } from "@/shared/arrays";
+import { tailwindSizes } from "./Tailwind";
 
 /**
  * Pixels Component
  *
- * This component converts a value from one unit of measurement to pixels, and allows
- * users to copy the result to the clipboard using a specified hotkey combination.
+ * This component converts a value from one unit of measurement to pixels, and 
+ * allows users to copy the result to the clipboard using a specified 
+ * hotkey combination.
  *
  * @param {object} props - The component's properties.
  * @param {number} props.input - The input value to be converted to pixels.
@@ -49,7 +52,7 @@ export default function Pixels({
       input={input}
       from={from}
       hotkey={"ctrl+" + hotkey}
-      callback={toPixels}
+      converter={toPixels}
     >
       <div className="font-space text-app-black">
         Based on a resolution of <span className="font-bold">{DPI} DPI</span>
@@ -59,60 +62,17 @@ export default function Pixels({
 }
 
 /**
- * Spacing values for the Bootstrap CSS framework.
- *
- * This array maps index values to spacing values used in Bootstrap CSS classes.
- * For example, `bootstrap[1]` corresponds to `p-1`, which adds padding of 4 pixels.
- */
-const bootstrap = [0, 4, 8, 16, 24, 48];
-
-/**
  * Pixel equivalent values for Tailwind CSS spacing and sizing classes.
  *
- * Each key in this object corresponds to a specific size in a Tailwind CSS class name. The
- * values represent the pixel equivalent of that Tailwind size class. For example,
- * `tailwind[4]` corresponds to the 'p-4' Tailwind class, which would correspond to 16 pixels
- * of padding applied to an HTML element.
+ * Each key in this array corresponds to a specific size in a Tailwind CSS
+ * class name. The values represent the pixel equivalent of that Tailwind size
+ * class. For example, the 'p-4' Tailwind class, which would correspond to 16
+ * pixels of padding applied to an HTML element.
  */
-const tailwind: {
-  [key: number]: number;
-} = {
-  0: 0,
-  0.25: 1, // Corresponds to Tailwind's 'px' size, e.g. `m-px`.
-  0.5: 2,
-  1: 4,
-  1.5: 6,
-  2: 8,
-  2.5: 10,
-  3: 12,
-  3.5: 14,
-  4: 16,
-  5: 20,
-  6: 24,
-  7: 28,
-  8: 32,
-  9: 36,
-  10: 40,
-  11: 44,
-  12: 48,
-  14: 56,
-  16: 64,
-  20: 80,
-  24: 96,
-  28: 112,
-  32: 128,
-  36: 144,
-  40: 160,
-  44: 176,
-  48: 192,
-  52: 208,
-  56: 224,
-  60: 240,
-  64: 256,
-  72: 288,
-  80: 320,
-  96: 384,
-};
+const tailwindInPixels = [
+  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 20, 24, 28, 32, 36, 40, 44, 48, 56, 64, 80,
+  96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 256, 288, 320, 384,
+];
 
 /**
  * Converts a value from a specified unit to pixels.
@@ -125,9 +85,8 @@ export const toPixels: Converter = {
   convert: (from: Unit, input: number): number => {
     switch (from) {
       case Unit.Bootstrap:
-        return input >= 0 && input <= bootstrap.length - 1
-          ? bootstrap[input]
-          : -1;
+        const bs = [0, 4, 8, 16, 24, 48];
+        return input >= 0 && input <= bs.length - 1 ? bs[input] : -1;
       case Unit.Centimetres:
         return roundToDecimal(input * (DPI / 2.54), 0, RoundingMethod.Ceil);
       case Unit.Ems:
@@ -147,9 +106,24 @@ export const toPixels: Converter = {
       case Unit.Rems:
         return roundToDecimal(input * FONT_SIZE, 0, RoundingMethod.Ceil);
       case Unit.Tailwind:
-        return input in tailwind ? tailwind[input] : -1;
+        return getIntersectingValue(tailwindSizes, tailwindInPixels, input);
       default:
         return -1;
     }
+  },
+
+  /**
+   * The `render` function converts a converted value in pixels to a 
+   * string representation.
+   *
+   * @param {number} conversion - The converted value in pixels.
+   * @returns {string} - A string representation of the converted value, or 
+   *                     "N/A" if the conversion is not valid.
+   */
+  render: (conversion: number): string => {
+    if (conversion <= 0) return "N/A";
+
+    const str = conversion.toString();
+    return str.length < 8 ? str : str.slice(0, 6) + "..";
   },
 };

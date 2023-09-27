@@ -6,6 +6,7 @@ export const DPI = 96
 
 export interface Converter {
   convert(from: Unit, input: number): number;
+  render(conversion: number): string;
 }
 
 export { default as Pixels } from "@/converters/Pixels";

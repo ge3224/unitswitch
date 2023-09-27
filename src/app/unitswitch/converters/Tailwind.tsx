@@ -1,8 +1,8 @@
 import { Unit } from "@/units";
-import { Converter } from "@/converters/index";
+import { Converter } from "@/converters";
 import { useEffect } from "react";
 import Wrapper from "@/converters/Wrapper";
-import { propPosInArray } from "@/shared/arrays";
+import { interpolateInRange } from "@/shared/arrays";
 
 /**
  * Tailwind Component
@@ -50,7 +50,7 @@ export default function Tailwind({
       input={input}
       from={from}
       hotkey={"ctrl+" + hotkey}
-      callback={toTailwind}
+      converter={toTailwind}
     >
       <div className="font-space text-app-black">
         <span className="font-bold">0.25</span> is written "<code>px</code>"
@@ -59,14 +59,6 @@ export default function Tailwind({
     </Wrapper>
   );
 }
-
-/**
- * Spacing values for the Bootstrap CSS framework.
- *
- * This array maps index values to spacing values used in Bootstrap CSS classes.
- * For example, `bootstrap[1]` corresponds to `p-1`, which adds padding of 0.25em.
- */
-const bootstrap = [0, 1, 2, 4, 6, 12];
 
 /**
  * An array representing the Tailwind CSS sizes for spacing.
@@ -89,27 +81,28 @@ export const toTailwind: Converter = {
   convert: (from: Unit, input: number) => {
     switch (from) {
       case Unit.Bootstrap:
-        return input >= 0 && input <= bootstrap.length - 1
-          ? bootstrap[input]
+        const bs = [0, 1, 2, 4, 6, 12];
+        return input >= 0 && input <= bs.length - 1
+          ? bs[input]
           : -1;
       case Unit.Centimetres:
-        return propPosInArray(input, tailwindSizes, 0, 10.15999872);
+        return interpolateInRange(input, tailwindSizes, 0, 10.15999872);
       case Unit.Ems:
-        return propPosInArray(input, tailwindSizes, 0, 24);
+        return interpolateInRange(input, tailwindSizes, 0, 24);
       case Unit.Feet:
-        return propPosInArray(input, tailwindSizes, 0, 0.33333329133858);
+        return interpolateInRange(input, tailwindSizes, 0, 0.33333329133858);
       case Unit.Inches:
-        return propPosInArray(input, tailwindSizes, 0, 3.999999496063);
+        return interpolateInRange(input, tailwindSizes, 0, 3.999999496063);
       case Unit.Millimetres:
-        return propPosInArray(input, tailwindSizes, 0, 101.5999872);
+        return interpolateInRange(input, tailwindSizes, 0, 101.5999872);
       case Unit.Picas:
-        return propPosInArray(input, tailwindSizes, 0, 23.999996995276);
+        return interpolateInRange(input, tailwindSizes, 0, 23.999996995276);
       case Unit.Pixels:
-        return propPosInArray(input, tailwindSizes, 0, 384);
+        return interpolateInRange(input, tailwindSizes, 0, 384);
       case Unit.Points:
-        return propPosInArray(input, tailwindSizes, 0, 287.99978229935);
+        return interpolateInRange(input, tailwindSizes, 0, 287.99978229935);
       case Unit.Rems:
-        return propPosInArray(input, tailwindSizes, 0, 24);
+        return interpolateInRange(input, tailwindSizes, 0, 24);
       case Unit.Tailwind:
         const included = tailwindSizes.indexOf(input);
         return included >= 0 ? input : -1;
@@ -117,4 +110,22 @@ export const toTailwind: Converter = {
         return -1;
     }
   },
+
+  /**
+   * The `render` function converts a converted value in Tailwind sizes to a 
+   * string representation.
+   *
+   * @param {number} conversion - The converted value in Tailwind sizes.
+   * @returns {string} - A string representation of the converted value, or 
+   *                     "N/A" if the conversion is not valid.
+   */
+  render: (conversion: number): string => {
+    if (conversion <= 0) return "N/A";
+    if (conversion === 0.25) return "px";
+
+    const str = conversion.toString();
+    return str.length < 8
+      ? str
+      : str.slice(0, 6) + "..";
+  }
 };

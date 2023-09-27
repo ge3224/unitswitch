@@ -15,7 +15,7 @@ import { roundToDecimal } from "@/shared/round_number";
  * @param end - The end value of the interpolation range.
  * @returns The interpolated value from the model array if it exists within the model; otherwise, -1.
  */
-export function propPosInArray(
+export function interpolateInRange(
   input: number,
   model: Array<number>,
   start: number,
@@ -40,7 +40,7 @@ export function propPosInArray(
   }
 }
 
-export function propPosInRange(
+export function interpolateInModel(
   input: number,
   model: Array<number>,
   start: number,
@@ -64,7 +64,7 @@ export function propPosInRange(
 }
 
 /**
- * Find the index in an array that has the nearest value to the given input 
+ * Find the index in an array that has the nearest value to the given input
  * within a specified tolerance.
  *
  * @param {Array<number>} array - The array of numbers to search.
@@ -85,3 +85,37 @@ export function nearestIndex(
   return -1;
 }
 
+/**
+ * Retrieves a value from the 'target' array based on the 'input' value found
+ * at an intersecting index in the 'model' array.
+ *
+ * @param {number[]} model - The source array where the 'input' value is searched for.
+ * @param {number[]} target - The array from which the corresponding value will be retrieved.
+ * @param {number} input - The value to search for in the 'model' array.
+ * @returns {number}  The value from the 'target' array corresponding to the
+ *                   'input' value found in the 'model' array. If the 'input'
+ *                   value is not found in the 'model' array or if the 'model'
+ *                   and 'target' arrays have different lengths, -1 is returned.
+ *
+ * @example
+ * const modelArray = [1, 2, 3, 4];
+ * const targetArray = [10, 20, 30, 40];
+ * const inputValue = 3;
+ * const result = getIntersectingValue(modelArray, targetArray, inputValue);
+ * // 'result' will be 30 since the 'inputValue' of 3 is found at index 2 in 'modelArray',
+ * // and the corresponding value at index 2 in 'targetArray' is 30.
+ */
+export function getIntersectingValue(
+  model: number[],
+  target: number[],
+  input: number,
+): number {
+  if (target.length !== model.length) {
+    console.error("model and target arguments are arrays of diffent lengths.");
+    return -1;
+  }
+
+  const index = model.indexOf(input);
+
+  return index >= 0 ? target[index] : -1;
+}

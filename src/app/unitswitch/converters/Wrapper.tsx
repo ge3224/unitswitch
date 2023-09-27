@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useRef } from "react";
 import { Unit } from "@/units";
-import { Converter } from "@/converters/index";
+import { Converter } from "@/converters";
 
 /**
  * Wrapper Component
@@ -22,33 +22,26 @@ export default function Wrapper({
   input,
   from,
   hotkey,
-  callback,
+  converter,
   children,
 }: {
   base: string;
   input: number;
   from: Unit;
   hotkey: string;
-  callback: Converter;
+  converter: Converter;
   children: ReactNode;
 }) {
-  const conversion = callback.convert(from, input);
-
-  const value =
-    conversion >= 0
-      ? conversion.toString().length < 8
-        ? conversion.toString()
-        : conversion.toString().slice(0, 5)
-      : "N/A";
+  const conversion = converter.convert(from, input);
+  const value = converter.render(conversion);
 
   const copyIco = useRef<SVGSVGElement | null>(null);
 
   const icoCopyHandler = () => {
-    navigator.clipboard.writeText(value);
+    navigator.clipboard.writeText(conversion.toString());
 
     const opacity = "opacity-40";
     if (copyIco.current) {
-      // Check if copyIco.current is not null
       copyIco.current.classList.add(opacity);
       setTimeout(() => {
         copyIco.current!.classList.remove(opacity);
@@ -57,12 +50,11 @@ export default function Wrapper({
       console.warn("copyIco Ref is null");
     }
   };
-
   const resultDiv = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     // This effect runs after the component has mounted.
-    const handleHotkeyCopy = (e: KeyboardEvent) => {
+    const handleHotkey = (e: KeyboardEvent) => {
       const split = hotkey.split("+");
       if (
         e.key === split[split.length - 1] &&
@@ -92,11 +84,11 @@ export default function Wrapper({
     };
 
     // Add event listener for the hotkey
-    window.addEventListener("keydown", handleHotkeyCopy);
+    window.addEventListener("keydown", handleHotkey);
 
     // Clean up the event listener when the component unmounts
     return () => {
-      window.removeEventListener("keydown", handleHotkeyCopy);
+      window.removeEventListener("keydown", handleHotkey);
     };
   }, []);
 
@@ -222,24 +214,20 @@ export default function Wrapper({
           {base}
         </div>
         <div className="font-space-code hidden text-app-gray-200 lg:my-auto lg:mr-4 xl:block">
-          {hotkey ? (
+          {hotkey && (
             <small>
               <code>{hotkey}</code>
             </small>
-          ) : (
-            ""
           )}
         </div>
       </div>
-      {children ? (
+      {children && (
         <div
           ref={details}
           className="font-space hidden border-b border-app-green-600 p-3 lg:block lg:border-x lg:text-sm"
         >
           {children}
         </div>
-      ) : (
-        ""
       )}
     </div>
   );
