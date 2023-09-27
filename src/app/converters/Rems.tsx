@@ -3,6 +3,8 @@ import { Converter, DPI, FONT_SIZE } from "@/converters";
 import { roundToDecimal } from "@/shared/round_number";
 import { useEffect } from "react";
 import Wrapper from "@/converters/Wrapper";
+import { getIntersectingValue } from "@/shared/arrays";
+import { tailwindSizes } from "./Tailwind";
 
 /**
  * Rems Component
@@ -66,7 +68,6 @@ export default function Rems({
  * This array maps index values to spacing values used in Bootstrap CSS classes.
  * For example, `bootstrap[1]` corresponds to `p-1`, which adds padding of 0.25rem.
  */
-const bootstrap = [0, 0.25, 0.5, 1, 1.5, 3];
 
 /**
  * Rem equivalent values for Tailwind CSS spacing and sizing classes.
@@ -76,45 +77,11 @@ const bootstrap = [0, 0.25, 0.5, 1, 1.5, 3];
  * `tailwind[4]` corresponds to the 'p-4' Tailwind class, which would correspond to 1rem
  * of padding applied to an HTML element.
  */
-const tailwind: {
-  [key: number]: number;
-} = {
-  0: 0,
-  0.25: 0.063, // Corresponds to Tailwind's 'px' size, e.g. `m-px`.
-  0.5: 0.125,
-  1: 0.25,
-  1.5: 0.375,
-  2: 0.5,
-  2.5: 0.625,
-  3: 0.75,
-  3.5: 0.875,
-  4: 1,
-  5: 1.25,
-  6: 1.5,
-  7: 1.75,
-  8: 2,
-  9: 2.25,
-  10: 2.5,
-  11: 2.75,
-  12: 3,
-  14: 3.5,
-  16: 4,
-  20: 5,
-  24: 6,
-  28: 7,
-  32: 8,
-  36: 9,
-  40: 10,
-  44: 11,
-  48: 12,
-  52: 13,
-  56: 14,
-  60: 15,
-  64: 16,
-  72: 18,
-  80: 20,
-  96: 24,
-};
+const tailwindInRems = [
+  0, 0.063, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1, 1.25, 1.5, 1.75, 2,
+  2.25, 2.5, 2.75, 3, 3.5, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20,
+  24,
+];
 
 /**
  * toRems Converter
@@ -123,10 +90,12 @@ const tailwind: {
  */
 export const toRems: Converter = {
   convert: (from: Unit, input: number) => {
+    if (input < 0) return -1;
     switch (from) {
       case Unit.Bootstrap:
-        return input >= 0 && input <= bootstrap.length - 1 && input % 1 === 0
-          ? bootstrap[input]
+        const bs = [0, 0.25, 0.5, 1, 1.5, 3];
+        return input <= bs.length - 1 && input % 1 === 0
+          ? bs[input]
           : -1;
       case Unit.Centimetres:
         return roundToDecimal((input * 0.3937008 * DPI) / FONT_SIZE, 3);
@@ -147,26 +116,27 @@ export const toRems: Converter = {
       case Unit.Rems:
         return roundToDecimal(input, 3);
       case Unit.Tailwind:
-        return input in tailwind ? tailwind[input] : -1;
+        return roundToDecimal(
+          getIntersectingValue(tailwindSizes, tailwindInRems, input),
+          4,
+        );
       default:
         return -1;
     }
   },
 
   /**
-   * The `render` function converts a converted value in rems to a 
+   * The `render` function converts a converted value in rems to a
    * string representation.
    *
    * @param {number} conversion - The converted value in rems.
-   * @returns {string} - A string representation of the converted value, or 
+   * @returns {string} - A string representation of the converted value, or
    *                     "N/A" if the conversion is not valid.
    */
   render: (conversion: number): string => {
     if (conversion < 0) return "N/A";
 
     const str = conversion.toString();
-    return str.length < 8
-      ? str
-      : str.slice(0, 6) + "..";
-  }
+    return str.length < 8 ? str : str.slice(0, 6) + "..";
+  },
 };

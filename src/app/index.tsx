@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Unit, isUnit } from "@/units";
 import UserInput from "@/user_input";
-import { Bootstrap, Centimetres, Ems, Pixels, Rems, Tailwind } from "@/converters";
+import { Bootstrap, Centimetres, Ems, Picas, Pixels, Points, Rems, Tailwind } from "@/converters";
 import Modal from "@/modal";
 import Millimetres from "./converters/Millimetres";
 
@@ -92,6 +92,8 @@ export default function UnitSwitch() {
       <Bootstrap input={data.value} from={data.unit} hotkey={"b"} />
       <Millimetres input={data.value} from={data.unit} hotkey={"m"} />
       <Centimetres input={data.value} from={data.unit} hotkey={"c"} />
+      <Points input={data.value} from={data.unit} hotkey={"o"} />
+      <Picas input={data.value} from={data.unit} hotkey={"6"} />
       <Modal
         type={data.unit}
         callback={onUserInput}

@@ -87,11 +87,11 @@ const bootstrapInCm = [
  */
 export const toCentimetres: Converter = {
   /**
-   * Converts a value from the specified unit to millimeters.
+   * Converts a value from the specified unit to centimetres (cm).
    *
    * @param {Unit} from - The unit to convert from.
    * @param {number} input - The value to be converted.
-   * @returns {number} - The converted value in millimeters, or -1 if the
+   * @returns {number} - The converted value in centimetres (cm), or -1 if the
    *                     conversion is not supported or input is invalid.
    */
   convert: (from: Unit, input: number): number => {

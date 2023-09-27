@@ -9,8 +9,8 @@ import { tailwindSizes } from "./Tailwind";
 /**
  * Pixels Component
  *
- * This component converts a value from one unit of measurement to pixels, and 
- * allows users to copy the result to the clipboard using a specified 
+ * This component converts a value from one unit of measurement to pixels, and
+ * allows users to copy the result to the clipboard using a specified
  * hotkey combination.
  *
  * @param {object} props - The component's properties.
@@ -82,10 +82,11 @@ export const tailwindInPixels = [
  */
 export const toPixels: Converter = {
   convert: (from: Unit, input: number): number => {
+    if (input < 0) return -1;
     switch (from) {
       case Unit.Bootstrap:
         const bs = [0, 4, 8, 16, 24, 48];
-        return input >= 0 && input <= bs.length - 1 ? bs[input] : -1;
+        return input <= bs.length - 1 ? bs[input] : -1;
       case Unit.Centimetres:
         return roundToDecimal(input * (DPI / 2.54), 0, RoundingMethod.Ceil);
       case Unit.Ems:
@@ -105,18 +106,21 @@ export const toPixels: Converter = {
       case Unit.Rems:
         return roundToDecimal(input * FONT_SIZE, 0, RoundingMethod.Ceil);
       case Unit.Tailwind:
-        return getIntersectingValue(tailwindSizes, tailwindInPixels, input);
+        return roundToDecimal(
+          getIntersectingValue(tailwindSizes, tailwindInPixels, input),
+          4,
+        );
       default:
         return -1;
     }
   },
 
   /**
-   * The `render` function converts a converted value in pixels to a 
+   * The `render` function converts a converted value in pixels to a
    * string representation.
    *
    * @param {number} conversion - The converted value in pixels.
-   * @returns {string} - A string representation of the converted value, or 
+   * @returns {string} - A string representation of the converted value, or
    *                     "N/A" if the conversion is not valid.
    */
   render: (conversion: number): string => {
