@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Unit, isUnit } from "@/units";
 import UserInput from "@/user_input";
-import { Bootstrap, Centimetres, Ems, Inches, Picas, Pixels, Points, Rems, Tailwind } from "@/converters";
+import { Bootstrap, Centimetres, Ems, Inches, Picas, Pixels, Points, Rems, RootTwo, SixteenNine, Tailwind } from "@/converters";
 import Modal from "@/modal";
 import Millimetres from "./converters/Millimetres";
 import Feet from "./converters/Feet";
+import GoldenRatio from "./converters/GoldenRatio";
 
 type appData = {
   input: number;
@@ -97,6 +98,9 @@ export default function UnitSwitch() {
       <Picas input={data.value} from={data.unit} hotkey={"6"} />
       <Inches input={data.value} from={data.unit} hotkey={"i"} />
       <Feet input={data.value} from={data.unit} hotkey={"f"} />
+      <GoldenRatio input={data.value} from={data.unit} hotkey={"g"} />
+      <RootTwo input={data.value} from={data.unit} hotkey={"2"} />
+      <SixteenNine input={data.value} from={data.unit} hotkey={"9"} />
       <Modal
         type={data.unit}
         callback={onUserInput}
