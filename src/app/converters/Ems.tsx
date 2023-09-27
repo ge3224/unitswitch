@@ -162,7 +162,7 @@ export const toEms: Converter = {
    *                     "N/A" if the conversion is not valid.
    */
   render: (conversion: number): string => {
-    if (conversion <= 0) return "N/A";
+    if (conversion < 0) return "N/A";
 
     const str = conversion.toString();
     return str.length < 8

@@ -89,40 +89,40 @@ export const toMillimetres: Converter = {
    *                     conversion is not supported or input is invalid.
    */
   convert: (from: Unit, input: number): number => {
-    if (input <= 0) return -1;
+    if (input < 0) return -1;
 
     switch (from) {
       case Unit.Bootstrap:
         const bs = [
           0, 0.10583332, 0.21166664, 0.42333328, 0.63499992, 1.26999984,
         ];
-        return input >= 0 && input <= bs.length - 1 && input % 1 === 0
-          ? bs[input]
+        return input <= bs.length - 1 && input % 1 === 0
+          ? roundToDecimal(bs[input], 4)
           : -1;
       case Unit.Centimetres:
-        return roundToDecimal(input * 10, 3);
+        return roundToDecimal(input * 10, 4);
       case Unit.Ems:
-        return roundToDecimal(((input * FONT_SIZE) / DPI) * 25.4, 3);
+        return roundToDecimal(((input * FONT_SIZE) / DPI) * 25.4, 4);
       case Unit.Feet:
         return roundToDecimal(input * 304.8, 1);
       case Unit.Inches:
         return roundToDecimal(input * 25.4, 3);
       case Unit.Millimetres:
-        return roundToDecimal(input, 3);
+        return roundToDecimal(input, 4);
       case Unit.Picas:
-        return roundToDecimal(input * 4.23333333, 3);
+        return roundToDecimal(input * 4.23333333, 4);
       case Unit.Pixels:
         return roundToDecimal(input * 0.2645833, 4);
       case Unit.Points:
-        return roundToDecimal(input * 0.352778, 3);
+        return roundToDecimal(input * 0.352778, 4);
       case Unit.Rems:
-        return roundToDecimal(((input * FONT_SIZE) / DPI) * 25.4, 3);
+        return roundToDecimal(((input * FONT_SIZE) / DPI) * 25.4, 4);
       case Unit.Tailwind:
-        return getIntersectingValue(
+        return roundToDecimal(getIntersectingValue(
           tailwindSizes,
           tailwindInMillimetres,
           input,
-        );
+        ), 3);
       default:
         return -1;
     }
@@ -137,7 +137,7 @@ export const toMillimetres: Converter = {
    *                     "N/A" if the conversion is not valid.
    */
   render: (conversion: number): string => {
-    if (conversion <= 0) return "N/A";
+    if (conversion < 0) return "N/A";
 
     const str = conversion.toString();
     return str.length < 9 ? str : str.slice(0, 7) + "..";

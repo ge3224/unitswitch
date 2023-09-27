@@ -1,17 +1,21 @@
-import { Unit } from "@/units";
-import { Converter } from ".";
-import Wrapper from "./Wrapper";
 import { useEffect } from "react";
+import { Unit } from "@/units";
+import { Converter } from "@/converters";
+import Wrapper from "@/converters/Wrapper";
 import { nearestIndex } from "@/shared/arrays";
 
 /**
- * A React component for converting values to Bootstrap spacing units.
+ * Bootstrap Component
  *
- * @param props - The component's properties.
- * @param input - The value to be converted.
- * @param from - The source unit of the input value.
- * @param hotkey - The keyboard shortcut to trigger the conversion and copy the result to the clipboard.
- * @returns A JSX element representing the Bootstrap conversion component.
+ * This component converts a value from various units of measurement to Bootstrap sizing
+ * and provides a hotkey to copy the converted value to the clipboard.
+ *
+ * @param {object} props - The component's properties.
+ * @param {number} props.input - The input value to be converted.
+ * @param {Unit} props.from - The unit of the input value.
+ * @param {string} props.hotkey - The hotkey combination to copy the result to the clipboard.
+ *
+ * @returns {JSX.Element} - A React element representing the Bootstrap converter component.
  */
 export default function Bootstrap({
   input,
@@ -48,7 +52,9 @@ export default function Bootstrap({
       hotkey={"ctrl+" + hotkey}
       converter={toBootstrap}
     >
-      Only six possible values: <strong>0-5</strong>
+      <div className="font-space text-app-black">
+        Only six possible values: <strong>0-5</strong>
+      </div>
     </Wrapper>
   );
 }
@@ -127,7 +133,7 @@ export const toBootstrap: Converter = {
    *                     "N/A" if the conversion is not valid.
    */
   render: (conversion: number): string => {
-    if (conversion <= 0) return "N/A";
+    if (conversion < 0) return "N/A";
 
     const str = conversion.toString();
     return str.length < 8

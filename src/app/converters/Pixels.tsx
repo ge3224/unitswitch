@@ -65,11 +65,10 @@ export default function Pixels({
  * Pixel equivalent values for Tailwind CSS spacing and sizing classes.
  *
  * Each key in this array corresponds to a specific size in a Tailwind CSS
- * class name. The values represent the pixel equivalent of that Tailwind size
- * class. For example, the 'p-4' Tailwind class, which would correspond to 16
- * pixels of padding applied to an HTML element.
+ * class name. The values represent the pixel equivalent of that Tailwind size.
+ * For example, the 'p-4' Tailwind class would correspond to 16px.
  */
-const tailwindInPixels = [
+export const tailwindInPixels = [
   0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 20, 24, 28, 32, 36, 40, 44, 48, 56, 64, 80,
   96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 256, 288, 320, 384,
 ];
@@ -121,7 +120,7 @@ export const toPixels: Converter = {
    *                     "N/A" if the conversion is not valid.
    */
   render: (conversion: number): string => {
-    if (conversion <= 0) return "N/A";
+    if (conversion < 0) return "N/A";
 
     const str = conversion.toString();
     return str.length < 8 ? str : str.slice(0, 6) + "..";

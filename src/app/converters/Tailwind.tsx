@@ -1,13 +1,13 @@
+import { useEffect } from "react";
 import { Unit } from "@/units";
 import { Converter } from "@/converters";
-import { useEffect } from "react";
 import Wrapper from "@/converters/Wrapper";
 import { interpolateInRange } from "@/shared/arrays";
 
 /**
  * Tailwind Component
  *
- * This component converts a value from various units of measurement to general Tailwind sizing
+ * This component converts a value from various units of measurement to Tailwind sizing
  * and provides a hotkey to copy the converted value to the clipboard.
  *
  * @param {object} props - The component's properties.
@@ -15,7 +15,7 @@ import { interpolateInRange } from "@/shared/arrays";
  * @param {Unit} props.from - The unit of the input value.
  * @param {string} props.hotkey - The hotkey combination to copy the result to the clipboard.
  *
- * @returns {JSX.Element} - A React element representing the Tailwind component.
+ * @returns {JSX.Element} - A React element representing the Tailwind converter component.
  */
 export default function Tailwind({
   input,
@@ -53,8 +53,12 @@ export default function Tailwind({
       converter={toTailwind}
     >
       <div className="font-space text-app-black">
-        <span className="font-bold">0.25</span> is written "<code>px</code>"
-        (e.g. <code>m-px</code>).
+        <strong>Example</strong>:{" "}
+        {result >= 0 ? (
+          <code>class="p-{toTailwind.render(result)}"</code>
+        ) : (
+          "N/A"
+        )}
       </div>
     </Wrapper>
   );
@@ -79,12 +83,11 @@ export const tailwindSizes = [
  */
 export const toTailwind: Converter = {
   convert: (from: Unit, input: number) => {
+    // if (input === 0) return 0;
     switch (from) {
       case Unit.Bootstrap:
         const bs = [0, 1, 2, 4, 6, 12];
-        return input >= 0 && input <= bs.length - 1
-          ? bs[input]
-          : -1;
+        return input >= 0 && input <= bs.length - 1 ? bs[input] : -1;
       case Unit.Centimetres:
         return interpolateInRange(input, tailwindSizes, 0, 10.15999872);
       case Unit.Ems:
@@ -112,20 +115,18 @@ export const toTailwind: Converter = {
   },
 
   /**
-   * The `render` function converts a converted value in Tailwind sizes to a 
+   * The `render` function converts a converted value in Tailwind sizes to a
    * string representation.
    *
    * @param {number} conversion - The converted value in Tailwind sizes.
-   * @returns {string} - A string representation of the converted value, or 
+   * @returns {string} - A string representation of the converted value, or
    *                     "N/A" if the conversion is not valid.
    */
   render: (conversion: number): string => {
-    if (conversion <= 0) return "N/A";
+    if (conversion < 0) return "N/A";
     if (conversion === 0.25) return "px";
 
     const str = conversion.toString();
-    return str.length < 8
-      ? str
-      : str.slice(0, 6) + "..";
-  }
+    return str.length < 8 ? str : str.slice(0, 6) + "..";
+  },
 };
