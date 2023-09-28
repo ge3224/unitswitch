@@ -9,8 +9,7 @@ export default function SixteenNine({ input, from, hotkey }: ConverterProps): JS
   const on16_9Key = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
-      e.stopPropagation();
-      navigator.clipboard.writeText(result >= 0 ? result.toFixed(0) : "N/A");
+      navigator.clipboard.writeText(result >= 0 ? result.toString() : "N/A");
     }
   };
 
@@ -27,7 +26,7 @@ export default function SixteenNine({ input, from, hotkey }: ConverterProps): JS
       base="16:9"
       input={input}
       from={from}
-      hotkey={"ctrl+" + hotkey}
+      hotkey={hotkey}
       converter={toSixteenNine}
     >
       <div className="flex justify-center pt-4">

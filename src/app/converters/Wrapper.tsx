@@ -52,37 +52,55 @@ export default function Wrapper({
   };
   const resultDiv = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    // This effect runs after the component has mounted.
-    const handleHotkey = (e: KeyboardEvent) => {
-      const split = hotkey.split("+");
-      if (
-        e.key === split[split.length - 1] &&
-        split[0] === "ctrl" &&
-        e.ctrlKey === true
-      ) {
-        // Check if resultDiv.current is not null
-        if (resultDiv.current) {
-          resultDiv.current.classList.add("ring");
-          resultDiv.current.classList.add("ring-2");
-          resultDiv.current.classList.add("ring-app-purple-400");
-          resultDiv.current.classList.add("ring-inset");
+  // This effect runs after the component has mounted.
+  const handleHotkey = (e: KeyboardEvent) => {
+    if (e.ctrlKey === true && e.key === hotkey) {
+      e.preventDefault();
+      // Check if resultDiv.current is not null
+      if (resultDiv.current) {
+        resultDiv.current?.classList.add("ring-2");
+        resultDiv.current?.classList.add("ring-app-purple-400");
+        resultDiv.current?.classList.add("ring-inset");
 
-          setTimeout(() => {
-            // Check again before removing classes
-            if (resultDiv.current) {
-              resultDiv.current.classList.remove("ring");
-              resultDiv.current.classList.remove("ring-2");
-              resultDiv.current.classList.remove("ring-app-purple-400");
-              resultDiv.current.classList.remove("ring-inset");
-            }
-          }, 500);
-        } else {
-          console.warn("resultDiv Ref is null");
-        }
+        setTimeout(() => {
+          // Check again before removing classes
+          if (resultDiv.current) {
+            resultDiv.current?.classList.remove("ring-2");
+            resultDiv.current?.classList.remove("ring-app-purple-400");
+            resultDiv.current?.classList.remove("ring-inset");
+          }
+        }, 500);
+      } else {
+        console.warn("resultDiv Ref is null");
       }
-    };
+    }
+    // const split = hotkey.split("+");
+    // if (
+    //   e.key === split[split.length - 1] &&
+    //   split[0] === "ctrl" &&
+    //   e.ctrlKey === true
+    // ) {
+    //   // Check if resultDiv.current is not null
+    //   if (resultDiv.current) {
+    //     resultDiv.current?.classList.add("ring-2");
+    //     resultDiv.current?.classList.add("ring-app-purple-400");
+    //     resultDiv.current?.classList.add("ring-inset");
+    //
+    //     setTimeout(() => {
+    //       // Check again before removing classes
+    //       if (resultDiv.current) {
+    //         resultDiv.current?.classList.remove("ring-2");
+    //         resultDiv.current?.classList.remove("ring-app-purple-400");
+    //         resultDiv.current?.classList.remove("ring-inset");
+    //       }
+    //     }, 500);
+    //   } else {
+    //     console.warn("resultDiv Ref is null");
+    //   }
+    // }
+  };
 
+  useEffect(() => {
     // Add event listener for the hotkey
     window.addEventListener("keydown", handleHotkey);
 
@@ -216,7 +234,7 @@ export default function Wrapper({
         <div className="font-space-code hidden text-app-gray-200 lg:my-auto lg:mr-4 xl:block">
           {hotkey && (
             <small>
-              <code>{hotkey}</code>
+              <code>{"ctrl+" + hotkey}</code>
             </small>
           )}
         </div>

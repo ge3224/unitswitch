@@ -30,8 +30,7 @@ export default function Rems({
   const onRemKey = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
-      e.stopPropagation();
-      navigator.clipboard.writeText(result >= 0 ? result.toFixed(0) : "N/A");
+      navigator.clipboard.writeText(result >= 0 ? result.toString() : "N/A");
     }
   };
 
@@ -48,7 +47,7 @@ export default function Rems({
       base={Unit.Rems}
       input={input}
       from={from}
-      hotkey={"ctrl+" + hotkey}
+      hotkey={hotkey}
       converter={toRems}
     >
       <div className="font-space text-app-black">

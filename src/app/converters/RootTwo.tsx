@@ -9,19 +9,18 @@ import { tailwindSizes } from "./Tailwind";
 export default function RootTwo({ input, from, hotkey }: ConverterProps): JSX.Element {
   const result = toRootTwo.convert(from, input);
 
-  const onCmKey = (e: KeyboardEvent) => {
+  const onR2Key = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
-      e.stopPropagation();
-      navigator.clipboard.writeText(result >= 0 ? result.toFixed(0) : "N/A");
+      navigator.clipboard.writeText(result >= 0 ? result.toString() : "N/A");
     }
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", onCmKey);
+    document.addEventListener("keydown", onR2Key);
 
     return () => {
-      document.removeEventListener("keydown", onCmKey);
+      document.removeEventListener("keydown", onR2Key);
     };
   });
 
@@ -30,7 +29,7 @@ export default function RootTwo({ input, from, hotkey }: ConverterProps): JSX.El
       base="Root 2 Rect."
       input={input}
       from={from}
-      hotkey={"ctrl+" + hotkey}
+      hotkey={hotkey}
       converter={toRootTwo}
     >
       <div className="flex justify-center pt-4">

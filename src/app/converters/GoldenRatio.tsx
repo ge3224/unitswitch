@@ -27,8 +27,7 @@ export default function GoldenRatio({
   const onGrKey = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
-      e.stopPropagation();
-      navigator.clipboard.writeText(result >= 0 ? result.toFixed(0) : "N/A");
+      navigator.clipboard.writeText(result >= 0 ? result.toString() : "N/A");
     }
   };
 
@@ -45,7 +44,7 @@ export default function GoldenRatio({
       base="Golden Ratio"
       input={input}
       from={from}
-      hotkey={"ctrl+" + hotkey}
+      hotkey={hotkey}
       converter={toGolden}
     >
       <div className="flex justify-center pt-4">

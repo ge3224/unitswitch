@@ -27,8 +27,13 @@ export default function Tailwind({
   const onTwKey = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
-      e.stopPropagation();
-      navigator.clipboard.writeText(result >= 0 ? result.toFixed(0) : "N/A");
+      navigator.clipboard.writeText(
+        result >= 0
+          ? result === 0.25
+            ? toTailwind.render(result)
+            : result.toString()
+          : "N/A",
+      );
     }
   };
 
@@ -45,13 +50,13 @@ export default function Tailwind({
       base={Unit.Tailwind}
       input={input}
       from={from}
-      hotkey={"ctrl+" + hotkey}
+      hotkey={hotkey}
       converter={toTailwind}
     >
       <div className="font-space text-app-black">
         <strong>Example</strong>:{" "}
         {result >= 0 ? (
-          <code>class="p-{toTailwind.render(result)}"</code>
+          <code className="font-mono text-app-purple-500">class="p-{toTailwind.render(result)}"</code>
         ) : (
           "N/A"
         )}
@@ -78,7 +83,6 @@ export const tailwindSizes = [
  * This object provides conversion functions from various unit systems to Tailwind.
  */
 export const toTailwind: Converter = {
-
   /**
    * Converts a value from the specified unit to tailwindcss sizes.
    *
