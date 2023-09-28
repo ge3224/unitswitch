@@ -1,11 +1,13 @@
-import { Unit } from "@/units";
+import { Unit, abbreviations, isUnit } from "@/units";
 import React, { useEffect, useRef } from "react";
+import { UserInputCallback } from "./user_input";
+
 
 /**
  * Modal component for inputting values and units.
  *
  * @param props - Props for the Modal component.
- * @param props.type - The intial type of unit held in state.
+ * @param props.type - The initial type of unit held in state.
  * @param props.callback - A callback function to handle user input.
  * @param props.hotkey - The hotkey combination to trigger the Modal.
  */
@@ -15,9 +17,10 @@ export default function Modal({
   hotkey,
 }: {
   type: Unit;
-  callback: Function;
+  callback: UserInputCallback;
   hotkey: string;
 }) {
+  // Create refs for the Modal and input elements
   const modal = useRef<HTMLDivElement | null>(null);
   const input = useRef<HTMLInputElement | null>(null);
 
@@ -32,6 +35,8 @@ export default function Modal({
       e.stopPropagation();
       const inputRef = input.current;
       if (inputRef) {
+        // Clear the input value, remove the 'hidden' class to show the Modal,
+        // and set focus on the input element.
         inputRef.value = "";
         modal.current?.classList.remove("hidden");
         inputRef.focus();
@@ -41,6 +46,7 @@ export default function Modal({
     if (e.key === "Escape") {
       e.preventDefault();
       e.stopPropagation();
+      // Hide the Modal when the Escape key is pressed.
       modal.current?.classList.add("hidden");
     }
   };
@@ -54,8 +60,15 @@ export default function Modal({
     };
   }, []);
 
+  /**
+   * Function to handle the closing of the Modal component.
+   */
   const closeHandler = () => {
-    modal.current?.classList.add("hidden");
+    // Get a reference to the Modal component using the 'modal' ref
+    if (modal.current) {
+      // Hide the Modal by adding the 'hidden' CSS class
+      modal.current.classList.add("hidden");
+    }
   };
 
   /**
@@ -63,7 +76,7 @@ export default function Modal({
    *
    * @param e - The form submission event.
    */
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const inputValue = input.current?.value;
 
@@ -75,20 +88,33 @@ export default function Modal({
     const split = inputValue.split(":");
     const num = parseFloat(split[0]);
     if (Number.isNaN(num)) {
+      // Close the Modal if the entered value is not a valid number
       closeHandler();
       return;
     }
 
-    const unitSet = new Set(Object.values(Unit).map((u) => u.toLowerCase()));
-    const unit = split[1].toLowerCase();
+    const unitInput = split[1].toLowerCase();
 
-    if (unitSet.has(unit)) {
-      const u = unit.charAt(0).toUpperCase() + unit.slice(1);
-      callback(num, u);
-    } else {
-      callback(num, type);
+    const abbrv = abbreviations(unitInput);
+    if (abbrv !== null) {
+      // Close the Modal and call the callback function with the parsed values
+      closeHandler();
+      return callback(num, abbrv);
     }
 
+    const capitalized = unitInput.charAt(0).toUpperCase() + unitInput.slice(1);
+
+    if (!isUnit(capitalized)) {
+      // Call the callback function with the parsed values and the default unit type
+      callback(num, type);
+      // Close the Modal
+      closeHandler();
+      return;
+    }
+
+    // Call the callback function with the parsed values and the capitalized unit type
+    callback(num, capitalized as Unit);
+    // Close the Modal
     closeHandler();
   };
 
@@ -96,7 +122,9 @@ export default function Modal({
     <div
       ref={modal}
       className="absolute left-0 top-0 z-10 hidden h-screen w-full bg-app-black/70"
+      data-testid="modal-container"
     >
+      {/* Modal content */}
       <div className="fixed inset-x-1/3 top-1/4 rounded-md border border-app-green-600 bg-app-black p-6 shadow-lg shadow-app-black">
         <form onSubmit={handleSubmit}>
           <label className="font-space font-bold text-white">
@@ -111,6 +139,7 @@ export default function Modal({
             className="rounded-sm bg-app-gray-100"
             type="text"
             name="name"
+            data-testid="modal-input"
           />
           <input
             className="font-space ml-3 mt-3 cursor-pointer rounded-sm border-app-green-200 bg-app-green-300 px-3"
@@ -118,10 +147,12 @@ export default function Modal({
             value="Submit"
           />
         </form>
+        {/* Close button */}
         <div
           className="font-space absolute right-3 top-3 cursor-pointer font-bold text-app-gray-200"
           onClick={closeHandler}
         >
+          {/* Close icon */}
           <svg
             width="24"
             height="24"
@@ -149,3 +180,4 @@ export default function Modal({
     </div>
   );
 }
+

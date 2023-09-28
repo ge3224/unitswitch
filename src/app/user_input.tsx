@@ -1,5 +1,15 @@
 import React, { useRef, useEffect } from "react";
-import { Unit } from "@/units";
+import { Unit, isUnit } from "@/units";
+
+/**
+ * Callback function signature for the UserInput component.
+ * It takes a value and a unit as parameters and returns void.
+ *
+ * @param value - The numerical input value.
+ * @param unit - The unit of measurement for the input value.
+ * @returns void
+ */
+export type UserInputCallback = (value: number, unit: Unit) => void;
 
 /**
  * UserInput is a React component that provides an input field for numeric values and a dropdown select for units.
@@ -17,11 +27,34 @@ export default function UserInput({
 }: {
   input: number;
   type: Unit;
-  callback: Function;
+  callback: UserInputCallback;
 }): JSX.Element {
   // Refs for the input and select elements
   const textInput: React.RefObject<HTMLInputElement> = useRef(null);
+
   const selectInput = useRef<HTMLSelectElement>(null);
+
+  const onChangeHandler = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ): void => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (e.target instanceof HTMLInputElement) {
+      if (Number.isNaN(parseFloat(e.target.value))) return;
+
+      const num = parseFloat(e.target.value);
+
+      if (num < 0) return;
+
+      callback(num, type);
+    } else if (e.target instanceof HTMLSelectElement) {
+      const selectedOptionText = e.target.selectedOptions[0]?.text;
+      if (selectedOptionText && isUnit(selectedOptionText)) {
+        callback(input, selectedOptionText as Unit);
+      }
+    }
+  };
 
   // Focus on the input element when the component mounts
   useEffect(() => {
@@ -60,7 +93,7 @@ export default function UserInput({
             strokeLinejoin="round"
           />
         </svg>
-        <h1 className="font-space text-app-black ml-1 text-4xl font-bold">
+        <h1 className="font-space ml-1 text-4xl font-bold text-app-black">
           UnitSwitch
         </h1>
       </div>
@@ -69,47 +102,22 @@ export default function UserInput({
         <div className="mb-2">
           {/* Numeric input field */}
           <input
-            className="bg-app-green-100 border-green-usw-600 font-space-code text-green-usw-500 focus:ring-teal-usw-500 w-full rounded-sm border px-1.5 py-1 font-bold focus:outline-none focus:ring"
+            className="border-green-usw-600 font-space-code text-green-usw-500 focus:ring-teal-usw-500 w-full rounded-sm border bg-app-green-100 px-1.5 py-1 font-bold focus:outline-none focus:ring"
             type="number"
             value={input}
             ref={textInput}
-            onChange={(e) => {
-              e.preventDefault();
-              const inputValue = textInput.current?.value;
-              if (inputValue !== null && inputValue !== undefined) {
-                const selectedOptionText =
-                  selectInput.current?.selectedOptions[0]?.text;
-                if (
-                  selectedOptionText !== null &&
-                  selectedOptionText !== undefined
-                ) {
-                  callback(inputValue, selectedOptionText);
-                }
-              }
-            }}
+            onChange={onChangeHandler}
           />
         </div>
         <div>
           {/* Unit selection dropdown */}
           <select
-            className="bg-app-gray-50 border-green-usw-600 font-space text-black-usw focus:ring-teal-usw-500 rounded-sm border px-0.5 py-1 focus:outline-none focus:ring"
+            className="border-green-usw-600 font-space text-black-usw focus:ring-teal-usw-500 rounded-sm border bg-app-gray-50 px-0.5 py-1 focus:outline-none focus:ring"
             name="units"
             value={type}
             ref={selectInput}
-            onChange={(e) => {
-              e.preventDefault();
-              const inputValue = textInput.current?.value;
-              if (inputValue !== null && inputValue !== undefined) {
-                const selectedOptionText =
-                  selectInput.current?.selectedOptions[0]?.text;
-                if (
-                  selectedOptionText !== null &&
-                  selectedOptionText !== undefined
-                ) {
-                  callback(inputValue, selectedOptionText);
-                }
-              }
-            }}
+            onChange={onChangeHandler}
+            data-testid="unit-type"
           >
             {/* Generate unit options */}
             {Object.values(Unit).map((unit, index) => (
@@ -119,7 +127,7 @@ export default function UserInput({
             ))}
           </select>
         </div>
-        <div className="font-space-code text-app-gray-200 mt-1 hidden lg:block">
+        <div className="font-space-code mt-1 hidden text-app-gray-200 lg:block">
           {/* Shortcut information */}
           <small>
             <code>ctrl+k</code>

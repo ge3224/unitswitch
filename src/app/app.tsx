@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Unit, isUnit } from "@/units";
-import UserInput from "@/user_input";
+import UserInput, { UserInputCallback } from "@/user_input";
 import { Bootstrap, Centimetres, Ems, Inches, Picas, Pixels, Points, Rems, RootTwo, SixteenNine, Tailwind } from "@/converters";
 import Modal from "@/modal";
 import Millimetres from "./converters/Millimetres";
@@ -64,7 +64,7 @@ export default function UnitSwitch() {
   // Define a function called 'onUserInput' that takes two parameters:
   // - 'value': a number representing a user input value.
   // - 'unit': a value of type 'Unit' representing the selected unit.
-  const onUserInput = (value: number, unit: Unit) => {
+  const callback: UserInputCallback = (value: number, unit: Unit) => {
     setData({ ...data, value, unit });
   };
 
@@ -86,7 +86,7 @@ export default function UnitSwitch() {
 
   return (
     <div className="rounded-lg border border-app-green-600 bg-app-green-50 pb-4 lg:grid lg:grid-cols-3 lg:gap-5 lg:border-none lg:p-12">
-      <UserInput input={data.value} type={data.unit} callback={onUserInput} />
+      <UserInput input={data.value} type={data.unit} callback={callback} />
       <Pixels input={data.value} from={data.unit} hotkey={"p"} />
       <Rems input={data.value} from={data.unit} hotkey={"r"} />
       <Ems input={data.value} from={data.unit} hotkey={"e"} />
@@ -103,7 +103,7 @@ export default function UnitSwitch() {
       <SixteenNine input={data.value} from={data.unit} hotkey={"9"} />
       <Modal
         type={data.unit}
-        callback={onUserInput}
+        callback={callback}
         hotkey={"k"}
       />
     </div>

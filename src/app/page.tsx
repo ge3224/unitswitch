@@ -1,6 +1,6 @@
 "use client";
 
-import UnitSwitch from "@/index";
+import UnitSwitch from "@/app";
 
 export default function Home() {
   return (
