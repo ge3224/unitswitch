@@ -93,26 +93,26 @@ export default function SixteenNine({ input, from, hotkey }: ConverterProps): JS
             className="stroke-app-green-400"
           />
           <text
-            className="fill-app-green-400 font-space font-bold text-sm"
+            className="fill-app-green-400 font-bold text-sm"
             x="256"
             y="58"
             transform="rotate(-90,256,58)"
             textAnchor="middle">{shorter(input).toFixed(2)}
           </text>
           <text
-            className="fill-app-green-400 font-space font-bold text-sm"
+            className="fill-app-green-400 font-bold text-sm"
             x="128"
             y="140"
             textAnchor="middle">{longer(input).toFixed(2)}
           </text>
           <text
-            className="fill-app-green-600 font-space font-bold text-sm"
+            className="fill-app-green-600 font-bold text-sm"
             x="162"
             y="27"
             textAnchor="middle">{input.toFixed(2)}
           </text>
           <text
-            className="fill-app-green-600 font-space font-bold text-sm"
+            className="fill-app-green-600 font-bold text-sm"
             x="18"
             y="42"
             transform="rotate(-90,18,42)"

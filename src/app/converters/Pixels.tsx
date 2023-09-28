@@ -49,7 +49,7 @@ export default function Pixels({
       hotkey={hotkey}
       converter={toPixels}
     >
-      <div className="font-space text-app-black">
+      <div className="text-app-black">
         Based on a resolution of <span className="font-bold">{PPI} DPI</span>
       </div>
     </Wrapper>

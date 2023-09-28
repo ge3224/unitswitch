@@ -129,7 +129,7 @@ export default function GoldenRatio({
           <path className="stroke-app-green-400" d="M51.1254 124.203V106.716" />
           <path className="stroke-app-green-400" d="M192.841 124.203V106.716" />
           <text
-            className="font-space fill-app-green-600 text-sm font-bold "
+            className="fill-app-green-600 text-sm font-bold "
             x="16"
             y="44"
             transform="rotate(-90,16,44)"
@@ -138,7 +138,7 @@ export default function GoldenRatio({
             {input.toFixed(2)}
           </text>
           <text
-            className="font-space fill-app-green-400 text-sm font-bold"
+            className="fill-app-green-400 text-sm font-bold"
             x="125"
             y="140"
             textAnchor="middle"
@@ -146,7 +146,7 @@ export default function GoldenRatio({
             {longer(input).toFixed(2)}
           </text>
           <text
-            className="font-space fill-app-green-400 text-sm font-bold"
+            className="fill-app-green-400 text-sm font-bold"
             x="297"
             y="50"
             transform="rotate(-90,297,50)"
@@ -155,7 +155,7 @@ export default function GoldenRatio({
             {shorter(shorter(input)).toFixed(2)}
           </text>
           <text
-            className="font-space fill-app-green-400 text-sm font-bold"
+            className="fill-app-green-400 text-sm font-bold"
             x="239"
             y="140"
             textAnchor="middle"

@@ -53,7 +53,7 @@ export default function Tailwind({
       hotkey={hotkey}
       converter={toTailwind}
     >
-      <div className="font-space text-app-black">
+      <div className="text-app-black">
         <strong>Example</strong>:{" "}
         {result >= 0 ? (
           <code className="font-mono text-app-purple-500">class="p-{toTailwind.render(result)}"</code>

@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useRef } from "react";
 import { Unit } from "@/units";
 import { Converter } from "@/converters";
+import { Space_Mono } from "next/font/google";
 
 /**
  * Wrapper Component
@@ -198,7 +199,7 @@ export default function Wrapper({
         </div>
         <div
           ref={resultDiv}
-          className="font-space-code w-32 border-l border-r border-app-green-600 bg-app-green-100 px-3 py-2 text-sm font-bold text-app-green-500 lg:flex lg:items-center lg:border-l-0 lg:text-base"
+          className="w-32 border-l border-r border-app-green-600 bg-app-green-100 px-3 py-2 text-sm font-bold text-app-green-500 lg:flex lg:items-center lg:border-l-0 lg:text-base"
           id={base}
         >
           <span className="mr-2 cursor-pointer" onClick={icoCopyHandler}>
@@ -228,10 +229,10 @@ export default function Wrapper({
           </span>
           {value}
         </div>
-        <div className="font-space ml-2 mr-auto font-bold text-app-black lg:my-auto">
+        <div className="ml-2 mr-auto font-bold text-app-black lg:my-auto">
           {base}
         </div>
-        <div className="font-space-code hidden text-app-gray-200 lg:my-auto lg:mr-4 xl:block">
+        <div className="hidden text-app-gray-200 lg:my-auto lg:mr-4 xl:block">
           {hotkey && (
             <small>
               <code>{"ctrl+" + hotkey}</code>
@@ -242,7 +243,7 @@ export default function Wrapper({
       {children && (
         <div
           ref={details}
-          className="font-space hidden border-b border-app-green-600 p-3 lg:block lg:border-x lg:text-sm"
+          className="hidden border-b border-app-green-600 p-3 lg:block lg:border-x lg:text-sm"
         >
           {children}
         </div>

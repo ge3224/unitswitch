@@ -89,7 +89,7 @@ export default function UnitSwitch() {
       <UserInput input={data.value} type={data.unit} callback={callback} />
       <Pixels input={data.value} from={data.unit} hotkey={"p"} />
       <Rems input={data.value} from={data.unit} hotkey={"r"} />
-      <Ems input={data.value} from={data.unit} hotkey={"e"} />
+      <Ems input={data.value} from={data.unit} hotkey={"3"} />
       <Tailwind input={data.value} from={data.unit} hotkey={"1"} />
       <Bootstrap input={data.value} from={data.unit} hotkey={"b"} />
       <Millimetres input={data.value} from={data.unit} hotkey={"m"} />

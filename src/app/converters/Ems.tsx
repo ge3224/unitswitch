@@ -49,7 +49,7 @@ export default function Ems({
       hotkey={hotkey}
       converter={toEms}
     >
-      <div className="font-space text-app-black">
+      <div className="text-app-black">
         Based on a root font size of{" "}
         <span className="font-bold">{FONT_SIZE}px</span>
       </div>

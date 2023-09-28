@@ -47,7 +47,7 @@ export default function Bootstrap({
       hotkey={hotkey}
       converter={toBootstrap}
     >
-      <div className="font-space text-app-black">
+      <div className="text-app-black">
         Only six possible values: <strong>0-5</strong>
       </div>
     </Wrapper>

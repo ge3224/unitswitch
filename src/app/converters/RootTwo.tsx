@@ -131,27 +131,27 @@ export default function RootTwo({ input, from, hotkey }: ConverterProps): JSX.El
             className="stroke-app-green-400"
           />
           <text
-            className="fill-app-green-400 font-space font-bold text-sm"
+            className="fill-app-green-400 font-bold text-sm"
             x="268"
             y="50"
             transform="rotate(-90,268,50)"
             textAnchor="end">{shorter(shorter(input)).toFixed(2)}
           </text>
           <text
-            className="fill-app-green-400 font-space font-bold text-sm"
+            className="fill-app-green-400 font-bold text-sm"
             x="207"
             y="142"
             textAnchor="middle">{shorter(input).toFixed(2)}
           </text>
           <text
-            className="fill-app-green-600 font-space font-bold text-sm"
+            className="fill-app-green-600 font-bold text-sm"
             x="18"
             y="40"
             transform="rotate(-90,18,40)"
             textAnchor="middle">{input.toFixed(2)}
           </text>
           <text
-            className="fill-app-green-400 font-space font-bold text-sm"
+            className="fill-app-green-400 font-bold text-sm"
             x="110"
             y="142"
             textAnchor="middle">{longer(input).toFixed(2)}

@@ -50,7 +50,7 @@ export default function Rems({
       hotkey={hotkey}
       converter={toRems}
     >
-      <div className="font-space text-app-black">
+      <div className="text-app-black">
         Based on a root font size of{" "}
         <span className="font-bold">{FONT_SIZE}px</span>
       </div>

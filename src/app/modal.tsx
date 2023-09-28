@@ -127,7 +127,7 @@ export default function Modal({
       {/* Modal content */}
       <div className="fixed inset-x-1/3 top-1/4 rounded-md border border-app-green-600 bg-app-black p-6 shadow-lg shadow-app-black">
         <form onSubmit={handleSubmit}>
-          <label className="font-space font-bold text-white">
+          <label className="font-bold text-white">
             Enter a Unit and a Value,{" "}
             <span className="text-app-green-400">
               <code>value:unit</code>
@@ -142,14 +142,14 @@ export default function Modal({
             data-testid="modal-input"
           />
           <input
-            className="font-space ml-3 mt-3 cursor-pointer rounded-sm border-app-green-200 bg-app-green-300 px-3"
+            className="ml-3 mt-3 cursor-pointer rounded-sm border-app-green-200 bg-app-green-300 px-3"
             type="submit"
             value="Submit"
           />
         </form>
         {/* Close button */}
         <div
-          className="font-space absolute right-3 top-3 cursor-pointer font-bold text-app-gray-200"
+          className="absolute right-3 top-3 cursor-pointer font-bold text-app-gray-200"
           onClick={closeHandler}
         >
           {/* Close icon */}

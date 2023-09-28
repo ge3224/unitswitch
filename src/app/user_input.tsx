@@ -1,5 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import { Unit, isUnit } from "@/units";
+import { Space_Grotesk } from "next/font/google";
+
+const space = Space_Grotesk({ subsets: ["latin"] });
 
 /**
  * Callback function signature for the UserInput component.
@@ -93,7 +96,7 @@ export default function UserInput({
             strokeLinejoin="round"
           />
         </svg>
-        <h1 className="font-space ml-1 text-4xl font-bold text-app-black">
+        <h1 className={"ml-1 text-4xl font-bold text-app-black"} style={space.style}>
           UnitSwitch
         </h1>
       </div>
@@ -102,7 +105,7 @@ export default function UserInput({
         <div className="mb-2">
           {/* Numeric input field */}
           <input
-            className="border-green-usw-600 font-space-code text-green-usw-500 focus:ring-teal-usw-500 w-full rounded-sm border bg-app-green-100 px-1.5 py-1 font-bold focus:outline-none focus:ring"
+            className="border-app-green-600 text-app-green-500 focus:ring-app-teal-500 w-full rounded-sm border bg-app-green-100 px-1.5 py-1 font-bold focus:outline-none focus:ring"
             type="number"
             value={input}
             ref={textInput}
@@ -112,7 +115,7 @@ export default function UserInput({
         <div>
           {/* Unit selection dropdown */}
           <select
-            className="border-green-usw-600 font-space text-black-usw focus:ring-teal-usw-500 rounded-sm border bg-app-gray-50 px-0.5 py-1 focus:outline-none focus:ring"
+            className="border-app-green-600 text-app-black focus:ring-app-teal-500 rounded-sm border bg-app-gray-50 px-0.5 py-1 focus:outline-none focus:ring"
             name="units"
             value={type}
             ref={selectInput}
@@ -127,7 +130,7 @@ export default function UserInput({
             ))}
           </select>
         </div>
-        <div className="font-space-code mt-1 hidden text-app-gray-200 lg:block">
+        <div className="mt-1 hidden text-app-gray-200 lg:block">
           {/* Shortcut information */}
           <small>
             <code>ctrl+k</code>
