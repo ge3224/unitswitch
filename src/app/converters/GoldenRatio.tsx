@@ -1,23 +1,30 @@
 import { Unit } from "@/units";
-import { Converter, PPI, FONT_SIZE } from ".";
-import { roundToDecimal } from "@/shared/round_number";
-import { getIntersectingValue } from "@/shared/arrays";
-import { tailwindSizes } from "./Tailwind";
-import Wrapper from "./Wrapper";
+import { Converter, ConverterProps } from "@/converters";
+import Wrapper from "@/converters/Wrapper";
 import { useEffect } from "react";
 
+/**
+ * GoldenRatio Component
+ *
+ * This component converts a value from one unit of measurement to its corresponding value
+ * in golden ratios and provides an option to copy the result to the clipboard using
+ * a specified hotkey combination.
+ *
+ * @param {ConverterProps} props - The component's props:
+ *   - input: The input value to convert.
+ *   - from: The unit to convert from.
+ *   - hotkey: The keyboard shortcut to copy the result to the clipboard.
+ *
+ * @returns {JSX.Element} - The JSX element representing the GoldenRatio component.
+ */
 export default function GoldenRatio({
   input,
   from,
   hotkey,
-}: {
-  input: number;
-  from: Unit;
-  hotkey: string;
-}): JSX.Element {
+}: ConverterProps): JSX.Element {
   const result = toGolden.convert(from, input);
 
-  const onCmKey = (e: KeyboardEvent) => {
+  const onGrKey = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
       e.stopPropagation();
@@ -26,10 +33,10 @@ export default function GoldenRatio({
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", onCmKey);
+    document.addEventListener("keydown", onGrKey);
 
     return () => {
-      document.removeEventListener("keydown", onCmKey);
+      document.removeEventListener("keydown", onGrKey);
     };
   });
 
@@ -162,38 +169,62 @@ export default function GoldenRatio({
   );
 }
 
-function longer(input: number) {
+/**
+ * Calculate the value increased by the golden ratio (1.61803 times).
+ *
+ * @param {number} input - The input value to be increased.
+ *
+ * @returns {number} - The input value multiplied by the golden ratio.
+ */
+function longer(input: number): number {
   return input * 1.61803;
 }
 
-function shorter(input: number) {
+/**
+ * Calculate the value decreased by the golden ratio (1.61803 times).
+ *
+ * @param {number} input - The input value to be decreased.
+ *
+ * @returns {number} - The input value divided by the golden ratio.
+ */
+function shorter(input: number): number {
   return input / 1.61803;
 }
 
+/**
+ * Converter for Golden Ratio
+ *
+ * This object provides methods to convert a value to a longer length based on the golden ratio
+ * and to render the converted value as a string representation.
+ */
 export const toGolden: Converter = {
   /**
-   * Converts a value from the specified unit to inches (in).
+   * Converts a value from the specified unit to a longer length based on the golden ratio.
    *
-   * @param {Unit} _from - The unit to convert from.
+   * @param {Unit} _from - The unit to convert from (unused in this implementation).
    * @param {number} input - The value to be converted.
-   * @returns {number} - The converted value in inches (in), or -1 if the
-   *                     conversion is not supported or input is invalid.
+   *
+   * @returns {number} - The converted value, or -1 if the
+   *                     conversion is not supported or the input is invalid.
    */
   convert: (_from: Unit, input: number): number => {
+    // Check for invalid input values
     return input < 0 ? -1 : longer(input);
   },
 
   /**
-   * The `render` function converts a converted value in inches (in) to a
-   * string representation.
+   * Renders a converted value to a string representation.
    *
-   * @param {number} conversion - The converted value in inches (in).
+   * @param {number} conversion - The value to convert.
+   *
    * @returns {string} - A string representation of the converted value, or
    *                     "N/A" if the conversion is not valid.
    */
   render: (conversion: number): string => {
+    // Handle invalid conversions
     if (conversion < 0) return "N/A";
 
+    // Limit the string length to ensure readability
     const str = conversion.toString();
     return str.length < 8 ? str : str.slice(0, 6) + "..";
   },
