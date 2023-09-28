@@ -54,12 +54,28 @@ export default function Picas({
   );
 }
 
+/**
+ * Pica equivalent values for Tailwind CSS spacing and sizing classes.
+ *
+ * Each key in this array corresponds to a specific size in a Tailwind CSS
+ * class name. The values represent the pica (pc) equivalent of that Tailwind size.
+ * For example, the 'p-4' Tailwind class would correspond to 1 pica.
+ */
 export const tailwindInPicas = [
   0, 0.0625, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1, 1.25, 1.5, 1.75, 2,
   2.25, 2.5, 2.75, 3, 3.5, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20,
   24,
 ];
 
+/**
+ * Convert Pixels to Picas
+ *
+ * This function converts a value from pixels to picas based on a specified DPI (dots per inch).
+ *
+ * @param {number} pixels - The value in pixels to convert.
+ *
+ * @returns {number} - The equivalent value in picas.
+ */
 function pixelsToPicas(pixels: number): number {
   return (pixels * 6) / DPI;
 }
