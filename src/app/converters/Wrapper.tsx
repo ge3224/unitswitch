@@ -30,7 +30,7 @@ export default function Wrapper({
   from: Unit;
   hotkey: string;
   converter: Converter;
-  children: ReactNode;
+  children?: ReactNode;
 }) {
   const conversion = converter.convert(from, input);
   const value = converter.render(conversion);

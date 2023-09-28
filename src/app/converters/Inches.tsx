@@ -1,20 +1,28 @@
 import { Unit } from "@/units";
-import { Converter, DPI, FONT_SIZE } from ".";
+import { Converter, ConverterProps, DPI, FONT_SIZE } from ".";
 import { useEffect } from "react";
 import Wrapper from "./Wrapper";
 import { roundToDecimal } from "@/shared/round_number";
 import { getIntersectingValue } from "@/shared/arrays";
 import { tailwindSizes } from "./Tailwind";
 
+/**
+ * Inches Converter Component
+ *
+ * The Inches component converts a value from a specified unit to inches (in).
+ *
+ * @param {ConverterProps} props - The component's props:
+ *   - input: The input value to convert.
+ *   - from: The unit to convert from.
+ *   - hotkey: The keyboard shortcut to copy the result to the clipboard.
+ *
+ * @returns {JSX.Element} - The JSX element representing the Inches Converter component.
+ */
 export default function Inches({
   input,
   from,
   hotkey,
-}: {
-  input: number;
-  from: Unit;
-  hotkey: string;
-}): JSX.Element {
+}: ConverterProps): JSX.Element {
   const result = toInches.convert(from, input);
 
   const onInchKey = (e: KeyboardEvent) => {
@@ -40,12 +48,17 @@ export default function Inches({
       from={from}
       hotkey={"ctrl+" + hotkey}
       converter={toInches}
-    >
-      {""}
-    </Wrapper>
+    />
   );
 }
 
+/**
+ * Inch equivalent values for Tailwind CSS spacing and sizing classes.
+ *
+ * Each key in this array corresponds to a specific size in a Tailwind CSS
+ * class name. The values represent the Inches (in) equivalent of that Tailwind size.
+ * For example, the 'p-4' Tailwind class would correspond to 0.16666666666666666 inch.
+ */
 export const tailwindInInches = [
   0, 0.010416666666666666, 0.020833333333333332, 0.041666666666666664, 0.0625,
   0.08333333333333333, 0.10416666666666667, 0.125, 0.14583333333333334,
@@ -57,6 +70,24 @@ export const tailwindInInches = [
   2.6666666666666665, 3, 3.3333333333333335, 4,
 ];
 
+/**
+ * Convert Pixels to Inches
+ *
+ * This function converts a value from pixels to inches based on a specified DPI (dots per inch).
+ *
+ * @param {number} px - The value in pixels to convert.
+ *
+ * @returns {number} - The equivalent value in inches.
+ */
+function pixelsToInches(px: number): number {
+  return px / DPI;
+}
+
+/**
+ * The `toInches` object implements the `Converter` type by providing both
+ * the `convert` and `render` functions used to process incoming values from
+ * other units into inches (in).
+ */
 export const toInches: Converter = {
   /**
    * Converts a value from the specified unit to inches (in).
@@ -76,28 +107,25 @@ export const toInches: Converter = {
         ];
         return input <= bs.length - 1 && input % 1 === 0 ? bs[input] : -1;
       case Unit.Centimetres:
-        return roundToDecimal(input * 0.393701, 4);
+        return input * 0.393701;
       case Unit.Ems:
-        return roundToDecimal(input * (DPI / FONT_SIZE), 4);
+        return (input * FONT_SIZE) / DPI;
       case Unit.Feet:
-        return roundToDecimal(input * 12, 4);
+        return input * 12;
       case Unit.Inches:
-        return roundToDecimal(input, 4);
+        return input;
       case Unit.Millimetres:
-        return roundToDecimal(input * 0.0393701, 4);
+        return input * 0.0393701;
       case Unit.Picas:
-        return roundToDecimal(input / 6, 4);
+        return input / 6;
       case Unit.Pixels:
-        return roundToDecimal(input / DPI, 4);
+        return pixelsToInches(input);
       case Unit.Points:
-        return roundToDecimal(input / 72, 4);
+        return input / 72;
       case Unit.Rems:
-        return roundToDecimal(input * (DPI / FONT_SIZE), 4);
+        return (input * FONT_SIZE) / DPI;
       case Unit.Tailwind:
-        return roundToDecimal(
-          getIntersectingValue(tailwindSizes, tailwindInInches, input),
-          4,
-        );
+        return getIntersectingValue(tailwindSizes, tailwindInInches, input);
       default:
         return -1;
     }
@@ -114,7 +142,7 @@ export const toInches: Converter = {
   render: (conversion: number): string => {
     if (conversion < 0) return "N/A";
 
-    const str = conversion.toString();
-    return str.length < 8 ? str : str.slice(0, 6) + "..";
+    const str = roundToDecimal(conversion, 5).toString();
+    return str.length < 9 ? str : str.slice(0, 6) + "..";
   },
 };
