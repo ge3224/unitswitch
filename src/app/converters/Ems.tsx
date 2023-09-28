@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Unit } from "@/units";
 import { getIntersectingValue } from "@/shared/arrays";
 import { roundToDecimal } from "@/shared/round_number";
-import { Converter, ConverterProps, DPI, FONT_SIZE } from "@/converters";
+import { Converter, ConverterProps, PPI, FONT_SIZE } from "@/converters";
 import Wrapper from "@/converters/Wrapper";
 import { tailwindSizes } from "@/converters/Tailwind";
 
@@ -106,21 +106,21 @@ export const toEms: Converter = {
           ? bootstrapInEms[input]
           : -1;
       case Unit.Centimetres:
-        return (input * 0.3937008 * DPI) / FONT_SIZE;
+        return (input * 0.3937008 * PPI) / FONT_SIZE;
       case Unit.Ems:
         return input;
       case Unit.Feet:
-        return (input * 12 * DPI) / FONT_SIZE;
+        return (input * 12 * PPI) / FONT_SIZE;
       case Unit.Inches:
-        return (input * DPI) / FONT_SIZE;
+        return (input * PPI) / FONT_SIZE;
       case Unit.Millimetres:
-        return (DPI / 25.4 / FONT_SIZE) * input;
+        return (PPI / 25.4 / FONT_SIZE) * input;
       case Unit.Picas:
-        return (DPI / 6 / FONT_SIZE) * input;
+        return (PPI / 6 / FONT_SIZE) * input;
       case Unit.Pixels:
         return pixelsToEms(input);
       case Unit.Points:
-        return (input / 72) * (DPI / FONT_SIZE);
+        return (input / 72) * (PPI / FONT_SIZE);
       case Unit.Rems:
         return input;
       case Unit.Tailwind:

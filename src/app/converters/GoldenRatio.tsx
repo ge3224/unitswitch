@@ -1,5 +1,5 @@
 import { Unit } from "@/units";
-import { Converter, DPI, FONT_SIZE } from ".";
+import { Converter, PPI, FONT_SIZE } from ".";
 import { roundToDecimal } from "@/shared/round_number";
 import { getIntersectingValue } from "@/shared/arrays";
 import { tailwindSizes } from "./Tailwind";

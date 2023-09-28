@@ -1,5 +1,5 @@
 import { Unit } from "@/units";
-import { Converter, ConverterProps, DPI, FONT_SIZE } from ".";
+import { Converter, ConverterProps, PPI, FONT_SIZE } from ".";
 import { useEffect } from "react";
 import Wrapper from "./Wrapper";
 import { roundToDecimal } from "@/shared/round_number";
@@ -80,7 +80,7 @@ export const tailwindInInches = [
  * @returns {number} - The equivalent value in inches.
  */
 function pixelsToInches(px: number): number {
-  return px / DPI;
+  return px / PPI;
 }
 
 /**
@@ -109,7 +109,7 @@ export const toInches: Converter = {
       case Unit.Centimetres:
         return input * 0.393701;
       case Unit.Ems:
-        return (input * FONT_SIZE) / DPI;
+        return (input * FONT_SIZE) / PPI;
       case Unit.Feet:
         return input * 12;
       case Unit.Inches:
@@ -123,7 +123,7 @@ export const toInches: Converter = {
       case Unit.Points:
         return input / 72;
       case Unit.Rems:
-        return (input * FONT_SIZE) / DPI;
+        return (input * FONT_SIZE) / PPI;
       case Unit.Tailwind:
         return getIntersectingValue(tailwindSizes, tailwindInInches, input);
       default:

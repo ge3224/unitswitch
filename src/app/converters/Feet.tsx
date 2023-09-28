@@ -1,5 +1,5 @@
 import { Unit } from "@/units";
-import { Converter, ConverterProps, DPI, FONT_SIZE } from ".";
+import { Converter, ConverterProps, PPI, FONT_SIZE } from ".";
 import { useEffect } from "react";
 import Wrapper from "./Wrapper";
 import { tailwindSizes } from "./Tailwind";
@@ -84,7 +84,7 @@ const tailwindInFeet = [
  * @returns {number} - The equivalent value in feet (ft).
  */
 function pixelsToFeet(px: number): number {
-  return px / DPI / 12;
+  return px / PPI / 12;
 }
 
 /** Converts a value from a specified unit to feet (ft).
@@ -115,7 +115,7 @@ export const toFeet: Converter = {
       case Unit.Centimetres:
         return input / 30.48;
       case Unit.Ems:
-        return (input * FONT_SIZE) / (12 * DPI);
+        return (input * FONT_SIZE) / (12 * PPI);
       case Unit.Feet:
         return input;
       case Unit.Inches:
@@ -129,7 +129,7 @@ export const toFeet: Converter = {
       case Unit.Points:
         return input / 72 / 12;
       case Unit.Rems:
-        return (input * FONT_SIZE) / (12 * DPI);
+        return (input * FONT_SIZE) / (12 * PPI);
       case Unit.Tailwind:
         return getIntersectingValue(tailwindSizes, tailwindInFeet, input);
       default:

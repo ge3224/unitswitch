@@ -1,9 +1,9 @@
-import { DPI } from "@/converters";
+import { PPI } from "@/converters";
 import { toEms } from "@/converters/Ems";
 import { Unit } from "@/units";
 
 describe("toEms Converter", () => {
-  const t96 = (384 * 6) / DPI;
+  const t96 = (384 * 6) / PPI;
 
   it("should return -1 for input less than or equal to 0", () => {
     expect(toEms.convert(Unit.Bootstrap, -1)).toBe(-1);

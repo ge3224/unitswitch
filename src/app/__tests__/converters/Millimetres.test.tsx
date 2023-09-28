@@ -1,4 +1,4 @@
-import { DPI, FONT_SIZE } from "@/converters";
+import { PPI, FONT_SIZE } from "@/converters";
 import { toMillimetres } from "@/converters/Millimetres";
 import { Unit } from "@/units";
 

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Unit } from "@/units";
 import Wrapper from "@/converters/Wrapper";
-import { Converter, ConverterProps, DPI, FONT_SIZE } from "@/converters";
+import { Converter, ConverterProps, PPI, FONT_SIZE } from "@/converters";
 import { RoundingMethod, roundToDecimal } from "@/shared/round_number";
 import { getIntersectingValue } from "@/shared/arrays";
 import { tailwindSizes } from "./Tailwind";
@@ -52,7 +52,7 @@ export default function Pixels({
       converter={toPixels}
     >
       <div className="font-space text-app-black">
-        Based on a resolution of <span className="font-bold">{DPI} DPI</span>
+        Based on a resolution of <span className="font-bold">{PPI} DPI</span>
       </div>
     </Wrapper>
   );
@@ -94,21 +94,21 @@ export const toPixels: Converter = {
         const bs = [0, 4, 8, 16, 24, 48];
         return input <= bs.length - 1 ? bs[input] : -1;
       case Unit.Centimetres:
-        return roundToDecimal(input * (DPI / 2.54), 0, RoundingMethod.Ceil);
+        return roundToDecimal(input * (PPI / 2.54), 0, RoundingMethod.Ceil);
       case Unit.Ems:
         return roundToDecimal(input * FONT_SIZE, 0, RoundingMethod.Ceil);
       case Unit.Feet:
-        return roundToDecimal(input * 12 * DPI, 0, RoundingMethod.Ceil);
+        return roundToDecimal(input * 12 * PPI, 0, RoundingMethod.Ceil);
       case Unit.Inches:
-        return roundToDecimal(input * DPI, 0, RoundingMethod.Ceil);
+        return roundToDecimal(input * PPI, 0, RoundingMethod.Ceil);
       case Unit.Millimetres:
-        return roundToDecimal(input * (DPI / 25.4), 0, RoundingMethod.Ceil);
+        return roundToDecimal(input * (PPI / 25.4), 0, RoundingMethod.Ceil);
       case Unit.Picas:
-        return roundToDecimal(input * (1 / 6) * DPI, 0, RoundingMethod.Ceil);
+        return roundToDecimal(input * (1 / 6) * PPI, 0, RoundingMethod.Ceil);
       case Unit.Pixels:
         return roundToDecimal(input, 0, RoundingMethod.Ceil);
       case Unit.Points:
-        return roundToDecimal(input * (DPI / 72), 0, RoundingMethod.Ceil);
+        return roundToDecimal(input * (PPI / 72), 0, RoundingMethod.Ceil);
       case Unit.Rems:
         return roundToDecimal(input * FONT_SIZE, 0, RoundingMethod.Ceil);
       case Unit.Tailwind:

@@ -1,9 +1,9 @@
 import { Unit } from "@/units";
 import { toPicas } from "@/converters/Picas";
-import { DPI } from "@/converters";
+import { PPI } from "@/converters";
 
 describe("toPicas.convert function", () => {
-  const t96 = (384 * 6) / DPI;
+  const t96 = (384 * 6) / PPI;
 
   it("should return -1 for input less than or equal to 0", () => {
     expect(toPicas.convert(Unit.Bootstrap, -1)).toBe(-1);

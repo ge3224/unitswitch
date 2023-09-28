@@ -1,9 +1,9 @@
 import { Unit } from "@/units";
 import { toFeet } from "@/converters/Feet";
-import { DPI } from "@/converters";
+import { PPI } from "@/converters";
 
 describe("toFeet.convert function", () => {
-  const t96 = 384 / DPI / 12;
+  const t96 = 384 / PPI / 12;
   it("should return -1 for input less than or equal to 0", () => {
     expect(toFeet.convert(Unit.Bootstrap, -1)).toBe(-1);
     expect(toFeet.convert(Unit.Centimetres, 0)).toBe(0);

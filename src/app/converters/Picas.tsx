@@ -1,7 +1,7 @@
 import { Unit } from "@/units";
 import Wrapper from "./Wrapper";
 import { useEffect } from "react";
-import { ConverterProps, DPI, FONT_SIZE } from ".";
+import { ConverterProps, PPI, FONT_SIZE } from ".";
 import { getIntersectingValue } from "@/shared/arrays";
 import { tailwindSizes } from "./Tailwind";
 import { roundToDecimal } from "@/shared/round_number";
@@ -87,7 +87,7 @@ const bootstrapInPicas = [0, 0.25, 0.5, 1, 1.5, 3];
  * @returns {number} - The equivalent value in picas.
  */
 function pixelsToPicas(pixels: number): number {
-  return (pixels * 6) / DPI;
+  return (pixels * 6) / PPI;
 }
 
 /**

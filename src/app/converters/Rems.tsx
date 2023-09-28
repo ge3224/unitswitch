@@ -1,5 +1,5 @@
 import { Unit } from "@/units";
-import { Converter, DPI, FONT_SIZE } from "@/converters";
+import { Converter, PPI, FONT_SIZE } from "@/converters";
 import { roundToDecimal } from "@/shared/round_number";
 import { useEffect } from "react";
 import Wrapper from "@/converters/Wrapper";
@@ -98,21 +98,21 @@ export const toRems: Converter = {
           ? bs[input]
           : -1;
       case Unit.Centimetres:
-        return roundToDecimal((input * 0.3937008 * DPI) / FONT_SIZE, 3);
+        return roundToDecimal((input * 0.3937008 * PPI) / FONT_SIZE, 3);
       case Unit.Ems:
         return roundToDecimal(input, 3);
       case Unit.Feet:
-        return roundToDecimal((input * 12 * DPI) / FONT_SIZE, 3);
+        return roundToDecimal((input * 12 * PPI) / FONT_SIZE, 3);
       case Unit.Inches:
-        return roundToDecimal((input * DPI) / FONT_SIZE, 3);
+        return roundToDecimal((input * PPI) / FONT_SIZE, 3);
       case Unit.Millimetres:
-        return roundToDecimal((DPI / 25.4 / FONT_SIZE) * input, 3);
+        return roundToDecimal((PPI / 25.4 / FONT_SIZE) * input, 3);
       case Unit.Picas:
-        return roundToDecimal((DPI / 6 / FONT_SIZE) * input, 3);
+        return roundToDecimal((PPI / 6 / FONT_SIZE) * input, 3);
       case Unit.Pixels:
         return roundToDecimal(input / FONT_SIZE, 3);
       case Unit.Points:
-        return roundToDecimal((input / 72) * (DPI / FONT_SIZE), 3);
+        return roundToDecimal((input / 72) * (PPI / FONT_SIZE), 3);
       case Unit.Rems:
         return roundToDecimal(input, 3);
       case Unit.Tailwind:

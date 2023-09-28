@@ -1,9 +1,9 @@
 import { Unit } from "@/units";
 import { toInches } from "@/converters/Inches";
-import { DPI } from "@/converters";
+import { PPI } from "@/converters";
 
 describe("toInches.convert function", () => {
-  const t96 = 384 / DPI;
+  const t96 = 384 / PPI;
 
   it("should return -1 for input less than or equal to 0", () => {
     expect(toInches.convert(Unit.Bootstrap, -1)).toBe(-1);

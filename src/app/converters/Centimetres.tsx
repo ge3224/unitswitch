@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Unit } from "@/units";
 import { getIntersectingValue } from "@/shared/arrays";
 import { roundToDecimal } from "@/shared/round_number";
-import { Converter, ConverterProps, DPI, FONT_SIZE } from "@/converters";
+import { Converter, ConverterProps, PPI, FONT_SIZE } from "@/converters";
 import Wrapper from "@/converters/Wrapper";
 import { tailwindSizes } from "@/converters/Tailwind";
 
@@ -100,7 +100,7 @@ export const toCentimetres: Converter = {
     if (input < 0) return -1;
 
     const pixelsToCentimeters = (pixels: number): number => {
-      return (pixels / DPI) * 2.54;
+      return (pixels / PPI) * 2.54;
     };
 
     switch (from) {
