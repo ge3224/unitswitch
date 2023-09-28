@@ -59,6 +59,8 @@ export default function Bootstrap({
   );
 }
 
+export const bootstrapSizes = [0, 1, 2, 3, 4, 5];
+
 /**
  * Converts a value from one unit to another based on predefined conversion factors.
  */

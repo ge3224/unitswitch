@@ -1,23 +1,31 @@
 import { Unit } from "@/units";
 import Wrapper from "./Wrapper";
 import { useEffect } from "react";
-import { roundToDecimal } from "@/shared/round_number";
-import { DPI, FONT_SIZE } from ".";
+import { ConverterProps, DPI, FONT_SIZE } from ".";
 import { getIntersectingValue } from "@/shared/arrays";
 import { tailwindSizes } from "./Tailwind";
+import { roundToDecimal } from "@/shared/round_number";
 
+/**
+ * Picas Converter Component
+ *
+ * The Picas component converts a value from a specified unit to picas (pc).
+ *
+ * @param {ConverterProps} props - The component's props:
+ *   - input: The input value to convert.
+ *   - from: The unit to convert from.
+ *   - hotkey: The keyboard shortcut to copy the result to the clipboard.
+ *
+ * @returns {JSX.Element} - The JSX element representing the Picas Converter component.
+ */
 export default function Picas({
   input,
   from,
   hotkey,
-}: {
-  input: number;
-  from: Unit;
-  hotkey: string;
-}): JSX.Element {
+}: ConverterProps): JSX.Element {
   const result = toPicas.convert(from, input);
 
-  const onCmKey = (e: KeyboardEvent) => {
+  const onPcKey = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
       e.stopPropagation();
@@ -26,10 +34,10 @@ export default function Picas({
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", onCmKey);
+    document.addEventListener("keydown", onPcKey);
 
     return () => {
-      document.removeEventListener("keydown", onCmKey);
+      document.removeEventListener("keydown", onPcKey);
     };
   });
 
@@ -52,6 +60,15 @@ export const tailwindInPicas = [
   24,
 ];
 
+function pixelsToPicas(pixels: number): number {
+  return (pixels * 6) / DPI;
+}
+
+/**
+ * The `toPicas` object implements the `Converter` type by providing both
+ * the `convert` and `render` functions used to process incoming values from
+ * other units into picas.
+ */
 export const toPicas = {
   /**
    * Converts a value from the specified unit to picas (pc).
@@ -65,48 +82,45 @@ export const toPicas = {
     if (input < 0) return -1;
     switch (from) {
       case Unit.Bootstrap:
-        const bs = [0, 0.125, 0.25, 0.5, 0.75, 1.5];
+        const bs = [0, 0.0625, 0.125, 0.1875, 0.25, 0.3125];
         return input <= bs.length - 1 && input % 1 === 0 ? bs[input] : -1;
       case Unit.Centimetres:
-        return roundToDecimal(input / 2.3622, 4);
+        return input * 2.362204724;
       case Unit.Ems:
-        return roundToDecimal((input * FONT_SIZE) / 12, 4);
+        return pixelsToPicas(input * FONT_SIZE);
       case Unit.Feet:
-        return roundToDecimal(input * 24, 4);
+        return input * 72;
       case Unit.Inches:
-        return roundToDecimal(input * 6, 4);
+        return input * 6;
       case Unit.Millimetres:
-        return roundToDecimal(input * 0.3528, 4);
+        return input * 0.236220472;
       case Unit.Picas:
-        return roundToDecimal(input, 4);
+        return input;
       case Unit.Pixels:
-        return roundToDecimal(input / (DPI / 6), 4);
+        return pixelsToPicas(input);
       case Unit.Points:
-        return roundToDecimal(input * 0.0833, 4);
+        return input * 0.0833;
       case Unit.Rems:
-        return roundToDecimal((input * FONT_SIZE) / 12, 4);
+        return pixelsToPicas(input * FONT_SIZE);
       case Unit.Tailwind:
-        return roundToDecimal(
-          getIntersectingValue(tailwindSizes, tailwindInPicas, input),
-          4,
-        );
+        return getIntersectingValue(tailwindSizes, tailwindInPicas, input);
       default:
         return -1;
     }
   },
 
   /**
-   * The `render` function converts a converted value in feet (ft) to a
+   * The `render` function converts a converted value in picas (pc) to a
    * string representation.
    *
-   * @param {number} conversion - The converted value in feet (ft).
+   * @param {number} conversion - The converted value in picas (pc).
    * @returns {string} - A string representation of the converted value, or
    *                     "N/A" if the conversion is not valid.
    */
   render: (conversion: number): string => {
     if (conversion < 0) return "N/A";
 
-    const str = conversion.toString();
+    const str = roundToDecimal(conversion, 4).toString();
     return str.length < 8 ? str : str.slice(0, 6) + "..";
   },
 };
