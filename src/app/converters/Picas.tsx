@@ -5,7 +5,6 @@ import { ConverterProps, DPI, FONT_SIZE } from ".";
 import { getIntersectingValue } from "@/shared/arrays";
 import { tailwindSizes } from "./Tailwind";
 import { roundToDecimal } from "@/shared/round_number";
-import { bootstrapInPixels } from "./Bootstrap";
 
 /**
  * Picas Converter Component
@@ -26,7 +25,6 @@ export default function Picas({
 }: ConverterProps): JSX.Element {
   const result = toPicas.convert(from, input);
 
-  console.log(bootstrapInPixels.map(px => pixelsToPicas(px)));
   const onPcKey = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
