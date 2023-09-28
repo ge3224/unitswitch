@@ -5,8 +5,6 @@ import Wrapper from "./Wrapper";
 import { roundToDecimal } from "@/shared/round_number";
 import { getIntersectingValue } from "@/shared/arrays";
 import { tailwindSizes } from "./Tailwind";
-import { bootstrapInPixels } from "./Bootstrap";
-import { tailwindInPixels } from "./Pixels";
 
 /**
  * Points Component
@@ -26,11 +24,6 @@ export default function Points({
   hotkey,
 }: ConverterProps): JSX.Element {
   const result = toPoints.convert(from, input);
-
-  console.log(
-    "points->\n",
-    tailwindInPixels.map((x) => pixelsToPoints(x)),
-  );
 
   const onKeyPT = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
