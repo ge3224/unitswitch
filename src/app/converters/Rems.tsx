@@ -1,5 +1,5 @@
 import { Unit } from "@/units";
-import { Converter, PPI, FONT_SIZE } from "@/converters";
+import { Converter, PPI, FONT_SIZE, ConverterProps } from "@/converters";
 import { roundToDecimal } from "@/shared/round_number";
 import { useEffect } from "react";
 import Wrapper from "@/converters/Wrapper";
@@ -12,22 +12,19 @@ import { tailwindSizes } from "./Tailwind";
  * This component converts a value from various CSS unit systems to Rems (root Em units)
  * and provides a hotkey to copy the converted value to the clipboard.
  *
- * @param {object} props - The component's properties.
- * @param {number} props.input - The input value to be converted.
- * @param {Unit} props.from - The unit of the input value.
- * @param {string} props.hotkey - The hotkey combination to copy the result to the clipboard.
+ * @param {ConverterProps} props - The component's props:
+ *   - input: The input value to convert.
+ *   - from: The unit to convert from.
+ *   - hotkey: The keyboard shortcut to copy the result to the clipboard.
  *
- * @returns {JSX.Element} - A React element representing the Rems component.
+ * @returns {JSX.Element} - The JSX element representing the Rems Converter component.
  */
 export default function Rems({
   input,
   from,
   hotkey,
-}: {
-  input: number;
-  from: Unit;
-  hotkey: string;
-}): JSX.Element {
+}: ConverterProps
+): JSX.Element {
   const result = toRems.convert(from, input);
 
   const hotkeyHandler = (e: KeyboardEvent) => {
@@ -68,6 +65,7 @@ export default function Rems({
  * This array maps index values to spacing values used in Bootstrap CSS classes.
  * For example, `bootstrap[1]` corresponds to `p-1`, which adds padding of 0.25rem.
  */
+const bootstrapInRems = [0, 0.25, 0.5, 1, 1.5, 3];
 
 /**
  * Rem equivalent values for Tailwind CSS spacing and sizing classes.
@@ -84,42 +82,60 @@ const tailwindInRems = [
 ];
 
 /**
+ * Convert Pixels to Rems
+ *
+ * This function converts a value from pixels to rems based on a specified DPI (dots per inch).
+ *
+ * @param {number} px - The value in pixels to convert.
+ *
+ * @returns {number} - The equivalent value in rem.
+ */
+function pixelsToRems(px: number): number {
+  return px / FONT_SIZE;
+}
+
+/**
  * toRems Converter
  *
  * This object provides conversion functions from various unit systems to Rems.
  */
 export const toRems: Converter = {
+
+  /**
+   * Converts a value from the specified unit to rems.
+   *
+   * @param {Unit} from    - The unit to convert from.
+   * @param {number} input - The value to be converted.
+   * @returns {number}     - The converted value in rems, or -1 if the
+   *                         conversion is not supported or input is invalid.
+   */
   convert: (from: Unit, input: number) => {
     if (input < 0) return -1;
     switch (from) {
       case Unit.Bootstrap:
-        const bs = [0, 0.25, 0.5, 1, 1.5, 3];
-        return input <= bs.length - 1 && input % 1 === 0
-          ? bs[input]
+        return input <= bootstrapInRems.length - 1 && input % 1 === 0
+          ? bootstrapInRems[input]
           : -1;
       case Unit.Centimetres:
-        return roundToDecimal((input * 0.3937008 * PPI) / FONT_SIZE, 3);
+        return (input * 0.3937008 * PPI) / FONT_SIZE;
       case Unit.Ems:
-        return roundToDecimal(input, 3);
+        return input;
       case Unit.Feet:
-        return roundToDecimal((input * 12 * PPI) / FONT_SIZE, 3);
+        return (input * 12 * PPI) / FONT_SIZE;
       case Unit.Inches:
-        return roundToDecimal((input * PPI) / FONT_SIZE, 3);
+        return (input * PPI) / FONT_SIZE;
       case Unit.Millimetres:
-        return roundToDecimal((PPI / 25.4 / FONT_SIZE) * input, 3);
+        return (PPI / 25.4 / FONT_SIZE) * input;
       case Unit.Picas:
-        return roundToDecimal((PPI / 6 / FONT_SIZE) * input, 3);
+        return (PPI / 6 / FONT_SIZE) * input;
       case Unit.Pixels:
-        return roundToDecimal(input / FONT_SIZE, 3);
+        return pixelsToRems(input);
       case Unit.Points:
-        return roundToDecimal((input / 72) * (PPI / FONT_SIZE), 3);
+        return (input / 72) * (PPI / FONT_SIZE);
       case Unit.Rems:
-        return roundToDecimal(input, 3);
+        return input;
       case Unit.Tailwind:
-        return roundToDecimal(
-          getIntersectingValue(tailwindSizes, tailwindInRems, input),
-          4,
-        );
+        return getIntersectingValue(tailwindSizes, tailwindInRems, input);
       default:
         return -1;
     }
@@ -136,7 +152,7 @@ export const toRems: Converter = {
   render: (conversion: number): string => {
     if (conversion < 0) return "N/A";
 
-    const str = conversion.toString();
+    const str = roundToDecimal(conversion, 3).toString();
     return str.length < 8 ? str : str.slice(0, 6) + "..";
   },
 };
