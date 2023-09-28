@@ -74,13 +74,12 @@ export const tailwindInCm = [
 /**
  * Centimetre equivalent values for Bootstrap CSS spacing and sizing classes.
  *
- * Each key in this array correspond to a specific size in Bootstrap. The values 
- * represent the centimetre equivalent of that Bootstrap size. For example, the 
+ * Each key in this array correspond to a specific size in Bootstrap. The values
+ * represent the centimetre equivalent of that Bootstrap size. For example, the
  * 'p-4' Bootstrap class would correspond to 0.25 cm.
  */
 const bootstrapInCm = [
-  0, 0.041666666666666664, 0.08333333333333333, 0.16666666666666666,
-  0.25, 0.5,
+  0, 0.041666666666666664, 0.08333333333333333, 0.16666666666666666, 0.25, 0.5,
 ];
 
 /**
@@ -89,7 +88,6 @@ const bootstrapInCm = [
  * other units into centimetres.
  */
 export const toCentimetres: Converter = {
-
   /**
    * Converts a value from the specified unit to centimetres (cm).
    *
@@ -103,37 +101,31 @@ export const toCentimetres: Converter = {
 
     const pixelsToCentimeters = (pixels: number): number => {
       return (pixels / DPI) * 2.54;
-    }
+    };
 
     switch (from) {
       case Unit.Bootstrap:
-        return input <= bootstrapInCm.length - 1
-          ? roundToDecimal(bootstrapInCm[input], 3)
-          : -1;
+        return input <= bootstrapInCm.length - 1 ? bootstrapInCm[input] : -1;
       case Unit.Centimetres:
-        return roundToDecimal(input, 3);
+        return input;
       case Unit.Ems:
-        return roundToDecimal(pixelsToCentimeters(input * FONT_SIZE), 3);
+        return pixelsToCentimeters(input * FONT_SIZE);
       case Unit.Feet:
-        return roundToDecimal(input * 30.48, 3);
+        return input * 30.48;
       case Unit.Inches:
-        return roundToDecimal(input * 2.54, 3);
+        return input * 2.54;
       case Unit.Millimetres:
-        return roundToDecimal(input / 10, 3);
+        return input / 10;
       case Unit.Picas:
-        return roundToDecimal(input * ((1 / 6) * 2.54), 4);
+        return input * ((1 / 6) * 2.54);
       case Unit.Pixels:
-        return roundToDecimal(pixelsToCentimeters(input), 3);
+        return pixelsToCentimeters(input);
       case Unit.Points:
-        return roundToDecimal(input * (2.54 / 72), 4);
+        return input * (2.54 / 72);
       case Unit.Rems:
-        return roundToDecimal(pixelsToCentimeters(input * FONT_SIZE), 3);
+        return pixelsToCentimeters(input * FONT_SIZE);
       case Unit.Tailwind:
-        return roundToDecimal(getIntersectingValue(
-          tailwindSizes,
-          tailwindInCm,
-          input,
-        ), 4);
+        return getIntersectingValue(tailwindSizes, tailwindInCm, input);
       default:
         return -1;
     }
@@ -150,7 +142,7 @@ export const toCentimetres: Converter = {
   render: (conversion: number): string => {
     if (conversion < 0) return "N/A";
 
-    const str = conversion.toString();
+    const str = roundToDecimal(conversion, 5).toString();
     return str.length < 9 ? str : str.slice(0, 7) + "..";
   },
 };
