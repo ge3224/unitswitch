@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { Unit } from "@/units";
 import Wrapper from "@/converters/Wrapper";
 import { Converter, ConverterProps, PPI, FONT_SIZE } from "@/converters";
-import { RoundingMethod, roundToDecimal } from "@/shared/round_number";
 import { getIntersectingValue } from "@/shared/arrays";
 import { tailwindSizes } from "./Tailwind";
 
@@ -94,25 +93,25 @@ export const toPixels: Converter = {
         const bs = [0, 4, 8, 16, 24, 48];
         return input <= bs.length - 1 ? bs[input] : -1;
       case Unit.Centimetres:
-        return roundToDecimal(input * (PPI / 2.54), 0, RoundingMethod.Ceil);
+        return Math.ceil(input * (PPI / 2.54));
       case Unit.Ems:
-        return roundToDecimal(input * FONT_SIZE, 0, RoundingMethod.Ceil);
+        return Math.ceil(input * FONT_SIZE);
       case Unit.Feet:
-        return roundToDecimal(input * 12 * PPI, 0, RoundingMethod.Ceil);
+        return Math.ceil(input * 12 * PPI);
       case Unit.Inches:
-        return roundToDecimal(input * PPI, 0, RoundingMethod.Ceil);
+        return Math.ceil(input * PPI);
       case Unit.Millimetres:
-        return roundToDecimal(input * (PPI / 25.4), 0, RoundingMethod.Ceil);
+        return Math.ceil(input * (PPI / 25.4));
       case Unit.Picas:
-        return roundToDecimal(input * (1 / 6) * PPI, 0, RoundingMethod.Ceil);
+        return Math.ceil(input * (1 / 6) * PPI);
       case Unit.Pixels:
-        return roundToDecimal(input, 0, RoundingMethod.Ceil);
+        return Math.ceil(input);
       case Unit.Points:
-        return roundToDecimal(input * (PPI / 72), 0, RoundingMethod.Ceil);
+        return Math.ceil(input * (PPI / 72));
       case Unit.Rems:
-        return roundToDecimal(input * FONT_SIZE, 0, RoundingMethod.Ceil);
+        return Math.ceil(input * FONT_SIZE);
       case Unit.Tailwind:
-        return (getIntersectingValue(tailwindSizes, tailwindInPixels, input));
+        return getIntersectingValue(tailwindSizes, tailwindInPixels, input);
       default:
         return -1;
     }
