@@ -2,31 +2,27 @@ import { useEffect } from "react";
 import { Unit } from "@/units";
 import { getIntersectingValue } from "@/shared/arrays";
 import { roundToDecimal } from "@/shared/round_number";
-import { Converter, DPI, FONT_SIZE } from "@/converters";
+import { Converter, ConverterProps, DPI, FONT_SIZE } from "@/converters";
 import Wrapper from "@/converters/Wrapper";
 import { tailwindSizes } from "@/converters/Tailwind";
 
 /**
  * Centimetres Component
  *
- * This component is used to convert a value from a specified unit to millimetres.
+ * This component is used to convert a value from a specified unit to centimetres (cm).
  *
- * @param {Object} props - The component's props.
- * @param {number} props.input - The value to be converted to millimetres.
- * @param {Unit} props.from - The unit from which the input value should be converted.
- * @param {string} props.hotkey - The keyboard shortcut to trigger the conversion and copy the result to the clipboard (e.g., "A", "B", "1", etc.).
+ * @param {ConverterProps} props - The component's props:
+ *   - input: The input value to convert.
+ *   - from: The unit to convert from.
+ *   - hotkey: The keyboard shortcut to copy the result to the clipboard.
  *
- * @returns {JSX.Element} - The JSX element representing the Centimetres component.
+ * @returns {JSX.Element} - The JSX element representing the Centimetres Converter component.
  */
 export default function Centimetres({
   input,
   from,
   hotkey,
-}: {
-  input: number;
-  from: Unit;
-  hotkey: string;
-}): JSX.Element {
+}: ConverterProps): JSX.Element {
   const result = toCentimetres.convert(from, input);
 
   const onCmKey = (e: KeyboardEvent) => {
@@ -75,6 +71,13 @@ export const tailwindInCm = [
   6.3499992, 6.77333248, 7.61999904, 8.466665599999999, 10.159998719999999,
 ];
 
+/**
+ * Centimetre equivalent values for Bootstrap CSS spacing and sizing classes.
+ *
+ * Each key in this array correspond to a specific size in Bootstrap. The values 
+ * represent the centimetre equivalent of that Bootstrap size. For example, the 
+ * 'p-4' Bootstrap class would correspond to 0.25 cm.
+ */
 const bootstrapInCm = [
   0, 0.041666666666666664, 0.08333333333333333, 0.16666666666666666,
   0.25, 0.5,
@@ -86,6 +89,7 @@ const bootstrapInCm = [
  * other units into centimetres.
  */
 export const toCentimetres: Converter = {
+
   /**
    * Converts a value from the specified unit to centimetres (cm).
    *
@@ -136,10 +140,10 @@ export const toCentimetres: Converter = {
   },
 
   /**
-   * The `render` function converts a converted value in millimeters to a
+   * The `render` function converts a converted value in centimetres to a
    * string representation.
    *
-   * @param {number} conversion - The converted value in millimeters.
+   * @param {number} conversion - The converted value in centimetres.
    * @returns {string} - A string representation of the converted value, or
    *                     "N/A" if the conversion is not valid.
    */
