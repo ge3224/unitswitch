@@ -1,7 +1,12 @@
 {
   "name": "unitswitch",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
+  "author": [
+    "Jacob Benison <jacob.benison@gmail.com> (http://jacobbenison.com/)"
+  ],
+  "description": "UnitSwitch is a single-page application that simplifies unit conversions for web designers and developers. Conveniently switch between various units of measurement, including pixels, ems, rems, and more, with an intuitive interface and keyboard shortcuts for efficient conversion.",
+  "license": "MIT License",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
