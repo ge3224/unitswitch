@@ -15,7 +15,7 @@ import { nearestIndex } from "@/shared/arrays";
  *   - from: The unit to convert from.
  *   - hotkey: The keyboard shortcut to copy the result to the clipboard.
  *
- * @returns {JSX.Element} - The JSX element representing the Picas Converter component.
+ * @returns {JSX.Element} - The JSX element representing the Bootstrap Converter component.
  */
 export default function Bootstrap({
   input,
@@ -68,10 +68,21 @@ export default function Bootstrap({
 export const bootstrapInPixels: number[] = [0, 4, 8, 16, 24, 48];
 
 /**
- * Converts a value from one unit to another based on predefined conversion factors.
+ * The `toBootstrap` object implements the `Converter` type by providing both
+ * the `convert` and `render` functions used to process incoming values from
+ * other units into Bootstrap sizing.
  */
 export const toBootstrap: Converter = {
-  convert: (from: Unit, input: number) => {
+
+  /**
+   * Converts a value from the specified unit to Bootstrap sizing.
+   *
+   * @param {Unit} from    - The unit to convert from.
+   * @param {number} input - The value to be converted.
+   * @returns {number}     - The converted value in Bootstrap sizing, or -1 if the conversion is 
+   *                         not supported or input is invalid.
+   */
+  convert: (from: Unit, input: number): number => {
     switch (from) {
       case Unit.Bootstrap:
         return [0, 1, 2, 3, 4, 5].includes(input) ? input : -1;
