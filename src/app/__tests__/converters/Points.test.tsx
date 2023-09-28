@@ -1,10 +1,10 @@
 import { Unit } from '@/units';
 import { toPoints } from "@/converters/Points";
-import { DPI } from '@/converters';
+import { PPI } from '@/converters';
 
 describe('toPoints.convert function', () => {
 
-  const t96 = 384 * (72 / DPI);
+  const t96 = 384 * (72 / PPI);
 
   it('should return -1 for input less than or equal to 0', () => {
     expect(toPoints.convert(Unit.Bootstrap, -1)).toBe(-1);
@@ -13,8 +13,8 @@ describe('toPoints.convert function', () => {
 
   it('should convert Bootstrap units correctly', () => {
     expect(toPoints.convert(Unit.Bootstrap, 0)).toBe(0);
-    expect(toPoints.convert(Unit.Bootstrap, 1)).toBeCloseTo(5.333);
-    expect(toPoints.convert(Unit.Bootstrap, 2)).toBeCloseTo(10.666);
+    expect(toPoints.convert(Unit.Bootstrap, 1)).toBeCloseTo(2.9999977322849);
+    expect(toPoints.convert(Unit.Bootstrap, 2)).toBeCloseTo(5.9999954645698);
   });
 
   it('should convert Centimeters units correctly', () => {
