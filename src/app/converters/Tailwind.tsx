@@ -56,7 +56,12 @@ export default function Tailwind({
       <div className="text-app-black">
         <strong>Example</strong>:{" "}
         {result >= 0 ? (
-          <code className="font-mono text-app-purple-500">class="p-{toTailwind.render(result)}"</code>
+          <code className="font-mono ">
+            <span className="text-app-gray-200">class{"="}</span>
+            <span className="text-app-green-500">
+              "p-{toTailwind.render(result)}"
+            </span>
+          </code>
         ) : (
           "N/A"
         )}
