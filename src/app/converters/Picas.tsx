@@ -5,6 +5,7 @@ import { ConverterProps, DPI, FONT_SIZE } from ".";
 import { getIntersectingValue } from "@/shared/arrays";
 import { tailwindSizes } from "./Tailwind";
 import { roundToDecimal } from "@/shared/round_number";
+import { bootstrapInPixels } from "./Bootstrap";
 
 /**
  * Picas Converter Component
@@ -25,6 +26,7 @@ export default function Picas({
 }: ConverterProps): JSX.Element {
   const result = toPicas.convert(from, input);
 
+  console.log(bootstrapInPixels.map(px => pixelsToPicas(px)));
   const onPcKey = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
@@ -67,6 +69,16 @@ export const tailwindInPicas = [
   24,
 ];
 
+
+/**
+ * Pica equivalent values for Bootstrap CSS spacing and sizing classes.
+ *
+ * Each key in this array corresponds to a specific size in a Bootstrap CSS
+ * class name. The values represent the pica (pc) equivalent of that Bootstrap size.
+ * For example, the 'p-1' Bootstrap class would correspond to 0.25 picas.
+ */
+const bootstrapInPicas = [0, 0.25, 0.5, 1, 1.5, 3];
+
 /**
  * Convert Pixels to Picas
  *
@@ -89,17 +101,16 @@ export const toPicas = {
   /**
    * Converts a value from the specified unit to picas (pc).
    *
-   * @param {Unit} from - The unit to convert from.
+   * @param {Unit} from    - The unit to convert from.
    * @param {number} input - The value to be converted.
-   * @returns {number} - The converted value in picas (pc), or -1 if the
-   *                     conversion is not supported or input is invalid.
+   * @returns {number}     - The converted value in picas (pc), or -1 if the
+   *                         conversion is not supported or input is invalid.
    */
   convert: (from: Unit, input: number): number => {
     if (input < 0) return -1;
     switch (from) {
       case Unit.Bootstrap:
-        const bs = [0, 0.0625, 0.125, 0.1875, 0.25, 0.3125];
-        return input <= bs.length - 1 && input % 1 === 0 ? bs[input] : -1;
+        return input <= bootstrapInPicas.length - 1 && input % 1 === 0 ? bootstrapInPicas[input] : -1;
       case Unit.Centimetres:
         return input * 2.362204724;
       case Unit.Ems:

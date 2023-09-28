@@ -12,8 +12,8 @@ describe("toPicas.convert function", () => {
 
   it("should convert Bootstrap units correctly", () => {
     expect(toPicas.convert(Unit.Bootstrap, 0)).toBe(0);
-    expect(toPicas.convert(Unit.Bootstrap, 1)).toBeCloseTo(0.0625);
-    expect(toPicas.convert(Unit.Bootstrap, 2)).toBeCloseTo(0.125);
+    expect(toPicas.convert(Unit.Bootstrap, 1)).toBeCloseTo(0.24999996870079);
+    expect(toPicas.convert(Unit.Bootstrap, 2)).toBeCloseTo(0.49999993740157);
   });
 
   it("should convert Centimeters units correctly", () => {
