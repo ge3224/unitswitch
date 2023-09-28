@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Unit } from "@/units";
 import Wrapper from "@/converters/Wrapper";
-import { Converter, DPI, FONT_SIZE } from "@/converters";
+import { Converter, ConverterProps, DPI, FONT_SIZE } from "@/converters";
 import { RoundingMethod, roundToDecimal } from "@/shared/round_number";
 import { getIntersectingValue } from "@/shared/arrays";
 import { tailwindSizes } from "./Tailwind";
@@ -13,24 +13,21 @@ import { tailwindSizes } from "./Tailwind";
  * allows users to copy the result to the clipboard using a specified
  * hotkey combination.
  *
- * @param {object} props - The component's properties.
- * @param {number} props.input - The input value to be converted to pixels.
- * @param {Unit} props.from - The unit of measurement to convert from (defined as an enum 'Unit').
- * @param {string} props.hotkey - The hotkey combination to trigger clipboard copying.
- * @returns {JSX.Element} - A React JSX element that displays the converted value.
+ * @param {ConverterProps} props - The component's props:
+ *   - input: The input value to convert.
+ *   - from: The unit to convert from.
+ *   - hotkey: The keyboard shortcut to copy the result to the clipboard.
+ *
+ * @returns {JSX.Element} - The JSX element representing the Pixels Converter component.
  */
 export default function Pixels({
   input,
   from,
   hotkey,
-}: {
-  input: number;
-  from: Unit;
-  hotkey: string;
-}): JSX.Element {
+}: ConverterProps): JSX.Element {
   const result = toPixels.convert(from, input);
 
-  const hotkeyHandler = (e: KeyboardEvent) => {
+  const onPxKey = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
       e.stopPropagation();
@@ -39,10 +36,10 @@ export default function Pixels({
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", hotkeyHandler);
+    document.addEventListener("keydown", onPxKey);
 
     return () => {
-      document.removeEventListener("keydown", hotkeyHandler);
+      document.removeEventListener("keydown", onPxKey);
     };
   });
 
@@ -81,6 +78,15 @@ export const tailwindInPixels = [
  * @returns {number} The converted value in pixels. Returns -1 if the unit is not supported.
  */
 export const toPixels: Converter = {
+
+  /**
+   * Converts a value from the specified unit to pixels (px).
+   *
+   * @param {Unit} from    - The unit to convert from.
+   * @param {number} input - The value to be converted.
+   * @returns {number}     - The converted value in pixels (px), or -1 if the
+   *                         conversion is not supported or input is invalid.
+   */
   convert: (from: Unit, input: number): number => {
     if (input < 0) return -1;
     switch (from) {
@@ -106,10 +112,7 @@ export const toPixels: Converter = {
       case Unit.Rems:
         return roundToDecimal(input * FONT_SIZE, 0, RoundingMethod.Ceil);
       case Unit.Tailwind:
-        return roundToDecimal(
-          getIntersectingValue(tailwindSizes, tailwindInPixels, input),
-          4,
-        );
+        return (getIntersectingValue(tailwindSizes, tailwindInPixels, input));
       default:
         return -1;
     }
@@ -127,6 +130,6 @@ export const toPixels: Converter = {
     if (conversion < 0) return "N/A";
 
     const str = conversion.toString();
-    return str.length < 8 ? str : str.slice(0, 6) + "..";
+    return str.length < 9 ? str : str.slice(0, 6) + "..";
   },
 };
