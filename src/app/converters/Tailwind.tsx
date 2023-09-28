@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Unit } from "@/units";
-import { Converter } from "@/converters";
+import { Converter, ConverterProps } from "@/converters";
 import Wrapper from "@/converters/Wrapper";
 import { interpolateInRange } from "@/shared/arrays";
 
@@ -10,25 +10,21 @@ import { interpolateInRange } from "@/shared/arrays";
  * This component converts a value from various units of measurement to Tailwind sizing
  * and provides a hotkey to copy the converted value to the clipboard.
  *
- * @param {object} props - The component's properties.
- * @param {number} props.input - The input value to be converted.
- * @param {Unit} props.from - The unit of the input value.
- * @param {string} props.hotkey - The hotkey combination to copy the result to the clipboard.
+ * @param {ConverterProps} props - The component's props:
+ *   - input: The input value to convert.
+ *   - from: The unit to convert from.
+ *   - hotkey: The keyboard shortcut to copy the result to the clipboard.
  *
- * @returns {JSX.Element} - A React element representing the Tailwind converter component.
+ * @returns {JSX.Element} - The JSX element representing the Tailwind Converter component.
  */
 export default function Tailwind({
   input,
   from,
   hotkey,
-}: {
-  input: number;
-  from: Unit;
-  hotkey: string;
-}): JSX.Element {
+}: ConverterProps): JSX.Element {
   const result = toTailwind.convert(from, input);
 
-  const hotkeyHandler = (e: KeyboardEvent) => {
+  const onTwKey = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
       e.stopPropagation();
@@ -37,10 +33,10 @@ export default function Tailwind({
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", hotkeyHandler);
+    document.addEventListener("keydown", onTwKey);
 
     return () => {
-      document.removeEventListener("keydown", hotkeyHandler);
+      document.removeEventListener("keydown", onTwKey);
     };
   });
 
@@ -82,7 +78,16 @@ export const tailwindSizes = [
  * This object provides conversion functions from various unit systems to Tailwind.
  */
 export const toTailwind: Converter = {
-  convert: (from: Unit, input: number) => {
+
+  /**
+   * Converts a value from the specified unit to tailwindcss sizes.
+   *
+   * @param {Unit} from    - The unit to convert from.
+   * @param {number} input - The value to be converted.
+   * @returns {number}     - The converted value in tailwindcss sizes, or -1 if the
+   *                         conversion is not supported or input is invalid.
+   */
+  convert: (from: Unit, input: number): number => {
     // if (input === 0) return 0;
     switch (from) {
       case Unit.Bootstrap:
@@ -115,10 +120,10 @@ export const toTailwind: Converter = {
   },
 
   /**
-   * The `render` function converts a converted value in Tailwind sizes to a
+   * The `render` function converts a converted value in tailwindcss sizes to a
    * string representation.
    *
-   * @param {number} conversion - The converted value in Tailwind sizes.
+   * @param {number} conversion - The converted value in tailwindcss sizes.
    * @returns {string} - A string representation of the converted value, or
    *                     "N/A" if the conversion is not valid.
    */
