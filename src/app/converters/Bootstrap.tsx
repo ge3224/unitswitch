@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Unit } from "@/units";
-import { Converter } from "@/converters";
+import { Converter, ConverterProps } from "@/converters";
 import Wrapper from "@/converters/Wrapper";
 import { nearestIndex } from "@/shared/arrays";
 
@@ -10,22 +10,18 @@ import { nearestIndex } from "@/shared/arrays";
  * This component converts a value from various units of measurement to Bootstrap sizing
  * and provides a hotkey to copy the converted value to the clipboard.
  *
- * @param {object} props - The component's properties.
- * @param {number} props.input - The input value to be converted.
- * @param {Unit} props.from - The unit of the input value.
- * @param {string} props.hotkey - The hotkey combination to copy the result to the clipboard.
+ * @param {ConverterProps} props - The component's props:
+ *   - input: The input value to convert.
+ *   - from: The unit to convert from.
+ *   - hotkey: The keyboard shortcut to copy the result to the clipboard.
  *
- * @returns {JSX.Element} - A React element representing the Bootstrap converter component.
+ * @returns {JSX.Element} - The JSX element representing the Picas Converter component.
  */
 export default function Bootstrap({
   input,
   from,
   hotkey,
-}: {
-  input: number;
-  from: Unit;
-  hotkey: string;
-}): JSX.Element {
+}: ConverterProps): JSX.Element {
   const result = toBootstrap.convert(from, input);
 
   const hotkeyHandler = (e: KeyboardEvent) => {
@@ -59,7 +55,17 @@ export default function Bootstrap({
   );
 }
 
-export const bootstrapSizes = [0, 1, 2, 3, 4, 5];
+/**
+ * The `bootstrapInPixels` array contains a set of pixel values commonly used in web development
+ * for spacing and layout purposes. These values are used in conjunction with the Bootstrap
+ * CSS framework.
+ *
+ * Each value in the array represents a specific pixel measurement that can be used for margins,
+ * padding, or other spacing-related properties in your web applications.
+ *
+ * @type {number[]} An array of pixel values for spacing and layout in web development.
+ */
+export const bootstrapInPixels: number[] = [0, 4, 8, 16, 24, 48];
 
 /**
  * Converts a value from one unit to another based on predefined conversion factors.
@@ -99,7 +105,7 @@ export const toBootstrap: Converter = {
           input,
         );
       case Unit.Pixels:
-        return [0, 4, 8, 16, 24, 48].indexOf(input);
+        return bootstrapInPixels.indexOf(input);
       case Unit.Points:
         return nearestIndex(
           [
@@ -127,19 +133,16 @@ export const toBootstrap: Converter = {
   },
 
   /**
-   * The `render` function converts a converted value in Bootstrap sizes to a 
+   * The `render` function converts a converted value in Bootstrap sizes to a
    * string representation.
    *
    * @param {number} conversion - The converted value in Bootstrap sizes.
-   * @returns {string} - A string representation of the converted value, or 
+   * @returns {string} - A string representation of the converted value, or
    *                     "N/A" if the conversion is not valid.
    */
   render: (conversion: number): string => {
     if (conversion < 0) return "N/A";
 
-    const str = conversion.toString();
-    return str.length < 8
-      ? str
-      : str.slice(0, 6) + "..";
-  }
+    return conversion.toString();
+  },
 };
