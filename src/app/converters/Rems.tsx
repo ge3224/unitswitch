@@ -27,7 +27,7 @@ export default function Rems({
 ): JSX.Element {
   const result = toRems.convert(from, input);
 
-  const hotkeyHandler = (e: KeyboardEvent) => {
+  const onRemKey = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
       e.stopPropagation();
@@ -36,10 +36,10 @@ export default function Rems({
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", hotkeyHandler);
+    document.addEventListener("keydown", onRemKey);
 
     return () => {
-      document.removeEventListener("keydown", hotkeyHandler);
+      document.removeEventListener("keydown", onRemKey);
     };
   });
 

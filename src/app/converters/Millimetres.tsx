@@ -25,7 +25,7 @@ export default function Millimetres({
 }: ConverterProps): JSX.Element {
   const result = toMillimetres.convert(from, input);
 
-  const hotkeyHandler = (e: KeyboardEvent) => {
+  const onMmKey = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
       e.stopPropagation();
@@ -34,10 +34,10 @@ export default function Millimetres({
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", hotkeyHandler);
+    document.addEventListener("keydown", onMmKey);
 
     return () => {
-      document.removeEventListener("keydown", hotkeyHandler);
+      document.removeEventListener("keydown", onMmKey);
     };
   });
 

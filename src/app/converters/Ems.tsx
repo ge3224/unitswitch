@@ -26,7 +26,7 @@ export default function Ems({
 }: ConverterProps): JSX.Element {
   const result = toEms.convert(from, input);
 
-  const hotkeyHandler = (e: KeyboardEvent) => {
+  const onEmKey = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
       e.stopPropagation();
@@ -35,10 +35,10 @@ export default function Ems({
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", hotkeyHandler);
+    document.addEventListener("keydown", onEmKey);
 
     return () => {
-      document.removeEventListener("keydown", hotkeyHandler);
+      document.removeEventListener("keydown", onEmKey);
     };
   });
 

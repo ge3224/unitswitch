@@ -60,7 +60,7 @@ export default function UserInput({
             strokeLinejoin="round"
           />
         </svg>
-        <h1 className="font-space text-black-usw ml-1 text-4xl font-bold">
+        <h1 className="font-space text-app-black ml-1 text-4xl font-bold">
           UnitSwitch
         </h1>
       </div>
@@ -69,7 +69,7 @@ export default function UserInput({
         <div className="mb-2">
           {/* Numeric input field */}
           <input
-            className="bg-green-usw-100 border-green-usw-600 font-space-code text-green-usw-500 focus:ring-teal-usw-500 w-full rounded-sm border px-1.5 py-1 font-bold focus:outline-none focus:ring"
+            className="bg-app-green-100 border-green-usw-600 font-space-code text-green-usw-500 focus:ring-teal-usw-500 w-full rounded-sm border px-1.5 py-1 font-bold focus:outline-none focus:ring"
             type="number"
             value={input}
             ref={textInput}
@@ -92,7 +92,7 @@ export default function UserInput({
         <div>
           {/* Unit selection dropdown */}
           <select
-            className="bg-gray-usw-50 border-green-usw-600 font-space text-black-usw focus:ring-teal-usw-500 rounded-sm border px-0.5 py-1 focus:outline-none focus:ring"
+            className="bg-app-gray-50 border-green-usw-600 font-space text-black-usw focus:ring-teal-usw-500 rounded-sm border px-0.5 py-1 focus:outline-none focus:ring"
             name="units"
             value={type}
             ref={selectInput}
@@ -119,7 +119,7 @@ export default function UserInput({
             ))}
           </select>
         </div>
-        <div className="font-space-code text-gray-usw-200 mt-1 hidden lg:block">
+        <div className="font-space-code text-app-gray-200 mt-1 hidden lg:block">
           {/* Shortcut information */}
           <small>
             <code>ctrl+k</code>

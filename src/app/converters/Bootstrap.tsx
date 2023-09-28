@@ -24,7 +24,7 @@ export default function Bootstrap({
 }: ConverterProps): JSX.Element {
   const result = toBootstrap.convert(from, input);
 
-  const hotkeyHandler = (e: KeyboardEvent) => {
+  const onBsKey = (e: KeyboardEvent) => {
     if (e.key === hotkey && e.ctrlKey === true) {
       e.preventDefault();
       e.stopPropagation();
@@ -33,10 +33,10 @@ export default function Bootstrap({
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", hotkeyHandler);
+    document.addEventListener("keydown", onBsKey);
 
     return () => {
-      document.removeEventListener("keydown", hotkeyHandler);
+      document.removeEventListener("keydown", onBsKey);
     };
   });
 
