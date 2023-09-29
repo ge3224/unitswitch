@@ -1,7 +1,6 @@
 import React, { ReactNode, useEffect, useRef } from "react";
 import { Unit } from "@/units";
 import { Converter } from "@/converters";
-import { Space_Mono } from "next/font/google";
 
 /**
  * Wrapper Component
@@ -75,30 +74,6 @@ export default function Wrapper({
         console.warn("resultDiv Ref is null");
       }
     }
-    // const split = hotkey.split("+");
-    // if (
-    //   e.key === split[split.length - 1] &&
-    //   split[0] === "ctrl" &&
-    //   e.ctrlKey === true
-    // ) {
-    //   // Check if resultDiv.current is not null
-    //   if (resultDiv.current) {
-    //     resultDiv.current?.classList.add("ring-2");
-    //     resultDiv.current?.classList.add("ring-app-purple-400");
-    //     resultDiv.current?.classList.add("ring-inset");
-    //
-    //     setTimeout(() => {
-    //       // Check again before removing classes
-    //       if (resultDiv.current) {
-    //         resultDiv.current?.classList.remove("ring-2");
-    //         resultDiv.current?.classList.remove("ring-app-purple-400");
-    //         resultDiv.current?.classList.remove("ring-inset");
-    //       }
-    //     }, 500);
-    //   } else {
-    //     console.warn("resultDiv Ref is null");
-    //   }
-    // }
   };
 
   useEffect(() => {
@@ -202,7 +177,7 @@ export default function Wrapper({
           className="w-32 border-l border-r border-app-green-600 bg-app-green-100 px-3 py-2 text-sm font-bold text-app-green-500 lg:flex lg:items-center lg:border-l-0 lg:text-base"
           id={base}
         >
-          <span className="mr-2 cursor-pointer" onClick={icoCopyHandler}>
+          <span className="mr-2 cursor-pointer" onClick={icoCopyHandler} title="Click to copy the converted value to the clipboard">
             <svg
               ref={copyIco}
               className="inline"

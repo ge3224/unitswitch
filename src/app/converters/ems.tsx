@@ -4,7 +4,7 @@ import { getIntersectingValue } from "@/shared/arrays";
 import { roundToDecimal } from "@/shared/round_number";
 import { Converter, ConverterProps, PPI, FONT_SIZE } from "@/converters";
 import Wrapper from "@/converters/Wrapper";
-import { tailwindSizes } from "@/converters/Tailwind";
+import { tailwindSizes } from "@/converters/tailwind";
 
 /**
  * Ems Component

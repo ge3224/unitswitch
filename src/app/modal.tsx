@@ -1,6 +1,6 @@
 import { Unit, abbreviations, isUnit } from "@/units";
 import React, { useEffect, useRef } from "react";
-import { UserInputCallback } from "./user_input";
+import { OnUserSubmit } from "./user_input";
 
 
 /**
@@ -17,7 +17,7 @@ export default function Modal({
   hotkey,
 }: {
   type: Unit;
-  callback: UserInputCallback;
+  callback: OnUserSubmit;
   hotkey: string;
 }) {
   // Create refs for the Modal and input elements

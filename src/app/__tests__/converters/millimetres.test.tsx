@@ -1,5 +1,5 @@
 import { PPI, FONT_SIZE } from "@/converters";
-import { toMillimetres } from "@/converters/Millimetres";
+import { toMillimetres } from "@/converters/millimetres";
 import { Unit } from "@/units";
 
 describe("toMillimetres.convert", () => {

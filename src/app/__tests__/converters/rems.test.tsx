@@ -1,4 +1,4 @@
-import { toRems } from "@/converters/Rems";
+import { toRems } from "@/converters/rems";
 import { Unit } from "@/units";
 
 describe("toRems Converter", () => {

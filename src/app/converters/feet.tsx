@@ -2,7 +2,7 @@ import { Unit } from "@/units";
 import { Converter, ConverterProps, PPI, FONT_SIZE } from ".";
 import { useEffect } from "react";
 import Wrapper from "./Wrapper";
-import { tailwindSizes } from "./Tailwind";
+import { tailwindSizes } from "@/converters/tailwind";
 import { getIntersectingValue } from "@/shared/arrays";
 
 /**

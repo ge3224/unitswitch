@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Unit, isUnit } from "@/units";
 import { Space_Grotesk } from "next/font/google";
 
@@ -12,7 +12,7 @@ const space = Space_Grotesk({ subsets: ["latin"] });
  * @param unit - The unit of measurement for the input value.
  * @returns void
  */
-export type UserInputCallback = (value: number, unit: Unit) => void;
+export type OnUserSubmit = (value: number, unit: Unit) => void;
 
 /**
  * UserInput is a React component that provides an input field for numeric values and a dropdown select for units.
@@ -30,46 +30,78 @@ export default function UserInput({
 }: {
   input: number;
   type: Unit;
-  callback: UserInputCallback;
+  callback: OnUserSubmit;
 }): JSX.Element {
-  // Refs for the input and select elements
-  const textInput: React.RefObject<HTMLInputElement> = useRef(null);
+  const [local, setLocal] = useState<{
+    amount: string;
+    unit: Unit;
+    warn: string;
+  }>({
+    amount: input.toString(),
+    unit: type,
+    warn: "",
+  });
 
-  const selectInput = useRef<HTMLSelectElement>(null);
+  const updateLocal = (amount: string, unit: Unit, warn: string): void => {
+    setLocal({
+      ...local,
+      amount,
+      unit,
+      warn,
+    });
+  };
 
-  const onChangeHandler = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ): void => {
+  const onAmountChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault();
-    e.stopPropagation();
+    const _amount = e.target.value !== null ? e.target.value : "";
+    updateLocal(_amount, local.unit, local.warn);
+  };
 
-    if (e.target instanceof HTMLInputElement) {
-      if (Number.isNaN(parseFloat(e.target.value))) return;
+  const onUnitTypeChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    e.preventDefault();
+    const _unit = e.target.selectedOptions[0].text;
+    if (_unit === null || !isUnit(_unit)) {
+      return;
+    }
 
-      const num = parseFloat(e.target.value);
+    updateLocal(local.amount, _unit as Unit, local.warn);
+  };
 
-      if (num < 0) return;
+  const warning = useRef<HTMLDivElement>(null);
 
-      callback(num, type);
-    } else if (e.target instanceof HTMLSelectElement) {
-      const selectedOptionText = e.target.selectedOptions[0]?.text;
-      if (selectedOptionText && isUnit(selectedOptionText)) {
-        callback(input, selectedOptionText as Unit);
-      }
+  const toggleWarning = (show: boolean): void => {
+    if (show) {
+      updateLocal(local.amount, local.unit, "Please type number.");
+      return;
+    }
+    updateLocal(local.amount, local.unit, "");
+  };
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+
+    const _amount = parseFloat(local.amount);
+    const invalid = Number.isNaN(_amount);
+
+    toggleWarning(invalid);
+
+    if (!invalid) {
+      callback(_amount, local.unit);
     }
   };
 
-  // Focus on the input element when the component mounts
   useEffect(() => {
-    if (textInput.current) {
-      textInput.current.focus();
+    const _amount = parseFloat(local.amount);
+    if (Number.isNaN(_amount)) return;
+    if (_amount !== input || type !== local.unit) {
+      updateLocal(input.toString(), type, local.warn);
     }
-  }, []);
+  }, [input, type]);
 
   return (
-    <div className="flex flex-col border-b border-app-green-600 px-10 pb-8 pt-11 lg:col-span-2 lg:row-span-2 lg:flex-row lg:justify-center lg:border">
-      {/* Header with a logo and title */}
-      <div className="mb-6 flex items-center justify-center lg:mb-0 lg:ml-6">
+    <div className="relative flex flex-col border-b border-app-green-600 px-12 py-8 lg:col-span-2 lg:row-span-2 lg:flex-row lg:justify-center lg:border">
+      {/* Brandmark: logo & title */}
+      <div className="flex items-center justify-center">
         {/* SVG path elements for the logo */}
         <svg
           width="67"
@@ -96,46 +128,74 @@ export default function UserInput({
             strokeLinejoin="round"
           />
         </svg>
-        <h1 className={"ml-1 text-4xl font-bold text-app-black"} style={space.style}>
+        <h1
+          className={"ml-1 text-3xl sm:text-4xl font-bold text-app-black"}
+          style={space.style}
+        >
           UnitSwitch
         </h1>
       </div>
       {/* Input and select elements */}
-      <div className="flex max-w-sm flex-col justify-center md:mx-auto md:w-96 lg:ml-12">
-        <div className="mb-2">
-          {/* Numeric input field */}
-          <input
-            className="border-app-green-600 text-app-green-500 focus:ring-app-teal-500 w-full rounded-sm border bg-app-green-100 px-1.5 py-1 font-bold focus:outline-none focus:ring"
-            type="number"
-            value={input}
-            ref={textInput}
-            onChange={onChangeHandler}
-          />
-        </div>
-        <div>
-          {/* Unit selection dropdown */}
-          <select
-            className="border-app-green-600 text-app-black focus:ring-app-teal-500 rounded-sm border bg-app-gray-50 px-0.5 py-1 focus:outline-none focus:ring"
-            name="units"
-            value={type}
-            ref={selectInput}
-            onChange={onChangeHandler}
-            data-testid="unit-type"
+      <div className="flex max-w-sm flex-col justify-center mt-6 lg:mt-0 mx-auto md:w-96 lg:ml-10">
+        <form
+          className="grid grid-cols-5 items-center gap-2"
+          onSubmit={onSubmit}
+        >
+          <fieldset className="col-span-3">
+            <label className="text-sm" htmlFor="unit_amount">
+              Amount:
+            </label>
+            <input
+              className="focus:ring-app-teal-500 w-full rounded-sm border border-app-green-600 bg-app-green-100 px-1.5 py-1 font-bold text-app-green-500 focus:outline-none focus:ring"
+              id="unit_amount"
+              type="text"
+              onChange={onAmountChange}
+              value={local.amount}
+              aria-label="Amount"
+              aria-describedby="amount-error"
+            />
+          </fieldset>
+          <fieldset className="col-span-2">
+            <label className="col-span-2 text-sm" htmlFor="unit_select">
+              Unit:
+            </label>
+            <select
+              className="focus:ring-app-teal-500 w-full rounded-sm border border-app-green-600 bg-app-gray-50 px-0.5 py-1 text-app-black focus:outline-none focus:ring"
+              data-testid="unit-type"
+              id="unit_select"
+              name="units"
+              onChange={onUnitTypeChange}
+              value={local.unit}
+              aria-label="Unit"
+            >
+              {Object.values(Unit).map((unit, index) => (
+                <option key={index} value={unit}>
+                  {unit}
+                </option>
+              ))}
+            </select>
+          </fieldset>
+          <fieldset className="col-span-5">
+            <input
+              className="focus:ring-app-green-200 w-1/3 cursor-pointer rounded-sm bg-app-black p-1 font-bold text-white transition delay-150 duration-300 ease-in-out shadow hover:bg-app-green-500 hover:bg-none focus:outline-none focus:ring active:bg-cyan-800 active:transition-none"
+              type="submit"
+              value="Convert"
+            />
+          </fieldset>
+          <div
+            ref={warning}
+            className="col-span-5 mb-0 mt-1 h-4 text-xs text-pink-500"
+            id="amount-error"
           >
-            {/* Generate unit options */}
-            {Object.values(Unit).map((unit, index) => (
-              <option key={index} value={unit}>
-                {unit}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="mt-1 hidden text-app-gray-200 lg:block">
-          {/* Shortcut information */}
-          <small>
-            <code>ctrl+k</code>
-          </small>
-        </div>
+            {local.warn}
+          </div>
+        </form>
+      </div>
+      <div
+        className="absolute bottom-2 right-2 flex h-fit w-fit cursor-default items-center rounded-sm border border-app-gray-200 py-0.5 pl-0.5 pr-1 text-xs text-app-gray-200 hover:border-app-green-400 hover:text-app-green-400"
+        title="Press Ctrl-K for quick keyboard conversions."
+      >
+        Ctrl-K
       </div>
     </div>
   );

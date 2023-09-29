@@ -1,5 +1,5 @@
 import { Unit } from "@/units";
-import { toInches } from "@/converters/Inches";
+import { toInches } from "@/converters/inches";
 import { PPI } from "@/converters";
 
 describe("toInches.convert function", () => {

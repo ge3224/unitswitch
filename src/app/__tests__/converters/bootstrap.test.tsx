@@ -1,4 +1,4 @@
-import { toBootstrap } from "@/converters/Bootstrap";
+import { toBootstrap } from "@/converters/bootstrap";
 import { Unit } from "@/units";
 
 describe("from bootstrap", () => {

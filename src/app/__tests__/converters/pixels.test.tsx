@@ -1,4 +1,4 @@
-import { toPixels } from '@/converters/Pixels';
+import { toPixels } from '@/converters/pixels';
 import { Unit } from '@/units';
 
 describe('toPixels', () => {

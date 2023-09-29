@@ -1,5 +1,5 @@
 // Import the function to be tested
-import { toTailwind } from "@/converters/Tailwind"; // Replace with the actual module path
+import { toTailwind } from "@/converters/tailwind"; // Replace with the actual module path
 import { Unit } from "@/units";
 
 describe("from bootstrap", () => {

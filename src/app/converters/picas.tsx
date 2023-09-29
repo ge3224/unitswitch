@@ -3,7 +3,7 @@ import Wrapper from "./Wrapper";
 import { useEffect } from "react";
 import { ConverterProps, PPI, FONT_SIZE } from ".";
 import { getIntersectingValue } from "@/shared/arrays";
-import { tailwindSizes } from "./Tailwind";
+import { tailwindSizes } from "@/converters/tailwind";
 import { roundToDecimal } from "@/shared/round_number";
 
 /**

@@ -15,16 +15,17 @@ export type ConverterProps = {
   hotkey: string;
 }
 
-export { default as Bootstrap } from "@/converters/Bootstrap";
-export { default as Centimetres } from "@/converters/Centimetres";
-export { default as Ems } from "@/converters/Ems";
-export { default as Golden } from "@/converters/GoldenRatio";
-export { default as Inches } from "@/converters/Inches";
-export { default as Millimetres } from "@/converters/Millimetres";
-export { default as Picas } from "@/converters/Picas";
-export { default as Pixels } from "@/converters/Pixels";
-export { default as Points } from "@/converters/Points";
-export { default as Rems } from "@/converters/Rems";
-export { default as RootTwo } from "@/converters/RootTwo";
-export { default as Tailwind } from "@/converters/Tailwind";
-export { default as SixteenNine } from "@/converters/SixteenNine";
+export { default as Bootstrap } from "@/converters/bootstrap";
+export { default as Centimetres } from "@/converters/centimetres";
+export { default as Ems } from "@/converters/ems";
+export { default as Feet } from "@/converters/feet";
+export { default as GoldenRatio } from "@/converters/golden_ratio";
+export { default as Inches } from "@/converters/inches";
+export { default as Millimetres } from "@/converters/millimetres";
+export { default as Picas } from "@/converters/picas";
+export { default as Pixels } from "@/converters/pixels";
+export { default as Points } from "@/converters/points";
+export { default as Rems } from "@/converters/rems";
+export { default as RootTwo } from "@/converters/root_two";
+export { default as SixteenNine } from "@/converters/sixteen_nine";
+export { default as Tailwind } from "@/converters/tailwind";

@@ -2,9 +2,6 @@ import { useEffect } from "react";
 import { ConverterProps, PPI, FONT_SIZE } from ".";
 import Wrapper from "./Wrapper";
 import { Unit } from "@/units";
-import { roundToDecimal } from "@/shared/round_number";
-import { getIntersectingValue } from "@/shared/arrays";
-import { tailwindSizes } from "./Tailwind";
 
 export default function RootTwo({ input, from, hotkey }: ConverterProps): JSX.Element {
   const result = toRootTwo.convert(from, input);

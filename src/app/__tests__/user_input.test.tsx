@@ -11,34 +11,39 @@ describe("UserInput component", () => {
     mockCallback.mockClear();
   });
 
-  it("renders with initial values", () => {
-    const { getByText, getByDisplayValue } = render(
-      <UserInput input={42} type={Unit.Pixels} callback={mockCallback} />,
+  test("renders with given props", () => {
+    const { getByLabelText, getByTestId } = render(
+      <UserInput input={0} type={Unit.Pixels} callback={() => { }} />
     );
 
-    expect(getByDisplayValue("42")).toBeInTheDocument();
-    expect(getByText("Pixels")).toBeInTheDocument();
+    expect(getByLabelText("Amount:")).toBeInTheDocument();
+    expect(getByTestId("unit-type")).toBeInTheDocument();
   });
 
-  it("calls the callback when input value changes", () => {
-    const { getByDisplayValue } = render(
-      <UserInput input={42} type={Unit.Pixels} callback={mockCallback} />,
+  test("calls callback function on form submit with valid input", () => {
+    const mockCallback = jest.fn();
+    const { getByLabelText, getByText } = render(
+      <UserInput input={0} type={Unit.Pixels} callback={mockCallback} />
     );
-    const inputElement = getByDisplayValue("42");
 
-    fireEvent.change(inputElement, { target: { value: "55" } });
+    fireEvent.change(getByLabelText("Amount:"), { target: { value: "25" } });
+    fireEvent.change(getByLabelText("Unit:"), {
+      target: { value: Unit.Rems },
+    });
+    fireEvent.submit(getByText("Convert"));
 
-    expect(mockCallback).toHaveBeenCalledWith(55, Unit.Pixels);
+    expect(mockCallback).toHaveBeenCalledWith(25, Unit.Rems);
   });
 
-  it("calls the callback when unit selection changes", () => {
-    const { getByTestId } = render(
-      <UserInput input={42} type={Unit.Rems} callback={mockCallback} />,
+  test("displays warning for invalid input", () => {
+    const mockCallback = jest.fn();
+    const { getByLabelText, getByText } = render(
+      <UserInput input={0} type={Unit.Pixels} callback={mockCallback} />
     );
-    const selectElement = getByTestId("unit-type");
 
-    fireEvent.change(selectElement, { target: { value: Unit.Rems } });
+    fireEvent.change(getByLabelText("Amount:"), { target: { value: "invalid" } });
+    fireEvent.submit(getByText("Convert"));
 
-    expect(mockCallback).toHaveBeenCalledWith(42, Unit.Rems);
+    expect(getByText("Please type number.")).toBeInTheDocument();
   });
 });

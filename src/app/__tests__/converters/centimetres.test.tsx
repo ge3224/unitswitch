@@ -1,5 +1,5 @@
 import { Unit } from '@/units';
-import { toCentimetres } from "@/converters/Centimetres";
+import { toCentimetres } from "@/converters/centimetres";
 
 describe('toCentimetres.convert function', () => {
   const t96 = 10.16;

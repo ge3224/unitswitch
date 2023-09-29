@@ -4,7 +4,7 @@ import { roundToDecimal } from "@/shared/round_number";
 import { useEffect } from "react";
 import Wrapper from "@/converters/Wrapper";
 import { getIntersectingValue } from "@/shared/arrays";
-import { tailwindSizes } from "./Tailwind";
+import { tailwindSizes } from "@/converters/tailwind";
 
 /**
  * Rems Component

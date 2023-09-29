@@ -1,5 +1,5 @@
 import { Unit } from '@/units';
-import { toPoints } from "@/converters/Points";
+import { toPoints } from "@/converters/points";
 import { PPI } from '@/converters';
 
 describe('toPoints.convert function', () => {

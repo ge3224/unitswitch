@@ -1,5 +1,5 @@
 import { Unit } from "@/units";
-import { toPicas } from "@/converters/Picas";
+import { toPicas } from "@/converters/picas";
 import { PPI } from "@/converters";
 
 describe("toPicas.convert function", () => {

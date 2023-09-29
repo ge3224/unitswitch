@@ -1,5 +1,5 @@
 import { Unit } from "@/units";
-import { toFeet } from "@/converters/Feet";
+import { toFeet } from "@/converters/feet";
 import { PPI } from "@/converters";
 
 describe("toFeet.convert function", () => {

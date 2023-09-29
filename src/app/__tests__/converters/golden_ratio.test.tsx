@@ -1,4 +1,4 @@
-import { toGolden } from '@/converters/GoldenRatio';
+import { toGolden } from '@/converters/golden_ratio';
 import { Unit } from '@/units';
 
 describe('toGolden', () => {

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Wrapper from "./Wrapper";
 import { roundToDecimal } from "@/shared/round_number";
 import { getIntersectingValue } from "@/shared/arrays";
-import { tailwindSizes } from "./Tailwind";
+import { tailwindSizes } from "@/converters/tailwind";
 
 /**
  * Inches Converter Component
