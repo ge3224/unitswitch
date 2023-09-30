@@ -192,7 +192,7 @@ export default function UserInput({
         </form>
       </div>
       <div
-        className="absolute bottom-2 right-2 flex h-fit w-fit cursor-default items-center rounded-sm border border-app-gray-200 py-0.5 pl-0.5 pr-1 text-xs text-app-gray-200 hover:border-app-green-400 hover:text-app-green-400"
+        className="absolute bottom-4 right-4 flex h-fit w-fit cursor-default items-center rounded-sm border border-app-gray-200 py-0.5 pl-0.5 pr-1 text-xs text-app-gray-200 hover:border-app-green-400 hover:text-app-green-400"
         title="Press Ctrl-K for quick keyboard conversions."
       >
         Ctrl-K

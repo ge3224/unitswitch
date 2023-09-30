@@ -211,11 +211,17 @@ export default function Wrapper({
         <div className="ml-2 mr-auto font-bold text-app-black lg:my-auto">
           {base}
         </div>
-        <div className="hidden text-app-gray-200 lg:my-auto lg:mr-4 xl:block">
+        <div className="hidden rounded-sm border border-app-gray-200 p-0.5 text-xs text-app-gray-200 cursor-default hover:border-app-green-400 hover:text-app-green-400 lg:my-auto lg:mr-4 xl:block">
           {hotkey && (
-            <small>
-              <code>{"ctrl+" + hotkey}</code>
-            </small>
+            <span
+              title={
+                "Press Ctrl-" +
+                hotkey.toUpperCase() +
+                " to copy the converted value to the clipboard"
+              }
+            >
+              {"Ctrl-" + hotkey.toUpperCase()}
+            </span>
           )}
         </div>
       </div>
