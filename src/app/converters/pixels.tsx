@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Unit } from "@/units";
-import Wrapper from "@/converters/Wrapper";
+import Wrapper from "@/converters/wrapper";
 import { Converter, ConverterProps, PPI, FONT_SIZE } from "@/converters";
 import { getIntersectingValue } from "@/shared/arrays";
 import { tailwindSizes } from "@/converters/tailwind";

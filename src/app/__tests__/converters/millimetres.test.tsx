@@ -1,4 +1,3 @@
-import { PPI, FONT_SIZE } from "@/converters";
 import { toMillimetres } from "@/converters/millimetres";
 import { Unit } from "@/units";
 

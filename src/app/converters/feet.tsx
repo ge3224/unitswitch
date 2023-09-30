@@ -1,7 +1,7 @@
 import { Unit } from "@/units";
-import { Converter, ConverterProps, PPI, FONT_SIZE } from ".";
+import { Converter, ConverterProps, PPI, FONT_SIZE } from "@/converters";
 import { useEffect } from "react";
-import Wrapper from "./Wrapper";
+import Wrapper from "@/converters/wrapper";
 import { tailwindSizes } from "@/converters/tailwind";
 import { getIntersectingValue } from "@/shared/arrays";
 
@@ -46,9 +46,7 @@ export default function Feet({
       from={from}
       hotkey={hotkey}
       converter={toFeet}
-    >
-      {""}
-    </Wrapper>
+    />
   );
 }
 

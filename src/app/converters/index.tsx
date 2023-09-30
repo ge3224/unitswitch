@@ -1,8 +1,8 @@
 import { Unit } from "@/units";
 
 export const FIXED_POINT = 3;
-export const FONT_SIZE = 16
-export const PPI = 96
+export const FONT_SIZE = 16;
+export const PPI = 96;
 
 export interface Converter {
   convert(from: Unit, input: number): number;
@@ -13,7 +13,7 @@ export type ConverterProps = {
   input: number;
   from: Unit;
   hotkey: string;
-}
+};
 
 export { default as Bootstrap } from "@/converters/bootstrap";
 export { default as Centimetres } from "@/converters/centimetres";

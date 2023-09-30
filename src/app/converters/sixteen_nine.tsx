@@ -1,9 +1,13 @@
 import { useEffect } from "react";
-import { Converter, ConverterProps } from ".";
-import Wrapper from "./Wrapper";
+import { Converter, ConverterProps } from "@/converters";
+import Wrapper from "@/converters/wrapper";
 import { Unit } from "@/units";
 
-export default function SixteenNine({ input, from, hotkey }: ConverterProps): JSX.Element {
+export default function SixteenNine({
+  input,
+  from,
+  hotkey,
+}: ConverterProps): JSX.Element {
   const result = toSixteenNine.convert(from, input);
 
   const on16_9Key = (e: KeyboardEvent) => {
@@ -35,7 +39,8 @@ export default function SixteenNine({ input, from, hotkey }: ConverterProps): JS
           height="149"
           viewBox="0 0 263 149"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg">
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <path
             d="M203 1H59V79H203V1Z"
             className="fill-app-green-300 stroke-app-green-600"
@@ -56,73 +61,53 @@ export default function SixteenNine({ input, from, hotkey }: ConverterProps): JS
             strokeWidth="0.999999"
             strokeDasharray="2 2"
           />
-          <path
-            d="M203 110L59 110"
-            className="stroke-app-green-400"
-          />
-          <path
-            d="M59 120.5V101"
-            className="stroke-app-green-400"
-          />
-          <path
-            d="M203 120.5V101"
-            className="stroke-app-green-400"
-          />
-          <path
-            d="M34 0V80"
-            className="stroke-app-green-600"
-          />
-          <path
-            d="M24 1H43.5"
-            className="stroke-app-green-600"
-          />
-          <path
-            d="M24 79H43.5"
-            className="stroke-app-green-600"
-          />
-          <path
-            d="M229 38V80"
-            className="stroke-app-green-400"
-          />
-          <path
-            d="M219 37L238.5 37"
-            className="stroke-app-green-400"
-          />
-          <path
-            d="M219 79L238.5 79"
-            className="stroke-app-green-400"
-          />
+          <path d="M203 110L59 110" className="stroke-app-green-400" />
+          <path d="M59 120.5V101" className="stroke-app-green-400" />
+          <path d="M203 120.5V101" className="stroke-app-green-400" />
+          <path d="M34 0V80" className="stroke-app-green-600" />
+          <path d="M24 1H43.5" className="stroke-app-green-600" />
+          <path d="M24 79H43.5" className="stroke-app-green-600" />
+          <path d="M229 38V80" className="stroke-app-green-400" />
+          <path d="M219 37L238.5 37" className="stroke-app-green-400" />
+          <path d="M219 79L238.5 79" className="stroke-app-green-400" />
           <text
-            className="fill-app-green-400 font-bold text-sm"
+            className="fill-app-green-400 text-sm font-bold"
             x="256"
             y="58"
             transform="rotate(-90,256,58)"
-            textAnchor="middle">{shorter(input).toFixed(2)}
+            textAnchor="middle"
+          >
+            {shorter(input).toFixed(2)}
           </text>
           <text
-            className="fill-app-green-400 font-bold text-sm"
+            className="fill-app-green-400 text-sm font-bold"
             x="128"
             y="140"
-            textAnchor="middle">{longer(input).toFixed(2)}
+            textAnchor="middle"
+          >
+            {longer(input).toFixed(2)}
           </text>
           <text
-            className="fill-app-green-600 font-bold text-sm"
+            className="fill-app-green-600 text-sm font-bold"
             x="162"
             y="27"
-            textAnchor="middle">{input.toFixed(2)}
+            textAnchor="middle"
+          >
+            {input.toFixed(2)}
           </text>
           <text
-            className="fill-app-green-600 font-bold text-sm"
+            className="fill-app-green-600 text-sm font-bold"
             x="18"
             y="42"
             transform="rotate(-90,18,42)"
-            textAnchor="middle">{input.toFixed(2)}
+            textAnchor="middle"
+          >
+            {input.toFixed(2)}
           </text>
         </svg>
       </div>
     </Wrapper>
   );
-
 }
 
 function longer(input: number): number {
@@ -134,7 +119,6 @@ function shorter(input: number): number {
 }
 
 export const toSixteenNine: Converter = {
-
   /**
    * Converts a value from the specified unit to inches (in).
    * @param {Unit} _from - The unit to convert from.
@@ -145,7 +129,6 @@ export const toSixteenNine: Converter = {
   convert: (_from: Unit, input: number): number => {
     return input < 0 ? -1 : longer(input);
   },
-
 
   /**
    * The `render` function converts a converted value in inches (in) to a
@@ -161,4 +144,4 @@ export const toSixteenNine: Converter = {
     const str = conversion.toString();
     return str.length < 8 ? str : str.slice(0, 6) + "..";
   },
-}
+};

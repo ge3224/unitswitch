@@ -1,6 +1,6 @@
 import { Unit } from "@/units";
 import { Converter, ConverterProps } from "@/converters";
-import Wrapper from "@/converters/Wrapper";
+import Wrapper from "@/converters/wrapper";
 import { useEffect } from "react";
 
 /**

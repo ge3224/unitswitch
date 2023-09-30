@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { ConverterProps, PPI, FONT_SIZE } from ".";
-import Wrapper from "./Wrapper";
+import { ConverterProps, } from "@/converters";
+import Wrapper from "@/converters/wrapper";
 import { Unit } from "@/units";
 
 export default function RootTwo({ input, from, hotkey }: ConverterProps): JSX.Element {

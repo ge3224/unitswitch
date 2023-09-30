@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Unit } from "@/units";
 import { Converter, ConverterProps } from "@/converters";
-import Wrapper from "@/converters/Wrapper";
+import Wrapper from "@/converters/wrapper";
 import { nearestIndex } from "@/shared/arrays";
 
 /**

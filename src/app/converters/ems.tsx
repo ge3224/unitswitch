@@ -3,7 +3,7 @@ import { Unit } from "@/units";
 import { getIntersectingValue } from "@/shared/arrays";
 import { roundToDecimal } from "@/shared/round_number";
 import { Converter, ConverterProps, PPI, FONT_SIZE } from "@/converters";
-import Wrapper from "@/converters/Wrapper";
+import Wrapper from "@/converters/wrapper";
 import { tailwindSizes } from "@/converters/tailwind";
 
 /**

@@ -177,7 +177,11 @@ export default function Wrapper({
           className="w-32 border-l border-r border-app-green-600 bg-app-green-100 px-3 py-2 text-sm font-bold text-app-green-500 lg:flex lg:items-center lg:border-l-0 lg:text-base"
           id={base}
         >
-          <span className="mr-2 cursor-pointer" onClick={icoCopyHandler} title="Click to copy the converted value to the clipboard">
+          <span
+            className="mr-2 cursor-pointer"
+            onClick={icoCopyHandler}
+            title="Click to copy the converted value to the clipboard"
+          >
             <svg
               ref={copyIco}
               className="inline"

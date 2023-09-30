@@ -1,3 +1,39 @@
+import { useCallback, useEffect, useState } from "react";
+import { Unit, isUnit } from "@/units";
+import UserInput, { OnUserSubmit } from "@/user_input";
+import {
+  Bootstrap,
+  Centimetres,
+  Ems,
+  Feet,
+  GoldenRatio,
+  Inches,
+  Millimetres,
+  Picas,
+  Pixels,
+  Points,
+  Rems,
+  RootTwo,
+  SixteenNine,
+  Tailwind,
+} from "@/converters";
+import Modal from "@/modal";
+
+export type UnitSwitchData = {
+  value: number;
+  unit: Unit;
+};
+
+function isUnitSwitchData(obj: any): obj is UnitSwitchData {
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    typeof obj.value === "number" &&
+    typeof obj.unit === "string" &&
+    isUnit(obj.unit)
+  );
+}
+
 /**
  * UnitSwitch
  *
@@ -43,77 +79,31 @@
  *
  * @see {@link https://github.com/ge3224/unitswitch} - Link to the UnitSwitch GitHub repository.
  */
-
-"use client";
-
-import { useCallback, useEffect, useState } from "react";
-import { Unit, isUnit } from "@/units";
-import UserInput, { OnUserSubmit } from "@/user_input";
-import {
-  Bootstrap,
-  Centimetres,
-  Ems,
-  Feet,
-  GoldenRatio,
-  Inches,
-  Millimetres,
-  Picas,
-  Pixels,
-  Points,
-  Rems,
-  RootTwo,
-  SixteenNine,
-  Tailwind,
-} from "@/converters";
-import Modal from "@/modal";
-
-type UnitSwitchData = {
-  value: number;
-  unit: Unit;
-};
-
-function isBrowser() {
-  return typeof window !== "undefined" && window.localStorage;
-}
-
-function isUnitSwitchData(obj: any): obj is UnitSwitchData {
-  return (
-    typeof obj === "object" &&
-    obj !== null &&
-    typeof obj.value === "number" &&
-    typeof obj.unit === "string" &&
-    isUnit(obj.unit)
-  );
-}
-
 export default function UnitSwitch() {
-  const STORAGE_KEY = "__unitswitch__";
-  const [local] = useState((): UnitSwitchData => {
-    const _default: UnitSwitchData = { value: 1, unit: Unit.Pixels };
+  const _default: UnitSwitchData = { value: 0, unit: Unit.Rems };
 
-    if (!isBrowser()) {
-      return _default;
-    }
+  const [initial, setInitial] = useState<boolean>(true);
 
-    const raw: string | null = localStorage.getItem(STORAGE_KEY);
-    const data = raw !== null ? JSON.parse(raw) : _default;
-    return isUnitSwitchData(data) ? data : _default;
-  });
+  const [data, setData] = useState<UnitSwitchData>(_default);
 
-  const [data, setData] = useState<UnitSwitchData>(local);
-
-  // Define a 'useEffect' hook to perform side effects when the component renders.
   useEffect(() => {
-    if (!isBrowser()) {
-      return;
+    const STORAGE_KEY = "__unitswitch__";
+
+    if (initial) {
+      const raw: string | null = localStorage.getItem(STORAGE_KEY);
+      const _data = raw !== null ? JSON.parse(raw) : _default;
+
+      if (isUnitSwitchData(_data)) {
+        setData(Object.assign({}, _data));
+      }
+
+      setInitial(false);
+
+    } else {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     }
+  }, [initial, data]);
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  }, [local, data]);
-
-  // Define a function called 'onUserInput' that takes two parameters:
-  // - 'value': a number representing a user input value.
-  // - 'unit': a value of type 'Unit' representing the selected unit.
   const formCallback: OnUserSubmit = (value: number, unit: Unit) => {
     setData({ ...data, value, unit });
   };

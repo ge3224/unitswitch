@@ -2,7 +2,7 @@ import { Unit } from "@/units";
 import { Converter, PPI, FONT_SIZE, ConverterProps } from "@/converters";
 import { roundToDecimal } from "@/shared/round_number";
 import { useEffect } from "react";
-import Wrapper from "@/converters/Wrapper";
+import Wrapper from "@/converters/wrapper";
 import { getIntersectingValue } from "@/shared/arrays";
 import { tailwindSizes } from "@/converters/tailwind";
 

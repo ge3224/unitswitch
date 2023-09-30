@@ -1,7 +1,7 @@
 import { Unit } from "@/units";
-import Wrapper from "./Wrapper";
+import Wrapper from "@/converters/wrapper";
 import { useEffect } from "react";
-import { ConverterProps, PPI, FONT_SIZE } from ".";
+import { ConverterProps, PPI, FONT_SIZE } from "@/converters";
 import { getIntersectingValue } from "@/shared/arrays";
 import { tailwindSizes } from "@/converters/tailwind";
 import { roundToDecimal } from "@/shared/round_number";
@@ -47,9 +47,7 @@ export default function Picas({
       from={from}
       hotkey={hotkey}
       converter={toPicas}
-    >
-      {""}
-    </Wrapper>
+    />
   );
 }
 
