@@ -31,6 +31,9 @@ const config: Config = {
           },
         }
       },
+      screens: {
+        xs: "348px",
+      }
     },
   },
   plugins: [],

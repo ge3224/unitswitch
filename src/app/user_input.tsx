@@ -99,7 +99,7 @@ export default function UserInput({
   }, [input, type]);
 
   return (
-    <div className="relative flex flex-col border-b border-app-green-600 px-12 py-8 lg:col-span-2 lg:row-span-2 lg:flex-row lg:justify-center lg:border">
+    <div className="relative flex flex-col border-b border-app-green-600 px-11 pt-12 lg:col-span-2 lg:row-span-2 lg:flex-row lg:justify-center lg:border lg:py-8">
       {/* Brandmark: logo & title */}
       <div className="flex items-center justify-center">
         {/* SVG path elements for the logo */}
@@ -129,14 +129,14 @@ export default function UserInput({
           />
         </svg>
         <h1
-          className={"ml-1 text-3xl sm:text-4xl font-bold text-app-black"}
+          className={"ml-1 text-3xl font-bold text-app-black xs:text-4xl"}
           style={space.style}
         >
           UnitSwitch
         </h1>
       </div>
       {/* Input and select elements */}
-      <div className="flex max-w-sm flex-col justify-center mt-6 lg:mt-0 mx-auto md:w-96 lg:ml-10">
+      <div className="mx-auto mt-6 flex max-w-sm flex-col justify-center md:w-96 lg:ml-10 lg:mt-0">
         <form
           className="grid grid-cols-5 items-center gap-2"
           onSubmit={onSubmit}
@@ -177,7 +177,7 @@ export default function UserInput({
           </fieldset>
           <fieldset className="col-span-5">
             <input
-              className="focus:ring-app-green-200 w-1/3 cursor-pointer rounded-sm bg-app-black p-1 font-bold text-white transition delay-150 duration-300 ease-in-out shadow hover:bg-app-green-500 hover:bg-none focus:outline-none focus:ring active:bg-cyan-800 active:transition-none"
+              className="w-1/3 cursor-pointer rounded-sm bg-app-black p-1 font-bold text-white shadow transition delay-150 duration-300 ease-in-out hover:bg-app-green-500 hover:bg-none focus:outline-none focus:ring focus:ring-app-green-200 active:bg-cyan-800 active:transition-none"
               type="submit"
               value="Convert"
             />
@@ -192,7 +192,7 @@ export default function UserInput({
         </form>
       </div>
       <div
-        className="absolute bottom-4 right-4 flex h-fit w-fit cursor-default items-center rounded-sm border border-app-gray-200 py-0.5 pl-0.5 pr-1 text-xs text-app-gray-200 hover:border-app-green-400 hover:text-app-green-400"
+        className="absolute bottom-4 right-4 hidden h-fit w-fit cursor-default items-center rounded-sm border border-app-gray-200 py-0.5 pl-0.5 pr-1 text-xs text-app-gray-200 hover:border-app-green-400 hover:text-app-green-400 lg:flex"
         title="Press Ctrl-K for quick keyboard conversions."
       >
         Ctrl-K
