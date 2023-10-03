@@ -19,11 +19,22 @@ import {
 } from "@/converters";
 import Modal from "@/modal";
 
+/**
+ * The UnitSwitchData type represents a data structure containing a numerical 
+ * value and its associated unit of measurement.
+ */
 export type UnitSwitchData = {
   value: number;
   unit: Unit;
 };
 
+/**
+ * The isUnitSwitchData function is a type guard in TypeScript that checks 
+ * whether the provided object adheres to the structure of the UnitSwitchData 
+ * type. It verifies if the object is an instance of UnitSwitchData by 
+ * validating its properties. This function is used to ensure type safety and 
+ * prevent unexpected data issues when working with objects.
+ */
 function isUnitSwitchData(obj: any): obj is UnitSwitchData {
   return (
     typeof obj === "object" &&
