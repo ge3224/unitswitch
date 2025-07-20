@@ -3,7 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], display: "swap", weight: ["400", "700"] });
 
 export const metadata: Metadata = {
   title: "Convert Units Conveniently: Ems, Rems, Pixels, Taiwind, Bootstrap, Picas And More - UnitSwitch",
