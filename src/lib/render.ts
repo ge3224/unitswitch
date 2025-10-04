@@ -19,16 +19,20 @@ export const renderConversion = function renderConversion(
   value: number,
   options: RenderOptions = {}
 ): string {
-  // Handle invalid conversions
   if (value < 0) return "N/A";
 
   // Check for special cases first
   if (options.special) {
     const specialResult = options.special(value);
-    if (specialResult !== null) return specialResult;
+    if (specialResult !== null) {
+      if (specialResult === "") {
+        console.warn(`Special handler returned empty string for value ${value}`);
+      }
+      return specialResult;
+    }
+    console.warn(`Special handler did not handle value ${value}, using default rendering`);
   }
 
-  // Apply rounding if specified
   const rounded = options.decimals !== undefined
     ? roundToDecimal(value, options.decimals)
     : value;
@@ -36,6 +40,5 @@ export const renderConversion = function renderConversion(
   const str = rounded.toString();
   const maxLength = options.maxLength ?? 8;
 
-  // Truncate if too long
   return str.length < maxLength ? str : str.slice(0, 6) + "..";
 }

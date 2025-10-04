@@ -3,11 +3,11 @@
  */
 export const Units = {
   Bootstrap: "Bootstrap",
-  Centimetres: "Centimetres",
+  Centimeters: "Centimeters",
   Ems: "Ems",
   Feet: "Feet",
   Inches: "Inches",
-  Millimetres: "Millimetres",
+  Millimeters: "Millimeters",
   Picas: "Picas",
   Pixels: "Pixels",
   Points: "Points",
@@ -26,11 +26,11 @@ export type Unit = typeof Units[keyof typeof Units];
 export function abbreviations(input: string): Unit | null {
   switch (input) {
     case "bs": return Units.Bootstrap;
-    case "cm": return Units.Centimetres;
+    case "cm": return Units.Centimeters;
     case "em": return Units.Ems;
     case "ft": return Units.Feet;
     case "in": return Units.Inches;
-    case "mm": return Units.Millimetres;
+    case "mm": return Units.Millimeters;
     case "pc": return Units.Picas;
     case "px": return Units.Pixels;
     case "pt": return Units.Points;

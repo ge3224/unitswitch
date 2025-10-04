@@ -48,7 +48,7 @@ export const convertToFeet: Converter = function convertToFeet(from: Unit, input
         0.020833333333333332, 0.041666666666666664,
       ];
       return input <= bs.length - 1 && input % 1 === 0 ? bs[input] : -1;
-    case Units.Centimetres:
+    case Units.Centimeters:
       return input / 30.48;
     case Units.Ems:
       return (input * FONT_SIZE) / (12 * PPI);
@@ -56,7 +56,7 @@ export const convertToFeet: Converter = function convertToFeet(from: Unit, input
       return input;
     case Units.Inches:
       return input / 12;
-    case Units.Millimetres:
+    case Units.Millimeters:
       return input * 0.00328084;
     case Units.Picas:
       return (input * 0.1667) / 12;

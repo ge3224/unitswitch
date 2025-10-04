@@ -57,12 +57,12 @@ export const convertToBootstrap: Converter = function convertToBootstrap(from: U
       );
     case Units.Tailwind:
       return [0, 1, 2, 4, 6, 12].indexOf(input);
-    case Units.Centimetres:
+    case Units.Centimeters:
       return nearestIndex(
         [0, 0.10583332, 0.21166664, 0.42333328, 0.63499992, 1.26999984],
         input,
       );
-    case Units.Millimetres:
+    case Units.Millimeters:
       return nearestIndex(
         [0, 1.0583332, 2.1166664, 4.2333328, 6.3499992, 12.6999984],
         input,

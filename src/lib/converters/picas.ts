@@ -34,7 +34,7 @@ export const convertToPicas: Converter = function convertToPicas(
   switch (from) {
     case Units.Bootstrap:
       return input <= _bootstrapToPicas.length - 1 && input % 1 === 0 ? _bootstrapToPicas[input] : -1;
-    case Units.Centimetres:
+    case Units.Centimeters:
       return input * 2.362204724;
     case Units.Ems:
       return _pixelsToPicas(input * FONT_SIZE);
@@ -42,7 +42,7 @@ export const convertToPicas: Converter = function convertToPicas(
       return input * 72;
     case Units.Inches:
       return input * 6;
-    case Units.Millimetres:
+    case Units.Millimeters:
       return input * 0.236220472;
     case Units.Picas:
       return input;

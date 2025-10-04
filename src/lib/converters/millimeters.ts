@@ -13,7 +13,7 @@ import { tailwindSizes } from "@/lib/converters/tailwind";
  * size class. For example, the 'p-4' Tailwind class, which would correspond to
  * 9.525 mm.
  */
-const _bootstrapToMillimetres = [
+const _bootstrapToMillimeters = [
   0, 1.0583332, 2.1166664, 4.2333328, 6.349999200000001, 12.699998400000002,
 ];
 
@@ -25,7 +25,7 @@ const _bootstrapToMillimetres = [
  * size class. For example, the 'p-4' Tailwind class, which would correspond to
  * 9.525 mm.
  */
-const _tailwindToMillimetres = [
+const _tailwindToMillimeters = [
   0, 0.264583, 0.529167, 1.058333, 1.5875, 2.116667, 2.645833, 3.175, 3.704167,
   4.233333, 5.291667, 6.35, 7.408333, 8.466667, 9.525, 10.58333, 11.64167, 12.7,
   14.81667, 16.93333, 21.16667, 25.4, 29.63333, 33.86667, 38.1, 42.33333,
@@ -35,7 +35,7 @@ const _tailwindToMillimetres = [
 /**
  * Converts a value from pixels to millimetres based on a specified DPI (dots per inch).
  */
-function _pixelsToMillimetres(px: number): number {
+function _pixelsToMillimeters(px: number): number {
   return px * 0.2645833;
 }
 
@@ -47,31 +47,31 @@ export const convertToMillimeters: Converter = function convertToMillimeters(
 
   switch (from) {
     case Units.Bootstrap:
-      return input <= _bootstrapToMillimetres.length - 1 && input % 1 === 0
-        ? roundToDecimal(_bootstrapToMillimetres[input], 4)
+      return input <= _bootstrapToMillimeters.length - 1 && input % 1 === 0
+        ? roundToDecimal(_bootstrapToMillimeters[input], 4)
         : -1;
-    case Units.Centimetres:
+    case Units.Centimeters:
       return input * 10;
     case Units.Ems:
-      return _pixelsToMillimetres(input * FONT_SIZE);
+      return _pixelsToMillimeters(input * FONT_SIZE);
     case Units.Feet:
       return input * 304.8;
     case Units.Inches:
       return input * 25.4;
-    case Units.Millimetres:
+    case Units.Millimeters:
       return input;
     case Units.Picas:
       return input * 4.23333333;
     case Units.Pixels:
-      return _pixelsToMillimetres(input);
+      return _pixelsToMillimeters(input);
     case Units.Points:
       return input * 0.352778;
     case Units.Rems:
-      return _pixelsToMillimetres(input * FONT_SIZE);
+      return _pixelsToMillimeters(input * FONT_SIZE);
     case Units.Tailwind:
       return getIntersectingValue(
         tailwindSizes,
-        _tailwindToMillimetres,
+        _tailwindToMillimeters,
         input,
       );
     default:

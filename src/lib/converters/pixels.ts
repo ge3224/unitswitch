@@ -29,7 +29,7 @@ export const convertToPixels: Converter = function convertToPixels(from: Unit, i
     case Units.Bootstrap:
       const bs = [0, 4, 8, 16, 24, 48];
       return input <= bs.length - 1 ? bs[input] : -1;
-    case Units.Centimetres:
+    case Units.Centimeters:
       return Math.ceil(input * (PPI / 2.54));
     case Units.Ems:
       return Math.ceil(input * FONT_SIZE);
@@ -37,7 +37,7 @@ export const convertToPixels: Converter = function convertToPixels(from: Unit, i
       return Math.ceil(input * 12 * PPI);
     case Units.Inches:
       return Math.ceil(input * PPI);
-    case Units.Millimetres:
+    case Units.Millimeters:
       return Math.ceil(input * (PPI / 25.4));
     case Units.Picas:
       return Math.ceil(input * (1 / 6) * PPI);

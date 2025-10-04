@@ -44,7 +44,7 @@ export const convertToPoints: Converter = function convertToPoints(from: Unit, i
       return input <= _bootstrapToPoints.length - 1 && input % 1 === 0
         ? _bootstrapToPoints[input]
         : -1;
-    case Units.Centimetres:
+    case Units.Centimeters:
       return input * 28.3464567;
     case Units.Ems:
       return _pixelsToPoints(input * FONT_SIZE);
@@ -52,7 +52,7 @@ export const convertToPoints: Converter = function convertToPoints(from: Unit, i
       return input * 864;
     case Units.Inches:
       return input * 72;
-    case Units.Millimetres:
+    case Units.Millimeters:
       return input * 2.83464567;
     case Units.Picas:
       return input * 12;

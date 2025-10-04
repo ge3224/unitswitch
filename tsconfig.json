@@ -10,7 +10,8 @@
     /* Path mapping */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@pkg/*": ["./pkg/*"]
     },
 
     /* Bundler mode */

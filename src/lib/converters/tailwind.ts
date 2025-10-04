@@ -28,7 +28,7 @@ export const converttoTailwind: Converter = function convertToTailwind(from: Uni
     case Units.Bootstrap:
       const bs = [0, 1, 2, 4, 6, 12];
       return input >= 0 && input <= bs.length - 1 ? bs[input] : -1;
-    case Units.Centimetres:
+    case Units.Centimeters:
       return interpolateInRange(input, tailwindSizes, 0, 10.15999872);
     case Units.Ems:
       return interpolateInRange(input, tailwindSizes, 0, 24);
@@ -36,7 +36,7 @@ export const converttoTailwind: Converter = function convertToTailwind(from: Uni
       return interpolateInRange(input, tailwindSizes, 0, 0.33333329133858);
     case Units.Inches:
       return interpolateInRange(input, tailwindSizes, 0, 3.999999496063);
-    case Units.Millimetres:
+    case Units.Millimeters:
       return interpolateInRange(input, tailwindSizes, 0, 101.5999872);
     case Units.Picas:
       return interpolateInRange(input, tailwindSizes, 0, 23.999996995276);

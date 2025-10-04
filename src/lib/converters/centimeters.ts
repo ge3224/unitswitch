@@ -28,13 +28,13 @@ function _pixelsToCentimeters(pixels: number): number {
   return (pixels / PPI) * 2.54;
 };
 
-export const convertToCentimetres: Converter = function convertToCentimetres(from: Unit, input: number): number {
+export const convertToCentimeters: Converter = function convertToCentimeters(from: Unit, input: number): number {
   if (input < 0) return -1;
 
   switch (from) {
     case Units.Bootstrap:
       return input <= _bootstrapToCm.length - 1 ? _bootstrapToCm[input] : -1;
-    case Units.Centimetres:
+    case Units.Centimeters:
       return input;
     case Units.Ems:
       return _pixelsToCentimeters(input * FONT_SIZE);
@@ -42,7 +42,7 @@ export const convertToCentimetres: Converter = function convertToCentimetres(fro
       return input * 30.48;
     case Units.Inches:
       return input * 2.54;
-    case Units.Millimetres:
+    case Units.Millimeters:
       return input / 10;
     case Units.Picas:
       return input * ((1 / 6) * 2.54);

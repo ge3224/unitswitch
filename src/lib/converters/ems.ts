@@ -32,7 +32,7 @@ export const convertToEms: Converter = function convertToEms(from: Unit, input: 
       return input >= 0 && input <= _bootstrapToEms.length - 1
         ? _bootstrapToEms[input]
         : -1;
-    case Units.Centimetres:
+    case Units.Centimeters:
       return (input * 0.3937008 * PPI) / FONT_SIZE;
     case Units.Ems:
       return input;
@@ -40,7 +40,7 @@ export const convertToEms: Converter = function convertToEms(from: Unit, input: 
       return (input * 12 * PPI) / FONT_SIZE;
     case Units.Inches:
       return (input * PPI) / FONT_SIZE;
-    case Units.Millimetres:
+    case Units.Millimeters:
       return (PPI / 25.4 / FONT_SIZE) * input;
     case Units.Picas:
       return (PPI / 6 / FONT_SIZE) * input;

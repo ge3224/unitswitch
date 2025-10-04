@@ -37,7 +37,7 @@ export const convertToInches: Converter = function convertToInches(
         0.25, 0.5,
       ];
       return input <= bs.length - 1 && input % 1 === 0 ? bs[input] : -1;
-    case Units.Centimetres:
+    case Units.Centimeters:
       return input * 0.393701;
     case Units.Ems:
       return (input * FONT_SIZE) / PPI;
@@ -45,7 +45,7 @@ export const convertToInches: Converter = function convertToInches(
       return input * 12;
     case Units.Inches:
       return input;
-    case Units.Millimetres:
+    case Units.Millimeters:
       return input * 0.0393701;
     case Units.Picas:
       return input / 6;
