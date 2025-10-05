@@ -1,3 +1,0 @@
-[submodule "pkg/simple_state"]
-	path = pkg/simple_state
-	url = git@github.com:ge3224/simple_state.git
