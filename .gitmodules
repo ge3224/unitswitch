@@ -1,3 +1,6 @@
 [submodule "pkg/simple-state"]
 	path = pkg/simple-state
 	url = git@github.com:ge3224/simple-state.git
+[submodule "pkg/just-jsx"]
+	path = pkg/just-jsx
+	url = https://github.com/ge3224/just-jsx.git
