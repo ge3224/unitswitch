@@ -1,1 +1,27 @@
 @import "tailwindcss";
+
+@theme {
+  /* Custom breakpoint */
+  --breakpoint-xs: 348px;
+
+  /* App color scheme */
+  --color-app-black: hsl(190, 100%, 13%);
+
+  /* App gray scale */
+  --color-app-gray-50: hsl(165, 15%, 90%);
+  --color-app-gray-100: hsl(164, 15%, 86%);
+  --color-app-gray-200: hsl(166, 18%, 68%);
+
+  /* App green scale */
+  --color-app-green-50: hsl(100, 100%, 99%);
+  --color-app-green-100: hsl(100, 100%, 95%);
+  --color-app-green-200: hsl(141, 39%, 75%);
+  --color-app-green-300: hsl(99, 84%, 85%);
+  --color-app-green-400: hsl(150, 46%, 52%);
+  --color-app-green-500: hsl(159, 78%, 30%);
+  --color-app-green-600: hsl(180, 65%, 24%);
+
+  /* App purple scale */
+  --color-app-purple-400: hsl(281, 69%, 65%);
+  --color-app-purple-500: hsl(234, 46%, 64%);
+}

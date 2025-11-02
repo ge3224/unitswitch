@@ -12,8 +12,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@pkg': path.resolve(__dirname, './pkg'),
+      "@": path.resolve(__dirname, "./src"),
+      "@pkg": path.resolve(__dirname, "./pkg"),
+      "@lib": path.resolve(__dirname, "./src/lib"),
     },
   },
   esbuild: {

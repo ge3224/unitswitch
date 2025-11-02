@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@pkg/*": ["./pkg/*/src"]
+      "@pkg/*": ["./pkg/*/src"],
+      "@lib/*": ["./src/lib/*"]
     },
 
     /* Bundler mode */
