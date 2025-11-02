@@ -16,7 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@pkg/*": ["./pkg/*"]
+      "@pkg/*": ["./pkg/*/src"]
     },
 
     /* Bundler mode */
@@ -32,6 +32,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "pkg"]
+  "include": ["src"]
 }
