@@ -1,6 +1,7 @@
-import { createDomElement, createDomFragment } from "@pkg/just-jsx";
-import { Unit } from "@lib/units";
 import { Converter } from "@lib/converter";
+import { Unit } from "@lib/units";
+import { createDomElement, createDomFragment } from "@pkg/just-jsx";
+import { hotkeyManager } from "@lib/hotkey-manager";
 import { newSimpleState, SimpleState } from "@pkg/simple-state";
 
 export default function Conversion({
@@ -18,20 +19,14 @@ export default function Conversion({
   converter: Converter;
   detail?: Node;
 }) {
-  const _params = newSimpleState<{ input: number; from: Unit }>({ input: input.get(), from: from.get() });
+  const _conversion = newSimpleState<number>(converter(from.get(), input.get()));
 
   input.subscribe(function(newValue): void {
-    _params.set({ ..._params.get(), input: newValue });
+    _conversion.set(converter(from.get(), newValue));
   });
 
   from.subscribe(function(newValue): void {
-    _params.set({ ..._params.get(), from: newValue });
-  });
-
-  const _conversion = newSimpleState<number>(converter(_params.get().from, _params.get().input));
-
-  _params.subscribe(function(params): void {
-    _conversion.set(converter(params.from, params.input));
+    _conversion.set(converter(newValue, input.get()));
   });
 
   const _showDetail = newSimpleState<boolean>(false);
@@ -102,23 +97,19 @@ export default function Conversion({
 
   const hotkeyClassNames = ["ring-2", "ring-app-purple-400", "ring-inset"];
 
-  window.addEventListener("keydown", function handleHotKeyDown(e: KeyboardEvent): void {
-    if (e.ctrlKey === true && e.key === hotkey) {
-      e.preventDefault();
+  hotkeyManager.register(hotkey, function hotkeyHandler() {
+    _copyToClipboard();
 
-      _copyToClipboard();
+    resultDiv.classList.add(...hotkeyClassNames);
 
-      resultDiv.classList.add(...hotkeyClassNames);
-
-      if (_hotkeyTimerID !== null) {
-        clearTimeout(_hotkeyTimerID);
-      }
-
-      _hotkeyTimerID = window.setTimeout(function hotkeyTimerCallback() {
-        resultDiv.classList.remove(...hotkeyClassNames);
-        _hotkeyTimerID = null;
-      }, 500);
+    if (_hotkeyTimerID !== null) {
+      clearTimeout(_hotkeyTimerID);
     }
+
+    _hotkeyTimerID = window.setTimeout(function hotkeyTimerCallback() {
+      resultDiv.classList.remove(...hotkeyClassNames);
+      _hotkeyTimerID = null;
+    }, 500);
   });
 
   const plusIcon = (
@@ -230,11 +221,7 @@ export default function Conversion({
         {hotkey && (
           <div class="hidden rounded-sm border border-app-gray-200 p-0.5 text-xs text-app-gray-200 cursor-default hover:border-app-green-400 hover:text-app-green-400 lg:my-auto lg:mr-4 lg:block">
             <span
-              title={
-                "Press Ctrl-" +
-                hotkey.toUpperCase() +
-                " to copy the converted value to the clipboard"
-              }
+              title={`Press Ctrl-${hotkey.toUpperCase()} to copy the converted value to the clipboard`}
             >
               {"Ctrl-" + hotkey.toUpperCase()}
             </span>
