@@ -122,12 +122,12 @@ export default function Conversion({
     >
       <path
         d="M0 7H14"
-        className="stroke-app-green-500"
+        class="stroke-app-green-500"
         strokeWidth="3"
       />
       <path
         d="M7 0L7 14"
-        className="stroke-app-green-500"
+        class="stroke-app-green-500"
         strokeWidth="3"
       />
     </svg>
@@ -136,7 +136,7 @@ export default function Conversion({
 
   const minusIcon = (
     <svg
-      className="hidden"
+      class="hidden"
       width="14"
       height="14"
       viewBox="0 0 14 14"
@@ -145,7 +145,7 @@ export default function Conversion({
     >
       <path
         d="M0 7H14"
-        className="stroke-app-green-500"
+        class="stroke-app-green-500"
         strokeWidth="3"
       />
     </svg>
@@ -153,7 +153,7 @@ export default function Conversion({
 
   const detailsDiv = (
     <div
-      className="hidden border-b border-app-green-600 p-3 lg:block lg:border-x lg:text-sm"
+      class="hidden border-b border-app-green-600 p-3 lg:block lg:border-x lg:text-sm"
     >
       {detail}
     </div>
@@ -215,7 +215,7 @@ export default function Conversion({
           )}
         </div>
         {resultDiv}
-        <div className="ml-2 mr-auto font-bold text-app-black lg:my-auto">
+        <div class="ml-2 mr-auto font-bold text-app-black lg:my-auto">
           {to.toString()}
         </div>
         {hotkey && (
@@ -223,7 +223,7 @@ export default function Conversion({
             <span
               title={`Press Ctrl-${hotkey.toUpperCase()} to copy the converted value to the clipboard`}
             >
-              {"Ctrl-" + hotkey.toUpperCase()}
+              {`Ctrl-${hotkey.toUpperCase()}`}
             </span>
           </div>
         )}
