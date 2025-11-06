@@ -3,6 +3,14 @@ import { Unit } from "@lib/units";
 import { createDomElement, createDomFragment } from "@pkg/just-jsx";
 import { hotkeyManager } from "@lib/hotkey-manager";
 import { newSimpleState, SimpleState } from "@pkg/simple-state";
+import { roundToDecimal } from "@lib/round_number";
+
+function _formatResult(input: number): string {
+  if (input < 0) return "N/A";
+
+  const str = roundToDecimal(input, 3).toString();
+  return str.length < 8 ? str : str.slice(0, 6) + "..";
+}
 
 export default function Conversion({
   input,
@@ -17,7 +25,7 @@ export default function Conversion({
   from: SimpleState<Unit>;
   hotkey: string;
   converter: Converter;
-  detail?: Node;
+  detail?: JSX.Element;
 }) {
   const _conversion = newSimpleState<number>(converter(from.get(), input.get()));
 
@@ -77,7 +85,7 @@ export default function Conversion({
     </span>
   ) as HTMLSpanElement;
 
-  const resultValue = document.createTextNode(_conversion.get().toString());
+  const resultValue = document.createTextNode(_formatResult(_conversion.get()));
 
   const resultDiv = (
     <div
@@ -90,7 +98,7 @@ export default function Conversion({
   ) as HTMLDivElement;
 
   _conversion.subscribe(function(newValue): void {
-    resultValue.textContent = newValue.toString();
+    resultValue.textContent = _formatResult(newValue);
   });
 
   let _hotkeyTimerID: number | null = null;
