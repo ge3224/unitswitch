@@ -17,6 +17,7 @@ function _longer(input: number): number {
  * @param {number} input - The input value to be decreased.
  * @returns {number} - The input value divided by the golden ratio.
  */
+// @ts-expect-error - Reserved for future implementation
 function _shorter(input: number): number {
   return input / 1.61803;
 }

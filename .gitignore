@@ -6,11 +6,20 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+deno-debug.log*
 
+# Dependencies
 node_modules
+.deno
+
+# Build output
 dist
 dist-ssr
 *.local
+.vite
+
+# Deno
+deno.lock
 
 # Editor directories and files
 .vscode/*

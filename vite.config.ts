@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import path from 'path'
+import path from 'node:path'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
@@ -7,7 +7,7 @@ export default defineConfig({
     tailwindcss(),
   ],
   test: {
-    exclude: ['pkg'],
+    exclude: ['pkg', 'node_modules', '**/node_modules/**'],
     globals: true,
   },
   resolve: {

@@ -3,7 +3,6 @@ import { createDomElement } from "@pkg/just-jsx";
 import Conversion from "@lib/ui/conversion";
 import Logo from "@lib/ui/logo";
 import UserInput from "@lib/ui/user_input";
-import { FONT_SIZE, PPI } from "@lib/constants";
 import { Unit, Units } from "@lib/units";
 import { convertToPixels } from "@lib/converters/pixels";
 import { newSimpleState } from "@pkg/simple-state";

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { convertToInches } from '@/lib/converters/inches';
 import { Units } from '@/lib/units';
-import { PPI, FONT_SIZE } from '@/lib/constants';
+import { PPI } from '@/lib/constants';
 
 describe('convertToInches', () => {
   describe('known constants', () => {

@@ -1,0 +1,27 @@
+{
+  "tasks": {
+    "dev": "deno run -A npm:vite",
+    "build": "deno run -A npm:typescript/tsc && deno run -A npm:vite build",
+    "preview": "deno run -A npm:vite preview",
+    "test": "deno run -A npm:vitest",
+    "test:run": "deno run -A npm:vitest run"
+  },
+  "imports": {
+    "@/": "./src/",
+    "@pkg/": "./pkg/",
+    "@lib/": "./src/lib/",
+    "vite": "npm:rolldown-vite@7.1.12",
+    "@tailwindcss/vite": "npm:@tailwindcss/vite@^4.1.16",
+    "tailwindcss": "npm:tailwindcss@^4.1.16",
+    "vitest": "npm:vitest@^3.2.4",
+    "jsdom": "npm:jsdom@^27.1.0"
+  },
+  "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "createDomElement",
+    "jsxFragmentFactory": "createDomFragment",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "strict": true
+  },
+  "nodeModulesDir": "auto"
+}
