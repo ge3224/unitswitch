@@ -3,8 +3,8 @@
     "dev": "deno run -A npm:vite",
     "build": "deno run -A npm:typescript/tsc && deno run -A npm:vite build",
     "preview": "deno run -A npm:vite preview",
-    "test": "deno run -A npm:vitest",
-    "test:run": "deno run -A npm:vitest run"
+    "test": "deno test --sloppy-imports",
+    "test:watch": "deno test --sloppy-imports --watch"
   },
   "imports": {
     "@/": "./src/",
@@ -12,9 +12,7 @@
     "@lib/": "./src/lib/",
     "vite": "npm:rolldown-vite@7.1.12",
     "@tailwindcss/vite": "npm:@tailwindcss/vite@^4.1.16",
-    "tailwindcss": "npm:tailwindcss@^4.1.16",
-    "vitest": "npm:vitest@^3.2.4",
-    "jsdom": "npm:jsdom@^27.1.0"
+    "tailwindcss": "npm:tailwindcss@^4.1.16"
   },
   "compilerOptions": {
     "jsx": "react",
@@ -23,5 +21,6 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "strict": true
   },
+  "exclude": ["pkg/**", "dist/**", "node_modules/**"],
   "nodeModulesDir": "auto"
 }

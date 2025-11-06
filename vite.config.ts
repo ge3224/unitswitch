@@ -6,10 +6,6 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
   ],
-  test: {
-    exclude: ['pkg', 'node_modules', '**/node_modules/**'],
-    globals: true,
-  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
