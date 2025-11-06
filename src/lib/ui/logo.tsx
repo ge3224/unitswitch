@@ -1,4 +1,4 @@
-import { createDomElement } from "@pkg/just-jsx";
+import { createDomElement } from "@pkg/just-jsx/src/index.ts";
 
 export default function Logo() {
   return (

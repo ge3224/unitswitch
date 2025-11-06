@@ -1,16 +1,12 @@
-import { Converter } from "@lib/converter";
-import { Unit } from "@lib/units";
-import { createDomElement, createDomFragment } from "@pkg/just-jsx";
-import { hotkeyManager } from "@lib/hotkey-manager";
-import { newSimpleState, SimpleState } from "@pkg/simple-state";
-import { roundToDecimal } from "@lib/round_number";
-
-function _formatResult(input: number): string {
-  if (input < 0) return "N/A";
-
-  const str = roundToDecimal(input, 3).toString();
-  return str.length < 8 ? str : str.slice(0, 6) + "..";
-}
+import { Converter } from "@lib/converter.ts";
+import { Unit } from "@lib/units.ts";
+import {
+  createDomElement,
+  createDomFragment,
+} from "@pkg/just-jsx/src/index.ts";
+import { hotkeyManager } from "@lib/hotkey-manager.ts";
+import { newSimpleState, SimpleState } from "@pkg/simple-state/src/index.ts";
+import { renderConversion } from "@/lib/render.ts";
 
 export default function Conversion({
   input,
@@ -27,13 +23,15 @@ export default function Conversion({
   converter: Converter;
   detail?: JSX.Element;
 }) {
-  const _conversion = newSimpleState<number>(converter(from.get(), input.get()));
+  const _conversion = newSimpleState<number>(
+    converter(from.get(), input.get()),
+  );
 
-  input.subscribe(function(newValue): void {
+  input.subscribe(function (newValue): void {
     _conversion.set(converter(from.get(), newValue));
   });
 
-  from.subscribe(function(newValue): void {
+  from.subscribe(function (newValue): void {
     _conversion.set(converter(newValue, input.get()));
   });
 
@@ -59,7 +57,11 @@ export default function Conversion({
   }
 
   const copyIcon = (
-    <span class="mr-2 cursor-pointer" title="Click to copy the converted value to the clipboard" onclick={_onClickCopyIcon}>
+    <span
+      class="mr-2 cursor-pointer"
+      title="Click to copy the converted value to the clipboard"
+      onclick={_onClickCopyIcon}
+    >
       <svg
         class="inline"
         width="21"
@@ -85,7 +87,9 @@ export default function Conversion({
     </span>
   ) as HTMLSpanElement;
 
-  const resultValue = document.createTextNode(_formatResult(_conversion.get()));
+  const resultValue = document.createTextNode(
+    renderConversion(_conversion.get()),
+  );
 
   const resultDiv = (
     <div
@@ -97,8 +101,8 @@ export default function Conversion({
     </div>
   ) as HTMLDivElement;
 
-  _conversion.subscribe(function(newValue): void {
-    resultValue.textContent = _formatResult(newValue);
+  _conversion.subscribe(function (newValue): void {
+    resultValue.textContent = renderConversion(newValue);
   });
 
   let _hotkeyTimerID: number | null = null;
@@ -141,7 +145,6 @@ export default function Conversion({
     </svg>
   ) as SVGElement;
 
-
   const minusIcon = (
     <svg
       class="hidden"
@@ -160,16 +163,13 @@ export default function Conversion({
   ) as SVGElement;
 
   const detailsDiv = (
-    <div
-      class="hidden border-b border-app-green-600 p-3 lg:block lg:border-x lg:text-sm"
-    >
+    <div class="hidden border-b border-app-green-600 p-3 lg:block lg:border-x lg:text-sm">
       {detail}
     </div>
   ) as HTMLDivElement;
 
   const detailClassNames = "hidden";
   _showDetail.subscribe(function detailsSubscriber(show): void {
-
     if (show) {
       detailsDiv.classList.remove(detailClassNames);
       minusIcon.classList.remove(detailClassNames);
@@ -197,9 +197,7 @@ export default function Conversion({
     <div>
       <div class="flex items-center border-b border-app-green-600 lg:h-12 lg:items-stretch lg:border">
         <div class="mx-2 lg:my-auto lg:hidden">
-          {detail ? (
-            <>{buttonDetail}</>
-          ) : (
+          {detail ? <>{buttonDetail}</> : (
             <div class="flex w-6 justify-center">
               <svg
                 width="14"
@@ -236,9 +234,7 @@ export default function Conversion({
           </div>
         )}
       </div>
-      {detail && (
-        <>{detailsDiv}</>
-      )}
+      {detail && <>{detailsDiv}</>}
     </div>
   );
 }

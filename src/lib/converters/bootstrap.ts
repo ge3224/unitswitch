@@ -1,6 +1,6 @@
-import type { Converter } from "@/lib/converter";
-import { Units, type Unit } from "@/lib/units";
-import { nearestIndex } from "@/lib/arrays";
+import type { Converter } from "@/lib/converter.ts";
+import { type Unit, Units } from "@/lib/units.ts";
+import { nearestIndex } from "@/lib/arrays.ts";
 
 /**
  * Contains a set of pixel values commonly used in web development for spacing
@@ -9,7 +9,10 @@ import { nearestIndex } from "@/lib/arrays";
  */
 const _bootstrapToPixels: number[] = [0, 4, 8, 16, 24, 48];
 
-export const convertToBootstrap: Converter = function convertToBootstrap(from: Unit, input: number): number {
+export const convertToBootstrap: Converter = function convertToBootstrap(
+  from: Unit,
+  input: number,
+): number {
   if (input < 0) return -1;
 
   switch (from) {
@@ -20,8 +23,12 @@ export const convertToBootstrap: Converter = function convertToBootstrap(from: U
     case Units.Feet:
       return nearestIndex(
         [
-          0, 0.0069444435695538, 0.0034722217847769, 0.013888887139108,
-          0.020833330708661, 0.041666661417323,
+          0,
+          0.0069444435695538,
+          0.0034722217847769,
+          0.013888887139108,
+          0.020833330708661,
+          0.041666661417323,
         ],
         input,
         0.001,
@@ -31,16 +38,24 @@ export const convertToBootstrap: Converter = function convertToBootstrap(from: U
     case Units.Picas:
       return nearestIndex(
         [
-          0, 0.24999996870079, 0.49999993740157, 0.99999987480315,
-          1.4999998122047, 2.9999996244094,
+          0,
+          0.24999996870079,
+          0.49999993740157,
+          0.99999987480315,
+          1.4999998122047,
+          2.9999996244094,
         ],
         input,
       );
     case Units.Inches:
       return nearestIndex(
         [
-          0, 0.041666661417323, 0.083333322834646, 0.16666664566929,
-          0.24999996850394, 0.49999993700787,
+          0,
+          0.041666661417323,
+          0.083333322834646,
+          0.16666664566929,
+          0.24999996850394,
+          0.49999993700787,
         ],
         input,
       );
@@ -49,8 +64,12 @@ export const convertToBootstrap: Converter = function convertToBootstrap(from: U
     case Units.Points:
       return nearestIndex(
         [
-          0, 2.9999977322849, 5.9999954645698, 11.99999092914,
-          17.999986393709, 35.999972787419,
+          0,
+          2.9999977322849,
+          5.9999954645698,
+          11.99999092914,
+          17.999986393709,
+          35.999972787419,
         ],
         input,
         0.1,
@@ -70,4 +89,4 @@ export const convertToBootstrap: Converter = function convertToBootstrap(from: U
     default:
       return -1;
   }
-}
+};

@@ -1,8 +1,8 @@
 import { describe, it } from "jsr:@std/testing/bdd";
 import { assertEquals, assertAlmostEquals, assertGreaterOrEqual } from "jsr:@std/assert";
-import { convertToMillimeters } from '@/lib/converters/millimeters';
-import { Units } from '@/lib/units';
-import { PPI } from '@/lib/constants';
+import { convertToMillimeters } from '@/lib/converters/millimeters.ts';
+import { Units } from '@/lib/units.ts';
+import { PPI } from '@/lib/constants.ts';
 
 describe('convertToMillimeters', () => {
   describe('known constants', () => {

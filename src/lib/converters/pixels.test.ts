@@ -1,8 +1,8 @@
 import { describe, it } from "jsr:@std/testing/bdd";
 import { assertEquals, assertAlmostEquals, assertGreaterOrEqual, assertGreater } from "jsr:@std/assert";
-import { convertToPixels } from '@/lib/converters/pixels';
-import { Units } from '@/lib/units';
-import { PPI, FONT_SIZE } from '@/lib/constants';
+import { convertToPixels } from '@/lib/converters/pixels.ts';
+import { Units } from '@/lib/units.ts';
+import { PPI, FONT_SIZE } from '@/lib/constants.ts';
 
 describe('convertToPixels', () => {
   describe('known constants', () => {

@@ -1,5 +1,5 @@
-import type { Converter } from "../converter";
-import type { Unit } from "../units";
+import type { Converter } from "../converter.ts";
+import type { Unit } from "../units.ts";
 
 function _longer(input: number): number {
   return (16 * input) / 9;

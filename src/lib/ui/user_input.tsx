@@ -1,22 +1,25 @@
-import { createDomElement } from "@pkg/just-jsx";
-import { newSimpleState } from "@pkg/simple-state";
-import { isUnit, Unit, Units } from "@lib/units";
+import { createDomElement } from "@pkg/just-jsx/src/index.ts";
+import { newSimpleState } from "@pkg/simple-state/src/index.ts";
+import { isUnit, Unit, Units } from "@lib/units.ts";
 
 export default function UserInput({
   input,
   type,
-  callback
+  callback,
 }: {
   input: number;
   type: Unit;
-  callback: (value: number, unit: Unit) => void
+  callback: (value: number, unit: Unit) => void;
 }) {
   const _amount = newSimpleState<string>(input.toString());
   const _unit = newSimpleState<Unit>(type);
   const _warning = newSimpleState<string>("");
 
   const warningDiv = (
-    <div class="col-span-5 mb-0 mt-1 h-4 text-xs text-pink-500" id="amount-error">
+    <div
+      class="col-span-5 mb-0 mt-1 h-4 text-xs text-pink-500"
+      id="amount-error"
+    >
       {_warning.get()}
     </div>
   ) as HTMLDivElement;
@@ -54,12 +57,12 @@ export default function UserInput({
 
     _toggleWarning(invalid);
 
-    if (!invalid) callback(num, _unit.get())
+    if (!invalid) callback(num, _unit.get());
   }
 
   return (
     <div class="mx-auto mt-6 flex max-w-sm flex-col justify-center md:w-96 lg:ml-10 lg:mt-0">
-      <form class="grid grid-cols-5 items-center gap-2" onsubmit={_onSubmit} >
+      <form class="grid grid-cols-5 items-center gap-2" onsubmit={_onSubmit}>
         <fieldset class="col-span-3">
           <label class="text-sm" htmlFor="unit_amount">
             Amount:

@@ -1,8 +1,8 @@
 import { describe, it } from "jsr:@std/testing/bdd";
 import { assertEquals, assertAlmostEquals } from "jsr:@std/assert";
-import { convertToRems } from '@/lib/converters/rems';
-import { Units } from '@/lib/units';
-import { PPI, FONT_SIZE } from '@/lib/constants';
+import { convertToRems } from '@/lib/converters/rems.ts';
+import { Units } from '@/lib/units.ts';
+import { PPI, FONT_SIZE } from '@/lib/constants.ts';
 
 describe('convertToRems', () => {
   describe('known constants', () => {

@@ -1,18 +1,18 @@
-import { createDomElement } from "@pkg/just-jsx";
+import { createDomElement } from "@pkg/just-jsx/src/index.ts";
 
-import Conversion from "@lib/ui/conversion";
-import Logo from "@lib/ui/logo";
-import UserInput from "@lib/ui/user_input";
-import { Unit, Units } from "@lib/units";
-import { convertToPixels } from "@lib/converters/pixels";
-import { newSimpleState } from "@pkg/simple-state";
-import { convertToRems } from "./lib/converters/rems";
-import { converttoTailwind } from "./lib/converters/tailwind";
-import { convertToEms } from "./lib/converters/ems";
-import DetailsPixels from "./lib/ui/details_panels/pixels";
-import DetailsRems from "./lib/ui/details_panels/rems";
-import DetailsEms from "./lib/ui/details_panels/ems";
-import DetailsTailwind from "./lib/ui/details_panels/tailwind";
+import Conversion from "@lib/ui/conversion.tsx";
+import Logo from "@lib/ui/logo.tsx";
+import UserInput from "@lib/ui/user_input.tsx";
+import { Unit, Units } from "@lib/units.ts";
+import { convertToPixels } from "@lib/converters/pixels.ts";
+import { newSimpleState } from "@pkg/simple-state/src/index.ts";
+import { convertToRems } from "@lib/converters/rems.ts";
+import { converttoTailwind } from "@lib/converters/tailwind.ts";
+import { convertToEms } from "@lib/converters/ems.ts";
+import DetailsPixels from "@lib/ui/details_panels/pixels.tsx";
+import DetailsRems from "@lib/ui/details_panels/rems.tsx";
+import DetailsEms from "@lib/ui/details_panels/ems.tsx";
+import DetailsTailwind from "@lib/ui/details_panels/tailwind.tsx";
 
 export function App(): Node {
   const _input = newSimpleState<number>(16);
@@ -27,7 +27,11 @@ export function App(): Node {
     <div class="rounded-lg border border-app-green-600 bg-app-green-50 pb-4 lg:grid lg:grid-cols-3 lg:gap-5 lg:border-none lg:p-12">
       <div class="relative flex flex-col border-b border-app-green-600 px-11 pt-12 lg:col-span-2 lg:row-span-2 lg:flex-row lg:justify-center lg:border lg:py-8">
         <Logo />
-        <UserInput input={_input.get()} type={Units.Pixels} callback={_handleSubmit} />
+        <UserInput
+          input={_input.get()}
+          type={Units.Pixels}
+          callback={_handleSubmit}
+        />
       </div>
       <Conversion
         input={_input}

@@ -1,8 +1,8 @@
-import type { Converter } from "@/lib/converter";
-import { FONT_SIZE, PPI } from "@/lib/constants";
-import { Units, type Unit } from "@/lib/units";
-import { getIntersectingValue } from "@/lib/arrays";
-import { tailwindSizes } from "@/lib/converters/tailwind";
+import type { Converter } from "@/lib/converter.ts";
+import { FONT_SIZE, PPI } from "@/lib/constants.ts";
+import { Units, type Unit } from "@/lib/units.ts";
+import { getIntersectingValue } from "@/lib/arrays.ts";
+import { tailwindSizes } from "@/lib/converters/tailwind.ts";
 
 /**
  * Inch equivalent values for Tailwind CSS spacing and sizing classes.

@@ -1,8 +1,8 @@
 import { describe, it } from "jsr:@std/testing/bdd";
 import { assertEquals, assertAlmostEquals, assertGreaterOrEqual } from "jsr:@std/assert";
-import { convertToInches } from '@/lib/converters/inches';
-import { Units } from '@/lib/units';
-import { PPI } from '@/lib/constants';
+import { convertToInches } from '@/lib/converters/inches.ts';
+import { Units } from '@/lib/units.ts';
+import { PPI } from '@/lib/constants.ts';
 
 describe('convertToInches', () => {
   describe('known constants', () => {

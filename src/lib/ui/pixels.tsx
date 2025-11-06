@@ -1,11 +1,15 @@
-import { createDomElement } from "@pkg/just-jsx";
-import { Unit } from "../units";
-import { convertToPixels } from "../converters/pixels";
+import { createDomElement } from "@pkg/just-jsx/src/index.ts";
+import { Unit } from "@lib/units.ts";
+import { convertToPixels } from "@lib/converters/pixels.ts";
 
 export default function Pixels({
-  input, from, hotkey
+  input,
+  from,
+  hotkey,
 }: {
-  input: number; from: Unit; hotkey: string
+  input: number;
+  from: Unit;
+  hotkey: string;
 }) {
   const _conversion = convertToPixels(from, input);
   console.log(_conversion, hotkey);

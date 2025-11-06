@@ -1,5 +1,5 @@
-import type { Converter } from "@/lib/converter";
-import type { Unit } from "@/lib/units";
+import type { Converter } from "@/lib/converter.ts";
+import type { Unit } from "@/lib/units.ts";
 
 // @ts-expect-error - Reserved for future implementation
 const _tailwindToInches: number[] = [];

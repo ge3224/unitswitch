@@ -1,5 +1,5 @@
-import type { Converter } from "@/lib/converter";
-import type { Unit } from "@/lib/units";
+import type { Converter } from "@/lib/converter.ts";
+import type { Unit } from "@/lib/units.ts";
 
 /**
  * Calculate the value increased by the golden ratio (1.61803 times).

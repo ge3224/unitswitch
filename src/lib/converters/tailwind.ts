@@ -1,6 +1,6 @@
-import type { Converter } from "@/lib/converter";
-import { Units, type Unit } from "@/lib/units";
-import { interpolateInRange } from "@/lib/arrays";
+import type { Converter } from "@/lib/converter.ts";
+import { Units, type Unit } from "@/lib/units.ts";
+import { interpolateInRange } from "@/lib/arrays.ts";
 
 /**
  * An array representing the Tailwind CSS sizes for spacing.

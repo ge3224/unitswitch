@@ -1,4 +1,4 @@
-import { roundToDecimal } from "@/lib/round_number";
+import { roundToDecimal } from "@/lib/round_number.ts";
 
 /**
  * Returns a numeric value interpolated between a range based on its

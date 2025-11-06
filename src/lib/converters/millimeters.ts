@@ -1,9 +1,9 @@
-import type { Converter } from "@/lib/converter";
-import { FONT_SIZE } from "@/lib/constants";
-import { Units, type Unit } from "@/lib/units";
-import { getIntersectingValue } from "@/lib/arrays";
-import { roundToDecimal } from "@/lib/round_number";
-import { tailwindSizes } from "@/lib/converters/tailwind";
+import type { Converter } from "@/lib/converter.ts";
+import { FONT_SIZE } from "@/lib/constants.ts";
+import { Units, type Unit } from "@/lib/units.ts";
+import { getIntersectingValue } from "@/lib/arrays.ts";
+import { roundToDecimal } from "@/lib/round_number.ts";
+import { tailwindSizes } from "@/lib/converters/tailwind.ts";
 
 /**
  * Millimetre equivalent values for Tailwind CSS spacing and sizing classes.

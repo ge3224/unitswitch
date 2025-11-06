@@ -1,8 +1,8 @@
 import { describe, it } from "jsr:@std/testing/bdd";
 import { assertEquals, assertAlmostEquals, assertGreaterOrEqual } from "jsr:@std/assert";
-import { convertToFeet } from '@/lib/converters/feet';
-import { Units } from '@/lib/units';
-import { PPI } from '@/lib/constants';
+import { convertToFeet } from '@/lib/converters/feet.ts';
+import { Units } from '@/lib/units.ts';
+import { PPI } from '@/lib/constants.ts';
 
 describe('convertToFeet', () => {
   describe('known constants', () => {

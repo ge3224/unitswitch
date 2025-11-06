@@ -1,5 +1,5 @@
-import { PPI } from "@/lib/constants";
-import { createDomElement } from "@pkg/just-jsx"
+import { PPI } from "@/lib/constants.ts";
+import { createDomElement } from "@pkg/just-jsx/src/index.ts";
 
 export default function DetailsPixels() {
   return (
