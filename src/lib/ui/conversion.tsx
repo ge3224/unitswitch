@@ -1,226 +1,136 @@
-import { Converter } from "@lib/converter.ts";
-import { Unit } from "@lib/units.ts";
-import {
-  createDomElement,
-  createDomFragment,
-} from "@pkg/just-jsx/src/index.ts";
-import { hotkeyManager } from "@lib/hotkey-manager.ts";
-import { newSimpleState, SimpleState } from "@pkg/simple-state/src/index.ts";
+import { Unit } from "@/lib/units.ts";
+import { ViewInputState } from "@/lib/types.ts";
+import { createDomElement, createRef } from "@pkg/just-jsx/src/index.ts";
+import { hotkeyManager } from "@/lib/hotkey-manager.ts";
+import { newSimpleState } from "@pkg/simple-state/src/index.ts";
 import { renderConversion } from "@/lib/render.ts";
+import {
+  CopyIconSvg,
+  GrayPlusIcon,
+  MinusIcon,
+  PlusIcon,
+} from "@/lib/ui/icons.tsx";
+
+const ANIMATION_DURATION_MS = 500;
+const HIDDEN_CLASS = "hidden";
+const HOTKEY_HIGHLIGHT_CLASSES = [
+  "ring-2",
+  "ring-app-purple-400",
+  "ring-inset",
+];
 
 export default function Conversion({
-  input,
+  conversion,
   to,
-  from,
   hotkey,
-  converter,
   detail,
 }: {
-  input: SimpleState<number>;
+  conversion: ViewInputState<number>;
   to: Unit;
-  from: SimpleState<Unit>;
   hotkey: string;
-  converter: Converter;
   detail?: JSX.Element;
 }) {
-  const _conversion = newSimpleState<number>(
-    converter(from.get(), input.get()),
+  const showDetailState = newSimpleState<boolean>(false);
+
+  const detailsPanel = createRef<HTMLDivElement>();
+  const minusIcon = createRef<SVGElement>();
+  const plusIcon = createRef<SVGElement>();
+  const valueElement = createRef<HTMLSpanElement>();
+
+  let timerId: number | null = null;
+
+  conversion.subscribe(
+    function conversionCallback(newConversion: number): void {
+      if (valueElement.current) {
+        valueElement.current.textContent = renderConversion(newConversion);
+      }
+    },
   );
 
-  input.subscribe(function (newValue): void {
-    _conversion.set(converter(from.get(), newValue));
+  showDetailState.subscribe(function detailsSubscriber(show): void {
+    detailsPanel.current?.classList.toggle(HIDDEN_CLASS, !show);
+    minusIcon.current?.classList.toggle(HIDDEN_CLASS, !show);
+    plusIcon.current?.classList.toggle(HIDDEN_CLASS, show);
   });
 
-  from.subscribe(function (newValue): void {
-    _conversion.set(converter(newValue, input.get()));
-  });
-
-  const _showDetail = newSimpleState<boolean>(false);
-
-  function _copyToClipboard(): void {
-    navigator.clipboard.writeText(_conversion.get().toString()).catch((err) => {
+  function copyToClipboard(): void {
+    navigator.clipboard.writeText(conversion.get().toString()).catch((err) => {
       console.warn("Failed to copy to clipboard:", err);
     });
   }
 
-  function _onClickCopyIcon(e: Event): void {
+  function onClickCopyButton(e: Event): void {
     e.preventDefault();
 
-    _copyToClipboard();
+    copyToClipboard();
 
     const target = e.currentTarget as HTMLSpanElement;
 
     target.style.opacity = "0.4";
     setTimeout(function copyIconTimerCallback() {
       target.style.opacity = "1";
-    }, 500);
+    }, ANIMATION_DURATION_MS);
   }
 
-  const copyIcon = (
-    <span
-      class="mr-2 cursor-pointer"
-      title="Click to copy the converted value to the clipboard"
-      onclick={_onClickCopyIcon}
-    >
-      <svg
-        class="inline"
-        width="21"
-        height="21"
-        viewBox="0 0 21 21"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M5 4.7158V2.40625C5 1.6296 5.6296 1 6.40625 1H18.5938C19.3704 1 20 1.6296 20 2.40625V14.5938C20 15.3704 19.3704 16 18.5938 16H16.2582"
-          class="stroke-app-green-200"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M14.5938 5H2.40625C1.6296 5 1 5.6296 1 6.40625V18.5938C1 19.3704 1.6296 20 2.40625 20H14.5938C15.3704 20 16 19.3704 16 18.5938V6.40625C16 5.6296 15.3704 5 14.5938 5Z"
-          class="stroke-app-green-200"
-          strokeWidth="2"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </span>
-  ) as HTMLSpanElement;
+  function registerCopyHotkey(element: HTMLDivElement) {
+    hotkeyManager.register(hotkey, function hotkeyHandler() {
+      copyToClipboard();
 
-  const resultValue = document.createTextNode(
-    renderConversion(_conversion.get()),
-  );
+      element.classList.add(...HOTKEY_HIGHLIGHT_CLASSES);
 
-  const resultDiv = (
-    <div
-      class="w-32 border-l border-r border-app-green-600 bg-app-green-100 px-3 py-2 text-sm font-bold text-app-green-500 lg:flex lg:items-center lg:border-l-0 lg:text-base"
-      id={`to-${to.toString()}`}
-    >
-      {copyIcon}
-      {resultValue}
-    </div>
-  ) as HTMLDivElement;
+      if (timerId !== null) {
+        clearTimeout(timerId);
+      }
 
-  _conversion.subscribe(function (newValue): void {
-    resultValue.textContent = renderConversion(newValue);
-  });
+      timerId = setTimeout(function hotkeyTimerCallback() {
+        element.classList.remove(...HOTKEY_HIGHLIGHT_CLASSES);
+        timerId = null;
+      }, ANIMATION_DURATION_MS);
+    });
+  }
 
-  let _hotkeyTimerID: number | null = null;
-
-  const hotkeyClassNames = ["ring-2", "ring-app-purple-400", "ring-inset"];
-
-  hotkeyManager.register(hotkey, function hotkeyHandler() {
-    _copyToClipboard();
-
-    resultDiv.classList.add(...hotkeyClassNames);
-
-    if (_hotkeyTimerID !== null) {
-      clearTimeout(_hotkeyTimerID);
+  function resultDivCallback(element: HTMLDivElement | null): void {
+    if (element) {
+      registerCopyHotkey(element);
     }
+  }
 
-    _hotkeyTimerID = window.setTimeout(function hotkeyTimerCallback() {
-      resultDiv.classList.remove(...hotkeyClassNames);
-      _hotkeyTimerID = null;
-    }, 500);
-  });
-
-  const plusIcon = (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 14 14"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M0 7H14"
-        class="stroke-app-green-500"
-        strokeWidth="3"
-      />
-      <path
-        d="M7 0L7 14"
-        class="stroke-app-green-500"
-        strokeWidth="3"
-      />
-    </svg>
-  ) as SVGElement;
-
-  const minusIcon = (
-    <svg
-      class="hidden"
-      width="14"
-      height="14"
-      viewBox="0 0 14 14"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M0 7H14"
-        class="stroke-app-green-500"
-        strokeWidth="3"
-      />
-    </svg>
-  ) as SVGElement;
-
-  const detailsDiv = (
-    <div class="hidden border-b border-app-green-600 p-3 lg:block lg:border-x lg:text-sm">
-      {detail}
-    </div>
-  ) as HTMLDivElement;
-
-  const detailClassNames = "hidden";
-  _showDetail.subscribe(function detailsSubscriber(show): void {
-    if (show) {
-      detailsDiv.classList.remove(detailClassNames);
-      minusIcon.classList.remove(detailClassNames);
-      plusIcon.classList.add(detailClassNames);
-    } else {
-      detailsDiv.classList.add(detailClassNames);
-      minusIcon.classList.add(detailClassNames);
-      plusIcon.classList.remove(detailClassNames);
-    }
-  });
-
-  function _onClickDetails(e: Event): void {
+  function onClickDetails(e: Event): void {
     e.preventDefault();
-    _showDetail.set(!_showDetail.get());
+    showDetailState.set(!showDetailState.get());
   }
-
-  const buttonDetail = (
-    <div class="flex w-6 justify-center" onclick={_onClickDetails}>
-      {plusIcon}
-      {minusIcon}
-    </div>
-  ) as HTMLDivElement;
 
   return (
     <div>
       <div class="flex items-center border-b border-app-green-600 lg:h-12 lg:items-stretch lg:border">
         <div class="mx-2 lg:my-auto lg:hidden">
-          {detail ? <>{buttonDetail}</> : (
-            <div class="flex w-6 justify-center">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 14 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M0 7H14"
-                  class="stroke-app-gray-100"
-                  strokeWidth="3"
-                />
-                <path
-                  d="M7 0L7 14"
-                  class="stroke-app-gray-100"
-                  strokeWidth="3"
-                />
-              </svg>
-            </div>
-          )}
+          {detail
+            ? (
+              <div class="flex w-6 justify-center" onclick={onClickDetails}>
+                <PlusIcon ref={plusIcon} />
+                <MinusIcon ref={minusIcon} />
+              </div>
+            )
+            : (
+              <div class="flex w-6 justify-center">
+                <GrayPlusIcon />
+              </div>
+            )}
         </div>
-        {resultDiv}
+        <div
+          ref={resultDivCallback}
+          class="w-32 border-l border-r border-app-green-600 bg-app-green-100 px-3 py-2 text-sm font-bold text-app-green-500 lg:flex lg:items-center lg:border-l-0 lg:text-base"
+          id={`to-${to.toString()}`}
+        >
+          <span
+            class="mr-2 cursor-pointer"
+            title="Click to copy the converted value to the clipboard"
+            onclick={onClickCopyButton}
+          >
+            <CopyIconSvg />
+          </span>
+          <span ref={valueElement}>{renderConversion(conversion.get())}</span>
+        </div>
         <div class="ml-2 mr-auto font-bold text-app-black lg:my-auto">
           {to.toString()}
         </div>
@@ -234,7 +144,15 @@ export default function Conversion({
           </div>
         )}
       </div>
-      {detail && <>{detailsDiv}</>}
+      {detail &&
+        (
+          <div
+            ref={detailsPanel}
+            class="hidden border-b border-app-green-600 p-3 lg:block lg:border-x lg:text-sm"
+          >
+            {detail}
+          </div>
+        )}
     </div>
   );
 }
