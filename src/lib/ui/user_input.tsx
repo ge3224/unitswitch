@@ -1,6 +1,7 @@
 import { createDomElement } from "@pkg/just-jsx/src/index.ts";
 import { newSimpleState } from "@pkg/simple-state/src/index.ts";
-import { isUnit, Unit, Units } from "@lib/units.ts";
+import { isUnit, Unit, Units } from "@/lib/units.ts";
+import { UserSubmissionCallback } from "@/lib/types.ts";
 
 export default function UserInput({
   input,
@@ -9,60 +10,60 @@ export default function UserInput({
 }: {
   input: number;
   type: Unit;
-  callback: (value: number, unit: Unit) => void;
+  callback: UserSubmissionCallback;
 }) {
-  const _amount = newSimpleState<string>(input.toString());
-  const _unit = newSimpleState<Unit>(type);
-  const _warning = newSimpleState<string>("");
+  const amountState = newSimpleState<string>(input.toString());
+  const unitState = newSimpleState<Unit>(type);
+  const warningState = newSimpleState<string>("");
 
   const warningDiv = (
     <div
       class="col-span-5 mb-0 mt-1 h-4 text-xs text-pink-500"
       id="amount-error"
     >
-      {_warning.get()}
+      {warningState.get()}
     </div>
   ) as HTMLDivElement;
 
-  _warning.subscribe((newValue) => {
+  warningState.subscribe((newValue) => {
     warningDiv.textContent = newValue;
   });
 
-  function _onChangeAmount(e: Event): void {
+  function onChangeAmount(e: Event): void {
     e.preventDefault();
     const target = e.target as HTMLInputElement;
-    _amount.set(target.value !== null ? target.value : "");
+    amountState.set(target.value !== null ? target.value : "");
   }
 
-  function _onChangeUnit(e: Event): void {
+  function onChangeUnit(e: Event): void {
     e.preventDefault();
     const target = e.target as HTMLSelectElement;
     const text = target.selectedOptions[0].text;
     if (!text || !isUnit(text)) return;
-    _unit.set(text as Unit);
+    unitState.set(text as Unit);
   }
 
-  function _toggleWarning(show: boolean): void {
+  function toggleWarning(show: boolean): void {
     if (show) {
-      _warning.set("Please type a number.");
+      warningState.set("Please type a number.");
       return;
     }
-    _warning.set("");
+    warningState.set("");
   }
 
-  function _onSubmit(e: Event): void {
+  function onSubmit(e: Event): void {
     e.preventDefault();
-    const num = parseFloat(_amount.get());
+    const num = parseFloat(amountState.get());
     const invalid = Number.isNaN(num);
 
-    _toggleWarning(invalid);
+    toggleWarning(invalid);
 
-    if (!invalid) callback(num, _unit.get());
+    if (!invalid) callback(num, unitState.get());
   }
 
   return (
     <div class="mx-auto mt-6 flex max-w-sm flex-col justify-center md:w-96 lg:ml-10 lg:mt-0">
-      <form class="grid grid-cols-5 items-center gap-2" onsubmit={_onSubmit}>
+      <form class="grid grid-cols-5 items-center gap-2" onsubmit={onSubmit}>
         <fieldset class="col-span-3">
           <label class="text-sm" htmlFor="unit_amount">
             Amount:
@@ -71,8 +72,8 @@ export default function UserInput({
             class="focus:ring-app-teal-500 w-full rounded-sm border border-app-green-600 bg-app-green-100 px-1.5 py-1 font-bold text-app-green-500 focus:outline-none focus:ring"
             id="unit_amount"
             type="text"
-            onchange={_onChangeAmount}
-            value={_amount.get()}
+            onchange={onChangeAmount}
+            value={amountState.get()}
             aria-label="Amount"
             aria-describedby="amount-error"
           />
@@ -85,8 +86,8 @@ export default function UserInput({
             class="focus:ring-app-teal-500 w-full rounded-sm border border-app-green-600 bg-app-gray-50 px-0.5 py-1 text-app-black focus:outline-none focus:ring"
             id="unit_select"
             name="units"
-            onchange={_onChangeUnit}
-            value={_unit.get().toString()}
+            onchange={onChangeUnit}
+            value={unitState.get().toString()}
             aria-label="Unit"
           >
             {Object.values(Units).map((unit, index) => (
