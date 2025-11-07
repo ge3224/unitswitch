@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite'
-import path from 'node:path'
-import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from "vite";
+import path from "node:path";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [
@@ -10,12 +10,11 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "@pkg": path.resolve(__dirname, "./pkg"),
-      "@lib": path.resolve(__dirname, "./src/lib"),
     },
   },
   esbuild: {
-    jsx: 'transform',
-    jsxFactory: 'createDomElement',
-    jsxFragment: 'createDomFragment',
+    jsx: "transform",
+    jsxFactory: "createDomElement",
+    jsxFragment: "createDomFragment",
   },
-})
+});
