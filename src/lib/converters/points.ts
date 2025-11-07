@@ -1,6 +1,6 @@
-import type { Converter } from "@/lib/converter.ts";
+import type { Converter } from "./types.ts";
 import { FONT_SIZE, PPI } from "@/lib/constants.ts";
-import { Units, type Unit } from "@/lib/units.ts";
+import { type Unit, Units } from "@/lib/units.ts";
 import { getIntersectingValue } from "@/lib/arrays.ts";
 import { tailwindSizes } from "@/lib/converters/tailwind.ts";
 
@@ -15,7 +15,7 @@ function _pixelsToPoints(px: number): number {
  * class name. The values represent the points (pt) equivalent of that Bootstrap size.
  * For example, the 'p-1' Bootstrap class would correspond to 5.333333333333333 points.
  */
-const _bootstrapToPoints = [0, 3, 6, 12, 18, 36];
+const bootstrapToPoints = [0, 3, 6, 12, 18, 36];
 
 /**
  * Points equivalent values for Tailwind CSS spacing and sizing classes.
@@ -24,9 +24,42 @@ const _bootstrapToPoints = [0, 3, 6, 12, 18, 36];
  * class name. The values represent the centimetre equivalent of that Tailwind
  * size. For example, the 'p-4' Tailwind class would correspond to 12 points (pt).
  */
-const _tailwindToPoints = [
-  0, 0.75, 1.5, 3, 4.5, 6, 7.5, 9, 10.5, 12, 15, 18, 21, 24, 27, 30, 33, 36, 42,
-  48, 60, 72, 84, 96, 108, 120, 132, 144, 156, 168, 180, 192, 216, 240, 288,
+const tailwindToPoints = [
+  0,
+  0.75,
+  1.5,
+  3,
+  4.5,
+  6,
+  7.5,
+  9,
+  10.5,
+  12,
+  15,
+  18,
+  21,
+  24,
+  27,
+  30,
+  33,
+  36,
+  42,
+  48,
+  60,
+  72,
+  84,
+  96,
+  108,
+  120,
+  132,
+  144,
+  156,
+  168,
+  180,
+  192,
+  216,
+  240,
+  288,
 ];
 
 /**
@@ -37,12 +70,15 @@ const _tailwindToPoints = [
  * @returns {number}     - The converted value in points(pt), or -1 if the
  *                         conversion is not supported or input is invalid.
  */
-export const convertToPoints: Converter = function convertToPoints(from: Unit, input: number): number {
+export const convertToPoints: Converter = function convertToPoints(
+  from: Unit,
+  input: number,
+): number {
   if (input < 0) return -1;
   switch (from) {
     case Units.Bootstrap:
-      return input <= _bootstrapToPoints.length - 1 && input % 1 === 0
-        ? _bootstrapToPoints[input]
+      return input <= bootstrapToPoints.length - 1 && input % 1 === 0
+        ? bootstrapToPoints[input]
         : -1;
     case Units.Centimeters:
       return input * 28.3464567;
@@ -63,8 +99,8 @@ export const convertToPoints: Converter = function convertToPoints(from: Unit, i
     case Units.Rems:
       return _pixelsToPoints(input * FONT_SIZE);
     case Units.Tailwind:
-      return getIntersectingValue(tailwindSizes, _tailwindToPoints, input);
+      return getIntersectingValue(tailwindSizes, tailwindToPoints, input);
     default:
       return -1;
   }
-}
+};

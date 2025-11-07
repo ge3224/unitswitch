@@ -1,4 +1,4 @@
-import type { Converter } from "@/lib/converter.ts";
+import type { Converter } from "./types.ts";
 import type { Unit } from "@/lib/units.ts";
 
 /**
@@ -31,6 +31,9 @@ function _shorter(input: number): number {
  * @returns {number} - The converted value, or -1 if the
  *                     conversion is not supported or the input is invalid.
  */
-export const convertToGolden: Converter = function convertToGolden(_from: Unit, input: number): number {
+export const convertToGolden: Converter = function convertToGolden(
+  _from: Unit,
+  input: number,
+): number {
   return input < 0 ? -1 : _longer(input);
-}
+};

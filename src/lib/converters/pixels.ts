@@ -1,6 +1,6 @@
-import type { Converter } from "@/lib/converter.ts";
+import type { Converter } from "./types.ts";
 import { FONT_SIZE, PPI } from "@/lib/constants.ts";
-import { Units, type Unit } from "@/lib/units.ts";
+import { type Unit, Units } from "@/lib/units.ts";
 import { getIntersectingValue } from "@/lib/arrays.ts";
 import { tailwindSizes } from "@/lib/converters/tailwind.ts";
 
@@ -12,8 +12,41 @@ import { tailwindSizes } from "@/lib/converters/tailwind.ts";
  * For example, the 'p-4' Tailwind class would correspond to 16px.
  */
 export const _tailwindToPixels = [
-  0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 20, 24, 28, 32, 36, 40, 44, 48, 56, 64, 80,
-  96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 256, 288, 320, 384,
+  0,
+  1,
+  2,
+  4,
+  6,
+  8,
+  10,
+  12,
+  14,
+  16,
+  20,
+  24,
+  28,
+  32,
+  36,
+  40,
+  44,
+  48,
+  56,
+  64,
+  80,
+  96,
+  112,
+  128,
+  144,
+  160,
+  176,
+  192,
+  208,
+  224,
+  240,
+  256,
+  288,
+  320,
+  384,
 ];
 
 /**
@@ -23,7 +56,10 @@ export const _tailwindToPixels = [
  * @param {number} input - The value to convert.
  * @returns {number} The converted value in pixels. Returns -1 if the unit is not supported.
  */
-export const convertToPixels: Converter = function convertToPixels(from: Unit, input: number): number {
+export const convertToPixels: Converter = function convertToPixels(
+  from: Unit,
+  input: number,
+): number {
   if (input < 0) return -1;
   switch (from) {
     case Units.Bootstrap:
@@ -52,4 +88,4 @@ export const convertToPixels: Converter = function convertToPixels(from: Unit, i
     default:
       return -1;
   }
-}
+};

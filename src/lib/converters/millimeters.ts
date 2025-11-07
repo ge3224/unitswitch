@@ -1,6 +1,6 @@
-import type { Converter } from "@/lib/converter.ts";
+import type { Converter } from "./types.ts";
 import { FONT_SIZE } from "@/lib/constants.ts";
-import { Units, type Unit } from "@/lib/units.ts";
+import { type Unit, Units } from "@/lib/units.ts";
 import { getIntersectingValue } from "@/lib/arrays.ts";
 import { roundToDecimal } from "@/lib/round_number.ts";
 import { tailwindSizes } from "@/lib/converters/tailwind.ts";
@@ -13,8 +13,13 @@ import { tailwindSizes } from "@/lib/converters/tailwind.ts";
  * size class. For example, the 'p-4' Tailwind class, which would correspond to
  * 9.525 mm.
  */
-const _bootstrapToMillimeters = [
-  0, 1.0583332, 2.1166664, 4.2333328, 6.349999200000001, 12.699998400000002,
+const bootstrapToMillimeters = [
+  0,
+  1.0583332,
+  2.1166664,
+  4.2333328,
+  6.349999200000001,
+  12.699998400000002,
 ];
 
 /**
@@ -25,11 +30,42 @@ const _bootstrapToMillimeters = [
  * size class. For example, the 'p-4' Tailwind class, which would correspond to
  * 9.525 mm.
  */
-const _tailwindToMillimeters = [
-  0, 0.264583, 0.529167, 1.058333, 1.5875, 2.116667, 2.645833, 3.175, 3.704167,
-  4.233333, 5.291667, 6.35, 7.408333, 8.466667, 9.525, 10.58333, 11.64167, 12.7,
-  14.81667, 16.93333, 21.16667, 25.4, 29.63333, 33.86667, 38.1, 42.33333,
-  46.56667, 50.8, 55.03333, 59.26667, 63.5, 67.73333, 76.2, 84.66667, 101.6,
+const tailwindToMillimeters = [
+  0,
+  0.264583,
+  0.529167,
+  1.058333,
+  1.5875,
+  2.116667,
+  2.645833,
+  3.175,
+  3.704167,
+  4.233333,
+  5.291667,
+  6.35,
+  7.408333,
+  8.466667,
+  9.525,
+  10.58333,
+  11.64167,
+  12.7,
+  14.81667,
+  16.93333,
+  21.16667,
+  25.4,
+  29.63333,
+  33.86667,
+  38.1,
+  42.33333,
+  46.56667,
+  50.8,
+  55.03333,
+  59.26667,
+  63.5,
+  67.73333,
+  76.2,
+  84.66667,
+  101.6,
 ];
 
 /**
@@ -41,14 +77,14 @@ function _pixelsToMillimeters(px: number): number {
 
 export const convertToMillimeters: Converter = function convertToMillimeters(
   from: Unit,
-  input: number
+  input: number,
 ): number {
   if (input < 0) return -1;
 
   switch (from) {
     case Units.Bootstrap:
-      return input <= _bootstrapToMillimeters.length - 1 && input % 1 === 0
-        ? roundToDecimal(_bootstrapToMillimeters[input], 4)
+      return input <= bootstrapToMillimeters.length - 1 && input % 1 === 0
+        ? roundToDecimal(bootstrapToMillimeters[input], 4)
         : -1;
     case Units.Centimeters:
       return input * 10;
@@ -71,10 +107,10 @@ export const convertToMillimeters: Converter = function convertToMillimeters(
     case Units.Tailwind:
       return getIntersectingValue(
         tailwindSizes,
-        _tailwindToMillimeters,
+        tailwindToMillimeters,
         input,
       );
     default:
       return -1;
   }
-}
+};

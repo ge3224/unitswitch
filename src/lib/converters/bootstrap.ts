@@ -1,4 +1,4 @@
-import type { Converter } from "@/lib/converter.ts";
+import type { Converter } from "./types.ts";
 import { type Unit, Units } from "@/lib/units.ts";
 import { nearestIndex } from "@/lib/arrays.ts";
 
@@ -7,7 +7,7 @@ import { nearestIndex } from "@/lib/arrays.ts";
  * and layout purposes. These values are used in conjunction with the Bootstrap
  * CSS framework.
  */
-const _bootstrapToPixels: number[] = [0, 4, 8, 16, 24, 48];
+const bootstrapToPixels: number[] = [0, 4, 8, 16, 24, 48];
 
 export const convertToBootstrap: Converter = function convertToBootstrap(
   from: Unit,
@@ -60,7 +60,7 @@ export const convertToBootstrap: Converter = function convertToBootstrap(
         input,
       );
     case Units.Pixels:
-      return _bootstrapToPixels.indexOf(input);
+      return bootstrapToPixels.indexOf(input);
     case Units.Points:
       return nearestIndex(
         [

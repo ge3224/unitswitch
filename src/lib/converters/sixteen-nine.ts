@@ -1,5 +1,5 @@
-import type { Converter } from "../converter.ts";
-import type { Unit } from "../units.ts";
+import type { Converter } from "./types.ts";
+import type { Unit } from "@/lib/units.ts";
 
 function _longer(input: number): number {
   return (16 * input) / 9;
@@ -12,7 +12,7 @@ function _shorter(input: number): number {
 
 export const convertToSixteenNine: Converter = function convertToSixteenNine(
   _from: Unit,
-  input: number
+  input: number,
 ): number {
   return input < 0 ? -1 : _longer(input);
-}
+};

@@ -1,5 +1,5 @@
-import type { Converter } from "@/lib/converter.ts";
-import { Units, type Unit } from "@/lib/units.ts";
+import type { Converter } from "./types.ts";
+import { type Unit, Units } from "@/lib/units.ts";
 import { interpolateInRange } from "@/lib/arrays.ts";
 
 /**
@@ -10,8 +10,41 @@ import { interpolateInRange } from "@/lib/arrays.ts";
  * utility class.
  */
 export const tailwindSizes = [
-  0, 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16,
-  20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 72, 80, 96,
+  0,
+  0.25,
+  0.5,
+  1,
+  1.5,
+  2,
+  2.5,
+  3,
+  3.5,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  14,
+  16,
+  20,
+  24,
+  28,
+  32,
+  36,
+  40,
+  44,
+  48,
+  52,
+  56,
+  60,
+  64,
+  72,
+  80,
+  96,
 ];
 
 /**
@@ -22,7 +55,10 @@ export const tailwindSizes = [
  * @returns {number}     - The converted value in tailwindcss sizes, or -1 if the
  *                         conversion is not supported or input is invalid.
  */
-export const converttoTailwind: Converter = function convertToTailwind(from: Unit, input: number): number {
+export const convertToTailwind: Converter = function convertToTailwind(
+  from: Unit,
+  input: number,
+): number {
   if (input < 0) return -1;
   switch (from) {
     case Units.Bootstrap:
@@ -52,4 +88,4 @@ export const converttoTailwind: Converter = function convertToTailwind(from: Uni
     default:
       return -1;
   }
-}
+};
