@@ -1,19 +1,22 @@
-import { createDomElement } from "@pkg/just-jsx/src/index.ts";
+import { createDomElement, createRef } from "@pkg/just-jsx/src/index.ts";
 import { newSimpleState } from "@pkg/simple-state/src/index.ts";
 import { isUnit, Unit, Units } from "@/lib/units.ts";
-import { UserSubmissionCallback } from "@/lib/types.ts";
+import { UserSubmissionCallback, ViewInputState } from "@/lib/types.ts";
 
 export default function UserInput({
   input,
   type,
   callback,
 }: {
-  input: number;
-  type: Unit;
+  input: ViewInputState<number>;
+  type: ViewInputState<Unit>;
   callback: UserSubmissionCallback;
 }) {
-  const amountState = newSimpleState<string>(input.toString());
-  const unitState = newSimpleState<Unit>(type);
+  const amountState = newSimpleState<string>(input.get().toString());
+  const unitState = newSimpleState<Unit>(type.get());
+
+  const amountInput = createRef<HTMLInputElement>();
+  const unitSelect = createRef<HTMLSelectElement>();
   const warningState = newSimpleState<string>("");
 
   const warningDiv = (
@@ -27,6 +30,22 @@ export default function UserInput({
 
   warningState.subscribe((newValue) => {
     warningDiv.textContent = newValue;
+  });
+
+  // Subscribe to parent state changes (e.g., from modal)
+  input.subscribe((newInput: number) => {
+    const newValue = newInput.toString();
+    amountState.set(newValue);
+    if (amountInput.current) {
+      amountInput.current.value = newValue;
+    }
+  });
+
+  type.subscribe((newType: Unit) => {
+    unitState.set(newType);
+    if (unitSelect.current) {
+      unitSelect.current.value = newType;
+    }
   });
 
   function onChangeAmount(e: Event): void {
@@ -69,6 +88,7 @@ export default function UserInput({
             Amount:
           </label>
           <input
+            ref={amountInput}
             class="focus:ring-app-teal-500 w-full rounded-sm border border-app-green-600 bg-app-green-100 px-1.5 py-1 font-bold text-app-green-500 focus:outline-none focus:ring"
             id="unit_amount"
             type="text"
@@ -83,6 +103,7 @@ export default function UserInput({
             Unit:
           </label>
           <select
+            ref={unitSelect}
             class="focus:ring-app-teal-500 w-full rounded-sm border border-app-green-600 bg-app-gray-50 px-0.5 py-1 text-app-black focus:outline-none focus:ring"
             id="unit_select"
             name="units"

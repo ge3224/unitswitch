@@ -24,6 +24,7 @@ import {
   DetailsRemsEms,
   DetailsTailwind,
 } from "@/lib/ui/details.tsx";
+import Modal from "./lib/ui/modal.tsx";
 
 export function App(): Node {
   const inputState = newSimpleState<number>(16);
@@ -112,8 +113,8 @@ export function App(): Node {
         <div class="relative flex flex-col border-b border-app-green-600 px-11 pt-12 lg:col-span-2 lg:row-span-2 lg:flex-row lg:justify-center lg:border lg:py-8">
           <Logo />
           <UserInput
-            input={inputState.get()}
-            type={Units.Pixels}
+            input={inputState}
+            type={unitState}
             callback={handleSubmit}
           />
         </div>
@@ -176,6 +177,11 @@ export function App(): Node {
           conversion={feetState}
           to={Units.Feet}
           hotkey="@"
+        />
+        <Modal
+          type={unitState}
+          callback={handleSubmit}
+          hotkey="k"
         />
       </div>
     </div>
