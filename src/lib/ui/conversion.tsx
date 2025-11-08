@@ -3,7 +3,7 @@ import { ViewInputState } from "@/lib/types.ts";
 import { createDomElement, createRef } from "@pkg/just-jsx/src/index.ts";
 import { hotkeyManager } from "@/lib/hotkey-manager.ts";
 import { newSimpleState } from "@pkg/simple-state/src/index.ts";
-import { renderConversion } from "@/lib/render.ts";
+import { renderConversion as renderConversionValue } from "@/lib/render.ts";
 import {
   CopyIconSvg,
   GrayPlusIcon,
@@ -12,12 +12,11 @@ import {
 } from "@/lib/ui/icons.tsx";
 
 const ANIMATION_DURATION_MS = 500;
-const HIDDEN_CLASS = "hidden";
-const HOTKEY_HIGHLIGHT_CLASSES = [
-  "ring-2",
-  "ring-app-purple-400",
-  "ring-inset",
-];
+const HOTKEY_RING_SHADOW = "inset 0 0 0 2px var(--color-app-purple-400)";
+const DISPLAY_BLOCK = "block";
+const DISPLAY_INLINE_BLOCK = "inline-block";
+const DISPLAY_NONE = "none";
+const EMPTY_STRING = "";
 
 export default function Conversion({
   conversion,
@@ -32,25 +31,35 @@ export default function Conversion({
 }) {
   const showDetailState = newSimpleState<boolean>(false);
 
-  const detailsPanel = createRef<HTMLDivElement>();
-  const minusIcon = createRef<SVGElement>();
-  const plusIcon = createRef<SVGElement>();
-  const valueElement = createRef<HTMLSpanElement>();
+  const conversionValueRef = createRef<HTMLSpanElement>();
+  const detailsPanelRef = createRef<HTMLDivElement>();
+  const minusIconRef = createRef<SVGElement>();
+  const plusIconRef = createRef<SVGElement>();
 
   let timerId: number | null = null;
 
   conversion.subscribe(
-    function conversionCallback(newConversion: number): void {
-      if (valueElement.current) {
-        valueElement.current.textContent = renderConversion(newConversion);
+    function updateConversionValue(newConversionValue: number): void {
+      if (conversionValueRef.current) {
+        conversionValueRef.current.textContent = renderConversionValue(
+          newConversionValue,
+        );
       }
     },
   );
 
-  showDetailState.subscribe(function detailsSubscriber(show): void {
-    detailsPanel.current?.classList.toggle(HIDDEN_CLASS, !show);
-    minusIcon.current?.classList.toggle(HIDDEN_CLASS, !show);
-    plusIcon.current?.classList.toggle(HIDDEN_CLASS, show);
+  showDetailState.subscribe(function toggleDetailsPanel(show): void {
+    if (detailsPanelRef.current) {
+      detailsPanelRef.current.style.display = show ? DISPLAY_BLOCK : DISPLAY_NONE;
+    }
+
+    if (minusIconRef.current) {
+      minusIconRef.current.style.display = show ? DISPLAY_NONE : DISPLAY_INLINE_BLOCK;
+    }
+
+    if (plusIconRef.current) {
+      plusIconRef.current.style.display = show ? DISPLAY_INLINE_BLOCK : DISPLAY_NONE;
+    }
   });
 
   function copyToClipboard(): void {
@@ -67,29 +76,29 @@ export default function Conversion({
     const target = e.currentTarget as HTMLSpanElement;
 
     target.style.opacity = "0.4";
-    setTimeout(function copyIconTimerCallback() {
+    setTimeout(function restoreCopyIconOpacity() {
       target.style.opacity = "1";
     }, ANIMATION_DURATION_MS);
   }
 
   function registerCopyHotkey(element: HTMLDivElement) {
-    hotkeyManager.register(hotkey, function hotkeyHandler() {
+    hotkeyManager.register(hotkey, function onKeyDownCopyHotkey() {
       copyToClipboard();
 
-      element.classList.add(...HOTKEY_HIGHLIGHT_CLASSES);
+      element.style.boxShadow = HOTKEY_RING_SHADOW;
 
       if (timerId !== null) {
         clearTimeout(timerId);
       }
 
-      timerId = setTimeout(function hotkeyTimerCallback() {
-        element.classList.remove(...HOTKEY_HIGHLIGHT_CLASSES);
+      timerId = setTimeout(function removeHotkeyHighlight() {
+        element.style.boxShadow = EMPTY_STRING;
         timerId = null;
       }, ANIMATION_DURATION_MS);
     });
   }
 
-  function resultDivCallback(element: HTMLDivElement | null): void {
+  function handleResultDivRef(element: HTMLDivElement | null): void {
     if (element) {
       registerCopyHotkey(element);
     }
@@ -107,8 +116,8 @@ export default function Conversion({
           {detail
             ? (
               <div class="flex w-6 justify-center" onclick={onClickDetails}>
-                <PlusIcon ref={plusIcon} />
-                <MinusIcon ref={minusIcon} />
+                <PlusIcon ref={plusIconRef} />
+                <MinusIcon ref={minusIconRef} />
               </div>
             )
             : (
@@ -118,7 +127,7 @@ export default function Conversion({
             )}
         </div>
         <div
-          ref={resultDivCallback}
+          ref={handleResultDivRef}
           class="w-32 border-l border-r border-app-green-600 bg-app-green-100 px-3 py-2 text-sm font-bold text-app-green-500 lg:flex lg:items-center lg:border-l-0 lg:text-base"
           id={`to-${to.toString()}`}
         >
@@ -129,7 +138,9 @@ export default function Conversion({
           >
             <CopyIconSvg />
           </span>
-          <span ref={valueElement}>{renderConversion(conversion.get())}</span>
+          <span ref={conversionValueRef}>
+            {renderConversionValue(conversion.get())}
+          </span>
         </div>
         <div class="ml-2 mr-auto font-bold text-app-black lg:my-auto">
           {to.toString()}
@@ -147,7 +158,7 @@ export default function Conversion({
       {detail &&
         (
           <div
-            ref={detailsPanel}
+            ref={detailsPanelRef}
             class="hidden border-b border-app-green-600 p-3 lg:block lg:border-x lg:text-sm"
           >
             {detail}
