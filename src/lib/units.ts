@@ -18,6 +18,23 @@ export const Units = {
 export type Unit = typeof Units[keyof typeof Units];
 
 /**
+ * List of all available unit abbreviations with their full names
+ */
+export const UNIT_ABBREVIATIONS = [
+  { abbr: "bs", name: Units.Bootstrap },
+  { abbr: "cm", name: Units.Centimeters },
+  { abbr: "em", name: Units.Ems },
+  { abbr: "ft", name: Units.Feet },
+  { abbr: "in", name: Units.Inches },
+  { abbr: "mm", name: Units.Millimeters },
+  { abbr: "pc", name: Units.Picas },
+  { abbr: "px", name: Units.Pixels },
+  { abbr: "pt", name: Units.Points },
+  { abbr: "rem", name: Units.Rems },
+  { abbr: "tw", name: Units.Tailwind },
+] as const;
+
+/**
  * Converts an abbreviation to the corresponding Unit value.
  *
  * @param input - The abbreviation to convert.

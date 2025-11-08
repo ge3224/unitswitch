@@ -2,9 +2,15 @@ import { createDomElement } from "@pkg/just-jsx/src/index.ts";
 
 import Conversion from "@/lib/ui/conversion.tsx";
 import Logo from "@/lib/ui/logo.tsx";
+import Modal from "@/lib/ui/modal.tsx";
 import UserInput from "@/lib/ui/user_input.tsx";
+import {
+  DetailsBootstrap,
+  DetailsPixels,
+  DetailsRemsEms,
+  DetailsTailwind,
+} from "@/lib/ui/details.tsx";
 import { Unit, Units } from "@/lib/units.ts";
-import { newSimpleState } from "@pkg/simple-state/src/index.ts";
 import {
   convertToBootstrap,
   convertToCentimeters,
@@ -18,22 +24,11 @@ import {
   convertToRems,
   convertToTailwind,
 } from "@/lib/converters/index.ts";
-import {
-  DetailsBootstrap,
-  DetailsPixels,
-  DetailsRemsEms,
-  DetailsTailwind,
-} from "@/lib/ui/details.tsx";
-import Modal from "./lib/ui/modal.tsx";
+import { newSimpleState } from "@pkg/simple-state/src/index.ts";
 
 export function App(): Node {
   const inputState = newSimpleState<number>(16);
   const unitState = newSimpleState<Unit>(Units.Pixels);
-
-  function handleSubmit(value: number, unit: Unit): void {
-    inputState.set(value);
-    unitState.set(unit);
-  }
 
   const bootstrapState = newSimpleState<number>(
     convertToBootstrap(unitState.get(), inputState.get()),
@@ -107,6 +102,11 @@ export function App(): Node {
     tailwindState.set(convertToTailwind(newUnit, inputState.get()));
   });
 
+  function handleSubmit(value: number, unit: Unit): void {
+    inputState.set(value);
+    unitState.set(unit);
+  }
+
   return (
     <div class="m-2 sm:flex sm:min-h-screen items-center justify-center">
       <div class="my-auto max-w-screen-xl lg:mx-auto rounded-lg border border-app-green-600 bg-app-green-50 pb-4 lg:grid lg:grid-cols-3 lg:gap-5 lg:border-none lg:p-12">
@@ -179,7 +179,6 @@ export function App(): Node {
           hotkey="@"
         />
         <Modal
-          type={unitState}
           callback={handleSubmit}
           hotkey="k"
         />
