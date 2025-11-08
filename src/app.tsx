@@ -8,6 +8,7 @@ import {
   DetailsBootstrap,
   DetailsPixels,
   DetailsRemsEms,
+  DetailsSixteenNine,
   DetailsTailwind,
 } from "@/lib/ui/details.tsx";
 import { Unit, Units } from "@/lib/units.ts";
@@ -22,6 +23,7 @@ import {
   convertToPixels,
   convertToPoints,
   convertToRems,
+  convertToSixteenNine,
   convertToTailwind,
 } from "@/lib/converters/index.ts";
 import { newSimpleState } from "@pkg/simple-state/src/index.ts";
@@ -70,6 +72,10 @@ export function App(): Node {
     convertToRems(unitState.get(), inputState.get()),
   );
 
+  const sixteenNineState = newSimpleState<number>(
+    convertToSixteenNine(unitState.get(), inputState.get()),
+  );
+
   const tailwindState = newSimpleState<number>(
     convertToTailwind(unitState.get(), inputState.get()),
   );
@@ -85,6 +91,7 @@ export function App(): Node {
     picasState.set(convertToPicas(unitState.get(), newInput));
     pointsState.set(convertToPoints(unitState.get(), newInput));
     remsState.set(convertToRems(unitState.get(), newInput));
+    sixteenNineState.set(convertToSixteenNine(unitState.get(), newInput));
     tailwindState.set(convertToTailwind(unitState.get(), newInput));
   });
 
@@ -99,6 +106,7 @@ export function App(): Node {
     picasState.set(convertToPicas(newUnit, inputState.get()));
     pointsState.set(convertToPoints(newUnit, inputState.get()));
     remsState.set(convertToRems(newUnit, inputState.get()));
+    sixteenNineState.set(convertToSixteenNine(newUnit, inputState.get()));
     tailwindState.set(convertToTailwind(newUnit, inputState.get()));
   });
 
@@ -177,6 +185,12 @@ export function App(): Node {
           conversion={feetState}
           to={Units.Feet}
           hotkey="@"
+        />
+        <Conversion
+          conversion={sixteenNineState}
+          to={Units.SixteenNine}
+          hotkey="#"
+          detail={<DetailsSixteenNine input={inputState} />}
         />
         <Modal
           callback={handleSubmit}

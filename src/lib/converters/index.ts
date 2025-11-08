@@ -8,6 +8,7 @@ import { convertToPicas } from "./picas.ts";
 import { convertToPixels } from "./pixels.ts";
 import { convertToPoints } from "./points.ts";
 import { convertToRems } from "./rems.ts";
+import { convertToSixteenNine } from "./sixteen-nine.ts";
 import { convertToTailwind } from "./tailwind.ts";
 
 export type { Converter } from "./types.ts";
@@ -23,5 +24,6 @@ export {
   convertToPixels,
   convertToPoints,
   convertToRems,
+  convertToSixteenNine,
   convertToTailwind,
 };
