@@ -81,7 +81,7 @@ export default function UserInput({
   }
 
   return (
-    <div class="mx-auto mt-6 flex max-w-sm flex-col justify-center md:w-96 lg:ml-10 lg:mt-0">
+    <div class="mx-auto mt-5 flex max-w-sm flex-col justify-center md:w-96 lg:ml-9 lg:mt-0">
       <form class="grid grid-cols-5 items-center gap-2" onsubmit={onSubmit}>
         <fieldset class="col-span-3">
           <label class="text-sm" htmlFor="unit_amount">
@@ -124,7 +124,7 @@ export default function UserInput({
             type="submit"
             value="Convert"
           />
-          <div class="flex items-center gap-1 scale-[0.85] origin-left">
+          <div class="flex items-center gap-1 scale-[0.8] origin-left">
             <kbd
               class="inline-flex items-center justify-center px-1.5 h-6 rounded-sm border border-app-gray-200 bg-white shadow-sm font-mono text-xs text-app-gray-200 cursor-default hover:border-app-green-400 hover:text-app-green-400"
               title="Press Ctrl+K for quick keyboard conversions"

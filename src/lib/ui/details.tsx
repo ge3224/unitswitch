@@ -11,14 +11,15 @@ import { ViewInputState } from "@/lib/types.ts";
 
 export function DetailsRemsEms() {
   return (
-    <div class="text-app-black space-y-2">
-      <div>
-        Based on a root font size of <span class="font-bold">{FONT_SIZE}px</span>
-      </div>
-      <div class="text-sm">
-        <span class="font-bold">rem</span> is relative to the root element's font size, while{" "}
-        <span class="font-bold">em</span> is relative to the parent element's font size.
-      </div>
+    <div class="text-app-black">
+      Based on a{" "}
+      <span
+        class="cursor-help border-b border-dotted border-app-gray-200 hover:border-app-green-400 hover:text-app-green-500 transition-colors"
+        title="rem is relative to the root element's font size, while em is relative to the parent element's font size"
+      >
+        root*
+      </span>{" "}
+      font size of <span class="font-bold">{FONT_SIZE}px</span>
     </div>
   );
 }

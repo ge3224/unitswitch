@@ -4,8 +4,8 @@ export default function Logo() {
   return (
     <div class="flex items-center justify-center">
       <svg
-        width="67"
-        height="46"
+        width="50"
+        height="35"
         viewBox="0 0 67 46"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -30,7 +30,7 @@ export default function Logo() {
       </svg>
 
       <h1
-        class="ml-1 text-3xl font-bold text-app-black xs:text-4xl"
+        class="ml-1 text-2xl font-bold text-app-black xs:text-3xl"
       >
         UnitSwitch
       </h1>

@@ -1,6 +1,6 @@
 import { describe, it } from "jsr:@std/testing/bdd";
 import { assertEquals } from "jsr:@std/assert";
-import { createHotkeyManager } from "./hotkey_manager.ts";
+import { createHotkeyManager } from "@/lib/hotkey_manager.ts";
 
 // Mock globalThis for testing
 const mockGlobalThis = () => {
@@ -15,12 +15,20 @@ const mockGlobalThis = () => {
     },
     dispatchEvent: (event: KeyboardEvent) => {
       const handlers = listeners.get("keydown") || [];
-      handlers.forEach(handler => handler(event));
-    }
+      handlers.forEach((handler) => handler(event));
+    },
   };
 };
 
-const createKeyboardEvent = (key: string, options: { ctrlKey?: boolean; altKey?: boolean; metaKey?: boolean; shiftKey?: boolean } = {}): KeyboardEvent => {
+const createKeyboardEvent = (
+  key: string,
+  options: {
+    ctrlKey?: boolean;
+    altKey?: boolean;
+    metaKey?: boolean;
+    shiftKey?: boolean;
+  } = {},
+): KeyboardEvent => {
   let prevented = false;
   return {
     key,
@@ -28,8 +36,12 @@ const createKeyboardEvent = (key: string, options: { ctrlKey?: boolean; altKey?:
     altKey: options.altKey ?? false,
     metaKey: options.metaKey ?? false,
     shiftKey: options.shiftKey ?? false,
-    preventDefault: () => { prevented = true; },
-    get defaultPrevented() { return prevented; }
+    preventDefault: () => {
+      prevented = true;
+    },
+    get defaultPrevented() {
+      return prevented;
+    },
   } as KeyboardEvent;
 };
 
@@ -43,7 +55,9 @@ describe("hotkeyManager", () => {
       const manager = createHotkeyManager();
       let called = false;
 
-      manager.register("p", () => { called = true; });
+      manager.register("p", () => {
+        called = true;
+      });
 
       const event = createKeyboardEvent("p");
       mock.dispatchEvent(event);
@@ -60,7 +74,9 @@ describe("hotkeyManager", () => {
       const manager = createHotkeyManager();
       let called = false;
 
-      manager.register("p", () => { called = true; });
+      manager.register("p", () => {
+        called = true;
+      });
 
       const event = createKeyboardEvent("p", { ctrlKey: true });
       mock.dispatchEvent(event);
@@ -77,7 +93,9 @@ describe("hotkeyManager", () => {
       const manager = createHotkeyManager();
       let called = false;
 
-      manager.register("k", () => { called = true; }, "ctrl");
+      manager.register("k", () => {
+        called = true;
+      }, "ctrl");
 
       const event = createKeyboardEvent("k", { ctrlKey: true });
       mock.dispatchEvent(event);
@@ -94,7 +112,9 @@ describe("hotkeyManager", () => {
       const manager = createHotkeyManager();
       let called = false;
 
-      manager.register("m", () => { called = true; }, "alt");
+      manager.register("m", () => {
+        called = true;
+      }, "alt");
 
       const event = createKeyboardEvent("m", { altKey: true });
       mock.dispatchEvent(event);
@@ -111,7 +131,9 @@ describe("hotkeyManager", () => {
       const manager = createHotkeyManager();
       let called = false;
 
-      manager.register("P", () => { called = true; });
+      manager.register("P", () => {
+        called = true;
+      });
 
       const event = createKeyboardEvent("p");
       mock.dispatchEvent(event);
@@ -129,8 +151,12 @@ describe("hotkeyManager", () => {
       let pCalled = false;
       let rCalled = false;
 
-      manager.register("p", () => { pCalled = true; });
-      manager.register("r", () => { rCalled = true; });
+      manager.register("p", () => {
+        pCalled = true;
+      });
+      manager.register("r", () => {
+        rCalled = true;
+      });
 
       mock.dispatchEvent(createKeyboardEvent("p"));
       assertEquals(pCalled, true);
@@ -153,8 +179,12 @@ describe("hotkeyManager", () => {
       let firstCalled = false;
       let secondCalled = false;
 
-      manager.register("p", () => { firstCalled = true; });
-      manager.register("p", () => { secondCalled = true; });
+      manager.register("p", () => {
+        firstCalled = true;
+      });
+      manager.register("p", () => {
+        secondCalled = true;
+      });
 
       mock.dispatchEvent(createKeyboardEvent("p"));
 
@@ -206,7 +236,9 @@ describe("hotkeyManager", () => {
       const manager = createHotkeyManager();
       let called = false;
 
-      manager.register("p", () => { called = true; });
+      manager.register("p", () => {
+        called = true;
+      });
       manager.unregister("p");
 
       mock.dispatchEvent(createKeyboardEvent("p"));
@@ -223,7 +255,9 @@ describe("hotkeyManager", () => {
       const manager = createHotkeyManager();
       let called = false;
 
-      manager.register("p", () => { called = true; });
+      manager.register("p", () => {
+        called = true;
+      });
       manager.unregister("P");
 
       mock.dispatchEvent(createKeyboardEvent("p"));
@@ -240,7 +274,9 @@ describe("hotkeyManager", () => {
       const manager = createHotkeyManager();
       let called = false;
 
-      manager.register("k", () => { called = true; }, "ctrl");
+      manager.register("k", () => {
+        called = true;
+      }, "ctrl");
       manager.unregister("k", "ctrl");
 
       mock.dispatchEvent(createKeyboardEvent("k", { ctrlKey: true }));

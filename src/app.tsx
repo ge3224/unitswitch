@@ -130,8 +130,8 @@ export function App(): Node {
 
   const container = (
     <div class="m-2 sm:flex sm:min-h-screen items-center justify-center">
-      <div class="my-auto max-w-7xl lg:mx-auto rounded-lg border border-app-green-600 bg-app-green-50 pb-4 lg:grid lg:grid-cols-3 lg:gap-5 lg:border-none lg:p-12">
-        <div class="relative flex flex-col border-b border-app-green-600 px-11 pt-12 lg:col-span-2 lg:row-span-2 lg:flex-row lg:justify-center lg:border lg:py-8">
+      <div class="my-auto max-w-7xl lg:mx-auto rounded-lg border border-app-green-600 bg-app-green-50 pb-3 lg:grid lg:grid-cols-3 lg:gap-4 lg:border-none lg:p-8">
+        <div class="relative flex flex-col border-b border-app-green-600 px-8 pt-8 lg:col-span-2 lg:row-span-2 lg:flex-row lg:justify-center lg:border lg:py-5">
           <Logo />
           <UserInput
             input={inputState}
