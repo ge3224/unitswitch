@@ -196,7 +196,7 @@ export default function Modal({
   return (
     <div
       ref={modalRef}
-      class="absolute left-0 top-0 z-10 hidden h-screen w-full bg-app-black/70"
+      class="fixed left-0 top-0 z-10 hidden h-screen w-full bg-app-black/70"
     >
       <div class="fixed inset-x-1/3 top-1/4 rounded-md border border-app-green-600 bg-app-black p-6 shadow-lg shadow-app-black">
         <form onsubmit={onSubmitModalForm}>
