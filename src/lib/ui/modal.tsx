@@ -288,7 +288,7 @@ export default function Modal({
           inputRef.current?.focus();
         });
       }
-    });
+    }, "ctrl");
   }
 
   function onSubmitModalForm(e: Event): void {

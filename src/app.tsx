@@ -164,91 +164,91 @@ export function App(): Node {
         <Conversion
           conversion={pixelsState}
           to={Units.Pixels}
-          hotkey="1"
+          hotkey="p"
           detail={<DetailsPixels />}
         />
         <Conversion
           conversion={remsState}
           to={Units.Rems}
-          hotkey="2"
+          hotkey="r"
           detail={<DetailsRemsEms />}
         />
         <Conversion
           conversion={millimetersState}
           to={Units.Millimeters}
-          hotkey="6"
+          hotkey="m"
         />
         <Conversion
           conversion={centimetersState}
           to={Units.Centimeters}
-          hotkey="7"
+          hotkey="c"
         />
         <Conversion
           conversion={pointsState}
           to={Units.Points}
-          hotkey="8"
+          hotkey="e"
         />
         <Conversion
           conversion={picasState}
           to={Units.Picas}
-          hotkey="9"
+          hotkey="a"
         />
         <Conversion
           conversion={inchesState}
           to={Units.Inches}
-          hotkey="!"
+          hotkey="i"
         />
         <Conversion
           conversion={feetState}
           to={Units.Feet}
-          hotkey="@"
+          hotkey="f"
         />
         <Conversion
           conversion={vwState}
           to={Units.Vw}
-          hotkey="3"
+          hotkey="w"
         />
         <Conversion
           conversion={vhState}
           to={Units.Vh}
-          hotkey="4"
+          hotkey="h"
         />
         <Conversion
           conversion={vminState}
           to={Units.Vmin}
-          hotkey="5"
+          hotkey="j"
         />
         <Conversion
           conversion={vmaxState}
           to={Units.Vmax}
-          hotkey="^"
+          hotkey="x"
         />
         <Conversion
           conversion={chState}
           to={Units.Ch}
-          hotkey="&"
+          hotkey="q"
         />
         <Conversion
           conversion={exState}
           to={Units.Ex}
-          hotkey="*"
+          hotkey="z"
         />
         <Conversion
           conversion={goldenState}
           to={Units.Golden}
-          hotkey="$"
+          hotkey="g"
           detail={<DetailsGoldenRatio input={inputState} />}
         />
         <Conversion
           conversion={root2State}
           to={Units.Root2}
-          hotkey="%"
+          hotkey="t"
           detail={<DetailsRootTwo input={inputState} />}
         />
         <Conversion
           conversion={sixteenNineState}
           to={Units.SixteenNine}
-          hotkey="#"
+          hotkey="s"
           detail={<DetailsSixteenNine input={inputState} />}
         />
         <Modal

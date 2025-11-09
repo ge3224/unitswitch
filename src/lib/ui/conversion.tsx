@@ -154,9 +154,9 @@ export default function Conversion({
         {hotkey && (
           <div class="hidden rounded-sm border border-app-gray-200 p-0.5 text-xs text-app-gray-200 cursor-default hover:border-app-green-400 hover:text-app-green-400 lg:my-auto lg:mr-4 lg:block">
             <span
-              title={`Press Ctrl-${hotkey.toUpperCase()} to copy the converted value to the clipboard`}
+              title={`Press ${hotkey.toUpperCase()} to copy the converted value to the clipboard`}
             >
-              {`Ctrl-${hotkey.toUpperCase()}`}
+              {hotkey.toUpperCase()}
             </span>
           </div>
         )}

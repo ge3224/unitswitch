@@ -20,11 +20,14 @@ const mockGlobalThis = () => {
   };
 };
 
-const createKeyboardEvent = (key: string, ctrlKey = true): KeyboardEvent => {
+const createKeyboardEvent = (key: string, options: { ctrlKey?: boolean; altKey?: boolean; metaKey?: boolean; shiftKey?: boolean } = {}): KeyboardEvent => {
   let prevented = false;
   return {
     key,
-    ctrlKey,
+    ctrlKey: options.ctrlKey ?? false,
+    altKey: options.altKey ?? false,
+    metaKey: options.metaKey ?? false,
+    shiftKey: options.shiftKey ?? false,
     preventDefault: () => { prevented = true; },
     get defaultPrevented() { return prevented; }
   } as KeyboardEvent;
@@ -32,7 +35,7 @@ const createKeyboardEvent = (key: string, ctrlKey = true): KeyboardEvent => {
 
 describe("hotkeyManager", () => {
   describe("registration", () => {
-    it("should register and trigger handler", () => {
+    it("should register and trigger handler for single keys", () => {
       const originalAddEventListener = globalThis.addEventListener;
       const mock = mockGlobalThis();
       globalThis.addEventListener = mock.addEventListener as any;
@@ -49,7 +52,7 @@ describe("hotkeyManager", () => {
       globalThis.addEventListener = originalAddEventListener;
     });
 
-    it("should require Ctrl key", () => {
+    it("should not trigger when modifier keys are pressed", () => {
       const originalAddEventListener = globalThis.addEventListener;
       const mock = mockGlobalThis();
       globalThis.addEventListener = mock.addEventListener as any;
@@ -59,10 +62,44 @@ describe("hotkeyManager", () => {
 
       manager.register("p", () => { called = true; });
 
-      const event = createKeyboardEvent("p", false);
+      const event = createKeyboardEvent("p", { ctrlKey: true });
       mock.dispatchEvent(event);
 
       assertEquals(called, false);
+      globalThis.addEventListener = originalAddEventListener;
+    });
+
+    it("should support Ctrl key when specified", () => {
+      const originalAddEventListener = globalThis.addEventListener;
+      const mock = mockGlobalThis();
+      globalThis.addEventListener = mock.addEventListener as any;
+
+      const manager = createHotkeyManager();
+      let called = false;
+
+      manager.register("k", () => { called = true; }, "ctrl");
+
+      const event = createKeyboardEvent("k", { ctrlKey: true });
+      mock.dispatchEvent(event);
+
+      assertEquals(called, true);
+      globalThis.addEventListener = originalAddEventListener;
+    });
+
+    it("should support Alt key when specified", () => {
+      const originalAddEventListener = globalThis.addEventListener;
+      const mock = mockGlobalThis();
+      globalThis.addEventListener = mock.addEventListener as any;
+
+      const manager = createHotkeyManager();
+      let called = false;
+
+      manager.register("m", () => { called = true; }, "alt");
+
+      const event = createKeyboardEvent("m", { altKey: true });
+      mock.dispatchEvent(event);
+
+      assertEquals(called, true);
       globalThis.addEventListener = originalAddEventListener;
     });
 
@@ -194,5 +231,25 @@ describe("hotkeyManager", () => {
 
       globalThis.addEventListener = originalAddEventListener;
     });
+
+    it("should unregister ctrl handlers correctly", () => {
+      const originalAddEventListener = globalThis.addEventListener;
+      const mock = mockGlobalThis();
+      globalThis.addEventListener = mock.addEventListener as any;
+
+      const manager = createHotkeyManager();
+      let called = false;
+
+      manager.register("k", () => { called = true; }, "ctrl");
+      manager.unregister("k", "ctrl");
+
+      mock.dispatchEvent(createKeyboardEvent("k", { ctrlKey: true }));
+      assertEquals(called, false);
+
+      globalThis.addEventListener = originalAddEventListener;
+    });
   });
+
+  // Note: Input focus detection tests are skipped because DOM classes (HTMLInputElement, etc.)
+  // are not available in Deno's test environment. This functionality is tested manually in the browser.
 });
