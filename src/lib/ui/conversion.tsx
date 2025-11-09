@@ -152,20 +152,19 @@ export default function Conversion({
           {to.toString()}
         </div>
         {hotkey && (
-          <div class="hidden rounded-sm border border-app-gray-200 p-0.5 text-xs text-app-gray-200 cursor-default hover:border-app-green-400 hover:text-app-green-400 lg:my-auto lg:mr-4 lg:block">
-            <span
-              title={`Press ${hotkey.toUpperCase()} to copy the converted value to the clipboard`}
-            >
-              {hotkey.toUpperCase()}
-            </span>
-          </div>
+          <kbd
+            class="hidden lg:my-auto lg:mr-4 lg:inline-flex items-center justify-center w-6 h-6 rounded-sm border border-app-gray-200 bg-white shadow-sm font-mono text-xs text-app-gray-200 cursor-default hover:border-app-green-400 hover:text-app-green-400 scale-[0.85] origin-right"
+            title={`Press ${hotkey} to copy the converted value to the clipboard`}
+          >
+            {hotkey}
+          </kbd>
         )}
       </div>
       {detail &&
         (
           <div
             ref={detailsPanelRef}
-            class="hidden border-b border-app-green-600 p-3 lg:block lg:border-x lg:text-sm"
+            class="hidden border-b border-app-green-600 p-3 lg:block lg:border-x lg:text-xs"
           >
             {detail}
           </div>

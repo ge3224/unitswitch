@@ -118,21 +118,29 @@ export default function UserInput({
             ))}
           </select>
         </fieldset>
-        <fieldset class="col-span-5">
+        <fieldset class="col-span-5 flex items-center gap-2">
           <input
             class="w-1/3 cursor-pointer rounded-sm bg-app-black p-1 font-bold text-white shadow transition delay-150 duration-300 ease-in-out hover:bg-app-green-500 hover:bg-none focus:outline-none focus:ring focus:ring-app-green-200 active:bg-cyan-800 active:transition-none"
             type="submit"
             value="Convert"
           />
+          <div class="flex items-center gap-1 scale-[0.85] origin-left">
+            <kbd
+              class="inline-flex items-center justify-center px-1.5 h-6 rounded-sm border border-app-gray-200 bg-white shadow-sm font-mono text-xs text-app-gray-200 cursor-default hover:border-app-green-400 hover:text-app-green-400"
+              title="Press Ctrl+K for quick keyboard conversions"
+            >
+              Ctrl
+            </kbd>
+            <kbd
+              class="inline-flex items-center justify-center w-6 h-6 rounded-sm border border-app-gray-200 bg-white shadow-sm font-mono text-xs text-app-gray-200 cursor-default hover:border-app-green-400 hover:text-app-green-400"
+              title="Press Ctrl+K for quick keyboard conversions"
+            >
+              K
+            </kbd>
+          </div>
         </fieldset>
         {warningDiv}
       </form>
-      <div
-        class="absolute bottom-4 right-4 hidden h-fit w-fit cursor-default items-center rounded-sm border border-app-gray-200 py-0.5 pl-0.5 pr-1 text-xs text-app-gray-200 hover:border-app-green-400 hover:text-app-green-400 lg:flex"
-        title="Press Ctrl-K for quick keyboard conversions."
-      >
-        Ctrl-K
-      </div>
     </div>
   );
 }
