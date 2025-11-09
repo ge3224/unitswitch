@@ -12,6 +12,7 @@ import {
   DetailsSixteenNine,
 } from "@/lib/ui/details.tsx";
 import { Unit, Units } from "@/lib/units.ts";
+import type { Converter } from "@/lib/converters/index.ts";
 import {
   convertToCentimeters,
   convertToCh,
@@ -31,118 +32,94 @@ import {
   convertToVmin,
   convertToVw,
 } from "@/lib/converters/index.ts";
-import { newSimpleState } from "@pkg/simple-state/src/index.ts";
+import { newSimpleState, SimpleState } from "@pkg/simple-state/src/index.ts";
+
+/**
+ * Configuration for each unit conversion
+ */
+type ConversionConfig = {
+  unit: Unit;
+  converter: Converter;
+  hotkey: string;
+  detail?: (input: SimpleState<number>) => JSX.Element;
+};
+
+const CONVERSIONS: ConversionConfig[] = [
+  {
+    unit: Units.Pixels,
+    converter: convertToPixels,
+    hotkey: "p",
+    detail: () => <DetailsPixels />,
+  },
+  {
+    unit: Units.Rems,
+    converter: convertToRems,
+    hotkey: "r",
+    detail: () => <DetailsRemsEms />,
+  },
+  { unit: Units.Millimeters, converter: convertToMillimeters, hotkey: "m" },
+  { unit: Units.Centimeters, converter: convertToCentimeters, hotkey: "c" },
+  { unit: Units.Points, converter: convertToPoints, hotkey: "e" },
+  { unit: Units.Picas, converter: convertToPicas, hotkey: "a" },
+  { unit: Units.Inches, converter: convertToInches, hotkey: "i" },
+  { unit: Units.Feet, converter: convertToFeet, hotkey: "f" },
+  { unit: Units.Vw, converter: convertToVw, hotkey: "w" },
+  { unit: Units.Vh, converter: convertToVh, hotkey: "h" },
+  { unit: Units.Vmin, converter: convertToVmin, hotkey: "j" },
+  { unit: Units.Vmax, converter: convertToVmax, hotkey: "x" },
+  { unit: Units.Ch, converter: convertToCh, hotkey: "q" },
+  { unit: Units.Ex, converter: convertToEx, hotkey: "z" },
+  {
+    unit: Units.Golden,
+    converter: convertToGoldenRatio,
+    hotkey: "g",
+    detail: (input) => <DetailsGoldenRatio input={input} />,
+  },
+  {
+    unit: Units.Root2,
+    converter: convertToRootTwo,
+    hotkey: "t",
+    detail: (input) => <DetailsRootTwo input={input} />,
+  },
+  {
+    unit: Units.SixteenNine,
+    converter: convertToSixteenNine,
+    hotkey: "s",
+    detail: (input) => <DetailsSixteenNine input={input} />,
+  },
+];
 
 export function App(): Node {
   const inputState = newSimpleState<number>(16);
   const unitState = newSimpleState<Unit>(Units.Pixels);
 
-  const centimetersState = newSimpleState<number>(
-    convertToCentimeters(unitState.get(), inputState.get()),
-  );
+  // Create a map of unit -> state for easy lookup
+  const conversionStates = new Map<Unit, SimpleState<number>>();
 
-  const feetState = newSimpleState<number>(
-    convertToFeet(unitState.get(), inputState.get()),
-  );
+  // Initialize all conversion states
+  for (const config of CONVERSIONS) {
+    const state = newSimpleState<number>(
+      config.converter(unitState.get(), inputState.get()),
+    );
+    conversionStates.set(config.unit, state);
+  }
 
-  const goldenState = newSimpleState<number>(
-    convertToGoldenRatio(unitState.get(), inputState.get()),
-  );
-
-  const inchesState = newSimpleState<number>(
-    convertToInches(unitState.get(), inputState.get()),
-  );
-
-  const millimetersState = newSimpleState<number>(
-    convertToMillimeters(unitState.get(), inputState.get()),
-  );
-
-  const picasState = newSimpleState<number>(
-    convertToPicas(unitState.get(), inputState.get()),
-  );
-
-  const pixelsState = newSimpleState<number>(
-    convertToPixels(unitState.get(), inputState.get()),
-  );
-
-  const pointsState = newSimpleState<number>(
-    convertToPoints(unitState.get(), inputState.get()),
-  );
-
-  const remsState = newSimpleState<number>(
-    convertToRems(unitState.get(), inputState.get()),
-  );
-
-  const root2State = newSimpleState<number>(
-    convertToRootTwo(unitState.get(), inputState.get()),
-  );
-
-  const sixteenNineState = newSimpleState<number>(
-    convertToSixteenNine(unitState.get(), inputState.get()),
-  );
-
-  const vwState = newSimpleState<number>(
-    convertToVw(unitState.get(), inputState.get()),
-  );
-
-  const vhState = newSimpleState<number>(
-    convertToVh(unitState.get(), inputState.get()),
-  );
-
-  const vminState = newSimpleState<number>(
-    convertToVmin(unitState.get(), inputState.get()),
-  );
-
-  const vmaxState = newSimpleState<number>(
-    convertToVmax(unitState.get(), inputState.get()),
-  );
-
-  const chState = newSimpleState<number>(
-    convertToCh(unitState.get(), inputState.get()),
-  );
-
-  const exState = newSimpleState<number>(
-    convertToEx(unitState.get(), inputState.get()),
-  );
-
+  // Update all conversions when input changes
   inputState.subscribe(function inputCallback(newInput: number): void {
-    centimetersState.set(convertToCentimeters(unitState.get(), newInput));
-    chState.set(convertToCh(unitState.get(), newInput));
-    exState.set(convertToEx(unitState.get(), newInput));
-    feetState.set(convertToFeet(unitState.get(), newInput));
-    goldenState.set(convertToGoldenRatio(unitState.get(), newInput));
-    inchesState.set(convertToInches(unitState.get(), newInput));
-    millimetersState.set(convertToMillimeters(unitState.get(), newInput));
-    picasState.set(convertToPicas(unitState.get(), newInput));
-    pixelsState.set(convertToPixels(unitState.get(), newInput));
-    pointsState.set(convertToPoints(unitState.get(), newInput));
-    remsState.set(convertToRems(unitState.get(), newInput));
-    root2State.set(convertToRootTwo(unitState.get(), newInput));
-    sixteenNineState.set(convertToSixteenNine(unitState.get(), newInput));
-    vhState.set(convertToVh(unitState.get(), newInput));
-    vmaxState.set(convertToVmax(unitState.get(), newInput));
-    vminState.set(convertToVmin(unitState.get(), newInput));
-    vwState.set(convertToVw(unitState.get(), newInput));
+    for (const config of CONVERSIONS) {
+      conversionStates.get(config.unit)?.set(
+        config.converter(unitState.get(), newInput),
+      );
+    }
   });
 
+  // Update all conversions when unit changes
   unitState.subscribe(function unitCallback(newUnit: Unit): void {
-    centimetersState.set(convertToCentimeters(newUnit, inputState.get()));
-    chState.set(convertToCh(newUnit, inputState.get()));
-    exState.set(convertToEx(newUnit, inputState.get()));
-    feetState.set(convertToFeet(newUnit, inputState.get()));
-    goldenState.set(convertToGoldenRatio(newUnit, inputState.get()));
-    inchesState.set(convertToInches(newUnit, inputState.get()));
-    millimetersState.set(convertToMillimeters(newUnit, inputState.get()));
-    picasState.set(convertToPicas(newUnit, inputState.get()));
-    pixelsState.set(convertToPixels(newUnit, inputState.get()));
-    pointsState.set(convertToPoints(newUnit, inputState.get()));
-    remsState.set(convertToRems(newUnit, inputState.get()));
-    root2State.set(convertToRootTwo(newUnit, inputState.get()));
-    sixteenNineState.set(convertToSixteenNine(newUnit, inputState.get()));
-    vhState.set(convertToVh(newUnit, inputState.get()));
-    vmaxState.set(convertToVmax(newUnit, inputState.get()));
-    vminState.set(convertToVmin(newUnit, inputState.get()));
-    vwState.set(convertToVw(newUnit, inputState.get()));
+    for (const config of CONVERSIONS) {
+      conversionStates.get(config.unit)?.set(
+        config.converter(newUnit, inputState.get()),
+      );
+    }
   });
 
   function handleSubmit(value: number, unit: Unit): void {
@@ -150,7 +127,7 @@ export function App(): Node {
     unitState.set(unit);
   }
 
-  return (
+  const container = (
     <div class="m-2 sm:flex sm:min-h-screen items-center justify-center">
       <div class="my-auto max-w-7xl lg:mx-auto rounded-lg border border-app-green-600 bg-app-green-50 pb-4 lg:grid lg:grid-cols-3 lg:gap-5 lg:border-none lg:p-12">
         <div class="relative flex flex-col border-b border-app-green-600 px-11 pt-12 lg:col-span-2 lg:row-span-2 lg:flex-row lg:justify-center lg:border lg:py-8">
@@ -161,101 +138,33 @@ export function App(): Node {
             callback={handleSubmit}
           />
         </div>
-        <Conversion
-          conversion={pixelsState}
-          to={Units.Pixels}
-          hotkey="p"
-          detail={<DetailsPixels />}
-        />
-        <Conversion
-          conversion={remsState}
-          to={Units.Rems}
-          hotkey="r"
-          detail={<DetailsRemsEms />}
-        />
-        <Conversion
-          conversion={millimetersState}
-          to={Units.Millimeters}
-          hotkey="m"
-        />
-        <Conversion
-          conversion={centimetersState}
-          to={Units.Centimeters}
-          hotkey="c"
-        />
-        <Conversion
-          conversion={pointsState}
-          to={Units.Points}
-          hotkey="e"
-        />
-        <Conversion
-          conversion={picasState}
-          to={Units.Picas}
-          hotkey="a"
-        />
-        <Conversion
-          conversion={inchesState}
-          to={Units.Inches}
-          hotkey="i"
-        />
-        <Conversion
-          conversion={feetState}
-          to={Units.Feet}
-          hotkey="f"
-        />
-        <Conversion
-          conversion={vwState}
-          to={Units.Vw}
-          hotkey="w"
-        />
-        <Conversion
-          conversion={vhState}
-          to={Units.Vh}
-          hotkey="h"
-        />
-        <Conversion
-          conversion={vminState}
-          to={Units.Vmin}
-          hotkey="j"
-        />
-        <Conversion
-          conversion={vmaxState}
-          to={Units.Vmax}
-          hotkey="x"
-        />
-        <Conversion
-          conversion={chState}
-          to={Units.Ch}
-          hotkey="q"
-        />
-        <Conversion
-          conversion={exState}
-          to={Units.Ex}
-          hotkey="z"
-        />
-        <Conversion
-          conversion={goldenState}
-          to={Units.Golden}
-          hotkey="g"
-          detail={<DetailsGoldenRatio input={inputState} />}
-        />
-        <Conversion
-          conversion={root2State}
-          to={Units.Root2}
-          hotkey="t"
-          detail={<DetailsRootTwo input={inputState} />}
-        />
-        <Conversion
-          conversion={sixteenNineState}
-          to={Units.SixteenNine}
-          hotkey="s"
-          detail={<DetailsSixteenNine input={inputState} />}
-        />
-        <Modal
-          callback={handleSubmit}
-          hotkey="k"
-        />
       </div>
     </div>
+  ) as HTMLElement;
+
+  const innerDiv = container.querySelector(".lg\\:grid") as HTMLElement;
+
+  // Append all conversion components
+  for (const config of CONVERSIONS) {
+    const conversionElement = (
+      <Conversion
+        conversion={conversionStates.get(config.unit)!}
+        to={config.unit}
+        hotkey={config.hotkey}
+        detail={config.detail?.(inputState)}
+      />
+    ) as Node;
+    innerDiv.appendChild(conversionElement);
+  }
+
+  // Append modal at the end
+  const modalElement = (
+    <Modal
+      callback={handleSubmit}
+      hotkey="k"
+    />
   ) as Node;
+  innerDiv.appendChild(modalElement);
+
+  return container;
 }
