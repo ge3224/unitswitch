@@ -10,9 +10,8 @@ describe('convertToPixels', () => {
       assertEquals(convertToPixels(Units.Inches, 1), PPI);
     });
 
-    it('should respect FONT_SIZE constant (16 pixels per rem/em)', () => {
+    it('should respect FONT_SIZE constant (16 pixels per rem)', () => {
       assertEquals(convertToPixels(Units.Rems, 1), FONT_SIZE);
-      assertEquals(convertToPixels(Units.Ems, 1), FONT_SIZE);
     });
 
     it('should convert feet using inch relationship (1 foot = 12 inches)', () => {
@@ -60,12 +59,11 @@ describe('convertToPixels', () => {
     it('should handle zero correctly', () => {
       assertGreaterOrEqual(convertToPixels(Units.Pixels, 0), 0);
       assertGreaterOrEqual(convertToPixels(Units.Rems, 0), 0);
-      assertEquals(convertToPixels(Units.Bootstrap, 0), 0);
     });
 
     it('should return positive values for all valid positive inputs', () => {
       const units = [
-        Units.Pixels, Units.Rems, Units.Ems, Units.Inches,
+        Units.Pixels, Units.Rems, Units.Inches,
         Units.Centimeters, Units.Millimeters, Units.Points, Units.Picas
       ];
       units.forEach(unit => {

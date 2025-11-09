@@ -25,40 +25,6 @@ export function DetailsPixels() {
   );
 }
 
-export function DetailsTailwind(
-  { conversion }: { conversion: ViewInputState<number> },
-) {
-  const initial = conversion.get();
-
-  const exampleText = document.createTextNode(
-    initial >= 0 ? `p-${initial}` : `N/A`,
-  );
-
-  conversion.subscribe(function detailsTailwindCallback(newValue): void {
-    exampleText.textContent = newValue >= 0 ? `p-${newValue}` : `N/A`;
-  });
-
-  return (
-    <div class="text-app-black">
-      <strong>Example</strong>: {initial >= 0
-        ? (
-          <code class="font-mono">
-            <span class="text-app-gray-200">{`"class"=`}</span>
-            <strong class="text-app-green-500">"{exampleText}"</strong>
-          </code>
-        )
-        : exampleText}
-    </div>
-  );
-}
-
-export function DetailsBootstrap() {
-  return (
-    <div class="text-app-black">
-      Only six possible values: <strong>0-5</strong>
-    </div>
-  );
-}
 
 export function DetailsGoldenRatio(
   { input }: { input: ViewInputState<number> },

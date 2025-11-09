@@ -1,66 +1,10 @@
 import type { Converter } from "./types.ts";
 import { FONT_SIZE, PPI } from "@/lib/constants.ts";
 import { type Unit, Units } from "@/lib/units.ts";
-import { getIntersectingValue } from "@/lib/arrays.ts";
-import { tailwindSizes } from "@/lib/converters/tailwind.ts";
 
 function _pixelsToPoints(px: number): number {
   return px * (72 / PPI);
 }
-
-/**
- * Points equivalent values for Bootstrap CSS spacing and sizing classes.
- *
- * Each key in this array corresponds to a specific size in a Bootstrap CSS
- * class name. The values represent the points (pt) equivalent of that Bootstrap size.
- * For example, the 'p-1' Bootstrap class would correspond to 5.333333333333333 points.
- */
-const bootstrapToPoints = [0, 3, 6, 12, 18, 36];
-
-/**
- * Points equivalent values for Tailwind CSS spacing and sizing classes.
- *
- * Each key in this array corresponds to a specific size in a Tailwind CSS
- * class name. The values represent the centimetre equivalent of that Tailwind
- * size. For example, the 'p-4' Tailwind class would correspond to 12 points (pt).
- */
-const tailwindToPoints = [
-  0,
-  0.75,
-  1.5,
-  3,
-  4.5,
-  6,
-  7.5,
-  9,
-  10.5,
-  12,
-  15,
-  18,
-  21,
-  24,
-  27,
-  30,
-  33,
-  36,
-  42,
-  48,
-  60,
-  72,
-  84,
-  96,
-  108,
-  120,
-  132,
-  144,
-  156,
-  168,
-  180,
-  192,
-  216,
-  240,
-  288,
-];
 
 /**
  * Converts a value from the specified unit to points (pt).
@@ -76,14 +20,8 @@ export const convertToPoints: Converter = function convertToPoints(
 ): number {
   if (input < 0) return -1;
   switch (from) {
-    case Units.Bootstrap:
-      return input <= bootstrapToPoints.length - 1 && input % 1 === 0
-        ? bootstrapToPoints[input]
-        : -1;
     case Units.Centimeters:
       return input * 28.3464567;
-    case Units.Ems:
-      return _pixelsToPoints(input * FONT_SIZE);
     case Units.Feet:
       return input * 864;
     case Units.Inches:
@@ -98,8 +36,6 @@ export const convertToPoints: Converter = function convertToPoints(
       return input;
     case Units.Rems:
       return _pixelsToPoints(input * FONT_SIZE);
-    case Units.Tailwind:
-      return getIntersectingValue(tailwindSizes, tailwindToPoints, input);
     default:
       return -1;
   }

@@ -1,6 +1,6 @@
-import { convertToBootstrap } from "./bootstrap.ts";
 import { convertToCentimeters } from "./centimeters.ts";
-import { convertToEms } from "./ems.ts";
+import { convertToCh } from "./ch.ts";
+import { convertToEx } from "./ex.ts";
 import { convertToFeet } from "./feet.ts";
 import { convertToGoldenRatio } from "./golden.ts";
 import { convertToInches } from "./inches.ts";
@@ -11,14 +11,17 @@ import { convertToPoints } from "./points.ts";
 import { convertToRems } from "./rems.ts";
 import { convertToRootTwo } from "./root_two.ts";
 import { convertToSixteenNine } from "./sixteen_nine.ts";
-import { convertToTailwind } from "./tailwind.ts";
+import { convertToVh } from "./vh.ts";
+import { convertToVmax } from "./vmax.ts";
+import { convertToVmin } from "./vmin.ts";
+import { convertToVw } from "./vw.ts";
 
 export type { Converter } from "./types.ts";
 
 export {
-  convertToBootstrap,
   convertToCentimeters,
-  convertToEms,
+  convertToCh,
+  convertToEx,
   convertToFeet,
   convertToGoldenRatio,
   convertToInches,
@@ -29,5 +32,8 @@ export {
   convertToRems,
   convertToRootTwo,
   convertToSixteenNine,
-  convertToTailwind,
+  convertToVh,
+  convertToVmax,
+  convertToVmin,
+  convertToVw,
 };

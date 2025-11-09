@@ -10,10 +10,6 @@ describe('convertToRems', () => {
       assertEquals(convertToRems(Units.Pixels, FONT_SIZE), 1);
     });
 
-    it('should treat ems and rems as equivalent', () => {
-      assertEquals(convertToRems(Units.Ems, 2), 2);
-      assertEquals(convertToRems(Units.Rems, 2), 2);
-    });
 
     it('should convert inches using PPI and FONT_SIZE', () => {
       // 1 inch = 96px = 6 rems (96/16)
@@ -34,20 +30,6 @@ describe('convertToRems', () => {
     });
   });
 
-  describe('discrete units', () => {
-    it('should handle Bootstrap spacing scale', () => {
-      assertEquals(convertToRems(Units.Bootstrap, 0), 0);
-      assertEquals(convertToRems(Units.Bootstrap, 1), 0.25);
-      assertEquals(convertToRems(Units.Bootstrap, 2), 0.5);
-      assertEquals(convertToRems(Units.Bootstrap, 3), 1);
-      assertEquals(convertToRems(Units.Bootstrap, 4), 1.5);
-      assertEquals(convertToRems(Units.Bootstrap, 5), 3);
-    });
-
-    it('should return -1 for out-of-range Bootstrap values', () => {
-      assertEquals(convertToRems(Units.Bootstrap, 6), -1);
-    });
-  });
 
   describe('edge cases', () => {
     it('should return -1 for negative inputs', () => {

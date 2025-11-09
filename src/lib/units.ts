@@ -2,9 +2,9 @@
  * Enum representing various units.
  */
 export const Units = {
-  Bootstrap: "Bootstrap",
   Centimeters: "Centimeters",
-  Ems: "Ems",
+  Ch: "Character Width",
+  Ex: "X-Height",
   Feet: "Feet",
   Golden: "Golden Ratio",
   Inches: "Inches",
@@ -15,7 +15,10 @@ export const Units = {
   Rems: "Rems",
   Root2: "Root 2 Rectangle",
   SixteenNine: "16:9",
-  Tailwind: "Tailwind",
+  Vh: "Viewport Height",
+  Vmax: "Viewport Max",
+  Vmin: "Viewport Min",
+  Vw: "Viewport Width",
 } as const;
 
 export type Unit = typeof Units[keyof typeof Units];
@@ -24,9 +27,9 @@ export type Unit = typeof Units[keyof typeof Units];
  * List of all available unit abbreviations with their full names
  */
 export const UNIT_ABBREVIATIONS = [
-  { abbr: "bs", name: Units.Bootstrap },
+  { abbr: "ch", name: Units.Ch },
   { abbr: "cm", name: Units.Centimeters },
-  { abbr: "em", name: Units.Ems },
+  { abbr: "ex", name: Units.Ex },
   { abbr: "ft", name: Units.Feet },
   { abbr: "in", name: Units.Inches },
   { abbr: "mm", name: Units.Millimeters },
@@ -34,7 +37,10 @@ export const UNIT_ABBREVIATIONS = [
   { abbr: "px", name: Units.Pixels },
   { abbr: "pt", name: Units.Points },
   { abbr: "rem", name: Units.Rems },
-  { abbr: "tw", name: Units.Tailwind },
+  { abbr: "vh", name: Units.Vh },
+  { abbr: "vmax", name: Units.Vmax },
+  { abbr: "vmin", name: Units.Vmin },
+  { abbr: "vw", name: Units.Vw },
 ] as const;
 
 /**
@@ -45,12 +51,12 @@ export const UNIT_ABBREVIATIONS = [
  */
 export function abbreviations(input: string): Unit | null {
   switch (input) {
-    case "bs":
-      return Units.Bootstrap;
+    case "ch":
+      return Units.Ch;
     case "cm":
       return Units.Centimeters;
-    case "em":
-      return Units.Ems;
+    case "ex":
+      return Units.Ex;
     case "ft":
       return Units.Feet;
     case "in":
@@ -65,8 +71,14 @@ export function abbreviations(input: string): Unit | null {
       return Units.Points;
     case "rem":
       return Units.Rems;
-    case "tw":
-      return Units.Tailwind;
+    case "vh":
+      return Units.Vh;
+    case "vmax":
+      return Units.Vmax;
+    case "vmin":
+      return Units.Vmin;
+    case "vw":
+      return Units.Vw;
     default:
       return null;
   }

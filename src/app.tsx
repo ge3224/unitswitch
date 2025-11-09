@@ -5,19 +5,17 @@ import Logo from "@/lib/ui/logo.tsx";
 import Modal from "@/lib/ui/modal.tsx";
 import UserInput from "@/lib/ui/user_input.tsx";
 import {
-  DetailsBootstrap,
   DetailsGoldenRatio,
   DetailsPixels,
   DetailsRemsEms,
   DetailsRootTwo,
   DetailsSixteenNine,
-  DetailsTailwind,
 } from "@/lib/ui/details.tsx";
 import { Unit, Units } from "@/lib/units.ts";
 import {
-  convertToBootstrap,
   convertToCentimeters,
-  convertToEms,
+  convertToCh,
+  convertToEx,
   convertToFeet,
   convertToGoldenRatio,
   convertToInches,
@@ -28,7 +26,10 @@ import {
   convertToRems,
   convertToRootTwo,
   convertToSixteenNine,
-  convertToTailwind,
+  convertToVh,
+  convertToVmax,
+  convertToVmin,
+  convertToVw,
 } from "@/lib/converters/index.ts";
 import { newSimpleState } from "@pkg/simple-state/src/index.ts";
 
@@ -36,16 +37,8 @@ export function App(): Node {
   const inputState = newSimpleState<number>(16);
   const unitState = newSimpleState<Unit>(Units.Pixels);
 
-  const bootstrapState = newSimpleState<number>(
-    convertToBootstrap(unitState.get(), inputState.get()),
-  );
-
   const centimetersState = newSimpleState<number>(
     convertToCentimeters(unitState.get(), inputState.get()),
-  );
-
-  const emsState = newSimpleState<number>(
-    convertToEms(unitState.get(), inputState.get()),
   );
 
   const feetState = newSimpleState<number>(
@@ -88,14 +81,34 @@ export function App(): Node {
     convertToSixteenNine(unitState.get(), inputState.get()),
   );
 
-  const tailwindState = newSimpleState<number>(
-    convertToTailwind(unitState.get(), inputState.get()),
+  const vwState = newSimpleState<number>(
+    convertToVw(unitState.get(), inputState.get()),
+  );
+
+  const vhState = newSimpleState<number>(
+    convertToVh(unitState.get(), inputState.get()),
+  );
+
+  const vminState = newSimpleState<number>(
+    convertToVmin(unitState.get(), inputState.get()),
+  );
+
+  const vmaxState = newSimpleState<number>(
+    convertToVmax(unitState.get(), inputState.get()),
+  );
+
+  const chState = newSimpleState<number>(
+    convertToCh(unitState.get(), inputState.get()),
+  );
+
+  const exState = newSimpleState<number>(
+    convertToEx(unitState.get(), inputState.get()),
   );
 
   inputState.subscribe(function inputCallback(newInput: number): void {
-    bootstrapState.set(convertToBootstrap(unitState.get(), newInput));
     centimetersState.set(convertToCentimeters(unitState.get(), newInput));
-    emsState.set(convertToEms(unitState.get(), newInput));
+    chState.set(convertToCh(unitState.get(), newInput));
+    exState.set(convertToEx(unitState.get(), newInput));
     feetState.set(convertToFeet(unitState.get(), newInput));
     goldenState.set(convertToGoldenRatio(unitState.get(), newInput));
     inchesState.set(convertToInches(unitState.get(), newInput));
@@ -106,13 +119,16 @@ export function App(): Node {
     remsState.set(convertToRems(unitState.get(), newInput));
     root2State.set(convertToRootTwo(unitState.get(), newInput));
     sixteenNineState.set(convertToSixteenNine(unitState.get(), newInput));
-    tailwindState.set(convertToTailwind(unitState.get(), newInput));
+    vhState.set(convertToVh(unitState.get(), newInput));
+    vmaxState.set(convertToVmax(unitState.get(), newInput));
+    vminState.set(convertToVmin(unitState.get(), newInput));
+    vwState.set(convertToVw(unitState.get(), newInput));
   });
 
   unitState.subscribe(function unitCallback(newUnit: Unit): void {
-    bootstrapState.set(convertToBootstrap(newUnit, inputState.get()));
     centimetersState.set(convertToCentimeters(newUnit, inputState.get()));
-    emsState.set(convertToEms(newUnit, inputState.get()));
+    chState.set(convertToCh(newUnit, inputState.get()));
+    exState.set(convertToEx(newUnit, inputState.get()));
     feetState.set(convertToFeet(newUnit, inputState.get()));
     goldenState.set(convertToGoldenRatio(newUnit, inputState.get()));
     inchesState.set(convertToInches(newUnit, inputState.get()));
@@ -123,7 +139,10 @@ export function App(): Node {
     remsState.set(convertToRems(newUnit, inputState.get()));
     root2State.set(convertToRootTwo(newUnit, inputState.get()));
     sixteenNineState.set(convertToSixteenNine(newUnit, inputState.get()));
-    tailwindState.set(convertToTailwind(newUnit, inputState.get()));
+    vhState.set(convertToVh(newUnit, inputState.get()));
+    vmaxState.set(convertToVmax(newUnit, inputState.get()));
+    vminState.set(convertToVmin(newUnit, inputState.get()));
+    vwState.set(convertToVw(newUnit, inputState.get()));
   });
 
   function handleSubmit(value: number, unit: Unit): void {
@@ -153,24 +172,6 @@ export function App(): Node {
           to={Units.Rems}
           hotkey="2"
           detail={<DetailsRemsEms />}
-        />
-        <Conversion
-          conversion={emsState}
-          to={Units.Ems}
-          hotkey="3"
-          detail={<DetailsRemsEms />}
-        />
-        <Conversion
-          conversion={tailwindState}
-          to={Units.Tailwind}
-          hotkey="4"
-          detail={<DetailsTailwind conversion={tailwindState} />}
-        />
-        <Conversion
-          conversion={bootstrapState}
-          to={Units.Bootstrap}
-          hotkey="5"
-          detail={<DetailsBootstrap />}
         />
         <Conversion
           conversion={millimetersState}
@@ -219,6 +220,36 @@ export function App(): Node {
           to={Units.SixteenNine}
           hotkey="#"
           detail={<DetailsSixteenNine input={inputState} />}
+        />
+        <Conversion
+          conversion={vwState}
+          to={Units.Vw}
+          hotkey="3"
+        />
+        <Conversion
+          conversion={vhState}
+          to={Units.Vh}
+          hotkey="4"
+        />
+        <Conversion
+          conversion={vminState}
+          to={Units.Vmin}
+          hotkey="5"
+        />
+        <Conversion
+          conversion={vmaxState}
+          to={Units.Vmax}
+          hotkey="^"
+        />
+        <Conversion
+          conversion={chState}
+          to={Units.Ch}
+          hotkey="&"
+        />
+        <Conversion
+          conversion={exState}
+          to={Units.Ex}
+          hotkey="*"
         />
         <Modal
           callback={handleSubmit}
