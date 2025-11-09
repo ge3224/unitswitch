@@ -1,5 +1,10 @@
-import type { Converter } from "./index.ts";
-import { Ok, Err, ConversionErrorKind, type Result } from "./result.ts";
+import type { Converter } from "@/lib/converters/index.ts";
+import {
+  ConversionErrorKind,
+  Err,
+  Ok,
+  type Result,
+} from "@/lib/converters/result.ts";
 import {
   CH_TO_EM_RATIO,
   EX_TO_EM_RATIO,
@@ -25,7 +30,7 @@ export const convertToCh: Converter = function convertToCh(
     return Err(
       ConversionErrorKind.NegativeInput,
       "Input value cannot be negative",
-      { input, unit: from }
+      { input, unit: from },
     );
   }
 
@@ -54,18 +59,22 @@ export const convertToCh: Converter = function convertToCh(
     case Units.Vh:
       return Ok(((input / 100) * VIEWPORT_HEIGHT) / chInPixels);
     case Units.Vmax:
-      return Ok(((input / 100) * Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
-        chInPixels);
+      return Ok(
+        ((input / 100) * Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
+          chInPixels,
+      );
     case Units.Vmin:
-      return Ok(((input / 100) * Math.min(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
-        chInPixels);
+      return Ok(
+        ((input / 100) * Math.min(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
+          chInPixels,
+      );
     case Units.Vw:
       return Ok(((input / 100) * VIEWPORT_WIDTH) / chInPixels);
     default:
       return Err(
         ConversionErrorKind.UnsupportedUnit,
         `Unsupported unit conversion to ch: ${from}`,
-        { unit: from }
+        { unit: from },
       );
   }
 };

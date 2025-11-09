@@ -1,5 +1,10 @@
-import type { Converter } from "./index.ts";
-import { Ok, Err, ConversionErrorKind, type Result } from "./result.ts";
+import type { Converter } from "@/lib/converters/index.ts";
+import {
+  ConversionErrorKind,
+  Err,
+  Ok,
+  type Result,
+} from "@/lib/converters/result.ts";
 import {
   CH_TO_EM_RATIO,
   EX_TO_EM_RATIO,
@@ -25,7 +30,7 @@ export const convertToVh: Converter = function convertToVh(
     return Err(
       ConversionErrorKind.NegativeInput,
       "Input value cannot be negative",
-      { input, unit: from }
+      { input, unit: from },
     );
   }
 
@@ -53,18 +58,22 @@ export const convertToVh: Converter = function convertToVh(
     case Units.Vh:
       return Ok(input);
     case Units.Vmax:
-      return Ok((input * Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
-        VIEWPORT_HEIGHT);
+      return Ok(
+        (input * Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
+          VIEWPORT_HEIGHT,
+      );
     case Units.Vmin:
-      return Ok((input * Math.min(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
-        VIEWPORT_HEIGHT);
+      return Ok(
+        (input * Math.min(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
+          VIEWPORT_HEIGHT,
+      );
     case Units.Vw:
       return Ok((input * VIEWPORT_WIDTH) / VIEWPORT_HEIGHT);
     default:
       return Err(
         ConversionErrorKind.UnsupportedUnit,
         `Unsupported unit conversion to vh: ${from}`,
-        { unit: from }
+        { unit: from },
       );
   }
 };

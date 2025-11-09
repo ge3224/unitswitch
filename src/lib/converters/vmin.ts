@@ -1,5 +1,10 @@
-import type { Converter } from "./index.ts";
-import { Ok, Err, ConversionErrorKind, type Result } from "./result.ts";
+import type { Converter } from "@/lib/converters/index.ts";
+import {
+  ConversionErrorKind,
+  Err,
+  Ok,
+  type Result,
+} from "@/lib/converters/result.ts";
 import {
   CH_TO_EM_RATIO,
   EX_TO_EM_RATIO,
@@ -27,7 +32,7 @@ export const convertToVmin: Converter = function convertToVmin(
     return Err(
       ConversionErrorKind.NegativeInput,
       "Input value cannot be negative",
-      { input, unit: from }
+      { input, unit: from },
     );
   }
 
@@ -55,7 +60,9 @@ export const convertToVmin: Converter = function convertToVmin(
     case Units.Vh:
       return Ok((input * VIEWPORT_HEIGHT) / VIEWPORT_MIN);
     case Units.Vmax:
-      return Ok((input * Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) / VIEWPORT_MIN);
+      return Ok(
+        (input * Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) / VIEWPORT_MIN,
+      );
     case Units.Vmin:
       return Ok(input);
     case Units.Vw:
@@ -64,7 +71,7 @@ export const convertToVmin: Converter = function convertToVmin(
       return Err(
         ConversionErrorKind.UnsupportedUnit,
         `Unsupported unit conversion to vmin: ${from}`,
-        { unit: from }
+        { unit: from },
       );
   }
 };

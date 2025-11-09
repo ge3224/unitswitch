@@ -1,5 +1,10 @@
-import type { Converter } from "./index.ts";
-import { Ok, Err, ConversionErrorKind, type Result } from "./result.ts";
+import type { Converter } from "@/lib/converters/index.ts";
+import {
+  ConversionErrorKind,
+  Err,
+  Ok,
+  type Result,
+} from "@/lib/converters/result.ts";
 import { FONT_SIZE, PPI } from "@/lib/constants.ts";
 import { type Unit, Units } from "@/lib/units.ts";
 
@@ -26,7 +31,7 @@ export const convertToFeet: Converter = function convertToFeet(
     return Err(
       ConversionErrorKind.NegativeInput,
       "Input value cannot be negative",
-      { input, unit: from }
+      { input, unit: from },
     );
   }
 
@@ -51,7 +56,7 @@ export const convertToFeet: Converter = function convertToFeet(
       return Err(
         ConversionErrorKind.UnsupportedUnit,
         `Unsupported unit conversion to feet: ${from}`,
-        { unit: from }
+        { unit: from },
       );
   }
 };

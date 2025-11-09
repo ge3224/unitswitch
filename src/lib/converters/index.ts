@@ -1,23 +1,23 @@
 import type { Unit } from "@/lib/units.ts";
-import type { Result } from "./result.ts";
+import type { Result } from "@/lib/converters/result.ts";
 
-import { convertToCentimeters } from "./centimeters.ts";
-import { convertToCh } from "./ch.ts";
-import { convertToEx } from "./ex.ts";
-import { convertToFeet } from "./feet.ts";
-import { convertToGoldenRatio } from "./golden.ts";
-import { convertToInches } from "./inches.ts";
-import { convertToMillimeters } from "./millimeters.ts";
-import { convertToPicas } from "./picas.ts";
-import { convertToPixels } from "./pixels.ts";
-import { convertToPoints } from "./points.ts";
-import { convertToRems } from "./rems.ts";
-import { convertToRootTwo } from "./root_two.ts";
-import { convertToSixteenNine } from "./sixteen_nine.ts";
-import { convertToVh } from "./vh.ts";
-import { convertToVmax } from "./vmax.ts";
-import { convertToVmin } from "./vmin.ts";
-import { convertToVw } from "./vw.ts";
+import { convertToCentimeters } from "@/lib/converters/centimeters.ts";
+import { convertToCh } from "@/lib/converters/ch.ts";
+import { convertToEx } from "@/lib/converters/ex.ts";
+import { convertToFeet } from "@/lib/converters/feet.ts";
+import { convertToGoldenRatio } from "@/lib/converters/golden.ts";
+import { convertToInches } from "@/lib/converters/inches.ts";
+import { convertToMillimeters } from "@/lib/converters/millimeters.ts";
+import { convertToPicas } from "@/lib/converters/picas.ts";
+import { convertToPixels } from "@/lib/converters/pixels.ts";
+import { convertToPoints } from "@/lib/converters/points.ts";
+import { convertToRems } from "@/lib/converters/rems.ts";
+import { convertToRootTwo } from "@/lib/converters/root_two.ts";
+import { convertToSixteenNine } from "@/lib/converters/sixteen_nine.ts";
+import { convertToVh } from "@/lib/converters/vh.ts";
+import { convertToVmax } from "@/lib/converters/vmax.ts";
+import { convertToVmin } from "@/lib/converters/vmin.ts";
+import { convertToVw } from "@/lib/converters/vw.ts";
 
 /**
  * Type signature for unit converter functions

@@ -84,12 +84,6 @@ export function abbreviations(input: string): Unit | null {
   }
 }
 
-/**
- * Checks if a value is a valid Unit.
- *
- * @param value - The value to check.
- * @returns True if the value is a valid Unit, false otherwise.
- */
 export function isUnit(value: string | Unit): boolean {
   if (typeof value === "string") {
     // If value is a string, check if it's a valid abbreviation.

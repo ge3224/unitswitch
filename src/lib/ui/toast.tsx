@@ -27,13 +27,15 @@ export function showToast(options: ToastOptions): void {
 
   const typeStyles = {
     error: "bg-red-500 border-red-700 text-white",
-    success: "bg-green-500 border-green-700 text-white",
+    success: "bg-app-black border-app-black text-white",
     info: "bg-blue-500 border-blue-700 text-white",
   };
 
   const toast = (
     <div
-      class={`${typeStyles[type]} px-4 py-3 rounded-lg shadow-lg border-2 mb-2 transition-opacity duration-300`}
+      class={`${
+        typeStyles[type]
+      } px-4 py-3 rounded-lg shadow-lg border-2 mb-2 transition-opacity duration-300`}
       role="alert"
       style="opacity: 1"
     >
