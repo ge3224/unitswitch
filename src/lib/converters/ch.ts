@@ -1,4 +1,5 @@
-import type { Converter } from "./types.ts";
+import type { Converter } from "./index.ts";
+import { Ok, Err, ConversionErrorKind, type Result } from "./result.ts";
 import {
   CH_TO_EM_RATIO,
   EX_TO_EM_RATIO,
@@ -14,47 +15,57 @@ import { type Unit, Units } from "@/lib/units.ts";
  *
  * @param {Unit} from    - The unit to convert from.
  * @param {number} input - The value to be converted.
- * @returns {number}     - The converted value in ch, or -1 if the conversion
- *                         is not supported or input is invalid.
+ * @returns {Result<number>} - Ok with the converted value in ch, or Err if conversion fails.
  */
 export const convertToCh: Converter = function convertToCh(
   from: Unit,
   input: number,
-): number {
-  if (input < 0) return -1;
+): Result<number> {
+  if (input < 0) {
+    return Err(
+      ConversionErrorKind.NegativeInput,
+      "Input value cannot be negative",
+      { input, unit: from }
+    );
+  }
+
   const chInPixels = CH_TO_EM_RATIO * FONT_SIZE;
   switch (from) {
     case Units.Centimeters:
-      return (input * 0.3937008 * PPI) / chInPixels;
+      return Ok((input * 0.3937008 * PPI) / chInPixels);
     case Units.Ch:
-      return input;
+      return Ok(input);
     case Units.Ex:
-      return (input * EX_TO_EM_RATIO) / CH_TO_EM_RATIO;
+      return Ok((input * EX_TO_EM_RATIO) / CH_TO_EM_RATIO);
     case Units.Feet:
-      return (input * 12 * PPI) / chInPixels;
+      return Ok((input * 12 * PPI) / chInPixels);
     case Units.Inches:
-      return (input * PPI) / chInPixels;
+      return Ok((input * PPI) / chInPixels);
     case Units.Millimeters:
-      return (input * (PPI / 25.4)) / chInPixels;
+      return Ok((input * (PPI / 25.4)) / chInPixels);
     case Units.Picas:
-      return (input * (PPI / 6)) / chInPixels;
+      return Ok((input * (PPI / 6)) / chInPixels);
     case Units.Pixels:
-      return input / chInPixels;
+      return Ok(input / chInPixels);
     case Units.Points:
-      return (input * (PPI / 72)) / chInPixels;
+      return Ok((input * (PPI / 72)) / chInPixels);
     case Units.Rems:
-      return input / CH_TO_EM_RATIO;
+      return Ok(input / CH_TO_EM_RATIO);
     case Units.Vh:
-      return ((input / 100) * VIEWPORT_HEIGHT) / chInPixels;
+      return Ok(((input / 100) * VIEWPORT_HEIGHT) / chInPixels);
     case Units.Vmax:
-      return ((input / 100) * Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
-        chInPixels;
+      return Ok(((input / 100) * Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
+        chInPixels);
     case Units.Vmin:
-      return ((input / 100) * Math.min(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
-        chInPixels;
+      return Ok(((input / 100) * Math.min(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
+        chInPixels);
     case Units.Vw:
-      return ((input / 100) * VIEWPORT_WIDTH) / chInPixels;
+      return Ok(((input / 100) * VIEWPORT_WIDTH) / chInPixels);
     default:
-      return -1;
+      return Err(
+        ConversionErrorKind.UnsupportedUnit,
+        `Unsupported unit conversion to ch: ${from}`,
+        { unit: from }
+      );
   }
 };

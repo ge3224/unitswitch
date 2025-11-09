@@ -1,4 +1,5 @@
-import type { Converter } from "./types.ts";
+import type { Converter } from "./index.ts";
+import { Ok, Err, ConversionErrorKind, type Result } from "./result.ts";
 import {
   CH_TO_EM_RATIO,
   EX_TO_EM_RATIO,
@@ -14,47 +15,57 @@ import { type Unit, Units } from "@/lib/units.ts";
  *
  * @param {Unit} from    - The unit to convert from.
  * @param {number} input - The value to be converted.
- * @returns {number}     - The converted value in ex, or -1 if the conversion
- *                         is not supported or input is invalid.
+ * @returns {Result<number>} - Ok with the converted value in ex, or Err if conversion fails.
  */
 export const convertToEx: Converter = function convertToEx(
   from: Unit,
   input: number,
-): number {
-  if (input < 0) return -1;
+): Result<number> {
+  if (input < 0) {
+    return Err(
+      ConversionErrorKind.NegativeInput,
+      "Input value cannot be negative",
+      { input, unit: from }
+    );
+  }
+
   const exInPixels = EX_TO_EM_RATIO * FONT_SIZE;
   switch (from) {
     case Units.Centimeters:
-      return (input * 0.3937008 * PPI) / exInPixels;
+      return Ok((input * 0.3937008 * PPI) / exInPixels);
     case Units.Ch:
-      return (input * CH_TO_EM_RATIO) / EX_TO_EM_RATIO;
+      return Ok((input * CH_TO_EM_RATIO) / EX_TO_EM_RATIO);
     case Units.Ex:
-      return input;
+      return Ok(input);
     case Units.Feet:
-      return (input * 12 * PPI) / exInPixels;
+      return Ok((input * 12 * PPI) / exInPixels);
     case Units.Inches:
-      return (input * PPI) / exInPixels;
+      return Ok((input * PPI) / exInPixels);
     case Units.Millimeters:
-      return (input * (PPI / 25.4)) / exInPixels;
+      return Ok((input * (PPI / 25.4)) / exInPixels);
     case Units.Picas:
-      return (input * (PPI / 6)) / exInPixels;
+      return Ok((input * (PPI / 6)) / exInPixels);
     case Units.Pixels:
-      return input / exInPixels;
+      return Ok(input / exInPixels);
     case Units.Points:
-      return (input * (PPI / 72)) / exInPixels;
+      return Ok((input * (PPI / 72)) / exInPixels);
     case Units.Rems:
-      return input / EX_TO_EM_RATIO;
+      return Ok(input / EX_TO_EM_RATIO);
     case Units.Vh:
-      return ((input / 100) * VIEWPORT_HEIGHT) / exInPixels;
+      return Ok(((input / 100) * VIEWPORT_HEIGHT) / exInPixels);
     case Units.Vmax:
-      return ((input / 100) * Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
-        exInPixels;
+      return Ok(((input / 100) * Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
+        exInPixels);
     case Units.Vmin:
-      return ((input / 100) * Math.min(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
-        exInPixels;
+      return Ok(((input / 100) * Math.min(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
+        exInPixels);
     case Units.Vw:
-      return ((input / 100) * VIEWPORT_WIDTH) / exInPixels;
+      return Ok(((input / 100) * VIEWPORT_WIDTH) / exInPixels);
     default:
-      return -1;
+      return Err(
+        ConversionErrorKind.UnsupportedUnit,
+        `Unsupported unit conversion to ex: ${from}`,
+        { unit: from }
+      );
   }
 };

@@ -1,3 +1,6 @@
+import type { Unit } from "@/lib/units.ts";
+import type { Result } from "./result.ts";
+
 import { convertToCentimeters } from "./centimeters.ts";
 import { convertToCh } from "./ch.ts";
 import { convertToEx } from "./ex.ts";
@@ -16,7 +19,10 @@ import { convertToVmax } from "./vmax.ts";
 import { convertToVmin } from "./vmin.ts";
 import { convertToVw } from "./vw.ts";
 
-export type { Converter } from "./types.ts";
+/**
+ * Type signature for unit converter functions
+ */
+export type Converter = (from: Unit, input: number) => Result<number>;
 
 export {
   convertToCentimeters,

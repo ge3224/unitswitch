@@ -32,6 +32,7 @@ import {
   convertToVmin,
   convertToVw,
 } from "@/lib/converters/index.ts";
+import { unwrapOr } from "@/lib/converters/result.ts";
 import { newSimpleState, SimpleState } from "@pkg/simple-state/src/index.ts";
 
 /**
@@ -98,27 +99,27 @@ export function App(): Node {
 
   // Initialize all conversion states
   for (const config of CONVERSIONS) {
-    const state = newSimpleState<number>(
-      config.converter(unitState.get(), inputState.get()),
-    );
+    const result = config.converter(unitState.get(), inputState.get());
+    const initialValue = unwrapOr(result, -1);
+    const state = newSimpleState<number>(initialValue);
     conversionStates.set(config.unit, state);
   }
 
   // Update all conversions when input changes
   inputState.subscribe(function inputCallback(newInput: number): void {
     for (const config of CONVERSIONS) {
-      conversionStates.get(config.unit)?.set(
-        config.converter(unitState.get(), newInput),
-      );
+      const result = config.converter(unitState.get(), newInput);
+      const value = unwrapOr(result, -1);
+      conversionStates.get(config.unit)?.set(value);
     }
   });
 
   // Update all conversions when unit changes
   unitState.subscribe(function unitCallback(newUnit: Unit): void {
     for (const config of CONVERSIONS) {
-      conversionStates.get(config.unit)?.set(
-        config.converter(newUnit, inputState.get()),
-      );
+      const result = config.converter(newUnit, inputState.get());
+      const value = unwrapOr(result, -1);
+      conversionStates.get(config.unit)?.set(value);
     }
   });
 

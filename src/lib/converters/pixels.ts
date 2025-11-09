@@ -1,4 +1,5 @@
-import type { Converter } from "./types.ts";
+import type { Converter } from "./index.ts";
+import { Ok, Err, ConversionErrorKind, type Result } from "./result.ts";
 import { FONT_SIZE, PPI } from "@/lib/constants.ts";
 import { type Unit, Units } from "@/lib/units.ts";
 
@@ -7,31 +8,42 @@ import { type Unit, Units } from "@/lib/units.ts";
  *
  * @param {Unit} from - The unit to convert from.
  * @param {number} input - The value to convert.
- * @returns {number} The converted value in pixels. Returns -1 if the unit is not supported.
+ * @returns {Result<number>} Ok with the converted value in pixels, or Err if conversion fails.
  */
 export const convertToPixels: Converter = function convertToPixels(
   from: Unit,
   input: number,
-): number {
-  if (input < 0) return -1;
+): Result<number> {
+  if (input < 0) {
+    return Err(
+      ConversionErrorKind.NegativeInput,
+      "Input value cannot be negative",
+      { input, unit: from }
+    );
+  }
+
   switch (from) {
     case Units.Centimeters:
-      return Math.ceil(input * (PPI / 2.54));
+      return Ok(Math.ceil(input * (PPI / 2.54)));
     case Units.Feet:
-      return Math.ceil(input * 12 * PPI);
+      return Ok(Math.ceil(input * 12 * PPI));
     case Units.Inches:
-      return Math.ceil(input * PPI);
+      return Ok(Math.ceil(input * PPI));
     case Units.Millimeters:
-      return Math.ceil(input * (PPI / 25.4));
+      return Ok(Math.ceil(input * (PPI / 25.4)));
     case Units.Picas:
-      return Math.ceil(input * (1 / 6) * PPI);
+      return Ok(Math.ceil(input * (1 / 6) * PPI));
     case Units.Pixels:
-      return Math.ceil(input);
+      return Ok(Math.ceil(input));
     case Units.Points:
-      return Math.ceil(input * (PPI / 72));
+      return Ok(Math.ceil(input * (PPI / 72)));
     case Units.Rems:
-      return Math.ceil(input * FONT_SIZE);
+      return Ok(Math.ceil(input * FONT_SIZE));
     default:
-      return -1;
+      return Err(
+        ConversionErrorKind.UnsupportedUnit,
+        `Unsupported unit conversion to pixels: ${from}`,
+        { unit: from }
+      );
   }
 };

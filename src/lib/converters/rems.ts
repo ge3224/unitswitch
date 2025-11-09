@@ -1,4 +1,5 @@
-import type { Converter } from "./types.ts";
+import type { Converter } from "./index.ts";
+import { Ok, Err, ConversionErrorKind, type Result } from "./result.ts";
 import { FONT_SIZE, PPI } from "@/lib/constants.ts";
 import { type Unit, Units } from "@/lib/units.ts";
 
@@ -12,26 +13,37 @@ function _pixelsToRems(px: number): number {
 export const convertToRems: Converter = function convertToRems(
   from: Unit,
   input: number,
-): number {
-  if (input < 0) return -1;
+): Result<number> {
+  if (input < 0) {
+    return Err(
+      ConversionErrorKind.NegativeInput,
+      "Input value cannot be negative",
+      { input, unit: from }
+    );
+  }
+
   switch (from) {
     case Units.Centimeters:
-      return (input * 0.3937008 * PPI) / FONT_SIZE;
+      return Ok((input * 0.3937008 * PPI) / FONT_SIZE);
     case Units.Feet:
-      return (input * 12 * PPI) / FONT_SIZE;
+      return Ok((input * 12 * PPI) / FONT_SIZE);
     case Units.Inches:
-      return (input * PPI) / FONT_SIZE;
+      return Ok((input * PPI) / FONT_SIZE);
     case Units.Millimeters:
-      return (PPI / 25.4 / FONT_SIZE) * input;
+      return Ok((PPI / 25.4 / FONT_SIZE) * input);
     case Units.Picas:
-      return (PPI / 6 / FONT_SIZE) * input;
+      return Ok((PPI / 6 / FONT_SIZE) * input);
     case Units.Pixels:
-      return _pixelsToRems(input);
+      return Ok(_pixelsToRems(input));
     case Units.Points:
-      return (input / 72) * (PPI / FONT_SIZE);
+      return Ok((input / 72) * (PPI / FONT_SIZE));
     case Units.Rems:
-      return input;
+      return Ok(input);
     default:
-      return -1;
+      return Err(
+        ConversionErrorKind.UnsupportedUnit,
+        `Unsupported unit conversion to rems: ${from}`,
+        { unit: from }
+      );
   }
 };

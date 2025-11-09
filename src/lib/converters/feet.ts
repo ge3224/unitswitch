@@ -1,4 +1,5 @@
-import type { Converter } from "./types.ts";
+import type { Converter } from "./index.ts";
+import { Ok, Err, ConversionErrorKind, type Result } from "./result.ts";
 import { FONT_SIZE, PPI } from "@/lib/constants.ts";
 import { type Unit, Units } from "@/lib/units.ts";
 
@@ -15,33 +16,42 @@ function _pixelsToFeet(px: number): number {
  *
  * @param {Unit} from - The unit to convert from.
  * @param {number} input - The value to be converted.
- * @returns {number} - The converted value in feet (ft), or -1 if the
- *                     conversion is not supported or input is invalid.
+ * @returns {Result<number>} - Ok with the converted value in feet (ft), or Err if conversion fails.
  */
 export const convertToFeet: Converter = function convertToFeet(
   from: Unit,
   input: number,
-): number {
-  if (input < 0) return -1;
+): Result<number> {
+  if (input < 0) {
+    return Err(
+      ConversionErrorKind.NegativeInput,
+      "Input value cannot be negative",
+      { input, unit: from }
+    );
+  }
 
   switch (from) {
     case Units.Centimeters:
-      return input / 30.48;
+      return Ok(input / 30.48);
     case Units.Feet:
-      return input;
+      return Ok(input);
     case Units.Inches:
-      return input / 12;
+      return Ok(input / 12);
     case Units.Millimeters:
-      return input * 0.00328084;
+      return Ok(input * 0.00328084);
     case Units.Picas:
-      return (input * 0.1667) / 12;
+      return Ok((input * 0.1667) / 12);
     case Units.Pixels:
-      return _pixelsToFeet(input);
+      return Ok(_pixelsToFeet(input));
     case Units.Points:
-      return input / 72 / 12;
+      return Ok(input / 72 / 12);
     case Units.Rems:
-      return (input * FONT_SIZE) / (12 * PPI);
+      return Ok((input * FONT_SIZE) / (12 * PPI));
     default:
-      return -1;
+      return Err(
+        ConversionErrorKind.UnsupportedUnit,
+        `Unsupported unit conversion to feet: ${from}`,
+        { unit: from }
+      );
   }
 };

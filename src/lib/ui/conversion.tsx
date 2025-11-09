@@ -4,6 +4,7 @@ import { createDomElement, createRef } from "@pkg/just-jsx/src/index.ts";
 import { hotkeyManager } from "@/lib/hotkey_manager.ts";
 import { newSimpleState } from "@pkg/simple-state/src/index.ts";
 import { renderConversion as renderConversionValue } from "@/lib/render.ts";
+import { toast } from "@/lib/ui/toast.tsx";
 import {
   CopyIconSvg,
   GrayPlusIcon,
@@ -69,9 +70,14 @@ export default function Conversion({
   });
 
   function copyToClipboard(): void {
-    navigator.clipboard.writeText(conversion.get().toString()).catch((err) => {
-      console.warn("Failed to copy to clipboard:", err);
-    });
+    navigator.clipboard.writeText(conversion.get().toString())
+      .then(() => {
+        toast.success("Copied!");
+      })
+      .catch((err) => {
+        console.warn("Failed to copy to clipboard:", err);
+        toast.error("Failed to copy to clipboard");
+      });
   }
 
   function onClickCopyButton(e: Event): void {

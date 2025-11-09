@@ -1,23 +1,30 @@
 import { describe, it } from "jsr:@std/testing/bdd";
-import { assertEquals, assertAlmostEquals } from "jsr:@std/assert";
+import { assertEquals, assertAlmostEquals, assert } from "jsr:@std/assert";
 import { convertToVh } from "@/lib/converters/vh.ts";
 import { Units } from "@/lib/units.ts";
 import { FONT_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH } from "@/lib/constants.ts";
+import { ConversionErrorKind } from './result.ts';
 
 describe("convertToVh", () => {
   describe("known constants", () => {
     it("should convert viewport height to 100vh", () => {
-      assertEquals(convertToVh(Units.Pixels, VIEWPORT_HEIGHT), 100);
+      const result = convertToVh(Units.Pixels, VIEWPORT_HEIGHT);
+      assert(result.ok);
+      assertEquals(result.value, 100);
     });
 
     it("should convert half viewport height to 50vh", () => {
-      assertEquals(convertToVh(Units.Pixels, VIEWPORT_HEIGHT / 2), 50);
+      const result = convertToVh(Units.Pixels, VIEWPORT_HEIGHT / 2);
+      assert(result.ok);
+      assertEquals(result.value, 50);
     });
 
     it("should convert rems using FONT_SIZE constant", () => {
       // 1 rem = 16px, 1080px = 100vh, so 16px = (16/1080)*100 ≈ 1.48vh
+      const result = convertToVh(Units.Rems, 1);
+      assert(result.ok);
       assertAlmostEquals(
-        convertToVh(Units.Rems, 1),
+        result.value,
         (FONT_SIZE / VIEWPORT_HEIGHT) * 100,
         0.01,
       );
@@ -28,48 +35,70 @@ describe("convertToVh", () => {
     it("should convert vw to vh based on aspect ratio", () => {
       // 100vw in pixels / viewport height * 100 = vh
       const expected = (VIEWPORT_WIDTH / VIEWPORT_HEIGHT) * 100;
-      assertAlmostEquals(convertToVh(Units.Vw, 100), expected, 0.01);
+      const result = convertToVh(Units.Vw, 100);
+      assert(result.ok);
+      assertAlmostEquals(result.value, expected, 0.01);
     });
 
     it("should convert vmin to vh", () => {
       // For 1920×1080, vmin = 1080 (smaller dimension)
       const minDimension = Math.min(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
       const expected = (minDimension / VIEWPORT_HEIGHT) * 100;
-      assertAlmostEquals(convertToVh(Units.Vmin, 100), expected, 0.01);
+      const result = convertToVh(Units.Vmin, 100);
+      assert(result.ok);
+      assertAlmostEquals(result.value, expected, 0.01);
     });
 
     it("should convert vmax to vh", () => {
       // For 1920×1080, vmax = 1920 (larger dimension)
       const maxDimension = Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
       const expected = (maxDimension / VIEWPORT_HEIGHT) * 100;
-      assertAlmostEquals(convertToVh(Units.Vmax, 100), expected, 0.01);
+      const result = convertToVh(Units.Vmax, 100);
+      assert(result.ok);
+      assertAlmostEquals(result.value, expected, 0.01);
     });
   });
 
   describe("proportionality", () => {
     it("should scale proportionally", () => {
-      const value1 = convertToVh(Units.Pixels, 100);
-      const value2 = convertToVh(Units.Pixels, 200);
-      assertEquals(value2, value1 * 2);
+      const result1 = convertToVh(Units.Pixels, 100);
+      const result2 = convertToVh(Units.Pixels, 200);
+      assert(result1.ok && result2.ok);
+      assertEquals(result2.value, result1.value * 2);
     });
   });
 
   describe("edge cases", () => {
-    it("should return -1 for negative inputs", () => {
-      assertEquals(convertToVh(Units.Pixels, -1), -1);
-      assertEquals(convertToVh(Units.Vh, -5), -1);
+    it("should return Err for negative inputs", () => {
+      const result1 = convertToVh(Units.Pixels, -1);
+      assert(!result1.ok);
+      assertEquals(result1.error.kind, ConversionErrorKind.NegativeInput);
+
+      const result2 = convertToVh(Units.Vh, -5);
+      assert(!result2.ok);
+      assertEquals(result2.error.kind, ConversionErrorKind.NegativeInput);
     });
 
     it("should handle zero correctly", () => {
-      assertEquals(convertToVh(Units.Pixels, 0), 0);
-      assertEquals(convertToVh(Units.Vh, 0), 0);
+      const result1 = convertToVh(Units.Pixels, 0);
+      assert(result1.ok);
+      assert(result1.value >= 0);
+
+      const result2 = convertToVh(Units.Vh, 0);
+      assert(result2.ok);
+      assert(result2.value >= 0);
     });
   });
 
   describe("identity conversion", () => {
     it("should return the same value when converting vh to vh", () => {
-      assertEquals(convertToVh(Units.Vh, 25), 25);
-      assertEquals(convertToVh(Units.Vh, 100), 100);
+      const result1 = convertToVh(Units.Vh, 25);
+      assert(result1.ok);
+      assertEquals(result1.value, 25);
+
+      const result2 = convertToVh(Units.Vh, 100);
+      assert(result2.ok);
+      assertEquals(result2.value, 100);
     });
   });
 });

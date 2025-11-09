@@ -1,4 +1,5 @@
-import type { Converter } from "./types.ts";
+import type { Converter } from "./index.ts";
+import { Ok, Err, ConversionErrorKind, type Result } from "./result.ts";
 import { FONT_SIZE } from "@/lib/constants.ts";
 import { type Unit, Units } from "@/lib/units.ts";
 import { roundToDecimal } from "@/lib/round_number.ts";
@@ -13,27 +14,37 @@ function _pixelsToMillimeters(px: number): number {
 export const convertToMillimeters: Converter = function convertToMillimeters(
   from: Unit,
   input: number,
-): number {
-  if (input < 0) return -1;
+): Result<number> {
+  if (input < 0) {
+    return Err(
+      ConversionErrorKind.NegativeInput,
+      "Input value cannot be negative",
+      { input, unit: from }
+    );
+  }
 
   switch (from) {
     case Units.Centimeters:
-      return input * 10;
+      return Ok(input * 10);
     case Units.Feet:
-      return input * 304.8;
+      return Ok(input * 304.8);
     case Units.Inches:
-      return input * 25.4;
+      return Ok(input * 25.4);
     case Units.Millimeters:
-      return input;
+      return Ok(input);
     case Units.Picas:
-      return input * 4.23333333;
+      return Ok(input * 4.23333333);
     case Units.Pixels:
-      return _pixelsToMillimeters(input);
+      return Ok(_pixelsToMillimeters(input));
     case Units.Points:
-      return input * 0.352778;
+      return Ok(input * 0.352778);
     case Units.Rems:
-      return _pixelsToMillimeters(input * FONT_SIZE);
+      return Ok(_pixelsToMillimeters(input * FONT_SIZE));
     default:
-      return -1;
+      return Err(
+        ConversionErrorKind.UnsupportedUnit,
+        `Unsupported unit conversion to millimeters: ${from}`,
+        { unit: from }
+      );
   }
 };
