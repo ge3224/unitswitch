@@ -112,6 +112,12 @@ export default function Modal({
   }
 
   function onInputKeyDown(e: KeyboardEvent): void {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      onClickCloseModal();
+      return;
+    }
+
     if (!showSuggestions) return;
 
     if (e.key === "ArrowDown") {
@@ -137,11 +143,16 @@ export default function Modal({
       if (selected) {
         selectSuggestion(selected.abbr);
       }
-    } else if (e.key === "Escape") {
-      e.preventDefault();
-      hideSuggestions();
     }
   }
+
+  // Global Escape listener to close modal
+  globalThis.addEventListener("keydown", (e: KeyboardEvent) => {
+    if (e.key === "Escape" && modalRef.current && modalRef.current.style.display === DISPLAY_BLOCK) {
+      e.preventDefault();
+      onClickCloseModal();
+    }
+  });
 
   if (hotkey) {
     hotkeyManager.register(hotkey, function hotkeyHandlerModal() {
@@ -152,10 +163,6 @@ export default function Modal({
           inputRef.current?.focus();
         });
       }
-    });
-
-    hotkeyManager.register("Escape", function hotkeyHandlerModalEscape() {
-      onClickCloseModal();
     });
   }
 
