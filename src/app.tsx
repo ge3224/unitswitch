@@ -6,6 +6,7 @@ import Modal from "@/lib/ui/modal.tsx";
 import UserInput from "@/lib/ui/user_input.tsx";
 import {
   DetailsBootstrap,
+  DetailsGoldenRatio,
   DetailsPixels,
   DetailsRemsEms,
   DetailsSixteenNine,
@@ -17,6 +18,7 @@ import {
   convertToCentimeters,
   convertToEms,
   convertToFeet,
+  convertToGolden,
   convertToInches,
   convertToMillimeters,
   convertToPicas,
@@ -46,6 +48,10 @@ export function App(): Node {
 
   const feetState = newSimpleState<number>(
     convertToFeet(unitState.get(), inputState.get()),
+  );
+
+  const goldenState = newSimpleState<number>(
+    convertToGolden(unitState.get(), inputState.get()),
   );
 
   const inchesState = newSimpleState<number>(
@@ -85,10 +91,11 @@ export function App(): Node {
     centimetersState.set(convertToCentimeters(unitState.get(), newInput));
     emsState.set(convertToEms(unitState.get(), newInput));
     feetState.set(convertToFeet(unitState.get(), newInput));
+    goldenState.set(convertToGolden(unitState.get(), newInput));
     inchesState.set(convertToInches(unitState.get(), newInput));
     millimetersState.set(convertToMillimeters(unitState.get(), newInput));
-    pixelsState.set(convertToPixels(unitState.get(), newInput));
     picasState.set(convertToPicas(unitState.get(), newInput));
+    pixelsState.set(convertToPixels(unitState.get(), newInput));
     pointsState.set(convertToPoints(unitState.get(), newInput));
     remsState.set(convertToRems(unitState.get(), newInput));
     sixteenNineState.set(convertToSixteenNine(unitState.get(), newInput));
@@ -100,10 +107,11 @@ export function App(): Node {
     centimetersState.set(convertToCentimeters(newUnit, inputState.get()));
     emsState.set(convertToEms(newUnit, inputState.get()));
     feetState.set(convertToFeet(newUnit, inputState.get()));
+    goldenState.set(convertToGolden(newUnit, inputState.get()));
     inchesState.set(convertToInches(newUnit, inputState.get()));
     millimetersState.set(convertToMillimeters(newUnit, inputState.get()));
-    pixelsState.set(convertToPixels(newUnit, inputState.get()));
     picasState.set(convertToPicas(newUnit, inputState.get()));
+    pixelsState.set(convertToPixels(newUnit, inputState.get()));
     pointsState.set(convertToPoints(newUnit, inputState.get()));
     remsState.set(convertToRems(newUnit, inputState.get()));
     sixteenNineState.set(convertToSixteenNine(newUnit, inputState.get()));
@@ -117,7 +125,7 @@ export function App(): Node {
 
   return (
     <div class="m-2 sm:flex sm:min-h-screen items-center justify-center">
-      <div class="my-auto max-w-screen-xl lg:mx-auto rounded-lg border border-app-green-600 bg-app-green-50 pb-4 lg:grid lg:grid-cols-3 lg:gap-5 lg:border-none lg:p-12">
+      <div class="my-auto max-w-7xl lg:mx-auto rounded-lg border border-app-green-600 bg-app-green-50 pb-4 lg:grid lg:grid-cols-3 lg:gap-5 lg:border-none lg:p-12">
         <div class="relative flex flex-col border-b border-app-green-600 px-11 pt-12 lg:col-span-2 lg:row-span-2 lg:flex-row lg:justify-center lg:border lg:py-8">
           <Logo />
           <UserInput
@@ -191,6 +199,12 @@ export function App(): Node {
           to={Units.SixteenNine}
           hotkey="#"
           detail={<DetailsSixteenNine input={inputState} />}
+        />
+        <Conversion
+          conversion={goldenState}
+          to={Units.Golden}
+          hotkey="$"
+          detail={<DetailsGoldenRatio input={inputState} />}
         />
         <Modal
           callback={handleSubmit}
