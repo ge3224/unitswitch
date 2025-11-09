@@ -1,7 +1,7 @@
 import { Unit } from "@/lib/units.ts";
 import { ViewInputState } from "@/lib/types.ts";
 import { createDomElement, createRef } from "@pkg/just-jsx/src/index.ts";
-import { hotkeyManager } from "@/lib/hotkey-manager.ts";
+import { hotkeyManager } from "@/lib/hotkey_manager.ts";
 import { newSimpleState } from "@pkg/simple-state/src/index.ts";
 import { renderConversion as renderConversionValue } from "@/lib/render.ts";
 import {
@@ -50,15 +50,21 @@ export default function Conversion({
 
   showDetailState.subscribe(function toggleDetailsPanel(show): void {
     if (detailsPanelRef.current) {
-      detailsPanelRef.current.style.display = show ? DISPLAY_BLOCK : DISPLAY_NONE;
+      detailsPanelRef.current.style.display = show
+        ? DISPLAY_BLOCK
+        : DISPLAY_NONE;
     }
 
     if (minusIconRef.current) {
-      minusIconRef.current.style.display = show ? DISPLAY_NONE : DISPLAY_INLINE_BLOCK;
+      minusIconRef.current.style.display = show
+        ? DISPLAY_NONE
+        : DISPLAY_INLINE_BLOCK;
     }
 
     if (plusIconRef.current) {
-      plusIconRef.current.style.display = show ? DISPLAY_INLINE_BLOCK : DISPLAY_NONE;
+      plusIconRef.current.style.display = show
+        ? DISPLAY_INLINE_BLOCK
+        : DISPLAY_NONE;
     }
   });
 

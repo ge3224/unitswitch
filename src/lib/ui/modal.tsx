@@ -2,7 +2,7 @@ import { CloseIcon } from "@/lib/ui/icons.tsx";
 import { UserSubmissionCallback } from "@/lib/types.ts";
 import { abbreviations, UNIT_ABBREVIATIONS } from "@/lib/units.ts";
 import { createDomElement, createRef } from "@pkg/just-jsx/src/index.ts";
-import { hotkeyManager } from "@/lib/hotkey-manager.ts";
+import { hotkeyManager } from "@/lib/hotkey_manager.ts";
 
 const DISPLAY_BLOCK = "block";
 const DISPLAY_NONE = "none";
@@ -20,7 +20,6 @@ export default function Modal({
   const inputRef = createRef<HTMLInputElement>();
   const suggestionsDropdownRef = createRef<HTMLDivElement>();
 
-  // State for autocomplete
   let filteredSuggestions: UnitAbbreviation[] = [];
   let selectedSuggestionIndex = -1;
   let showSuggestions = false;
