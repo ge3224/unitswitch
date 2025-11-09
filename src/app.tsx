@@ -204,24 +204,6 @@ export function App(): Node {
           hotkey="@"
         />
         <Conversion
-          conversion={goldenState}
-          to={Units.Golden}
-          hotkey="$"
-          detail={<DetailsGoldenRatio input={inputState} />}
-        />
-        <Conversion
-          conversion={root2State}
-          to={Units.Root2}
-          hotkey="%"
-          detail={<DetailsRootTwo input={inputState} />}
-        />
-        <Conversion
-          conversion={sixteenNineState}
-          to={Units.SixteenNine}
-          hotkey="#"
-          detail={<DetailsSixteenNine input={inputState} />}
-        />
-        <Conversion
           conversion={vwState}
           to={Units.Vw}
           hotkey="3"
@@ -250,6 +232,24 @@ export function App(): Node {
           conversion={exState}
           to={Units.Ex}
           hotkey="*"
+        />
+        <Conversion
+          conversion={goldenState}
+          to={Units.Golden}
+          hotkey="$"
+          detail={<DetailsGoldenRatio input={inputState} />}
+        />
+        <Conversion
+          conversion={root2State}
+          to={Units.Root2}
+          hotkey="%"
+          detail={<DetailsRootTwo input={inputState} />}
+        />
+        <Conversion
+          conversion={sixteenNineState}
+          to={Units.SixteenNine}
+          hotkey="#"
+          detail={<DetailsSixteenNine input={inputState} />}
         />
         <Modal
           callback={handleSubmit}

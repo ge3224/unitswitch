@@ -12,7 +12,7 @@ export const Units = {
   Picas: "Picas",
   Pixels: "Pixels",
   Points: "Points",
-  Rems: "Rems",
+  Rems: "Rems/Ems",
   Root2: "Root 2 Rectangle",
   SixteenNine: "16:9",
   Vh: "Viewport Height",
