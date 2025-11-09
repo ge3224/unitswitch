@@ -1,21 +1,10 @@
 import type { Converter } from "./types.ts";
 import type { Unit } from "@/lib/units.ts";
-
-// @ts-expect-error - Reserved for future implementation
-const tailwindToInches: number[] = [];
-
-function _longer(input: number): number {
-  return input * 1.41;
-}
-
-// @ts-expect-error - Reserved for future implementation
-function _shorter(input: number): number {
-  return input / 1.41;
-}
+import { ROOT_TWO } from "@/lib/constants.ts";
 
 export const convertToRootTwo: Converter = function convertToRootTwo(
   _from: Unit,
   input: number,
 ): number {
-  return input < 0 ? -1 : _longer(input);
+  return input < 0 ? -1 : input * ROOT_TWO;
 };

@@ -1,17 +1,9 @@
-import type { Converter } from "./types.ts";
-import type { Unit } from "@/lib/units.ts";
+import type { Converter } from "@/lib/converters/types.ts";
+import { GOLDEN_RATIO } from "@/lib/constants.ts";
 
-export function conversionRatioLongGolden(input: number): number {
-  return input * 1.61803;
-}
-
-export function conversionRatioShortGolden(input: number): number {
-  return input / 1.61803;
-}
-
-export const convertToGolden: Converter = function convertToGolden(
-  _from: Unit,
+export const convertToGoldenRatio: Converter = function convertToGoldenRatio(
+  _,
   input: number,
 ): number {
-  return input < 0 ? -1 : conversionRatioLongGolden(input);
+  return input < 0 ? -1 : input * GOLDEN_RATIO;
 };

@@ -13,6 +13,7 @@ export const Units = {
   Pixels: "Pixels",
   Points: "Points",
   Rems: "Rems",
+  Root2: "Root 2 Rectangle",
   SixteenNine: "16:9",
   Tailwind: "Tailwind",
 } as const;

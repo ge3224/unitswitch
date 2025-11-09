@@ -1,18 +1,17 @@
 import { createDomElement } from "@pkg/just-jsx/src/index.ts";
-import { FONT_SIZE, PPI } from "@/lib/constants.ts";
+import {
+  FONT_SIZE,
+  GOLDEN_RATIO,
+  GOLDEN_RATIO_SQUARED,
+  PPI,
+  ROOT_TWO,
+  ROOT_TWO_SQUARED,
+} from "@/lib/constants.ts";
 import { ViewInputState } from "@/lib/types.ts";
-import {
-  conversionRatioLonger16_9,
-  conversionRatioShorter16_9,
-} from "@/lib/converters/sixteen_nine.ts";
-import {
-  conversionRatioLongGolden,
-  conversionRatioShortGolden,
-} from "@/lib/converters/golden.ts";
 
 export function DetailsRemsEms() {
   return (
-    <div className="text-app-black">
+    <div class="text-app-black">
       Based on a root font size of <span class="font-bold">{FONT_SIZE}px</span>
     </div>
   );
@@ -55,7 +54,7 @@ export function DetailsTailwind(
 
 export function DetailsBootstrap() {
   return (
-    <div className="text-app-black">
+    <div class="text-app-black">
       Only six possible values: <strong>0-5</strong>
     </div>
   );
@@ -66,29 +65,26 @@ export function DetailsGoldenRatio(
 ) {
   const initialValue = input.get();
 
-  const inputText = document.createTextNode(initialValue.toFixed(2));
+  const inputTextNode = document.createTextNode(initialValue.toFixed(2));
 
-  const longSideText = document.createTextNode(
-    conversionRatioLongGolden(initialValue).toFixed(2),
+  const longSideTextNode = document.createTextNode(
+    (initialValue * GOLDEN_RATIO).toFixed(2),
   );
 
-  const shortSideText = document.createTextNode(
-    conversionRatioShortGolden(initialValue).toFixed(2),
+  const shortSideTextNode = document.createTextNode(
+    (initialValue / GOLDEN_RATIO).toFixed(2),
   );
 
-  const shortestSideText = document.createTextNode(
-    conversionRatioShortGolden(conversionRatioShortGolden(initialValue))
-      .toFixed(2),
+  const shortestSideTextNode = document.createTextNode(
+    (initialValue / GOLDEN_RATIO_SQUARED).toFixed(2),
   );
 
   input.subscribe(function updateRatioVariantsGolden(newValue: number) {
-    const fixed = newValue.toFixed(2);
-    inputText.textContent = fixed;
-    longSideText.textContent = conversionRatioLongGolden(newValue).toFixed(2);
-    shortSideText.textContent = conversionRatioShortGolden(newValue).toFixed(2);
-    shortestSideText.textContent = conversionRatioShortGolden(
-      conversionRatioShortGolden(newValue),
-    ).toFixed(2);
+    inputTextNode.textContent = newValue.toFixed(2);
+    longSideTextNode.textContent = (newValue * GOLDEN_RATIO).toFixed(2);
+    shortSideTextNode.textContent = (newValue / GOLDEN_RATIO).toFixed(2);
+    shortestSideTextNode.textContent = (newValue / GOLDEN_RATIO_SQUARED)
+      .toFixed(2);
   });
 
   return (
@@ -180,7 +176,7 @@ export function DetailsGoldenRatio(
           transform="rotate(-90,16,44)"
           text-anchor="middle"
         >
-          {inputText}
+          {inputTextNode}
         </text>
         <text
           class="fill-app-green-400 text-sm font-bold"
@@ -188,7 +184,7 @@ export function DetailsGoldenRatio(
           y="140"
           text-anchor="middle"
         >
-          {longSideText}
+          {longSideTextNode}
         </text>
         <text
           class="fill-app-green-400 text-sm font-bold"
@@ -197,7 +193,7 @@ export function DetailsGoldenRatio(
           transform="rotate(-90,297,50)"
           text-anchor="end"
         >
-          {shortestSideText}
+          {shortestSideTextNode}
         </text>
         <text
           class="fill-app-green-400 text-sm font-bold"
@@ -205,7 +201,7 @@ export function DetailsGoldenRatio(
           y="140"
           text-anchor="middle"
         >
-          {shortSideText}
+          {shortSideTextNode}
         </text>
       </svg>
     </div>
@@ -217,23 +213,24 @@ export function DetailsSixteenNine(
 ) {
   const initialValue = input.get();
 
-  const inputTextTop = document.createTextNode(initialValue.toFixed(2));
+  const inputTextNode = document.createTextNode(initialValue.toFixed(2));
 
-  const inputTextLeft = document.createTextNode(initialValue.toFixed(2));
+  const inputTextNodeInner = document.createTextNode(initialValue.toFixed(2));
 
-  const longSideText = document.createTextNode(
-    conversionRatioLonger16_9(initialValue).toFixed(2),
+  const longSideTextNode = document.createTextNode(
+    ((16 * initialValue) / 9).toFixed(2),
   );
 
-  const shortSideText = document.createTextNode(
-    conversionRatioShorter16_9(initialValue).toFixed(2),
+  const shortSideTextNode = document.createTextNode(
+    ((9 * initialValue) / 16).toFixed(2),
   );
 
   input.subscribe(function updateRatioVariants16_9(newValue: number): void {
     const fixed = newValue.toFixed(2);
-    inputTextLeft.textContent = fixed;
-    longSideText.textContent = conversionRatioLonger16_9(newValue).toFixed(2);
-    shortSideText.textContent = conversionRatioShorter16_9(newValue).toFixed(2);
+    inputTextNode.textContent = fixed;
+    inputTextNodeInner.textContent = fixed;
+    longSideTextNode.textContent = ((16 * newValue) / 9).toFixed(2);
+    shortSideTextNode.textContent = ((9 * newValue) / 16).toFixed(2);
   });
 
   return (
@@ -281,7 +278,7 @@ export function DetailsSixteenNine(
           transform="rotate(-90,256,58)"
           text-anchor="middle"
         >
-          {shortSideText}
+          {shortSideTextNode}
         </text>
         <text
           class="fill-app-green-400 text-sm font-bold"
@@ -289,7 +286,7 @@ export function DetailsSixteenNine(
           y="140"
           text-anchor="middle"
         >
-          {longSideText}
+          {longSideTextNode}
         </text>
         <text
           class="fill-app-green-600 text-sm font-bold"
@@ -297,7 +294,7 @@ export function DetailsSixteenNine(
           y="27"
           text-anchor="middle"
         >
-          {inputTextTop}
+          {inputTextNodeInner}
         </text>
         <text
           class="fill-app-green-600 text-sm font-bold"
@@ -306,7 +303,175 @@ export function DetailsSixteenNine(
           transform="rotate(-90,18,42)"
           text-anchor="middle"
         >
-          {inputTextLeft}
+          {inputTextNode}
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+export function DetailsRootTwo(
+  { input }: { input: ViewInputState<number> },
+) {
+  const initialValue = input.get();
+
+  const inputText = document.createTextNode(initialValue.toFixed(2));
+
+  const longSideText = document.createTextNode(
+    (initialValue * ROOT_TWO).toFixed(2),
+  );
+
+  const shortSideText = document.createTextNode(
+    (initialValue / ROOT_TWO).toFixed(2),
+  );
+
+  const shortestSideText = document.createTextNode(
+    (initialValue / ROOT_TWO_SQUARED).toFixed(
+      2,
+    ),
+  );
+
+  input.subscribe(function updateRatioVariantsRoot2(newValue: number) {
+    inputText.textContent = newValue.toFixed(2);
+    longSideText.textContent = (newValue * ROOT_TWO).toFixed(2);
+    shortSideText.textContent = (newValue / ROOT_TWO).toFixed(2);
+    shortestSideText.textContent = (newValue / ROOT_TWO_SQUARED).toFixed(2);
+  });
+
+  return (
+    <div class="flex justify-center pt-4">
+      <svg
+        width="293"
+        height="149"
+        viewBox="0 0 293 149"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M53.5 78.5V1.45311H163.351V78.5H53.5Z"
+          class="fill-app-green-300 stroke-app-green-600"
+        />
+        <path
+          d="M53.8046 1.75771L163.231 78.1954"
+          class="stroke-app-green-600"
+          stroke-width="0.999999"
+          stroke-dasharray="2 2"
+        />
+        <path
+          d="M108.518 78.1954V0.953114"
+          class="stroke-app-green-600"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M108.518 78.1954L164.036 1.75771"
+          class="stroke-app-green-600"
+          stroke-width="0.999999"
+          stroke-dasharray="2 2"
+        />
+        <path
+          d="M234.175 78.5L179.823 78.5L179.823 1.45309L234.175 1.45309L234.175 78.5Z"
+          class="fill-app-green-300 stroke-app-green-600"
+        />
+        <path
+          d="M179.506 78.8068L234.676 0.759884"
+          class="stroke-app-green-600"
+          stroke-width="0.999999"
+          stroke-dasharray="2 2"
+        />
+        <path
+          d="M233.953 40.3788L179.5 40.3788"
+          class="stroke-app-green-600"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M234.841 40.3788L179.323 0.953082"
+          class="stroke-app-green-600"
+          stroke-width="0.999999"
+          stroke-dasharray="2 2"
+        />
+        <path
+          d="M32 0V80"
+          class="stroke-app-green-600"
+        />
+        <path
+          d="M22 1H41.5"
+          class="stroke-app-green-600"
+        />
+        <path
+          d="M22 79H41.5"
+          class="stroke-app-green-600"
+        />
+        <path
+          d="M163 110H53"
+          class="stroke-app-green-400"
+        />
+        <path
+          d="M53 120.5V101"
+          class="stroke-app-green-400"
+        />
+        <path
+          d="M163 120.5V101"
+          class="stroke-app-green-400"
+        />
+        <path
+          d="M234 110H180"
+          class="stroke-app-green-400"
+        />
+        <path
+          d="M180 120.5V101"
+          class="stroke-app-green-400"
+        />
+        <path
+          d="M234 120.5V101"
+          class="stroke-app-green-400"
+        />
+        <path
+          d="M263 1V40"
+          class="stroke-app-green-400"
+        />
+        <path
+          d="M252.5 1L273 1"
+          class="stroke-app-green-400"
+        />
+        <path
+          d="M252.5 40L273 40"
+          class="stroke-app-green-400"
+        />
+        <text
+          class="fill-app-green-400 font-bold text-sm"
+          x="268"
+          y="50"
+          transform="rotate(-90,268,50)"
+          text-anchor="end"
+        >
+          {shortestSideText}
+        </text>
+        <text
+          class="fill-app-green-400 font-bold text-sm"
+          x="207"
+          y="142"
+          text-anchor="middle"
+        >
+          {shortSideText}
+        </text>
+        <text
+          class="fill-app-green-600 font-bold text-sm"
+          x="18"
+          y="40"
+          transform="rotate(-90,18,40)"
+          text-anchor="middle"
+        >
+          {inputText}
+        </text>
+        <text
+          class="fill-app-green-400 font-bold text-sm"
+          x="110"
+          y="142"
+          text-anchor="middle"
+        >
+          {longSideText}
         </text>
       </svg>
     </div>

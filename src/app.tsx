@@ -9,6 +9,7 @@ import {
   DetailsGoldenRatio,
   DetailsPixels,
   DetailsRemsEms,
+  DetailsRootTwo,
   DetailsSixteenNine,
   DetailsTailwind,
 } from "@/lib/ui/details.tsx";
@@ -18,13 +19,14 @@ import {
   convertToCentimeters,
   convertToEms,
   convertToFeet,
-  convertToGolden,
+  convertToGoldenRatio,
   convertToInches,
   convertToMillimeters,
   convertToPicas,
   convertToPixels,
   convertToPoints,
   convertToRems,
+  convertToRootTwo,
   convertToSixteenNine,
   convertToTailwind,
 } from "@/lib/converters/index.ts";
@@ -51,7 +53,7 @@ export function App(): Node {
   );
 
   const goldenState = newSimpleState<number>(
-    convertToGolden(unitState.get(), inputState.get()),
+    convertToGoldenRatio(unitState.get(), inputState.get()),
   );
 
   const inchesState = newSimpleState<number>(
@@ -78,6 +80,10 @@ export function App(): Node {
     convertToRems(unitState.get(), inputState.get()),
   );
 
+  const root2State = newSimpleState<number>(
+    convertToRootTwo(unitState.get(), inputState.get()),
+  );
+
   const sixteenNineState = newSimpleState<number>(
     convertToSixteenNine(unitState.get(), inputState.get()),
   );
@@ -91,13 +97,14 @@ export function App(): Node {
     centimetersState.set(convertToCentimeters(unitState.get(), newInput));
     emsState.set(convertToEms(unitState.get(), newInput));
     feetState.set(convertToFeet(unitState.get(), newInput));
-    goldenState.set(convertToGolden(unitState.get(), newInput));
+    goldenState.set(convertToGoldenRatio(unitState.get(), newInput));
     inchesState.set(convertToInches(unitState.get(), newInput));
     millimetersState.set(convertToMillimeters(unitState.get(), newInput));
     picasState.set(convertToPicas(unitState.get(), newInput));
     pixelsState.set(convertToPixels(unitState.get(), newInput));
     pointsState.set(convertToPoints(unitState.get(), newInput));
     remsState.set(convertToRems(unitState.get(), newInput));
+    root2State.set(convertToRootTwo(unitState.get(), newInput));
     sixteenNineState.set(convertToSixteenNine(unitState.get(), newInput));
     tailwindState.set(convertToTailwind(unitState.get(), newInput));
   });
@@ -107,13 +114,14 @@ export function App(): Node {
     centimetersState.set(convertToCentimeters(newUnit, inputState.get()));
     emsState.set(convertToEms(newUnit, inputState.get()));
     feetState.set(convertToFeet(newUnit, inputState.get()));
-    goldenState.set(convertToGolden(newUnit, inputState.get()));
+    goldenState.set(convertToGoldenRatio(newUnit, inputState.get()));
     inchesState.set(convertToInches(newUnit, inputState.get()));
     millimetersState.set(convertToMillimeters(newUnit, inputState.get()));
     picasState.set(convertToPicas(newUnit, inputState.get()));
     pixelsState.set(convertToPixels(newUnit, inputState.get()));
     pointsState.set(convertToPoints(newUnit, inputState.get()));
     remsState.set(convertToRems(newUnit, inputState.get()));
+    root2State.set(convertToRootTwo(newUnit, inputState.get()));
     sixteenNineState.set(convertToSixteenNine(newUnit, inputState.get()));
     tailwindState.set(convertToTailwind(newUnit, inputState.get()));
   });
@@ -195,16 +203,22 @@ export function App(): Node {
           hotkey="@"
         />
         <Conversion
-          conversion={sixteenNineState}
-          to={Units.SixteenNine}
-          hotkey="#"
-          detail={<DetailsSixteenNine input={inputState} />}
-        />
-        <Conversion
           conversion={goldenState}
           to={Units.Golden}
           hotkey="$"
           detail={<DetailsGoldenRatio input={inputState} />}
+        />
+        <Conversion
+          conversion={root2State}
+          to={Units.Root2}
+          hotkey="%"
+          detail={<DetailsRootTwo input={inputState} />}
+        />
+        <Conversion
+          conversion={sixteenNineState}
+          to={Units.SixteenNine}
+          hotkey="#"
+          detail={<DetailsSixteenNine input={inputState} />}
         />
         <Modal
           callback={handleSubmit}
