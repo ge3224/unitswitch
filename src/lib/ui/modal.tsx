@@ -9,6 +9,96 @@ const DISPLAY_NONE = "none";
 
 type UnitAbbreviation = { abbr: string; name: string };
 
+// Keyboard shortcut icons
+function ArrowUpIcon() {
+  return (
+    <svg
+      width="15"
+      height="15"
+      aria-label="Arrow up"
+      role="img"
+      viewBox="0 0 15 15"
+    >
+      <g
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.2"
+      >
+        <path d="M7.5 11.5v-8M10.5 6.5l-3-3-3 3"></path>
+      </g>
+    </svg>
+  );
+}
+
+function ArrowDownIcon() {
+  return (
+    <svg
+      width="15"
+      height="15"
+      aria-label="Arrow down"
+      role="img"
+      viewBox="0 0 15 15"
+    >
+      <g
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.2"
+      >
+        <path d="M7.5 3.5v8M10.5 8.5l-3 3-3-3"></path>
+      </g>
+    </svg>
+  );
+}
+
+function EnterIcon() {
+  return (
+    <svg
+      width="15"
+      height="15"
+      aria-label="Enter key"
+      role="img"
+      viewBox="0 0 15 15"
+    >
+      <g
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.2"
+      >
+        <path d="M12 3.53088v3c0 1-1 2-2 2H4M7 11.53088l-3-3 3-3"></path>
+      </g>
+    </svg>
+  );
+}
+
+function EscapeIcon() {
+  return (
+    <svg
+      width="15"
+      height="15"
+      aria-label="Escape key"
+      role="img"
+      viewBox="0 0 15 15"
+    >
+      <g
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.2"
+      >
+        <path d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+        </path>
+      </g>
+    </svg>
+  );
+}
+
 export default function Modal({
   callback,
   hotkey,
@@ -27,6 +117,17 @@ export default function Modal({
   function onClickCloseModal(): void {
     if (modalRef.current) {
       modalRef.current.style.display = DISPLAY_NONE;
+    }
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+    hideSuggestions();
+  }
+
+  function onClickClearInput(): void {
+    if (inputRef.current) {
+      inputRef.current.value = "";
+      inputRef.current.focus();
     }
     hideSuggestions();
   }
@@ -67,17 +168,38 @@ export default function Modal({
     if (!suggestionsDropdownRef.current) return;
 
     suggestionsDropdownRef.current.innerHTML = "";
-    suggestionsDropdownRef.current.style.maxHeight = "200px";
+    suggestionsDropdownRef.current.style.maxHeight = "240px";
     suggestionsDropdownRef.current.style.overflowY = "auto";
 
     filteredSuggestions.forEach((unit, index) => {
       const div = document.createElement("div");
-      div.className = `px-3 py-2 cursor-pointer ${
-        index === selectedSuggestionIndex
-          ? "bg-app-green-600 text-white"
-          : "text-app-gray-200 hover:bg-app-green-700"
+      div.className =
+        `px-4 py-2.5 cursor-pointer flex items-center justify-between transition-colors ${
+          index === selectedSuggestionIndex
+            ? "bg-app-green-600 text-white"
+            : "text-app-gray-200 hover:bg-app-green-700/50"
+        }`;
+
+      // Create content wrapper
+      const contentWrapper = document.createElement("div");
+      contentWrapper.className = "flex items-center gap-3";
+
+      // Create abbreviation span
+      const abbrSpan = document.createElement("span");
+      abbrSpan.className = `font-mono font-semibold ${
+        index === selectedSuggestionIndex ? "text-white" : "text-app-green-400"
       }`;
-      div.textContent = `${unit.abbr} - ${unit.name}`;
+      abbrSpan.textContent = unit.abbr;
+
+      // Create name span
+      const nameSpan = document.createElement("span");
+      nameSpan.className = "text-sm";
+      nameSpan.textContent = unit.name;
+
+      contentWrapper.appendChild(abbrSpan);
+      contentWrapper.appendChild(nameSpan);
+      div.appendChild(contentWrapper);
+
       div.onclick = () => selectSuggestion(unit.abbr);
       suggestionsDropdownRef.current?.appendChild(div);
     });
@@ -148,7 +270,10 @@ export default function Modal({
 
   // Global Escape listener to close modal
   globalThis.addEventListener("keydown", (e: KeyboardEvent) => {
-    if (e.key === "Escape" && modalRef.current && modalRef.current.style.display === DISPLAY_BLOCK) {
+    if (
+      e.key === "Escape" && modalRef.current &&
+      modalRef.current.style.display === DISPLAY_BLOCK
+    ) {
       e.preventDefault();
       onClickCloseModal();
     }
@@ -205,43 +330,113 @@ export default function Modal({
       ref={modalRef}
       class="fixed left-0 top-0 z-10 hidden h-screen w-full bg-app-black/70"
     >
-      <div class="fixed inset-x-1/3 top-1/4 rounded-md border border-app-green-600 bg-app-black p-6 shadow-lg shadow-app-black">
-        <form onsubmit={onSubmitModalForm}>
-          <label class="font-bold text-white">
-            Enter a Unit and a Value,{" "}
-            <span class="text-app-green-400">
-              <code>value:unit</code>
-            </span>
-          </label>
-          <br />
-          <div class="relative">
-            <input
-              ref={inputRef}
-              class="rounded-sm bg-app-gray-100"
-              type="text"
-              name="name"
-              data-testid="modal-input"
-              oninput={onInputChange}
-              onkeydown={onInputKeyDown}
-            />
-            <div
-              ref={suggestionsDropdownRef}
-              class="absolute left-0 top-full mt-1 w-full rounded-sm border border-app-green-600 bg-app-black shadow-lg"
-              style={{ display: "none", "z-index": "100" }}
-            />
+      <div class="fixed inset-x-1/3 top-1/4 flex flex-col rounded-md border border-app-green-600 bg-app-black shadow-lg shadow-app-black">
+        {/* Header */}
+        <div class="border-b border-app-green-600/30 px-6 py-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <label class="text-lg font-bold text-white">
+                Enter a value and unit
+              </label>
+              <div class="mt-1 text-sm text-app-gray-200">
+                Format:{" "}
+                <span class="text-app-green-400">
+                  <code>value:unit</code>
+                </span>
+              </div>
+            </div>
+            <button
+              type="button"
+              class="cursor-pointer rounded p-1 text-app-gray-200 transition-colors hover:bg-app-green-700 hover:text-white"
+              onClick={onClickCloseModal}
+              aria-label="Close modal"
+            >
+              <CloseIcon />
+            </button>
           </div>
-          <input
-            class="ml-3 mt-3 cursor-pointer rounded-sm border-app-green-200 bg-app-green-300 px-3"
-            type="submit"
-            value="Submit"
-          />
-        </form>
-        <div
-          class="absolute right-3 top-3 cursor-pointer font-bold text-app-gray-200"
-          onClick={onClickCloseModal}
-        >
-          <CloseIcon />
         </div>
+
+        {/* Body */}
+        <form onsubmit={onSubmitModalForm} class="flex flex-col">
+          <div class="px-6 py-4">
+            <div class="relative">
+              <input
+                ref={inputRef}
+                class="w-full rounded-sm bg-app-gray-100 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-app-green-600"
+                type="text"
+                name="name"
+                placeholder="e.g., 100:px or 2:rem"
+                data-testid="modal-input"
+                oninput={onInputChange}
+                onkeydown={onInputKeyDown}
+              />
+              <button
+                type="button"
+                class="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer rounded p-1 text-app-gray-200 transition-colors hover:bg-app-gray-200 hover:text-app-black"
+                onClick={onClickClearInput}
+                aria-label="Clear input"
+                title="Clear"
+              >
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+              <div
+                ref={suggestionsDropdownRef}
+                class="absolute left-0 top-full mt-1 w-full rounded-sm border border-app-green-600 bg-app-black shadow-lg"
+                style={{ display: "none", "z-index": "100" }}
+              />
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div class="flex items-center justify-between border-t border-app-green-600/30 px-6 py-3">
+            <div class="flex items-center gap-4 text-xs text-app-gray-200">
+              <div class="flex items-center gap-1">
+                <kbd class="flex items-center justify-center rounded border border-app-green-600/50 bg-app-gray-100/10 px-1.5 py-0.5">
+                  <EnterIcon />
+                </kbd>
+                <span>to submit</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <kbd class="flex items-center justify-center rounded border border-app-green-600/50 bg-app-gray-100/10 px-1.5 py-0.5">
+                  <ArrowUpIcon />
+                </kbd>
+                <kbd class="flex items-center justify-center rounded border border-app-green-600/50 bg-app-gray-100/10 px-1.5 py-0.5">
+                  <ArrowDownIcon />
+                </kbd>
+                <span>to navigate</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <kbd class="flex items-center justify-center rounded border border-app-green-600/50 bg-app-gray-100/10 px-1.5 py-0.5">
+                  <EscapeIcon />
+                </kbd>
+                <span>to close</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                class="cursor-pointer rounded-sm border border-app-green-600/50 bg-transparent px-3 py-1 text-sm text-app-gray-200 transition-colors hover:bg-app-green-700 hover:text-white"
+                onClick={onClickCloseModal}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="cursor-pointer rounded-sm border border-app-green-200 bg-app-green-300 px-3 py-1 text-sm font-medium text-app-black transition-colors hover:bg-app-green-400"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   );
