@@ -330,10 +330,10 @@ export default function Modal({
       ref={modalRef}
       class="fixed left-0 top-0 z-10 hidden h-screen w-full bg-app-black/70"
     >
-      <div class="fixed inset-x-1/3 top-1/4 flex flex-col rounded-md border border-app-green-600 bg-app-black shadow-lg shadow-app-black">
+      <div class="fixed inset-x-4 top-1/4 sm:inset-x-1/4 lg:inset-x-1/3 flex flex-col rounded-md border border-app-green-600 bg-app-black shadow-lg shadow-app-black @container">
         {/* Header */}
-        <div class="border-b border-app-green-600/30 px-6 py-4">
-          <div class="flex items-center justify-between">
+        <div class="border-b border-app-green-600/60 px-6 py-4">
+          <div class="flex items-start justify-between">
             <div>
               <label class="text-lg font-bold text-white">
                 Enter a value and unit
@@ -396,8 +396,8 @@ export default function Modal({
           </div>
 
           {/* Footer */}
-          <div class="flex items-center justify-between border-t border-app-green-600/30 px-6 py-3">
-            <div class="flex items-center gap-4 text-xs text-app-gray-200">
+          <div class="flex flex-col items-start border-t border-app-green-600/60 px-8 py-6 gap-3">
+            <div class="flex flex-wrap items-center gap-4 text-xs text-app-gray-200">
               <div class="flex items-center gap-1">
                 <kbd class="flex items-center justify-center rounded border border-app-green-600/50 bg-app-gray-100/10 px-1.5 py-0.5">
                   <EnterIcon />
@@ -420,7 +420,7 @@ export default function Modal({
                 <span>to close</span>
               </div>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center mt-2 gap-2">
               <button
                 type="button"
                 class="cursor-pointer rounded-sm border border-app-green-600/50 bg-transparent px-3 py-1 text-sm text-app-gray-200 transition-colors hover:bg-app-green-700 hover:text-white"
