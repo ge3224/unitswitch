@@ -3,7 +3,9 @@ import { createDomElement } from "@pkg/just-jsx/src/index.ts";
 import Conversion from "@/lib/ui/conversion.tsx";
 import Logo from "@/lib/ui/logo.tsx";
 import Modal from "@/lib/ui/modal.tsx";
+import Settings from "@/lib/ui/settings.tsx";
 import UserInput from "@/lib/ui/user_input.tsx";
+import { SettingsIcon } from "@/lib/ui/icons.tsx";
 import {
   DetailsGoldenRatio,
   DetailsPixels,
@@ -34,6 +36,7 @@ import {
 } from "@/lib/converters/index.ts";
 import { unwrapOr } from "@/lib/converters/result.ts";
 import { newSimpleState, SimpleState } from "@pkg/simple-state/src/index.ts";
+import { configState } from "@/lib/config.ts";
 
 /**
  * Configuration for each unit conversion
@@ -123,10 +126,22 @@ export function App(): Node {
     }
   });
 
+  // Update all conversions when configuration changes
+  configState.subscribe(function configCallback(): void {
+    for (const config of CONVERSIONS) {
+      const result = config.converter(unitState.get(), inputState.get());
+      const value = unwrapOr(result, -1);
+      conversionStates.get(config.unit)?.set(value);
+    }
+  });
+
   function handleSubmit(value: number, unit: Unit): void {
     inputState.set(value);
     unitState.set(unit);
   }
+
+  // Settings button handler - will be set when Settings component mounts
+  let openSettingsFn: (() => void) | null = null;
 
   const container = (
     <div class="m-2 sm:flex sm:min-h-screen items-center justify-center">
@@ -140,6 +155,15 @@ export function App(): Node {
           />
         </div>
       </div>
+
+      {/* Fixed Settings Button */}
+      <button
+        class="fixed top-4 right-4 z-30 cursor-pointer rounded-full p-3 bg-app-green-50 text-app-gray-200 transition-all hover:bg-app-green-600 hover:text-white hover:shadow-lg hover:scale-110 active:scale-95"
+        title="Settings (Ctrl+/)"
+        onClick={() => openSettingsFn?.()}
+      >
+        <SettingsIcon />
+      </button>
     </div>
   ) as HTMLElement;
 
@@ -166,6 +190,17 @@ export function App(): Node {
     />
   ) as Node;
   innerDiv.appendChild(modalElement);
+
+  // Append settings modal
+  const settingsElement = (
+    <Settings
+      hotkey="/"
+      onMount={(openFn) => {
+        openSettingsFn = openFn;
+      }}
+    />
+  ) as Node;
+  innerDiv.appendChild(settingsElement);
 
   return container;
 }

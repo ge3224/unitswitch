@@ -5,14 +5,7 @@ import {
   Ok,
   type Result,
 } from "@/lib/converters/result.ts";
-import {
-  CH_TO_EM_RATIO,
-  EX_TO_EM_RATIO,
-  FONT_SIZE,
-  PPI,
-  VIEWPORT_HEIGHT,
-  VIEWPORT_WIDTH,
-} from "@/lib/constants.ts";
+import { configState } from "@/lib/config.ts";
 import { type Unit, Units } from "@/lib/units.ts";
 
 /**
@@ -34,42 +27,43 @@ export const convertToCh: Converter = function convertToCh(
     );
   }
 
-  const chInPixels = CH_TO_EM_RATIO * FONT_SIZE;
+  const config = configState.get();
+  const { viewportWidth, viewportHeight, fontSize, ppi, chToEmRatio, exToEmRatio } = config;
+  const chInPixels = chToEmRatio * fontSize;
+
   switch (from) {
     case Units.Centimeters:
-      return Ok((input * 0.3937008 * PPI) / chInPixels);
+      return Ok((input * 0.3937008 * ppi) / chInPixels);
     case Units.Ch:
       return Ok(input);
     case Units.Ex:
-      return Ok((input * EX_TO_EM_RATIO) / CH_TO_EM_RATIO);
+      return Ok((input * exToEmRatio) / chToEmRatio);
     case Units.Feet:
-      return Ok((input * 12 * PPI) / chInPixels);
+      return Ok((input * 12 * ppi) / chInPixels);
     case Units.Inches:
-      return Ok((input * PPI) / chInPixels);
+      return Ok((input * ppi) / chInPixels);
     case Units.Millimeters:
-      return Ok((input * (PPI / 25.4)) / chInPixels);
+      return Ok((input * (ppi / 25.4)) / chInPixels);
     case Units.Picas:
-      return Ok((input * (PPI / 6)) / chInPixels);
+      return Ok((input * (ppi / 6)) / chInPixels);
     case Units.Pixels:
       return Ok(input / chInPixels);
     case Units.Points:
-      return Ok((input * (PPI / 72)) / chInPixels);
+      return Ok((input * (ppi / 72)) / chInPixels);
     case Units.Rems:
-      return Ok(input / CH_TO_EM_RATIO);
+      return Ok(input / chToEmRatio);
     case Units.Vh:
-      return Ok(((input / 100) * VIEWPORT_HEIGHT) / chInPixels);
+      return Ok(((input / 100) * viewportHeight) / chInPixels);
     case Units.Vmax:
       return Ok(
-        ((input / 100) * Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
-          chInPixels,
+        ((input / 100) * Math.max(viewportWidth, viewportHeight)) / chInPixels,
       );
     case Units.Vmin:
       return Ok(
-        ((input / 100) * Math.min(VIEWPORT_WIDTH, VIEWPORT_HEIGHT)) /
-          chInPixels,
+        ((input / 100) * Math.min(viewportWidth, viewportHeight)) / chInPixels,
       );
     case Units.Vw:
-      return Ok(((input / 100) * VIEWPORT_WIDTH) / chInPixels);
+      return Ok(((input / 100) * viewportWidth) / chInPixels);
     default:
       return Err(
         ConversionErrorKind.UnsupportedUnit,
