@@ -6,7 +6,7 @@ import {
 import { hotkeyManager } from "@/lib/hotkey_manager.ts";
 import { CloseIcon } from "@/lib/ui/icons.tsx";
 import { configState, DEFAULT_CONFIG, resetConfig } from "@/lib/config.ts";
-import type { AppConfig } from "@/lib/config.ts";
+import type { AppConfig, ThemePreference } from "@/lib/config.ts";
 
 const DISPLAY_BLOCK = "block";
 const DISPLAY_NONE = "none";
@@ -27,6 +27,11 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
   const ppiRef = createRef<HTMLInputElement>();
   const chToEmRatioRef = createRef<HTMLInputElement>();
   const exToEmRatioRef = createRef<HTMLInputElement>();
+  const themeRefs = {
+    light: createRef<HTMLInputElement>(),
+    dark: createRef<HTMLInputElement>(),
+    system: createRef<HTMLInputElement>(),
+  };
 
   function openModal(): void {
     if (panelRef.current && formRef.current && backdropRef.current) {
@@ -47,6 +52,11 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
       }
       if (exToEmRatioRef.current) {
         exToEmRatioRef.current.value = config.exToEmRatio.toString();
+      }
+      // Set theme radio button
+      const themeRef = themeRefs[config.theme];
+      if (themeRef.current) {
+        themeRef.current.checked = true;
       }
 
       // Show backdrop
@@ -78,6 +88,12 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
   function onSubmit(e: Event): void {
     e.preventDefault();
 
+    // Get selected theme
+    let selectedTheme: ThemePreference = "system";
+    if (themeRefs.light.current?.checked) selectedTheme = "light";
+    else if (themeRefs.dark.current?.checked) selectedTheme = "dark";
+    else if (themeRefs.system.current?.checked) selectedTheme = "system";
+
     const newConfig: AppConfig = {
       viewportWidth: parseFloat(viewportWidthRef.current?.value || "1920"),
       viewportHeight: parseFloat(viewportHeightRef.current?.value || "1080"),
@@ -85,6 +101,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
       ppi: parseFloat(ppiRef.current?.value || "96"),
       chToEmRatio: parseFloat(chToEmRatioRef.current?.value || "0.5"),
       exToEmRatio: parseFloat(exToEmRatioRef.current?.value || "0.5"),
+      theme: selectedTheme,
     };
 
     // Validate all values are positive numbers
@@ -133,21 +150,21 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
       <div
         ref={backdropRef}
         onClick={closeModal}
-        class="fixed left-0 top-0 z-40 h-screen w-full bg-app-black/50 transition-opacity"
+        class="fixed left-0 top-0 z-40 h-screen w-full bg-app-black/50 dark:bg-black/70 transition-opacity"
         style={{ display: "none" }}
       />
 
       {/* Side Panel */}
       <div
         ref={panelRef}
-        class="fixed right-0 top-0 z-50 h-screen w-full sm:w-96 flex flex-col border-l border-app-green-600 bg-app-black shadow-2xl transform transition-transform duration-300"
+        class="fixed right-0 top-0 z-50 h-screen w-full sm:w-96 flex flex-col border-l border-app-green-600 dark:border-app-green-700 bg-app-black dark:bg-app-gray-900 shadow-2xl transform transition-transform duration-300"
         style={{ transform: "translateX(100%)" }}
       >
         {/* Header */}
         <div class="border-b border-app-green-600/60 px-6 py-4 bg-app-green-900/20">
           <div class="flex items-start justify-between">
             <div>
-              <label class="text-lg font-bold text-white">Settings</label>
+              <h2 class="text-lg font-bold text-white dark:text-app-gray-300">Settings</h2>
               <div class="mt-1 text-sm text-app-gray-200">
                 Configure CSS unit conversion parameters
               </div>
@@ -166,6 +183,51 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
         {/* Body */}
         <form ref={formRef} onsubmit={onSubmit} class="flex flex-col h-full">
           <div class="px-6 py-4 space-y-4 flex-1 overflow-y-auto">
+            {/* Theme Section */}
+            <div class="space-y-3">
+              <h3 class="text-sm font-semibold text-app-green-400">
+                Theme
+              </h3>
+              <div class="flex gap-2">
+                <label class="flex-1 cursor-pointer">
+                  <input
+                    ref={themeRefs.light}
+                    type="radio"
+                    name="theme"
+                    value="light"
+                    class="peer sr-only"
+                  />
+                  <div class="rounded-sm border border-app-gray-700 bg-app-gray-800 px-3 py-2 text-center text-sm text-app-gray-200 transition-all peer-checked:border-app-green-500 peer-checked:bg-app-green-600 peer-checked:text-white hover:border-app-green-600">
+                    Light
+                  </div>
+                </label>
+                <label class="flex-1 cursor-pointer">
+                  <input
+                    ref={themeRefs.dark}
+                    type="radio"
+                    name="theme"
+                    value="dark"
+                    class="peer sr-only"
+                  />
+                  <div class="rounded-sm border border-app-gray-700 bg-app-gray-800 px-3 py-2 text-center text-sm text-app-gray-200 transition-all peer-checked:border-app-green-500 peer-checked:bg-app-green-600 peer-checked:text-white hover:border-app-green-600">
+                    Dark
+                  </div>
+                </label>
+                <label class="flex-1 cursor-pointer">
+                  <input
+                    ref={themeRefs.system}
+                    type="radio"
+                    name="theme"
+                    value="system"
+                    class="peer sr-only"
+                  />
+                  <div class="rounded-sm border border-app-gray-700 bg-app-gray-800 px-3 py-2 text-center text-sm text-app-gray-200 transition-all peer-checked:border-app-green-500 peer-checked:bg-app-green-600 peer-checked:text-white hover:border-app-green-600">
+                    System
+                  </div>
+                </label>
+              </div>
+            </div>
+
             {/* Viewport Section */}
             <div class="space-y-3">
               <h3 class="text-sm font-semibold text-app-green-400">
@@ -181,7 +243,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                     type="number"
                     min="1"
                     step="1"
-                    class="w-full rounded-sm bg-app-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
+                    class="w-full rounded-sm bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                     placeholder={DEFAULT_CONFIG.viewportWidth.toString()}
                   />
                 </div>
@@ -194,7 +256,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                     type="number"
                     min="1"
                     step="1"
-                    class="w-full rounded-sm bg-app-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
+                    class="w-full rounded-sm bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                     placeholder={DEFAULT_CONFIG.viewportHeight.toString()}
                   />
                 </div>
@@ -213,7 +275,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                   type="number"
                   min="1"
                   step="0.1"
-                  class="w-full rounded-sm bg-app-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
+                  class="w-full rounded-sm bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                   placeholder={DEFAULT_CONFIG.fontSize.toString()}
                 />
               </div>
@@ -228,7 +290,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                     min="0.01"
                     max="1"
                     step="0.01"
-                    class="w-full rounded-sm bg-app-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
+                    class="w-full rounded-sm bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                     placeholder={DEFAULT_CONFIG.chToEmRatio.toString()}
                   />
                 </div>
@@ -242,7 +304,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                     min="0.01"
                     max="1"
                     step="0.01"
-                    class="w-full rounded-sm bg-app-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
+                    class="w-full rounded-sm bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                     placeholder={DEFAULT_CONFIG.exToEmRatio.toString()}
                   />
                 </div>
@@ -263,7 +325,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                   type="number"
                   min="1"
                   step="1"
-                  class="w-full rounded-sm bg-app-gray-100 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
+                  class="w-full rounded-sm bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                   placeholder={DEFAULT_CONFIG.ppi.toString()}
                 />
               </div>
@@ -289,7 +351,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
               </button>
               <button
                 type="submit"
-                class="cursor-pointer rounded-sm border border-app-green-200 bg-app-green-300 px-3 py-1.5 text-sm font-medium text-app-black transition-colors hover:bg-app-green-400"
+                class="cursor-pointer rounded-sm border border-app-green-200 dark:border-app-green-400 bg-app-green-300 dark:bg-app-green-600 px-3 py-1.5 text-sm font-medium text-app-black dark:text-white transition-colors hover:bg-app-green-400 dark:hover:bg-app-green-500"
               >
                 Save
               </button>

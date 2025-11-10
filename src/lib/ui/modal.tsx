@@ -176,8 +176,8 @@ export default function Modal({
       div.className =
         `px-4 py-2.5 cursor-pointer flex items-center justify-between transition-colors ${
           index === selectedSuggestionIndex
-            ? "bg-app-green-600 text-white"
-            : "text-app-gray-200 hover:bg-app-green-700/50"
+            ? "bg-app-green-600 dark:bg-app-green-700 text-white"
+            : "text-app-gray-200 dark:text-app-gray-300 hover:bg-app-green-700/50 dark:hover:bg-app-green-800/50"
         }`;
 
       // Create content wrapper
@@ -187,7 +187,7 @@ export default function Modal({
       // Create abbreviation span
       const abbrSpan = document.createElement("span");
       abbrSpan.className = `font-mono font-semibold ${
-        index === selectedSuggestionIndex ? "text-white" : "text-app-green-400"
+        index === selectedSuggestionIndex ? "text-white" : "text-app-green-400 dark:text-app-green-300"
       }`;
       abbrSpan.textContent = unit.abbr;
 
@@ -328,9 +328,9 @@ export default function Modal({
   return (
     <div
       ref={modalRef}
-      class="fixed left-0 top-0 z-10 hidden h-screen w-full bg-app-black/70"
+      class="fixed left-0 top-0 z-10 hidden h-screen w-full bg-app-black/70 dark:bg-black/80"
     >
-      <div class="fixed inset-x-4 top-1/4 sm:inset-x-1/4 lg:inset-x-1/3 flex flex-col rounded-md border border-app-green-600 bg-app-black shadow-lg shadow-app-black @container">
+      <div class="fixed inset-x-4 top-1/4 sm:inset-x-1/4 lg:inset-x-1/3 flex flex-col rounded-md border border-app-green-600 dark:border-app-green-700 bg-app-black dark:bg-app-gray-900 shadow-lg shadow-app-black dark:shadow-black @container">
         {/* Header */}
         <div class="border-b border-app-green-600/60 px-6 py-4">
           <div class="flex items-start justify-between">
@@ -362,7 +362,7 @@ export default function Modal({
             <div class="relative">
               <input
                 ref={inputRef}
-                class="w-full rounded-sm bg-app-gray-100 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-app-green-600"
+                class="w-full rounded-sm bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-base outline-none focus:ring-2 focus:ring-app-green-600"
                 type="text"
                 name="name"
                 placeholder="e.g., 100:px or 2:rem"
@@ -372,7 +372,7 @@ export default function Modal({
               />
               <button
                 type="button"
-                class="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer rounded p-1 text-app-gray-200 transition-colors hover:bg-app-gray-200 hover:text-app-black"
+                class="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer rounded p-1 text-app-gray-200 dark:text-app-gray-300 transition-colors hover:bg-app-gray-200 dark:hover:bg-app-gray-700 hover:text-app-black dark:hover:text-white"
                 onClick={onClickClearInput}
                 aria-label="Clear input"
                 title="Clear"
@@ -389,7 +389,7 @@ export default function Modal({
               </button>
               <div
                 ref={suggestionsDropdownRef}
-                class="absolute left-0 top-full mt-1 w-full rounded-sm border border-app-green-600 bg-app-black shadow-lg"
+                class="absolute left-0 top-full mt-1 w-full rounded-sm border border-app-green-600 dark:border-app-green-700 bg-app-black dark:bg-app-gray-900 shadow-lg"
                 style={{ display: "none", "z-index": "100" }}
               />
             </div>

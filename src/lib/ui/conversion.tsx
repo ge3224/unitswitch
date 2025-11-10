@@ -123,7 +123,7 @@ export default function Conversion({
 
   return (
     <div>
-      <div class="flex items-center border-b border-app-green-600 lg:h-10 lg:items-stretch lg:border">
+      <div class="flex items-center border-b border-app-green-600 dark:border-app-green-700 lg:h-10 lg:items-stretch lg:border">
         <div class="mx-2 lg:my-auto lg:hidden">
           {detail
             ? (
@@ -140,7 +140,7 @@ export default function Conversion({
         </div>
         <div
           ref={handleResultDivRef}
-          class="w-32 border-l border-r border-app-green-600 bg-app-green-100 px-2.5 py-1.5 text-sm font-bold text-app-green-500 lg:flex lg:items-center lg:border-l-0 lg:text-base"
+          class="w-32 border-l border-r border-app-green-600 dark:border-app-green-700 bg-app-green-100 dark:bg-app-green-800 px-2.5 py-1.5 text-sm font-bold text-app-green-500 dark:text-app-green-300 lg:flex lg:items-center lg:border-l-0 lg:text-base"
           id={`to-${to.toString()}`}
         >
           <span
@@ -154,12 +154,12 @@ export default function Conversion({
             {renderConversionValue(conversion.get())}
           </span>
         </div>
-        <div class="ml-2 mr-auto font-bold text-app-black lg:my-auto text-sm lg:text-base">
+        <div class="ml-2 mr-auto font-bold text-app-black dark:text-app-black lg:my-auto text-sm lg:text-base">
           {to.toString()}
         </div>
         {hotkey && (
           <kbd
-            class="hidden lg:my-auto lg:mr-3 lg:inline-flex items-center justify-center w-5 h-5 rounded-sm border border-app-gray-200 bg-white shadow-sm font-mono text-xs text-app-gray-200 cursor-default hover:border-app-green-400 hover:text-app-green-400 scale-[0.85] origin-right"
+            class="hidden lg:my-auto lg:mr-3 lg:inline-flex items-center justify-center w-5 h-5 rounded-sm border border-app-gray-200 dark:border-app-gray-300 bg-white dark:bg-app-gray-800 shadow-sm font-mono text-xs text-app-gray-200 dark:text-app-gray-300 cursor-default hover:border-app-green-400 hover:text-app-green-400 scale-[0.85] origin-right"
             title={`Press ${hotkey} to copy the converted value to the clipboard`}
           >
             {hotkey}
@@ -170,7 +170,7 @@ export default function Conversion({
         (
           <div
             ref={detailsPanelRef}
-            class="hidden border-b border-app-green-600 p-2.5 lg:block lg:border-x lg:text-xs"
+            class="hidden border-b border-app-green-600 dark:border-app-green-700 p-2.5 lg:block lg:border-x lg:text-xs dark:text-app-gray-200"
           >
             {detail}
           </div>

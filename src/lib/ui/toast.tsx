@@ -27,7 +27,7 @@ export function showToast(options: ToastOptions): void {
 
   const typeStyles = {
     error: "bg-red-500 border-red-700 text-white",
-    success: "bg-app-black border-app-black text-white",
+    success: "bg-app-green-600 dark:bg-app-green-700 border-app-green-700 dark:border-app-green-600 text-white",
     info: "bg-blue-500 border-blue-700 text-white",
   };
 

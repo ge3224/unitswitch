@@ -21,7 +21,7 @@ export default function UserInput({
 
   const warningDiv = (
     <div
-      class="col-span-5 mb-0 mt-1 h-4 text-xs text-pink-500"
+      class="col-span-5 mb-0 mt-1 h-4 text-xs text-pink-500 dark:text-pink-400"
       id="amount-error"
     >
       {warningState.get()}
@@ -84,12 +84,12 @@ export default function UserInput({
     <div class="mx-auto mt-5 flex max-w-sm flex-col justify-center md:w-96 lg:ml-9 lg:mt-0">
       <form class="grid grid-cols-5 items-center gap-2" onsubmit={onSubmit}>
         <fieldset class="col-span-3">
-          <label class="text-sm" htmlFor="unit_amount">
+          <label class="text-sm dark:text-app-green-300" htmlFor="unit_amount">
             Amount:
           </label>
           <input
             ref={amountInput}
-            class="focus:ring-app-teal-500 w-full rounded-sm border border-app-green-600 bg-app-green-100 px-1.5 py-1 font-bold text-app-green-500 focus:outline-none focus:ring"
+            class="focus:ring-app-teal-500 w-full rounded-sm border border-app-green-600 dark:border-app-green-700 bg-app-green-100 dark:bg-app-green-800 px-1.5 py-1 font-bold text-app-green-500 dark:text-app-green-300 focus:outline-none focus:ring"
             id="unit_amount"
             type="text"
             onchange={onChangeAmount}
@@ -99,12 +99,15 @@ export default function UserInput({
           />
         </fieldset>
         <fieldset class="col-span-2">
-          <label class="col-span-2 text-sm" htmlFor="unit_select">
+          <label
+            class="col-span-2 text-sm dark:text-app-green-300"
+            htmlFor="unit_select"
+          >
             Unit:
           </label>
           <select
             ref={unitSelect}
-            class="focus:ring-app-teal-500 w-full rounded-sm border border-app-green-600 bg-app-gray-50 px-0.5 py-1 text-app-black focus:outline-none focus:ring"
+            class="focus:ring-app-teal-500 w-full rounded-sm border border-app-green-600 dark:border-app-green-700 bg-app-gray-50 dark:bg-app-gray-700 px-0.5 py-1 text-app-black focus:outline-none focus:ring"
             id="unit_select"
             name="units"
             onchange={onChangeUnit}
@@ -120,19 +123,19 @@ export default function UserInput({
         </fieldset>
         <fieldset class="col-span-5 flex items-center gap-2">
           <input
-            class="w-1/3 cursor-pointer rounded-sm bg-app-black p-1 font-bold text-white shadow transition delay-150 duration-300 ease-in-out hover:bg-app-green-500 hover:bg-none focus:outline-none focus:ring focus:ring-app-green-200 active:bg-cyan-800 active:transition-none"
+            class="w-1/3 cursor-pointer rounded-sm bg-app-black dark:bg-app-green-600 p-1 font-bold text-white shadow transition delay-150 duration-300 ease-in-out hover:bg-app-green-500 dark:hover:bg-app-green-500 hover:bg-none focus:outline-none focus:ring focus:ring-app-green-200 dark:focus:ring-app-green-500 active:bg-cyan-800 dark:active:bg-cyan-700 active:transition-none"
             type="submit"
             value="Convert"
           />
-          <div class="flex items-center gap-1 scale-[0.95] origin-left">
+          <div class="flex items-center gap-1 scale-[0.75] origin-left">
             <kbd
-              class="inline-flex items-center justify-center px-1.5 h-6 rounded-sm border border-app-gray-200 bg-white shadow-sm font-mono text-xs text-app-gray-200 cursor-default hover:border-app-green-400 hover:text-app-green-400"
+              class="inline-flex items-center justify-center px-1.5 h-6 rounded-sm border border-app-gray-200 dark:border-app-gray-300 bg-white dark:bg-app-gray-800 shadow-sm font-mono text-xs text-app-gray-200 dark:text-app-gray-300 cursor-default hover:border-app-green-400 hover:text-app-green-400"
               title="Press Ctrl+K for quick keyboard conversions"
             >
               Ctrl
             </kbd>
             <kbd
-              class="inline-flex items-center justify-center w-6 h-6 rounded-sm border border-app-gray-200 bg-white shadow-sm font-mono text-xs text-app-gray-200 cursor-default hover:border-app-green-400 hover:text-app-green-400"
+              class="inline-flex items-center justify-center w-6 h-6 rounded-sm border border-app-gray-200 dark:border-app-gray-300 bg-white dark:bg-app-gray-800 shadow-sm font-mono text-xs text-app-gray-200 dark:text-app-gray-300 cursor-default hover:border-app-green-400 hover:text-app-green-400"
               title="Press Ctrl+K for quick keyboard conversions"
             >
               K

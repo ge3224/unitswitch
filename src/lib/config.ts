@@ -9,6 +9,11 @@ import {
 } from "@/lib/constants.ts";
 
 /**
+ * Theme preference options
+ */
+export type ThemePreference = "light" | "dark" | "system";
+
+/**
  * User-configurable settings for CSS unit conversions
  */
 export type AppConfig = {
@@ -24,6 +29,8 @@ export type AppConfig = {
   chToEmRatio: number;
   /** X-height (ex) to em ratio */
   exToEmRatio: number;
+  /** Theme preference: light, dark, or system */
+  theme: ThemePreference;
 };
 
 const LOCAL_STORAGE_KEY = "unitswitch-config";
@@ -38,6 +45,7 @@ export const DEFAULT_CONFIG: AppConfig = {
   ppi: PPI,
   chToEmRatio: CH_TO_EM_RATIO,
   exToEmRatio: EX_TO_EM_RATIO,
+  theme: "system",
 };
 
 /**
@@ -57,7 +65,11 @@ function loadConfig(): AppConfig {
         typeof parsed.chToEmRatio === "number" &&
         typeof parsed.exToEmRatio === "number"
       ) {
-        return parsed;
+        // Add theme if it's missing from stored config (backwards compatibility)
+        return {
+          ...parsed,
+          theme: parsed.theme || "system",
+        };
       }
     }
   } catch (error) {
