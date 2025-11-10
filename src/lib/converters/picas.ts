@@ -5,15 +5,8 @@ import {
   Ok,
   type Result,
 } from "@/lib/converters/result.ts";
-import { FONT_SIZE, PPI } from "@/lib/constants.ts";
 import { type Unit, Units } from "@/lib/units.ts";
-
-/**
- * Converts a value from pixels to picas based on a specified DPI (dots per inch).
- */
-function _pixelsToPicas(pixels: number): number {
-  return (pixels * 6) / PPI;
-}
+import { configState } from "@/lib/config.ts";
 
 export const convertToPicas: Converter = function convertToPicas(
   from: Unit,
@@ -27,6 +20,14 @@ export const convertToPicas: Converter = function convertToPicas(
     );
   }
 
+  const { ppi, fontSize } = configState.get();
+
+  /**
+   * Converts a value from pixels to picas based on a specified DPI (dots per inch).
+   */
+  function _pixelsToPicas(pixels: number): number {
+    return (pixels * 6) / ppi;
+  }
   switch (from) {
     case Units.Centimeters:
       return Ok(input * 2.362204724);
@@ -43,7 +44,7 @@ export const convertToPicas: Converter = function convertToPicas(
     case Units.Points:
       return Ok(input * 0.0833);
     case Units.Rems:
-      return Ok(_pixelsToPicas(input * FONT_SIZE));
+      return Ok(_pixelsToPicas(input * fontSize));
     default:
       return Err(
         ConversionErrorKind.UnsupportedUnit,

@@ -5,7 +5,7 @@ import {
   Ok,
   type Result,
 } from "@/lib/converters/result.ts";
-import { FONT_SIZE, PPI } from "@/lib/constants.ts";
+import { configState } from "@/lib/config.ts";
 import { type Unit, Units } from "@/lib/units.ts";
 
 /**
@@ -27,23 +27,25 @@ export const convertToPixels: Converter = function convertToPixels(
     );
   }
 
+  const { ppi, fontSize } = configState.get();
+
   switch (from) {
     case Units.Centimeters:
-      return Ok(Math.ceil(input * (PPI / 2.54)));
+      return Ok(Math.ceil(input * (ppi / 2.54)));
     case Units.Feet:
-      return Ok(Math.ceil(input * 12 * PPI));
+      return Ok(Math.ceil(input * 12 * ppi));
     case Units.Inches:
-      return Ok(Math.ceil(input * PPI));
+      return Ok(Math.ceil(input * ppi));
     case Units.Millimeters:
-      return Ok(Math.ceil(input * (PPI / 25.4)));
+      return Ok(Math.ceil(input * (ppi / 25.4)));
     case Units.Picas:
-      return Ok(Math.ceil(input * (1 / 6) * PPI));
+      return Ok(Math.ceil(input * (1 / 6) * ppi));
     case Units.Pixels:
       return Ok(Math.ceil(input));
     case Units.Points:
-      return Ok(Math.ceil(input * (PPI / 72)));
+      return Ok(Math.ceil(input * (ppi / 72)));
     case Units.Rems:
-      return Ok(Math.ceil(input * FONT_SIZE));
+      return Ok(Math.ceil(input * fontSize));
     default:
       return Err(
         ConversionErrorKind.UnsupportedUnit,

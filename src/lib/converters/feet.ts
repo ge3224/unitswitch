@@ -5,16 +5,8 @@ import {
   Ok,
   type Result,
 } from "@/lib/converters/result.ts";
-import { FONT_SIZE, PPI } from "@/lib/constants.ts";
+import { configState } from "@/lib/config.ts";
 import { type Unit, Units } from "@/lib/units.ts";
-
-/**
- * Converts a value from pixels to feet based on a specified DPI (dots per
- * inch).
- */
-function _pixelsToFeet(px: number): number {
-  return px / PPI / 12;
-}
 
 /**
  * Converts a value from the specified unit to feet (ft).
@@ -35,6 +27,8 @@ export const convertToFeet: Converter = function convertToFeet(
     );
   }
 
+  const { ppi, fontSize } = configState.get();
+
   switch (from) {
     case Units.Centimeters:
       return Ok(input / 30.48);
@@ -47,11 +41,11 @@ export const convertToFeet: Converter = function convertToFeet(
     case Units.Picas:
       return Ok((input * 0.1667) / 12);
     case Units.Pixels:
-      return Ok(_pixelsToFeet(input));
+      return Ok(input / ppi / 12);
     case Units.Points:
       return Ok(input / 72 / 12);
     case Units.Rems:
-      return Ok((input * FONT_SIZE) / (12 * PPI));
+      return Ok((input * fontSize) / (12 * ppi));
     default:
       return Err(
         ConversionErrorKind.UnsupportedUnit,

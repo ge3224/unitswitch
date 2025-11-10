@@ -5,12 +5,8 @@ import {
   Ok,
   type Result,
 } from "@/lib/converters/result.ts";
-import { FONT_SIZE, PPI } from "@/lib/constants.ts";
+import { configState } from "@/lib/config.ts";
 import { type Unit, Units } from "@/lib/units.ts";
-
-function _pixelsToCentimeters(pixels: number): number {
-  return (pixels / PPI) * 2.54;
-}
 
 export const convertToCentimeters: Converter = function convertToCentimeters(
   from: Unit,
@@ -24,6 +20,8 @@ export const convertToCentimeters: Converter = function convertToCentimeters(
     );
   }
 
+  const { ppi, fontSize } = configState.get();
+
   switch (from) {
     case Units.Centimeters:
       return Ok(input);
@@ -36,11 +34,11 @@ export const convertToCentimeters: Converter = function convertToCentimeters(
     case Units.Picas:
       return Ok(input * ((1 / 6) * 2.54));
     case Units.Pixels:
-      return Ok(_pixelsToCentimeters(input));
+      return Ok((input / ppi) * 2.54);
     case Units.Points:
       return Ok(input * (2.54 / 72));
     case Units.Rems:
-      return Ok(_pixelsToCentimeters(input * FONT_SIZE));
+      return Ok(((input * fontSize) / ppi) * 2.54);
     default:
       return Err(
         ConversionErrorKind.UnsupportedUnit,

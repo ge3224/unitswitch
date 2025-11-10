@@ -5,15 +5,8 @@ import {
   Ok,
   type Result,
 } from "@/lib/converters/result.ts";
-import { FONT_SIZE, PPI } from "@/lib/constants.ts";
+import { configState } from "@/lib/config.ts";
 import { type Unit, Units } from "@/lib/units.ts";
-
-/**
- * Converts a value from pixels to rems based on a specified DPI (dots per inch).
- */
-function _pixelsToRems(px: number): number {
-  return px / FONT_SIZE;
-}
 
 export const convertToRems: Converter = function convertToRems(
   from: Unit,
@@ -27,21 +20,23 @@ export const convertToRems: Converter = function convertToRems(
     );
   }
 
+  const { ppi, fontSize } = configState.get();
+
   switch (from) {
     case Units.Centimeters:
-      return Ok((input * 0.3937008 * PPI) / FONT_SIZE);
+      return Ok((input * 0.3937008 * ppi) / fontSize);
     case Units.Feet:
-      return Ok((input * 12 * PPI) / FONT_SIZE);
+      return Ok((input * 12 * ppi) / fontSize);
     case Units.Inches:
-      return Ok((input * PPI) / FONT_SIZE);
+      return Ok((input * ppi) / fontSize);
     case Units.Millimeters:
-      return Ok((PPI / 25.4 / FONT_SIZE) * input);
+      return Ok((ppi / 25.4 / fontSize) * input);
     case Units.Picas:
-      return Ok((PPI / 6 / FONT_SIZE) * input);
+      return Ok((ppi / 6 / fontSize) * input);
     case Units.Pixels:
-      return Ok(_pixelsToRems(input));
+      return Ok(input / fontSize);
     case Units.Points:
-      return Ok((input / 72) * (PPI / FONT_SIZE));
+      return Ok((input / 72) * (ppi / fontSize));
     case Units.Rems:
       return Ok(input);
     default:

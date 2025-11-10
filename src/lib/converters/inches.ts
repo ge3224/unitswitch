@@ -5,15 +5,8 @@ import {
   Ok,
   type Result,
 } from "@/lib/converters/result.ts";
-import { FONT_SIZE, PPI } from "@/lib/constants.ts";
+import { configState } from "@/lib/config.ts";
 import { type Unit, Units } from "@/lib/units.ts";
-
-/**
- * Converts a value from pixels to inches based on a specified DPI (dots per inch).
- */
-function _pixelsToInches(px: number): number {
-  return px / PPI;
-}
 
 export const convertToInches: Converter = function convertToInches(
   from: Unit,
@@ -27,6 +20,8 @@ export const convertToInches: Converter = function convertToInches(
     );
   }
 
+  const { ppi, fontSize } = configState.get();
+
   switch (from) {
     case Units.Centimeters:
       return Ok(input * 0.393701);
@@ -39,11 +34,11 @@ export const convertToInches: Converter = function convertToInches(
     case Units.Picas:
       return Ok(input / 6);
     case Units.Pixels:
-      return Ok(_pixelsToInches(input));
+      return Ok(input / ppi);
     case Units.Points:
       return Ok(input / 72);
     case Units.Rems:
-      return Ok((input * FONT_SIZE) / PPI);
+      return Ok((input * fontSize) / ppi);
     default:
       return Err(
         ConversionErrorKind.UnsupportedUnit,

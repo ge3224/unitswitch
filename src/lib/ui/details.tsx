@@ -1,15 +1,21 @@
 import { createDomElement } from "@pkg/just-jsx/src/index.ts";
 import {
-  FONT_SIZE,
   GOLDEN_RATIO,
   GOLDEN_RATIO_SQUARED,
-  PPI,
   ROOT_TWO,
   ROOT_TWO_SQUARED,
 } from "@/lib/constants.ts";
 import { ViewInputState } from "@/lib/types.ts";
+import { configState } from "@/lib/config.ts";
 
 export function DetailsRemsEms() {
+  const fontSize = configState.get().fontSize;
+  const fontSizeTextNode = document.createTextNode(`${fontSize}px`);
+
+  configState.subscribe((config) => {
+    fontSizeTextNode.textContent = `${config.fontSize}px`;
+  });
+
   return (
     <div class="text-app-black dark:text-app-gray-200">
       Based on a{" "}
@@ -19,15 +25,22 @@ export function DetailsRemsEms() {
       >
         root*
       </span>{" "}
-      font size of <span class="font-bold">{FONT_SIZE}px</span>
+      font size of <span class="font-bold">{fontSizeTextNode}</span>
     </div>
   );
 }
 
 export function DetailsPixels() {
+  const ppi = configState.get().ppi;
+  const ppiTextNode = document.createTextNode(`${ppi} DPI`);
+
+  configState.subscribe((config) => {
+    ppiTextNode.textContent = `${config.ppi} DPI`;
+  });
+
   return (
     <div class="text-app-black dark:text-app-gray-200">
-      Based on a resolution of <span class="font-bold">{PPI} DPI</span>
+      Based on a resolution of <span class="font-bold">{ppiTextNode}</span>
     </div>
   );
 }

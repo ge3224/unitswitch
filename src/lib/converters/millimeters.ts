@@ -5,16 +5,8 @@ import {
   Ok,
   type Result,
 } from "@/lib/converters/result.ts";
-import { FONT_SIZE } from "@/lib/constants.ts";
 import { type Unit, Units } from "@/lib/units.ts";
-import { roundToDecimal } from "@/lib/round_number.ts";
-
-/**
- * Converts a value from pixels to millimetres based on a specified DPI (dots per inch).
- */
-function _pixelsToMillimeters(px: number): number {
-  return px * 0.2645833;
-}
+import { configState } from "@/lib/config.ts";
 
 export const convertToMillimeters: Converter = function convertToMillimeters(
   from: Unit,
@@ -26,6 +18,15 @@ export const convertToMillimeters: Converter = function convertToMillimeters(
       "Input value cannot be negative",
       { input, unit: from },
     );
+  }
+
+  const { ppi, fontSize } = configState.get();
+
+  /**
+   * Converts a value from pixels to millimetres based on a specified DPI (dots per inch).
+   */
+  function pixelsToMillimeters(px: number): number {
+    return (px / ppi) * 25.4;
   }
 
   switch (from) {
@@ -40,11 +41,11 @@ export const convertToMillimeters: Converter = function convertToMillimeters(
     case Units.Picas:
       return Ok(input * 4.23333333);
     case Units.Pixels:
-      return Ok(_pixelsToMillimeters(input));
+      return Ok(pixelsToMillimeters(input));
     case Units.Points:
       return Ok(input * 0.352778);
     case Units.Rems:
-      return Ok(_pixelsToMillimeters(input * FONT_SIZE));
+      return Ok(pixelsToMillimeters(input * fontSize));
     default:
       return Err(
         ConversionErrorKind.UnsupportedUnit,

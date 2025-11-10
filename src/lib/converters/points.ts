@@ -5,12 +5,8 @@ import {
   Ok,
   type Result,
 } from "@/lib/converters/result.ts";
-import { FONT_SIZE, PPI } from "@/lib/constants.ts";
 import { type Unit, Units } from "@/lib/units.ts";
-
-function _pixelsToPoints(px: number): number {
-  return px * (72 / PPI);
-}
+import { configState } from "../config.ts";
 
 /**
  * Converts a value from the specified unit to points (pt).
@@ -31,6 +27,12 @@ export const convertToPoints: Converter = function convertToPoints(
     );
   }
 
+  const { ppi, fontSize } = configState.get();
+
+  function pixelsToPoints(px: number): number {
+    return px * (72 / ppi);
+  }
+
   switch (from) {
     case Units.Centimeters:
       return Ok(input * 28.3464567);
@@ -43,11 +45,11 @@ export const convertToPoints: Converter = function convertToPoints(
     case Units.Picas:
       return Ok(input * 12);
     case Units.Pixels:
-      return Ok(_pixelsToPoints(input));
+      return Ok(pixelsToPoints(input));
     case Units.Points:
       return Ok(input);
     case Units.Rems:
-      return Ok(_pixelsToPoints(input * FONT_SIZE));
+      return Ok(pixelsToPoints(input * fontSize));
     default:
       return Err(
         ConversionErrorKind.UnsupportedUnit,
