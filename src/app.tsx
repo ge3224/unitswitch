@@ -48,18 +48,26 @@ type ConversionConfig = {
   detail?: (input: SimpleState<number>) => JSX.Element;
 };
 
+const detailPixels: () => JSX.Element = function detailPixels(): JSX.Element {
+  return <DetailsPixels />;
+};
+
+const detailRemsEms: () => JSX.Element = function detailRemsEms(): JSX.Element {
+  return <DetailsRemsEms />;
+};
+
 const CONVERSIONS: ConversionConfig[] = [
   {
     unit: Units.Pixels,
     converter: convertToPixels,
     hotkey: "p",
-    detail: () => <DetailsPixels />,
+    detail: detailPixels,
   },
   {
     unit: Units.Rems,
     converter: convertToRems,
     hotkey: "r",
-    detail: () => <DetailsRemsEms />,
+    detail: detailRemsEms,
   },
   { unit: Units.Millimeters, converter: convertToMillimeters, hotkey: "m" },
   { unit: Units.Centimeters, converter: convertToCentimeters, hotkey: "c" },
@@ -77,19 +85,29 @@ const CONVERSIONS: ConversionConfig[] = [
     unit: Units.Golden,
     converter: convertToGoldenRatio,
     hotkey: "g",
-    detail: (input) => <DetailsGoldenRatio input={input} />,
+    detail: function detailGoldenRatio(
+      input: SimpleState<number>,
+    ): JSX.Element {
+      return <DetailsGoldenRatio input={input} />;
+    },
   },
   {
     unit: Units.Root2,
     converter: convertToRootTwo,
     hotkey: "t",
-    detail: (input) => <DetailsRootTwo input={input} />,
+    detail: function detailRootTwo(input: SimpleState<number>): JSX.Element {
+      return <DetailsRootTwo input={input} />;
+    },
   },
   {
     unit: Units.SixteenNine,
     converter: convertToSixteenNine,
     hotkey: "s",
-    detail: (input) => <DetailsSixteenNine input={input} />,
+    detail: function detailSixteenNine(
+      input: SimpleState<number>,
+    ): JSX.Element {
+      return <DetailsSixteenNine input={input} />;
+    },
   },
 ];
 
@@ -145,7 +163,7 @@ export function App(): Node {
 
   const container = (
     <div class="m-2 sm:flex sm:min-h-screen items-center justify-center dark:bg-app-gray-900">
-      <div class="my-auto max-w-7xl lg:mx-auto rounded-lg border border-app-green-600 bg-app-green-50 dark:bg-app-green-900 dark:border-app-green-700 pb-3 lg:grid lg:grid-cols-3 lg:gap-4 lg:border-none lg:p-8">
+      <div class="my-auto max-w-7xl lg:mx-auto rounded-lg border border-app-green-600 dark:bg-app-green-900 dark:border-app-green-700 pb-3 lg:grid lg:grid-cols-3 lg:gap-4 lg:border-none lg:p-8">
         <div class="relative flex flex-col border-b border-app-green-600 dark:border-app-green-700 px-8 pt-8 lg:col-span-2 lg:row-span-2 lg:flex-row lg:justify-center lg:border lg:py-5">
           <Logo />
           <UserInput
@@ -160,7 +178,9 @@ export function App(): Node {
       <button
         class="fixed top-4 right-4 z-30 cursor-pointer rounded-full p-3 text-app-gray-200 dark:text-app-green-300 transition-all hover:bg-app-green-600 dark:hover:bg-app-green-700 hover:text-white hover:shadow-lg hover:scale-110 active:scale-95"
         title="Settings (Ctrl+/)"
-        onClick={() => openSettingsFn?.()}
+        onClick={function handleSettingsClick(): void {
+          openSettingsFn?.();
+        }}
       >
         <SettingsIcon />
       </button>
@@ -192,12 +212,14 @@ export function App(): Node {
   innerDiv.appendChild(modalElement);
 
   // Append settings modal
+  const handleSettingsMount: (openFn: () => void) => void =
+    function handleSettingsMount(openFn: () => void): void {
+      openSettingsFn = openFn;
+    };
   const settingsElement = (
     <Settings
       hotkey="/"
-      onMount={(openFn) => {
-        openSettingsFn = openFn;
-      }}
+      onMount={handleSettingsMount}
     />
   ) as Node;
   innerDiv.appendChild(settingsElement);

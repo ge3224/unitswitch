@@ -28,25 +28,28 @@ export default function UserInput({
     </div>
   ) as HTMLDivElement;
 
-  warningState.subscribe((newValue) => {
+  const updateWarningText: (newValue: string) => void = function updateWarningText(newValue: string): void {
     warningDiv.textContent = newValue;
-  });
+  };
+  warningState.subscribe(updateWarningText);
 
   // Subscribe to parent state changes (e.g., from modal)
-  input.subscribe((newInput: number) => {
+  const handleInputChange: (newInput: number) => void = function handleInputChange(newInput: number): void {
     const newValue = newInput.toString();
     amountState.set(newValue);
     if (amountInput.current) {
       amountInput.current.value = newValue;
     }
-  });
+  };
+  input.subscribe(handleInputChange);
 
-  type.subscribe((newType: Unit) => {
+  const handleTypeChange: (newType: Unit) => void = function handleTypeChange(newType: Unit): void {
     unitState.set(newType);
     if (unitSelect.current) {
       unitSelect.current.value = newType;
     }
-  });
+  };
+  type.subscribe(handleTypeChange);
 
   function onChangeAmount(e: Event): void {
     e.preventDefault();
@@ -82,7 +85,9 @@ export default function UserInput({
 
   return (
     <div class="mx-auto mt-5 flex max-w-sm flex-col justify-center md:w-96 lg:ml-9 lg:mt-0">
-      <form class="grid grid-cols-5 items-center gap-2" onsubmit={onSubmit}>
+      <form class="grid grid-cols-5 items-center gap-2" onsubmit={function handleFormSubmit(e: Event): void {
+        onSubmit(e);
+      }}>
         <fieldset class="col-span-3">
           <label class="text-sm dark:text-app-green-300" htmlFor="unit_amount">
             Amount:
@@ -92,7 +97,9 @@ export default function UserInput({
             class="focus:ring-app-teal-500 w-full rounded-sm border border-app-green-600 dark:border-app-green-700 bg-app-green-100 dark:bg-app-green-800 px-1.5 py-1 font-bold text-app-green-500 dark:text-app-green-300 focus:outline-none focus:ring"
             id="unit_amount"
             type="text"
-            onchange={onChangeAmount}
+            onchange={function handleAmountChange(e: Event): void {
+              onChangeAmount(e);
+            }}
             value={amountState.get()}
             aria-label="Amount"
             aria-describedby="amount-error"
@@ -110,15 +117,19 @@ export default function UserInput({
             class="focus:ring-app-teal-500 w-full rounded-sm border border-app-green-600 dark:border-app-green-700 bg-app-gray-50 dark:bg-app-gray-700 px-0.5 py-1 text-app-black focus:outline-none focus:ring"
             id="unit_select"
             name="units"
-            onchange={onChangeUnit}
+            onchange={function handleUnitChange(e: Event): void {
+              onChangeUnit(e);
+            }}
             value={unitState.get().toString()}
             aria-label="Unit"
           >
-            {Object.values(Units).map((unit, index) => (
-              <option key={index} value={unit}>
-                {unit}
-              </option>
-            ))}
+            {Object.values(Units).map(function renderUnitOption(unit: Unit, index: number): JSX.Element {
+              return (
+                <option key={index} value={unit}>
+                  {unit}
+                </option>
+              );
+            })}
           </select>
         </fieldset>
         <fieldset class="col-span-5 flex items-center gap-2">

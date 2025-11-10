@@ -97,9 +97,10 @@ export const configState: SimpleState<AppConfig> = newSimpleState<AppConfig>(
 );
 
 // Subscribe to save changes to localStorage
-configState.subscribe((newConfig: AppConfig) => {
+const handleConfigSave: (newConfig: AppConfig) => void = function handleConfigSave(newConfig: AppConfig): void {
   saveConfig(newConfig);
-});
+};
+configState.subscribe(handleConfigSave);
 
 /**
  * Reset configuration to defaults

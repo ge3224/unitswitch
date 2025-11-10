@@ -146,11 +146,11 @@ export default function Modal({
       return;
     }
 
-    filteredSuggestions = UNIT_ABBREVIATIONS.filter(
-      (unit) =>
-        unit.abbr.startsWith(query.toLowerCase()) ||
-        unit.name.toLowerCase().startsWith(query.toLowerCase()),
-    );
+    const filterUnit: (unit: UnitAbbreviation) => boolean = function filterUnit(unit: UnitAbbreviation): boolean {
+      return unit.abbr.startsWith(query.toLowerCase()) ||
+        unit.name.toLowerCase().startsWith(query.toLowerCase());
+    };
+    filteredSuggestions = UNIT_ABBREVIATIONS.filter(filterUnit);
 
     if (filteredSuggestions.length > 0) {
       showSuggestions = true;
@@ -171,7 +171,7 @@ export default function Modal({
     suggestionsDropdownRef.current.style.maxHeight = "240px";
     suggestionsDropdownRef.current.style.overflowY = "auto";
 
-    filteredSuggestions.forEach((unit, index) => {
+    const renderSuggestion: (unit: UnitAbbreviation, index: number) => void = function renderSuggestion(unit: UnitAbbreviation, index: number): void {
       const div = document.createElement("div");
       div.className =
         `px-4 py-2.5 cursor-pointer flex items-center justify-between transition-colors ${
@@ -200,9 +200,12 @@ export default function Modal({
       contentWrapper.appendChild(nameSpan);
       div.appendChild(contentWrapper);
 
-      div.onclick = () => selectSuggestion(unit.abbr);
+      div.onclick = function handleSuggestionClick(): void {
+        selectSuggestion(unit.abbr);
+      };
       suggestionsDropdownRef.current?.appendChild(div);
-    });
+    };
+    filteredSuggestions.forEach(renderSuggestion);
   }
 
   function selectSuggestion(abbr: string): void {
@@ -269,7 +272,7 @@ export default function Modal({
   }
 
   // Global Escape listener to close modal
-  globalThis.addEventListener("keydown", (e: KeyboardEvent) => {
+  const handleGlobalEscape: (e: KeyboardEvent) => void = function handleGlobalEscape(e: KeyboardEvent): void {
     if (
       e.key === "Escape" && modalRef.current &&
       modalRef.current.style.display === DISPLAY_BLOCK
@@ -277,16 +280,18 @@ export default function Modal({
       e.preventDefault();
       onClickCloseModal();
     }
-  });
+  };
+  globalThis.addEventListener("keydown", handleGlobalEscape);
 
   if (hotkey) {
     hotkeyManager.register(hotkey, function hotkeyHandlerModal() {
       if (inputRef.current && modalRef.current) {
         inputRef.current.value = "";
         modalRef.current.style.display = DISPLAY_BLOCK;
-        requestAnimationFrame(() => {
+        const focusInput: () => void = function focusInput(): void {
           inputRef.current?.focus();
-        });
+        };
+        requestAnimationFrame(focusInput);
       }
     }, "ctrl");
   }
@@ -348,7 +353,9 @@ export default function Modal({
             <button
               type="button"
               class="cursor-pointer rounded p-1 text-app-gray-200 transition-colors hover:bg-app-green-700 hover:text-white"
-              onClick={onClickCloseModal}
+              onClick={function handleCloseClick(): void {
+                onClickCloseModal();
+              }}
               aria-label="Close modal"
             >
               <CloseIcon />
@@ -357,7 +364,9 @@ export default function Modal({
         </div>
 
         {/* Body */}
-        <form onsubmit={onSubmitModalForm} class="flex flex-col">
+        <form onsubmit={function handleFormSubmit(e: Event): void {
+          onSubmitModalForm(e);
+        }} class="flex flex-col">
           <div class="px-6 py-4">
             <div class="relative">
               <input
@@ -367,13 +376,19 @@ export default function Modal({
                 name="name"
                 placeholder="e.g., 100:px or 2:rem"
                 data-testid="modal-input"
-                oninput={onInputChange}
-                onkeydown={onInputKeyDown}
+                oninput={function handleInputChange(): void {
+                  onInputChange();
+                }}
+                onkeydown={function handleInputKeyDown(e: KeyboardEvent): void {
+                  onInputKeyDown(e);
+                }}
               />
               <button
                 type="button"
                 class="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer rounded p-1 text-app-gray-200 dark:text-app-gray-300 transition-colors hover:bg-app-gray-200 dark:hover:bg-app-gray-700 hover:text-app-black dark:hover:text-white"
-                onClick={onClickClearInput}
+                onClick={function handleClearClick(): void {
+                  onClickClearInput();
+                }}
                 aria-label="Clear input"
                 title="Clear"
               >
@@ -424,7 +439,9 @@ export default function Modal({
               <button
                 type="button"
                 class="cursor-pointer rounded-sm border border-app-green-600/50 bg-transparent px-3 py-1 text-sm text-app-gray-200 transition-colors hover:bg-app-green-700 hover:text-white"
-                onClick={onClickCloseModal}
+                onClick={function handleCancelClick(): void {
+                  onClickCloseModal();
+                }}
               >
                 Cancel
               </button>

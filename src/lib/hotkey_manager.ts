@@ -30,7 +30,7 @@ function createHotkeyManager() {
    * Initialize the global keyboard event listener (called automatically on first registration)
    */
   function initialize(): void {
-    globalThis.addEventListener("keydown", (e: KeyboardEvent) => {
+    const handleKeyDown: (e: KeyboardEvent) => void = function handleKeyDown(e: KeyboardEvent): void {
       // For single key hotkeys (no modifier), don't trigger if user is typing in an input
       if (!e.ctrlKey && !e.altKey && !e.metaKey && !e.shiftKey) {
         if (isTypingInInput()) {
@@ -58,7 +58,8 @@ function createHotkeyManager() {
           altHandler();
         }
       }
-    });
+    };
+    globalThis.addEventListener("keydown", handleKeyDown);
     initialized = true;
   }
 

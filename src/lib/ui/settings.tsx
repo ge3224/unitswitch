@@ -63,11 +63,12 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
       backdropRef.current.style.display = DISPLAY_BLOCK;
 
       // Slide in panel
-      requestAnimationFrame(() => {
+      const slideInPanel: () => void = function slideInPanel(): void {
         if (panelRef.current) {
           panelRef.current.style.transform = "translateX(0)";
         }
-      });
+      };
+      requestAnimationFrame(slideInPanel);
     }
   }
 
@@ -77,11 +78,12 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
       panelRef.current.style.transform = "translateX(100%)";
 
       // Hide backdrop after animation
-      setTimeout(() => {
+      const hideBackdrop: () => void = function hideBackdrop(): void {
         if (backdropRef.current) {
           backdropRef.current.style.display = DISPLAY_NONE;
         }
-      }, 300);
+      };
+      setTimeout(hideBackdrop, 300);
     }
   }
 
@@ -124,7 +126,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
   }
 
   // Global Escape listener to close panel
-  globalThis.addEventListener("keydown", (e: KeyboardEvent) => {
+  const handleGlobalEscape: (e: KeyboardEvent) => void = function handleGlobalEscape(e: KeyboardEvent): void {
     if (
       e.key === "Escape" && panelRef.current &&
       panelRef.current.style.transform === "translateX(0px)"
@@ -132,7 +134,8 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
       e.preventDefault();
       closeModal();
     }
-  });
+  };
+  globalThis.addEventListener("keydown", handleGlobalEscape);
 
   // Register hotkey
   if (hotkey) {
@@ -149,7 +152,9 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
       {/* Backdrop */}
       <div
         ref={backdropRef}
-        onClick={closeModal}
+        onClick={function handleBackdropClick(): void {
+          closeModal();
+        }}
         class="fixed left-0 top-0 z-40 h-screen w-full bg-app-black/50 dark:bg-black/70 transition-opacity"
         style={{ display: "none" }}
       />
@@ -172,7 +177,9 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
             <button
               type="button"
               class="cursor-pointer rounded p-1 text-app-gray-200 transition-colors hover:bg-app-green-700 hover:text-white"
-              onClick={closeModal}
+              onClick={function handleCloseClick(): void {
+                closeModal();
+              }}
               aria-label="Close panel"
             >
               <CloseIcon />
@@ -181,7 +188,9 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
         </div>
 
         {/* Body */}
-        <form ref={formRef} onsubmit={onSubmit} class="flex flex-col h-full">
+        <form ref={formRef} onsubmit={function handleFormSubmit(e: Event): void {
+          onSubmit(e);
+        }} class="flex flex-col h-full">
           <div class="px-6 py-4 space-y-4 flex-1 overflow-y-auto">
             {/* Theme Section */}
             <div class="space-y-3">
@@ -337,7 +346,9 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
             <button
               type="button"
               class="cursor-pointer rounded-sm border border-app-gray-200/50 bg-transparent px-3 py-1.5 text-sm text-app-gray-200 transition-colors hover:bg-app-gray-200 hover:text-app-black"
-              onClick={onReset}
+              onClick={function handleResetClick(): void {
+                onReset();
+              }}
             >
               Reset to Defaults
             </button>
@@ -345,7 +356,9 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
               <button
                 type="button"
                 class="cursor-pointer rounded-sm border border-app-green-600/50 bg-transparent px-3 py-1.5 text-sm text-app-gray-200 transition-colors hover:bg-app-green-700 hover:text-white"
-                onClick={closeModal}
+                onClick={function handleCancelClick(): void {
+                  closeModal();
+                }}
               >
                 Cancel
               </button>

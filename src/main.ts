@@ -9,9 +9,10 @@ themeManager.applyTheme(config.theme);
 themeManager.watchSystemTheme(config.theme);
 
 // Subscribe to config changes to update theme
-configState.subscribe((newConfig) => {
+const handleConfigChange: (newConfig: typeof config) => void = function handleConfigChange(newConfig: typeof config): void {
   themeManager.applyTheme(newConfig.theme);
   themeManager.watchSystemTheme(newConfig.theme);
-});
+};
+configState.subscribe(handleConfigChange);
 
 document.getElementById("app")?.appendChild(App());

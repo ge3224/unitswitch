@@ -46,15 +46,17 @@ export function showToast(options: ToastOptions): void {
   container.appendChild(toast);
 
   // Fade out and remove after duration
-  setTimeout(() => {
+  const fadeOutToast: () => void = function fadeOutToast(): void {
     toast.style.opacity = "0";
 
-    setTimeout(() => {
+    const removeToast: () => void = function removeToast(): void {
       if (container.contains(toast)) {
         container.removeChild(toast);
       }
-    }, TOAST_FADE_OUT_MS);
-  }, duration);
+    };
+    setTimeout(removeToast, TOAST_FADE_OUT_MS);
+  };
+  setTimeout(fadeOutToast, duration);
 }
 
 /**
@@ -92,11 +94,20 @@ function getOrCreateToastContainer(): HTMLElement {
 /**
  * Convenience functions for common toast types
  */
+const toastError: (message: string, duration?: number) => void = function toastError(message: string, duration?: number): void {
+  showToast({ message, type: "error", duration });
+};
+
+const toastSuccess: (message: string, duration?: number) => void = function toastSuccess(message: string, duration = TOAST_SUCCESS_DURATION_MS): void {
+  showToast({ message, type: "success", duration });
+};
+
+const toastInfo: (message: string, duration?: number) => void = function toastInfo(message: string, duration?: number): void {
+  showToast({ message, type: "info", duration });
+};
+
 export const toast = {
-  error: (message: string, duration?: number) =>
-    showToast({ message, type: "error", duration }),
-  success: (message: string, duration = TOAST_SUCCESS_DURATION_MS) =>
-    showToast({ message, type: "success", duration }),
-  info: (message: string, duration?: number) =>
-    showToast({ message, type: "info", duration }),
+  error: toastError,
+  success: toastSuccess,
+  info: toastInfo,
 };

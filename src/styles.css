@@ -1,9 +1,7 @@
 @import "tailwindcss";
 
-/* Configure dark mode to use class strategy */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Body background colors for light and dark mode */
 body {
   background-color: var(--color-white);
   transition: background-color 0.2s ease;
@@ -14,73 +12,61 @@ html.dark body {
 }
 
 @theme {
-  /* Custom breakpoint */
   --breakpoint-xs: 348px;
 
-  /* Light mode - App color scheme (default) */
-  --color-app-black: hsl(190, 100%, 13%);
-  --color-app-white: hsl(0, 0%, 100%);
+  --color-app-black: oklch(0.24 0.07 210);
+  --color-app-white: oklch(1 0 0);
 
-  /* Light mode - App gray scale */
-  --color-app-gray-50: hsl(165, 15%, 90%);
-  --color-app-gray-100: hsl(164, 15%, 86%);
-  --color-app-gray-200: hsl(166, 18%, 68%);
-  --color-app-gray-300: hsl(166, 18%, 40%);
-  --color-app-gray-700: hsl(165, 15%, 25%);
-  --color-app-gray-800: hsl(165, 15%, 18%);
-  --color-app-gray-900: hsl(165, 15%, 12%);
+  --color-app-gray-50: oklch(0.89 0.01 180);
+  --color-app-gray-100: oklch(0.85 0.01 180);
+  --color-app-gray-200: oklch(0.69 0.02 180);
+  --color-app-gray-300: oklch(0.44 0.02 180);
+  --color-app-gray-700: oklch(0.29 0.01 180);
+  --color-app-gray-800: oklch(0.22 0.01 180);
+  --color-app-gray-900: oklch(0.17 0.01 180);
 
-  /* Light mode - App green scale */
-  --color-app-green-50: hsl(100, 100%, 99%);
-  --color-app-green-100: hsl(100, 100%, 95%);
-  --color-app-green-200: hsl(141, 39%, 75%);
-  --color-app-green-300: hsl(99, 84%, 85%);
-  --color-app-green-400: hsl(150, 46%, 52%);
-  --color-app-green-500: hsl(159, 78%, 30%);
-  --color-app-green-600: hsl(180, 65%, 24%);
-  --color-app-green-700: hsl(180, 70%, 20%);
-  --color-app-green-800: hsl(180, 75%, 16%);
-  --color-app-green-900: hsl(180, 80%, 10%);
+  --color-app-green-50: oklch(0.99 0.05 135);
+  --color-app-green-100: oklch(0.96 0.09 135);
+  --color-app-green-200: oklch(0.77 0.08 155);
+  --color-app-green-300: oklch(0.87 0.12 135);
+  --color-app-green-400: oklch(0.58 0.12 165);
+  --color-app-green-500: oklch(0.38 0.09 175);
+  --color-app-green-600: oklch(0.32 0.06 195);
+  --color-app-green-700: oklch(0.28 0.06 195);
+  --color-app-green-800: oklch(0.23 0.06 195);
+  --color-app-green-900: oklch(0.16 0.05 195);
 
-  /* Light mode - App purple scale */
-  --color-app-purple-400: hsl(281, 69%, 65%);
-  --color-app-purple-500: hsl(234, 46%, 64%);
+  --color-app-purple-400: oklch(0.68 0.17 320);
+  --color-app-purple-500: oklch(0.66 0.12 280);
 
-  /* Light mode - App teal scale */
-  --color-app-teal-500: hsl(180, 80%, 45%);
+  --color-app-teal-500: oklch(0.54 0.12 195);
 }
 
-/* Dark mode color scheme - Everforest inspired */
 .dark {
-  /* Dark mode - Everforest inspired warm greens and earthy tones */
-  --color-app-black: #D3C6AA; /* Everforest fg - warm beige */
-  --color-app-white: #2D353B; /* Everforest bg0 - dark warm gray */
+  --color-app-black: oklch(0.82 0.03 85);
+  --color-app-white: oklch(0.27 0.01 210);
 
-  /* Dark mode grays - warm grayish greens from Everforest */
-  --color-app-gray-50: #4F585E; /* bg4 */
-  --color-app-gray-100: #475258; /* bg3 */
-  --color-app-gray-200: #859289; /* Muted green-gray */
-  --color-app-gray-300: #9DA9A0; /* Lighter green-gray */
-  --color-app-gray-700: #3D484D; /* bg2 */
-  --color-app-gray-800: #343F44; /* bg1 */
-  --color-app-gray-900: #2D353B; /* bg0 */
+  --color-app-gray-50: oklch(0.39 0.01 220);
+  --color-app-gray-100: oklch(0.36 0.01 220);
+  --color-app-gray-200: oklch(0.57 0.02 165);
+  --color-app-gray-300: oklch(0.68 0.02 150);
+  --color-app-gray-700: oklch(0.31 0.01 210);
+  --color-app-gray-800: oklch(0.28 0.01 210);
+  --color-app-gray-900: oklch(0.27 0.01 210);
 
-  /* Dark mode greens - Everforest signature warm greens */
-  --color-app-green-50: #2D353B; /* bg0 */
-  --color-app-green-100: #343F44; /* bg1 */
-  --color-app-green-200: #83C092; /* Lighter green variant */
-  --color-app-green-300: #A7C080; /* Everforest signature green */
-  --color-app-green-400: #A7C080; /* Everforest green */
-  --color-app-green-500: #8DA880; /* Slightly muted green */
-  --color-app-green-600: #7A9A6F; /* Deeper green */
-  --color-app-green-700: #6B8B5F; /* Dark green */
-  --color-app-green-800: #3D484D; /* bg2 - dark variant */
-  --color-app-green-900: #343F44; /* bg1 - darker variant */
+  --color-app-green-50: oklch(0.27 0.01 210);
+  --color-app-green-100: oklch(0.28 0.01 210);
+  --color-app-green-200: oklch(0.74 0.07 160);
+  --color-app-green-300: oklch(0.76 0.07 135);
+  --color-app-green-400: oklch(0.76 0.07 135);
+  --color-app-green-500: oklch(0.67 0.05 135);
+  --color-app-green-600: oklch(0.61 0.05 135);
+  --color-app-green-700: oklch(0.55 0.05 135);
+  --color-app-green-800: oklch(0.31 0.01 210);
+  --color-app-green-900: oklch(0.28 0.01 210);
 
-  /* Dark mode purples - soft purples to complement */
-  --color-app-purple-400: #D699B6; /* Soft purple accent */
-  --color-app-purple-500: #C97FA1; /* Medium purple */
+  --color-app-purple-400: oklch(0.73 0.09 340);
+  --color-app-purple-500: oklch(0.65 0.10 345);
 
-  /* Dark mode teal - aqua accent from Everforest */
-  --color-app-teal-500: #83C092; /* Aqua green */
+  --color-app-teal-500: oklch(0.74 0.07 160);
 }

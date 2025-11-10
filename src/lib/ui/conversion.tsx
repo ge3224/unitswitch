@@ -70,14 +70,16 @@ export default function Conversion({
   });
 
   function copyToClipboard(): void {
+    const handleCopySuccess: () => void = function handleCopySuccess(): void {
+      toast.success("Copied!");
+    };
+    const handleCopyError: (err: Error) => void = function handleCopyError(err: Error): void {
+      console.warn("Failed to copy to clipboard:", err);
+      toast.error("Failed to copy to clipboard");
+    };
     navigator.clipboard.writeText(conversion.get().toString())
-      .then(() => {
-        toast.success("Copied!");
-      })
-      .catch((err) => {
-        console.warn("Failed to copy to clipboard:", err);
-        toast.error("Failed to copy to clipboard");
-      });
+      .then(handleCopySuccess)
+      .catch(handleCopyError);
   }
 
   function onClickCopyButton(e: Event): void {
@@ -127,7 +129,9 @@ export default function Conversion({
         <div class="mx-2 lg:my-auto lg:hidden">
           {detail
             ? (
-              <div class="flex w-6 justify-center" onclick={onClickDetails}>
+              <div class="flex w-6 justify-center" onclick={function handleDetailsClick(e: Event): void {
+                onClickDetails(e);
+              }}>
                 <PlusIcon ref={plusIconRef} />
                 <MinusIcon ref={minusIconRef} />
               </div>
@@ -146,7 +150,9 @@ export default function Conversion({
           <span
             class="mr-2 cursor-pointer"
             title="Click to copy the converted value to the clipboard"
-            onclick={onClickCopyButton}
+            onclick={function handleCopyClick(e: Event): void {
+              onClickCopyButton(e);
+            }}
           >
             <CopyIconSvg />
           </span>
