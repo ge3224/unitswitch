@@ -146,7 +146,9 @@ export default function Modal({
       return;
     }
 
-    const filterUnit: (unit: UnitAbbreviation) => boolean = function filterUnit(unit: UnitAbbreviation): boolean {
+    const filterUnit: (unit: UnitAbbreviation) => boolean = function filterUnit(
+      unit: UnitAbbreviation,
+    ): boolean {
       return unit.abbr.startsWith(query.toLowerCase()) ||
         unit.name.toLowerCase().startsWith(query.toLowerCase());
     };
@@ -171,40 +173,43 @@ export default function Modal({
     suggestionsDropdownRef.current.style.maxHeight = "240px";
     suggestionsDropdownRef.current.style.overflowY = "auto";
 
-    const renderSuggestion: (unit: UnitAbbreviation, index: number) => void = function renderSuggestion(unit: UnitAbbreviation, index: number): void {
-      const div = document.createElement("div");
-      div.className =
-        `px-4 py-2.5 cursor-pointer flex items-center justify-between transition-colors ${
+    const renderSuggestion: (unit: UnitAbbreviation, index: number) => void =
+      function renderSuggestion(unit: UnitAbbreviation, index: number): void {
+        const div = document.createElement("div");
+        div.className =
+          `px-4 py-2.5 cursor-pointer flex items-center justify-between transition-colors ${
+            index === selectedSuggestionIndex
+              ? "bg-app-green-600 dark:bg-app-green-700 text-white"
+              : "text-app-gray-200 dark:text-app-gray-300 hover:bg-app-green-700/50 dark:hover:bg-app-green-800/50"
+          }`;
+
+        // Create content wrapper
+        const contentWrapper = document.createElement("div");
+        contentWrapper.className = "flex items-center gap-3";
+
+        // Create abbreviation span
+        const abbrSpan = document.createElement("span");
+        abbrSpan.className = `font-mono font-semibold ${
           index === selectedSuggestionIndex
-            ? "bg-app-green-600 dark:bg-app-green-700 text-white"
-            : "text-app-gray-200 dark:text-app-gray-300 hover:bg-app-green-700/50 dark:hover:bg-app-green-800/50"
+            ? "text-white"
+            : "text-app-green-400 dark:text-app-green-300"
         }`;
+        abbrSpan.textContent = unit.abbr;
 
-      // Create content wrapper
-      const contentWrapper = document.createElement("div");
-      contentWrapper.className = "flex items-center gap-3";
+        // Create name span
+        const nameSpan = document.createElement("span");
+        nameSpan.className = "text-sm";
+        nameSpan.textContent = unit.name;
 
-      // Create abbreviation span
-      const abbrSpan = document.createElement("span");
-      abbrSpan.className = `font-mono font-semibold ${
-        index === selectedSuggestionIndex ? "text-white" : "text-app-green-400 dark:text-app-green-300"
-      }`;
-      abbrSpan.textContent = unit.abbr;
+        contentWrapper.appendChild(abbrSpan);
+        contentWrapper.appendChild(nameSpan);
+        div.appendChild(contentWrapper);
 
-      // Create name span
-      const nameSpan = document.createElement("span");
-      nameSpan.className = "text-sm";
-      nameSpan.textContent = unit.name;
-
-      contentWrapper.appendChild(abbrSpan);
-      contentWrapper.appendChild(nameSpan);
-      div.appendChild(contentWrapper);
-
-      div.onclick = function handleSuggestionClick(): void {
-        selectSuggestion(unit.abbr);
+        div.onclick = function handleSuggestionClick(): void {
+          selectSuggestion(unit.abbr);
+        };
+        suggestionsDropdownRef.current?.appendChild(div);
       };
-      suggestionsDropdownRef.current?.appendChild(div);
-    };
     filteredSuggestions.forEach(renderSuggestion);
   }
 
@@ -272,15 +277,16 @@ export default function Modal({
   }
 
   // Global Escape listener to close modal
-  const handleGlobalEscape: (e: KeyboardEvent) => void = function handleGlobalEscape(e: KeyboardEvent): void {
-    if (
-      e.key === "Escape" && modalRef.current &&
-      modalRef.current.style.display === DISPLAY_BLOCK
-    ) {
-      e.preventDefault();
-      onClickCloseModal();
-    }
-  };
+  const handleGlobalEscape: (e: KeyboardEvent) => void =
+    function handleGlobalEscape(e: KeyboardEvent): void {
+      if (
+        e.key === "Escape" && modalRef.current &&
+        modalRef.current.style.display === DISPLAY_BLOCK
+      ) {
+        e.preventDefault();
+        onClickCloseModal();
+      }
+    };
   globalThis.addEventListener("keydown", handleGlobalEscape);
 
   if (hotkey) {
@@ -364,9 +370,12 @@ export default function Modal({
         </div>
 
         {/* Body */}
-        <form onsubmit={function handleFormSubmit(e: Event): void {
-          onSubmitModalForm(e);
-        }} class="flex flex-col">
+        <form
+          onsubmit={function handleFormSubmit(e: Event): void {
+            onSubmitModalForm(e);
+          }}
+          class="flex flex-col"
+        >
           <div class="px-6 py-4">
             <div class="relative">
               <input
@@ -447,7 +456,7 @@ export default function Modal({
               </button>
               <button
                 type="submit"
-                class="cursor-pointer rounded-sm border border-app-green-200 bg-app-green-300 px-3 py-1 text-sm font-medium text-app-black transition-colors hover:bg-app-green-400"
+                class="cursor-pointer rounded-sm border border-app-green-200 dark:border-app-green-400 bg-app-green-300 dark:bg-app-green-600 px-3 py-1 text-sm font-medium text-app-black dark:text-white transition-colors hover:bg-app-green-400"
               >
                 Submit
               </button>
