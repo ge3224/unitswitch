@@ -37,6 +37,7 @@ import {
 import { unwrapOr } from "@/lib/converters/result.ts";
 import { newSimpleState, SimpleState } from "@pkg/simple-state/src/index.ts";
 import { configState } from "@/lib/config.ts";
+import { lastInputState } from "@/lib/last_input.ts";
 
 /**
  * Configuration for each unit conversion
@@ -112,8 +113,9 @@ const CONVERSIONS: ConversionConfig[] = [
 ];
 
 export function App(): Node {
-  const inputState = newSimpleState<number>(16);
-  const unitState = newSimpleState<Unit>(Units.Pixels);
+  const lastInput = lastInputState.get();
+  const inputState = newSimpleState<number>(lastInput.amount);
+  const unitState = newSimpleState<Unit>(lastInput.unit);
 
   // Create a map of unit -> state for easy lookup
   const conversionStates = new Map<Unit, SimpleState<number>>();
@@ -151,6 +153,22 @@ export function App(): Node {
       const value = unwrapOr(result, -1);
       conversionStates.get(config.unit)?.set(value);
     }
+  });
+
+  // Save last input when amount changes
+  inputState.subscribe(function saveInputCallback(newAmount: number): void {
+    lastInputState.set({
+      amount: newAmount,
+      unit: unitState.get(),
+    });
+  });
+
+  // Save last input when unit changes
+  unitState.subscribe(function saveUnitCallback(newUnit: Unit): void {
+    lastInputState.set({
+      amount: inputState.get(),
+      unit: newUnit,
+    });
   });
 
   function handleSubmit(value: number, unit: Unit): void {
