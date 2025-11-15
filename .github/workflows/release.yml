@@ -33,8 +33,10 @@ jobs:
             --exclude='node_modules' \
             --exclude='dist' \
             --exclude='.swc' \
-            --transform 's,^,unitswitch-${GITHUB_REF_NAME}/,' \
-            .
+            --transform "s,^,unitswitch-${GITHUB_REF_NAME}/," \
+            src/ pkg/ public/ \
+            deno.json tsconfig.json vite.config.ts \
+            index.html build.sh LICENSE README.md .gitignore .gitmodules
 
       - name: Generate checksums
         run: |
