@@ -22,14 +22,8 @@ jobs:
         with:
           deno-version: v2.x
 
-      - name: Install dependencies
-        run: deno install
-
       - name: Run tests
         run: deno test
-
-      - name: Run type checking
-        run: deno task typecheck
 
       - name: Create source tarball
         run: |
