@@ -181,7 +181,18 @@ export function App(): Node {
 
   const container = (
     <div class="m-2 sm:flex sm:min-h-screen items-center justify-center dark:bg-app-gray-900">
-      <div class="my-auto max-w-7xl lg:mx-auto rounded-lg border border-app-green-600 dark:bg-app-green-900 dark:border-app-green-700 pb-3 lg:grid lg:grid-cols-3 lg:gap-4 lg:border-none lg:p-8">
+      <div class="relative my-auto max-w-7xl lg:mx-auto rounded-lg border border-app-green-600 dark:bg-app-green-900 dark:border-app-green-700 pt-6 sm:pt-0 pb-3 lg:grid lg:grid-cols-3 lg:gap-4 lg:border-none lg:p-8">
+        {/* Settings Button - absolute on mobile, fixed on desktop */}
+        <button
+          class="absolute lg:fixed top-2 right-2 lg:top-4 lg:right-4 z-30 cursor-pointer rounded-full p-3 text-app-gray-200 dark:text-app-green-300 transition-all hover:bg-app-green-600 dark:hover:bg-app-green-700 hover:text-white hover:shadow-lg hover:scale-110 active:scale-95"
+          title="Settings (Ctrl+/)"
+          onClick={function handleSettingsClick(): void {
+            openSettingsFn?.();
+          }}
+        >
+          <SettingsIcon />
+        </button>
+
         <div class="relative flex flex-col border-b border-app-green-600 dark:border-app-green-700 px-8 pt-8 lg:col-span-2 lg:row-span-2 lg:flex-row lg:justify-center lg:border lg:py-5">
           <Logo />
           <UserInput
@@ -191,17 +202,6 @@ export function App(): Node {
           />
         </div>
       </div>
-
-      {/* Fixed Settings Button */}
-      <button
-        class="fixed top-4 right-4 z-30 cursor-pointer rounded-full p-3 text-app-gray-200 dark:text-app-green-300 transition-all hover:bg-app-green-600 dark:hover:bg-app-green-700 hover:text-white hover:shadow-lg hover:scale-110 active:scale-95"
-        title="Settings (Ctrl+/)"
-        onClick={function handleSettingsClick(): void {
-          openSettingsFn?.();
-        }}
-      >
-        <SettingsIcon />
-      </button>
     </div>
   ) as HTMLElement;
 
