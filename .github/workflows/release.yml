@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Run tests
+        run: deno test
+
+      - name: Run type checking
+        run: deno task typecheck
+
+      - name: Create source tarball
+        run: |
+          # Create a clean tarball of the source code
+          tar -czf unitswitch-source.tar.gz \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='dist' \
+            --exclude='.swc' \
+            --transform 's,^,unitswitch-${GITHUB_REF_NAME}/,' \
+            .
+
+      - name: Generate checksums
+        run: |
+          sha256sum unitswitch-source.tar.gz > unitswitch-source.tar.gz.sha256
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            unitswitch-source.tar.gz
+            unitswitch-source.tar.gz.sha256
+          generate_release_notes: true
