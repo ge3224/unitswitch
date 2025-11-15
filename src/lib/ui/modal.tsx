@@ -341,9 +341,9 @@ export default function Modal({
       ref={modalRef}
       class="fixed left-0 top-0 z-10 hidden h-screen w-full bg-app-black/70 dark:bg-black/80"
     >
-      <div class="fixed inset-x-4 top-1/4 sm:inset-x-1/4 lg:inset-x-1/3 flex flex-col rounded-md border border-app-green-600 dark:border-app-green-700 bg-app-black dark:bg-app-gray-900 shadow-lg shadow-app-black dark:shadow-black @container">
+      <div class="fixed inset-x-4 top-1/4 sm:inset-x-1/4 lg:inset-x-1/3 flex flex-col rounded-md border border-app-green-600 dark:border-app-green-700 bg-app-black dark:bg-app-green-900 shadow-lg shadow-app-black dark:shadow-black @container">
         {/* Header */}
-        <div class="border-b border-app-green-600/60 px-6 py-4">
+        <div class="border-b border-app-green-600 dark:border-app-green-700 px-6 py-4">
           <div class="flex items-start justify-between">
             <div>
               <label class="text-lg font-bold text-white">
@@ -413,14 +413,14 @@ export default function Modal({
               </button>
               <div
                 ref={suggestionsDropdownRef}
-                class="absolute left-0 top-full mt-1 w-full rounded-sm border border-app-green-600 dark:border-app-green-700 bg-app-black dark:bg-app-gray-900 shadow-lg"
+                class="absolute left-0 top-full mt-1 w-full rounded-sm border border-app-green-600 dark:border-app-green-700 bg-app-black dark:bg-app-green-900 shadow-lg"
                 style={{ display: "none", "z-index": "100" }}
               />
             </div>
           </div>
 
           {/* Footer */}
-          <div class="flex flex-col items-start border-t border-app-green-600/60 px-8 py-6 gap-3">
+          <div class="flex flex-col items-start border-t border-app-green-600 dark:border-app-green-700 px-8 py-6 gap-3">
             <div class="flex flex-wrap items-center gap-4 text-xs text-app-gray-200">
               <div class="flex items-center gap-1">
                 <kbd class="flex items-center justify-center rounded border border-app-green-600/50 bg-app-gray-100/10 px-1.5 py-0.5">

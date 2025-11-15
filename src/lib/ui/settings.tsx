@@ -162,11 +162,11 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
       {/* Side Panel */}
       <div
         ref={panelRef}
-        class="fixed right-0 top-0 z-50 h-screen w-full sm:w-96 flex flex-col border-l border-app-green-600 dark:border-app-green-700 bg-app-black dark:bg-app-gray-900 shadow-2xl transform transition-transform duration-300"
+        class="fixed right-0 top-0 z-50 h-screen w-full sm:w-96 flex flex-col border-l border-app-green-600 dark:border-app-green-700 bg-app-black dark:bg-app-green-900 shadow-2xl transform transition-transform duration-300"
         style={{ transform: "translateX(100%)" }}
       >
         {/* Header */}
-        <div class="border-b border-app-green-600/60 px-6 py-4 bg-app-green-900/20">
+        <div class="border-b border-app-green-600 dark:border-app-green-700 px-6 py-4 bg-app-green-900/20 dark:bg-transparent">
           <div class="flex items-start justify-between">
             <div>
               <h2 class="text-lg font-bold text-white dark:text-app-gray-300">Settings</h2>
@@ -206,7 +206,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                     value="light"
                     class="peer sr-only"
                   />
-                  <div class="rounded-sm border border-app-gray-700 bg-app-gray-800 px-3 py-2 text-center text-sm text-app-gray-200 transition-all peer-checked:border-app-green-500 peer-checked:bg-app-green-600 peer-checked:text-white hover:border-app-green-600">
+                  <div class="rounded-sm border border-app-green-600/50 bg-transparent px-3 py-2 text-center text-sm text-app-gray-200 transition-all peer-checked:border-app-green-400 dark:peer-checked:border-app-green-400 peer-checked:bg-app-green-300 dark:peer-checked:bg-app-green-600 peer-checked:text-app-black dark:peer-checked:text-white peer-checked:font-medium hover:bg-app-green-700 hover:text-white">
                     Light
                   </div>
                 </label>
@@ -218,7 +218,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                     value="dark"
                     class="peer sr-only"
                   />
-                  <div class="rounded-sm border border-app-gray-700 bg-app-gray-800 px-3 py-2 text-center text-sm text-app-gray-200 transition-all peer-checked:border-app-green-500 peer-checked:bg-app-green-600 peer-checked:text-white hover:border-app-green-600">
+                  <div class="rounded-sm border border-app-green-600/50 bg-transparent px-3 py-2 text-center text-sm text-app-gray-200 transition-all peer-checked:border-app-green-400 dark:peer-checked:border-app-green-400 peer-checked:bg-app-green-300 dark:peer-checked:bg-app-green-600 peer-checked:text-app-black dark:peer-checked:text-white peer-checked:font-medium hover:bg-app-green-700 hover:text-white">
                     Dark
                   </div>
                 </label>
@@ -230,7 +230,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                     value="system"
                     class="peer sr-only"
                   />
-                  <div class="rounded-sm border border-app-gray-700 bg-app-gray-800 px-3 py-2 text-center text-sm text-app-gray-200 transition-all peer-checked:border-app-green-500 peer-checked:bg-app-green-600 peer-checked:text-white hover:border-app-green-600">
+                  <div class="rounded-sm border border-app-green-600/50 bg-transparent px-3 py-2 text-center text-sm text-app-gray-200 transition-all peer-checked:border-app-green-400 dark:peer-checked:border-app-green-400 peer-checked:bg-app-green-300 dark:peer-checked:bg-app-green-600 peer-checked:text-app-black dark:peer-checked:text-white peer-checked:font-medium hover:bg-app-green-700 hover:text-white">
                     System
                   </div>
                 </label>
@@ -342,10 +342,10 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
           </div>
 
           {/* Footer */}
-          <div class="flex items-center justify-between border-t border-app-green-600/60 px-6 py-4 bg-app-green-900/20">
+          <div class="flex items-center justify-between border-t border-app-green-600 dark:border-app-green-700 px-6 py-4 bg-app-green-900/20 dark:bg-transparent">
             <button
               type="button"
-              class="cursor-pointer rounded-sm border border-app-gray-200/50 bg-transparent px-3 py-1.5 text-sm text-app-gray-200 transition-colors hover:bg-app-gray-200 hover:text-app-black"
+              class="cursor-pointer rounded-sm border border-app-green-600/50 bg-transparent px-3 py-1.5 text-sm text-app-gray-200 transition-colors hover:bg-app-green-700 hover:text-white"
               onClick={function handleResetClick(): void {
                 onReset();
               }}
@@ -364,7 +364,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
               </button>
               <button
                 type="submit"
-                class="cursor-pointer rounded-sm border border-app-green-200 dark:border-app-green-400 bg-app-green-300 dark:bg-app-green-600 px-3 py-1.5 text-sm font-medium text-app-black dark:text-white transition-colors hover:bg-app-green-400 dark:hover:bg-app-green-500"
+                class="cursor-pointer rounded-sm border border-app-green-200 dark:border-app-green-400 bg-app-green-300 dark:bg-app-green-600 px-3 py-1.5 text-sm font-medium text-app-black dark:text-white transition-colors hover:bg-app-green-400"
               >
                 Save
               </button>
