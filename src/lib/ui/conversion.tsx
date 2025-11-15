@@ -58,14 +58,14 @@ export default function Conversion({
 
     if (minusIconRef.current) {
       minusIconRef.current.style.display = show
-        ? DISPLAY_NONE
-        : DISPLAY_INLINE_BLOCK;
+        ? DISPLAY_INLINE_BLOCK
+        : DISPLAY_NONE;
     }
 
     if (plusIconRef.current) {
       plusIconRef.current.style.display = show
-        ? DISPLAY_INLINE_BLOCK
-        : DISPLAY_NONE;
+        ? DISPLAY_NONE
+        : DISPLAY_INLINE_BLOCK;
     }
   });
 
