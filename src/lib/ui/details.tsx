@@ -7,6 +7,7 @@ import {
 } from "@/lib/constants.ts";
 import { ViewInputState } from "@/lib/types.ts";
 import { configState } from "@/lib/config.ts";
+import { toast } from "@/lib/ui/toast.tsx";
 
 export function DetailsRemsEms() {
   const fontSize = configState.get().fontSize;
@@ -16,12 +17,17 @@ export function DetailsRemsEms() {
     fontSizeTextNode.textContent = `${config.fontSize}px`;
   });
 
+  const handleRootHintTouch = function handleRootHintTouch(): void {
+    toast.success("rem is relative to the root element's font size, while em is relative to the parent element's font size", 4000);
+  };
+
   return (
     <div class="text-app-black dark:text-app-gray-200">
       Based on a{" "}
       <span
         class="cursor-help border-b border-dotted border-app-gray-200 dark:border-app-gray-300 hover:border-app-green-400 hover:text-app-green-500 transition-colors"
         title="rem is relative to the root element's font size, while em is relative to the parent element's font size"
+        ontouchend={handleRootHintTouch}
       >
         root*
       </span>{" "}
