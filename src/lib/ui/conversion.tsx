@@ -165,7 +165,7 @@ export default function Conversion({
         </div>
         {hotkey && (
           <kbd
-            class="hidden lg:my-auto lg:mr-3 lg:inline-flex items-center justify-center w-5 h-5 rounded-sm border border-app-gray-200 dark:border-app-gray-300 bg-white dark:bg-app-gray-800 shadow-sm font-mono text-xs text-app-gray-200 dark:text-app-gray-300 cursor-default hover:border-app-green-400 hover:text-app-green-400 scale-[0.85] origin-right"
+            class="hidden lg:inline-flex lg:my-auto lg:mr-3 items-center justify-center w-5 h-5 rounded-sm border border-app-gray-200 dark:border-app-gray-300 bg-white dark:bg-app-gray-800 shadow-sm font-mono text-xs text-app-gray-200 dark:text-app-gray-300 cursor-default hover:border-app-green-400 hover:text-app-green-400 scale-[0.85] origin-right"
             title={`Press ${hotkey} to copy the converted value to the clipboard`}
           >
             {hotkey}

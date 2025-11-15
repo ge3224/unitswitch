@@ -138,7 +138,7 @@ export default function UserInput({
             type="submit"
             value="Convert"
           />
-          <div class="flex items-center gap-1 scale-[0.75] origin-left">
+          <div class="hidden lg:flex items-center gap-1 scale-[0.75] origin-left">
             <kbd
               class="inline-flex items-center justify-center px-1.5 h-6 rounded-sm border border-app-gray-200 dark:border-app-gray-300 bg-white dark:bg-app-gray-800 shadow-sm font-mono text-xs text-app-gray-200 dark:text-app-gray-300 cursor-default hover:border-app-green-400 hover:text-app-green-400"
               title="Press Ctrl+K for quick keyboard conversions"
