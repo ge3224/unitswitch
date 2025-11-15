@@ -380,7 +380,7 @@ export default function Modal({
             <div class="relative">
               <input
                 ref={inputRef}
-                class="w-full rounded-sm bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-base outline-none focus:ring-2 focus:ring-app-green-600"
+                class="w-full rounded-sm border border-transparent dark:border-app-green-700 bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-base outline-none focus:ring-2 focus:ring-app-green-600"
                 type="text"
                 name="name"
                 placeholder="e.g., 100:px or 2:rem"

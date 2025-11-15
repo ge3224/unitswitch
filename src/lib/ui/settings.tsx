@@ -252,7 +252,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                     type="number"
                     min="1"
                     step="1"
-                    class="w-full rounded-sm bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
+                    class="w-full rounded-sm border border-transparent dark:border-app-green-700 bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                     placeholder={DEFAULT_CONFIG.viewportWidth.toString()}
                   />
                 </div>
@@ -265,7 +265,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                     type="number"
                     min="1"
                     step="1"
-                    class="w-full rounded-sm bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
+                    class="w-full rounded-sm border border-transparent dark:border-app-green-700 bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                     placeholder={DEFAULT_CONFIG.viewportHeight.toString()}
                   />
                 </div>
@@ -284,7 +284,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                   type="number"
                   min="1"
                   step="0.1"
-                  class="w-full rounded-sm bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
+                  class="w-full rounded-sm border border-transparent dark:border-app-green-700 bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                   placeholder={DEFAULT_CONFIG.fontSize.toString()}
                 />
               </div>
@@ -299,7 +299,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                     min="0.01"
                     max="1"
                     step="0.01"
-                    class="w-full rounded-sm bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
+                    class="w-full rounded-sm border border-transparent dark:border-app-green-700 bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                     placeholder={DEFAULT_CONFIG.chToEmRatio.toString()}
                   />
                 </div>
@@ -313,7 +313,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                     min="0.01"
                     max="1"
                     step="0.01"
-                    class="w-full rounded-sm bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
+                    class="w-full rounded-sm border border-transparent dark:border-app-green-700 bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                     placeholder={DEFAULT_CONFIG.exToEmRatio.toString()}
                   />
                 </div>
@@ -334,7 +334,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                   type="number"
                   min="1"
                   step="1"
-                  class="w-full rounded-sm bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
+                  class="w-full rounded-sm border border-transparent dark:border-app-green-700 bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                   placeholder={DEFAULT_CONFIG.ppi.toString()}
                 />
               </div>
