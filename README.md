@@ -1,91 +1,93 @@
 # UnitSwitch
 
-![Preview of the UnitSwitch App](./preview.gif)
+![UnitSwitch Logo](./public/logo.png)
+
+[![GitHub Release](https://img.shields.io/github/v/release/ge3224/unitswitch?style=flat-square&color=4EBD85)](https://github.com/ge3224/unitswitch/releases)
+[![License](https://img.shields.io/github/license/ge3224/unitswitch?style=flat-square&color=4EBD85)](./LICENSE)
+[![Tests](https://img.shields.io/badge/tests-passing-4EBD85?style=flat-square)](https://github.com/ge3224/unitswitch)
+[![Deno](https://img.shields.io/badge/deno-2.0+-4EBD85?style=flat-square&logo=deno)](https://deno.land/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-4EBD85?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/vite-5.0+-4EBD85?style=flat-square&logo=vite)](https://vitejs.dev/)
 
 ## Overview
 
-UnitSwitch is a single-page application that makes unit conversions convenient for web designers and developers. Whether you need to switch between pixels, ems, rems, or picas, UnitSwitch has you covered. 
+A simple unit converter for web developers. Supports CSS length units, viewport units, typography units, and design proportions. Includes keyboard shortcuts for quick copying.
 
 ## Features
 
-- **Convenient Unit Conversion:** Quickly convert between various units of measurement with just a few clicks.
+### Core Conversion
 
-- **User-Friendly Interface:** Intuitive and easy-to-use interface for seamless navigation.
+- **18 Unit Types:** CSS length units (px, rem, mm, cm, pt, pc, in, ft), viewport units (vw, vh, vmin, vmax), typography units (ch, ex), and design proportions (Golden Ratio, Root 2, 16:9)
+- **Real-time Bidirectional Conversion:** Convert from any unit to any other instantly
+- **One-Click Copy:** Quickly copy any converted value to clipboard with visual feedback
+- **Precision Rounding:** All conversions rounded to 3 decimal places for practical use
 
-- **Keyboard Shortcuts:** Streamline your workflow with built-in keyboard shortcuts for efficient unit conversion.
+### Customization
 
-- **Wide Range of Units:** UnitSwitch supports a comprehensive range of units and categories.
+- **Dark Mode:** Choose between Light, Dark, or System theme (follows OS preference)
+- **Configurable Settings:** Customize viewport dimensions, base font size, PPI, and character ratios
+- **Persistent Preferences:** All settings and last conversion saved to localStorage
 
-- **Responsive Design:** A responsive design that adapts to desktop and mobile.
+### User Experience
+
+- **Responsive Design:** Optimized layouts for desktop, tablet, and mobile devices
+- **Detailed Information:** Expandable panels showing calculation breakdowns for key units
+- **Touch-Friendly:** Mobile-optimized with touch-friendly controls
+- **Toast Notifications:** Clear feedback for all copy actions
 
 ## Getting Started
 
-To start using UnitSwitch locally, follow these simple steps:
+UnitSwitch is built with Deno. Follow these steps to run locally:
 
-1. **Clone the Repository:** Clone this repository to your local machine.
+1. **Clone the Repository:**
 
    ```bash
    git clone https://github.com/your-username/unitswitch.git
+   cd unitswitch
    ```
 
-2. **Install Dependencies:** Install the necessary dependencies using npm or pnpm.
+2. **Install Deno:** If you don't have Deno installed, the build script will handle it, or install manually from [deno.land](https://deno.land/).
+
+3. **Start the Development Server:**
 
    ```bash
-   npm install
+   deno task dev
    ```
 
-   or
+4. **Access UnitSwitch:** Open your browser and navigate to `http://localhost:5173`
 
-   ```bash
-   npm install
-   ```
+## Build for Production
 
-3. **Start the Development Server:** Launch the development server.
+```bash
+deno task build
+```
 
-   ```bash
-   npm run dev
-   ```
-
-4. **Access UnitSwitch:** Open your web browser and go to `http://localhost:3000` to access UnitSwitch locally.
+The optimized build will be output to the `dist/` directory.
 
 ## Usage
 
-UnitSwitch is designed for ease of use:
-
-1. **Select a Category:** Choose the category of the unit you want to convert from.
-
-2. **Choose a Unit:** Select the specific unit from the dropdown menu.
-
-3. **Enter a Value:** Input the value you want to convert in the provided field.
-
-4. **Keyboard Shortcuts:** Utilize built-in keyboard shortcuts (available within the app) for faster conversions.
-
-5. **Copy Values:** Easily copy the converted values as needed.
+1. **Enter a Value:** Type any number into the input field
+2. **Select Your Unit:** Choose the unit you're converting from using the dropdown
+3. **View Conversions:** All other units update automatically in the grid
+4. **Copy Results:** Click any conversion to copy it, or use keyboard shortcuts (hover to see the hotkey)
+5. **Quick Convert:** Press `Ctrl+K` for fast modal-based conversions
+6. **Customize:** Press `Ctrl+/` to adjust settings like viewport size, base font size, and theme
 
 ## Technologies Used
 
-UnitSwitch is built using modern web technologies:
+UnitSwitch leverages modern, lightweight technologies:
 
-- **React.js:** A powerful JavaScript library for building user interfaces.
-
-- **Tailwind CSS:** A utility-first CSS framework for building responsive and highly customizable designs.
-
-- **Webpack:** A popular bundler for JavaScript applications.
-
-- **SWC (JavaScript/ECMAScript Compiler):** A fast and efficient JavaScript/ECMAScript compiler.
+- **Deno:** Modern TypeScript runtime with built-in tooling
+- **Custom JSX Runtime:** Lightweight JSX implementation (no React dependency)
+- **Vite + Rolldown:** Lightning-fast build tool and bundler
+- **Tailwind CSS v4:** Utility-first CSS framework with Vite plugin
+- **TypeScript:** Strict type checking for reliability
+- **Custom State Management:** Minimal reactive state library
 
 ## Author
 
-UnitSwitch is maintained by [Jacob Benison](https://jacobbenison.com/). Feel free to reach out with any questions or feedback.
+UnitSwitch is maintained by [Jacob Benison](https://jacobbenison.com/).
 
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more details.
-
-## Acknowledgments
-
-Special thanks to the open-source community for providing valuable tools and libraries that make UnitSwitch possible.
-
----
-
-Explore the code, contribute to the project, and make UnitSwitch even better! Your feedback and contributions are highly appreciated.
