@@ -7,7 +7,7 @@ export class ThemeManager {
   private mediaQuery: MediaQueryList;
 
   constructor() {
-    this.mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    this.mediaQuery = globalThis.matchMedia("(prefers-color-scheme: dark)");
   }
 
   /**

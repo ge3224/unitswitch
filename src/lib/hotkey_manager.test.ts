@@ -50,7 +50,7 @@ describe("hotkeyManager", () => {
     it("should register and trigger handler for single keys", () => {
       const originalAddEventListener = globalThis.addEventListener;
       const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as any;
+      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
 
       const manager = createHotkeyManager();
       let called = false;
@@ -69,7 +69,7 @@ describe("hotkeyManager", () => {
     it("should not trigger when modifier keys are pressed", () => {
       const originalAddEventListener = globalThis.addEventListener;
       const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as any;
+      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
 
       const manager = createHotkeyManager();
       let called = false;
@@ -88,7 +88,7 @@ describe("hotkeyManager", () => {
     it("should support Ctrl key when specified", () => {
       const originalAddEventListener = globalThis.addEventListener;
       const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as any;
+      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
 
       const manager = createHotkeyManager();
       let called = false;
@@ -107,7 +107,7 @@ describe("hotkeyManager", () => {
     it("should support Alt key when specified", () => {
       const originalAddEventListener = globalThis.addEventListener;
       const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as any;
+      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
 
       const manager = createHotkeyManager();
       let called = false;
@@ -126,7 +126,7 @@ describe("hotkeyManager", () => {
     it("should be case insensitive", () => {
       const originalAddEventListener = globalThis.addEventListener;
       const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as any;
+      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
 
       const manager = createHotkeyManager();
       let called = false;
@@ -145,7 +145,7 @@ describe("hotkeyManager", () => {
     it("should handle multiple registrations", () => {
       const originalAddEventListener = globalThis.addEventListener;
       const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as any;
+      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
 
       const manager = createHotkeyManager();
       let pCalled = false;
@@ -173,7 +173,7 @@ describe("hotkeyManager", () => {
     it("should overwrite existing handler for same key", () => {
       const originalAddEventListener = globalThis.addEventListener;
       const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as any;
+      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
 
       const manager = createHotkeyManager();
       let firstCalled = false;
@@ -199,7 +199,7 @@ describe("hotkeyManager", () => {
     it("should prevent default when handler exists", () => {
       const originalAddEventListener = globalThis.addEventListener;
       const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as any;
+      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
 
       const manager = createHotkeyManager();
       manager.register("p", () => {});
@@ -214,7 +214,7 @@ describe("hotkeyManager", () => {
     it("should not prevent default for unregistered keys", () => {
       const originalAddEventListener = globalThis.addEventListener;
       const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as any;
+      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
 
       const manager = createHotkeyManager();
       manager.register("p", () => {});
@@ -231,7 +231,7 @@ describe("hotkeyManager", () => {
     it("should remove handler", () => {
       const originalAddEventListener = globalThis.addEventListener;
       const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as any;
+      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
 
       const manager = createHotkeyManager();
       let called = false;
@@ -250,7 +250,7 @@ describe("hotkeyManager", () => {
     it("should be case insensitive", () => {
       const originalAddEventListener = globalThis.addEventListener;
       const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as any;
+      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
 
       const manager = createHotkeyManager();
       let called = false;
@@ -269,7 +269,7 @@ describe("hotkeyManager", () => {
     it("should unregister ctrl handlers correctly", () => {
       const originalAddEventListener = globalThis.addEventListener;
       const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as any;
+      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
 
       const manager = createHotkeyManager();
       let called = false;
