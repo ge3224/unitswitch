@@ -39,9 +39,6 @@ import { newSimpleState, SimpleState } from "@pkg/simple-state/src/index.ts";
 import { configState } from "@/lib/config.ts";
 import { lastInputState } from "@/lib/last_input.ts";
 
-/**
- * Configuration for each unit conversion
- */
 type ConversionConfig = {
   unit: Unit;
   converter: Converter;
@@ -117,10 +114,8 @@ export function App(): Node {
   const inputState = newSimpleState<number>(lastInput.amount);
   const unitState = newSimpleState<Unit>(lastInput.unit);
 
-  // Create a map of unit -> state for easy lookup
   const conversionStates = new Map<Unit, SimpleState<number>>();
 
-  // Initialize all conversion states
   for (const config of CONVERSIONS) {
     const result = config.converter(unitState.get(), inputState.get());
     const initialValue = unwrapOr(result, -1);
@@ -128,7 +123,6 @@ export function App(): Node {
     conversionStates.set(config.unit, state);
   }
 
-  // Update all conversions when input changes
   inputState.subscribe(function inputCallback(newInput: number): void {
     for (const config of CONVERSIONS) {
       const result = config.converter(unitState.get(), newInput);
@@ -137,7 +131,6 @@ export function App(): Node {
     }
   });
 
-  // Update all conversions when unit changes
   unitState.subscribe(function unitCallback(newUnit: Unit): void {
     for (const config of CONVERSIONS) {
       const result = config.converter(newUnit, inputState.get());
@@ -146,7 +139,6 @@ export function App(): Node {
     }
   });
 
-  // Update all conversions when configuration changes
   configState.subscribe(function configCallback(): void {
     for (const config of CONVERSIONS) {
       const result = config.converter(unitState.get(), inputState.get());
@@ -155,7 +147,6 @@ export function App(): Node {
     }
   });
 
-  // Save last input when amount changes
   inputState.subscribe(function saveInputCallback(newAmount: number): void {
     lastInputState.set({
       amount: newAmount,
@@ -163,7 +154,6 @@ export function App(): Node {
     });
   });
 
-  // Save last input when unit changes
   unitState.subscribe(function saveUnitCallback(newUnit: Unit): void {
     lastInputState.set({
       amount: inputState.get(),
@@ -176,14 +166,18 @@ export function App(): Node {
     unitState.set(unit);
   }
 
-  // Settings button handler - will be set when Settings component mounts
   let openSettingsFn: (() => void) | null = null;
 
-  const container = (
+  const handleSettingsMount: (openFn: () => void) => void =
+    function handleSettingsMount(openFn: () => void): void {
+      openSettingsFn = openFn;
+    };
+
+  return (
     <div class="m-2 sm:flex sm:min-h-screen items-center justify-center dark:bg-app-gray-900">
       <div class="relative my-auto max-w-7xl lg:mx-auto rounded-lg border border-app-green-600 dark:bg-app-green-900 dark:border-app-green-700 pt-6 sm:pt-0 pb-3 lg:grid lg:grid-cols-3 lg:gap-4 lg:border-none lg:p-8">
-        {/* Settings Button - absolute on mobile, fixed on desktop */}
         <button
+          type="button"
           class="absolute lg:fixed top-2 right-2 lg:top-4 lg:right-4 z-30 cursor-pointer rounded-full p-3 text-app-gray-200 dark:text-app-green-300 transition-all hover:bg-app-green-600 dark:hover:bg-app-green-700 hover:text-white hover:shadow-lg hover:scale-110 active:scale-95"
           title="Settings (Ctrl+/)"
           onClick={function handleSettingsClick(): void {
@@ -201,46 +195,26 @@ export function App(): Node {
             callback={handleSubmit}
           />
         </div>
+
+        {CONVERSIONS.map((config) => (
+          <Conversion
+            conversion={conversionStates.get(config.unit)!}
+            to={config.unit}
+            hotkey={config.hotkey}
+            detail={config.detail?.(inputState)}
+          />
+        ))}
+
+        <Modal
+          callback={handleSubmit}
+          hotkey="k"
+        />
+
+        <Settings
+          hotkey="/"
+          onMount={handleSettingsMount}
+        />
       </div>
     </div>
-  ) as HTMLElement;
-
-  const innerDiv = container.querySelector(".lg\\:grid") as HTMLElement;
-
-  // Append all conversion components
-  for (const config of CONVERSIONS) {
-    const conversionElement = (
-      <Conversion
-        conversion={conversionStates.get(config.unit)!}
-        to={config.unit}
-        hotkey={config.hotkey}
-        detail={config.detail?.(inputState)}
-      />
-    ) as Node;
-    innerDiv.appendChild(conversionElement);
-  }
-
-  // Append modal at the end
-  const modalElement = (
-    <Modal
-      callback={handleSubmit}
-      hotkey="k"
-    />
   ) as Node;
-  innerDiv.appendChild(modalElement);
-
-  // Append settings modal
-  const handleSettingsMount: (openFn: () => void) => void =
-    function handleSettingsMount(openFn: () => void): void {
-      openSettingsFn = openFn;
-    };
-  const settingsElement = (
-    <Settings
-      hotkey="/"
-      onMount={handleSettingsMount}
-    />
-  ) as Node;
-  innerDiv.appendChild(settingsElement);
-
-  return container;
 }
