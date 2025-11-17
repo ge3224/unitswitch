@@ -174,8 +174,8 @@ export function App(): Node {
     };
 
   return (
-    <div class="m-2 sm:flex sm:min-h-screen items-center justify-center dark:bg-app-gray-900">
-      <div class="relative my-auto max-w-7xl lg:mx-auto rounded-lg border border-app-green-600 dark:bg-app-green-900 dark:border-app-green-700 pt-6 sm:pt-0 pb-3 lg:grid lg:grid-cols-3 lg:gap-4 lg:border-none lg:p-8">
+    <div class="m-2 sm:flex sm:min-h-screen items-center justify-center">
+      <div class="relative my-auto max-w-7xl lg:mx-auto rounded-lg border border-app-green-600 dark:border-app-green-700 pt-6 sm:pt-0 pb-3 lg:grid lg:grid-cols-3 lg:gap-4 lg:border-none lg:p-8">
         <button
           type="button"
           class="absolute lg:fixed top-2 right-2 lg:top-4 lg:right-4 z-30 cursor-pointer rounded-full p-3 text-app-gray-200 dark:text-app-green-300 transition-all hover:bg-app-green-600 dark:hover:bg-app-green-700 hover:text-white hover:shadow-lg hover:scale-110 active:scale-95"
