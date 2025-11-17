@@ -64,6 +64,10 @@ export const convertToCh: Converter = function convertToCh(
       );
     case Units.Vw:
       return Ok(((input / 100) * viewportWidth) / chInPixels);
+    case Units.Golden:
+    case Units.Root2:
+    case Units.SixteenNine:
+      return Ok(-1);
     default:
       return Err(
         ConversionErrorKind.UnsupportedUnit,

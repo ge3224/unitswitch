@@ -2,7 +2,7 @@ import { describe, it } from "jsr:@std/testing/bdd";
 import { assertEquals, assertAlmostEquals, assert } from "jsr:@std/assert";
 import { convertToPoints } from '@/lib/converters/points.ts';
 import { Units } from '@/lib/units.ts';
-import { PPI } from '@/lib/constants.ts';
+import { PPI, FONT_SIZE, CH_TO_EM_RATIO, EX_TO_EM_RATIO, VIEWPORT_WIDTH, VIEWPORT_HEIGHT } from '@/lib/constants.ts';
 import { ConversionErrorKind } from './result.ts';
 
 describe('convertToPoints', () => {
@@ -66,6 +66,88 @@ describe('convertToPoints', () => {
       const result2 = convertToPoints(Units.Points, 36);
       assert(result2.ok);
       assertAlmostEquals(result2.value, 36, 0.1);
+    });
+  });
+
+  describe('font-based units', () => {
+    it('should convert Ch to points via pixels', () => {
+      // 1ch = fontSize * chToEmRatio = 16 * 0.5 = 8px
+      // 8px * (72 / 96) = 6pt
+      const result = convertToPoints(Units.Ch, 1);
+      assert(result.ok);
+      const expectedPixels = FONT_SIZE * CH_TO_EM_RATIO;
+      const expectedPoints = expectedPixels * (72 / PPI);
+      assertAlmostEquals(result.value, expectedPoints, 0.1);
+    });
+
+    it('should convert Ex to points via pixels', () => {
+      const result = convertToPoints(Units.Ex, 1);
+      assert(result.ok);
+      const expectedPixels = FONT_SIZE * EX_TO_EM_RATIO;
+      const expectedPoints = expectedPixels * (72 / PPI);
+      assertAlmostEquals(result.value, expectedPoints, 0.1);
+    });
+
+    it('should convert Rems to points via pixels', () => {
+      // 1rem = 16px = 16 * (72 / 96) = 12pt
+      const result = convertToPoints(Units.Rems, 1);
+      assert(result.ok);
+      assertAlmostEquals(result.value, FONT_SIZE * (72 / PPI), 0.1);
+    });
+  });
+
+  describe('viewport-based units', () => {
+    it('should convert Vh to points via pixels', () => {
+      // 1vh = 1080/100 = 10.8px
+      const result = convertToPoints(Units.Vh, 1);
+      assert(result.ok);
+      const expectedPixels = VIEWPORT_HEIGHT / 100;
+      const expectedPoints = expectedPixels * (72 / PPI);
+      assertAlmostEquals(result.value, expectedPoints, 0.1);
+    });
+
+    it('should convert Vw to points via pixels', () => {
+      const result = convertToPoints(Units.Vw, 1);
+      assert(result.ok);
+      const expectedPixels = VIEWPORT_WIDTH / 100;
+      const expectedPoints = expectedPixels * (72 / PPI);
+      assertAlmostEquals(result.value, expectedPoints, 0.1);
+    });
+
+    it('should convert Vmin to points via pixels', () => {
+      const result = convertToPoints(Units.Vmin, 1);
+      assert(result.ok);
+      const expectedPixels = Math.min(VIEWPORT_WIDTH, VIEWPORT_HEIGHT) / 100;
+      const expectedPoints = expectedPixels * (72 / PPI);
+      assertAlmostEquals(result.value, expectedPoints, 0.1);
+    });
+
+    it('should convert Vmax to points via pixels', () => {
+      const result = convertToPoints(Units.Vmax, 1);
+      assert(result.ok);
+      const expectedPixels = Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT) / 100;
+      const expectedPoints = expectedPixels * (72 / PPI);
+      assertAlmostEquals(result.value, expectedPoints, 0.1);
+    });
+  });
+
+  describe('ratio-based units', () => {
+    it('should return -1 for Golden ratio unit', () => {
+      const result = convertToPoints(Units.Golden, 10);
+      assert(result.ok);
+      assertEquals(result.value, -1);
+    });
+
+    it('should return -1 for Root2 ratio unit', () => {
+      const result = convertToPoints(Units.Root2, 10);
+      assert(result.ok);
+      assertEquals(result.value, -1);
+    });
+
+    it('should return -1 for SixteenNine ratio unit', () => {
+      const result = convertToPoints(Units.SixteenNine, 10);
+      assert(result.ok);
+      assertEquals(result.value, -1);
     });
   });
 });

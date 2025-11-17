@@ -59,6 +59,22 @@ describe("convertToVh", () => {
     });
   });
 
+  describe("font-relative conversions", () => {
+    it("should convert ch to vh", () => {
+      const result = convertToVh(Units.Ch, 10);
+      assert(result.ok);
+      // ch is font-relative, converts via pixels
+      assert(result.value > 0);
+    });
+
+    it("should convert ex to vh", () => {
+      const result = convertToVh(Units.Ex, 10);
+      assert(result.ok);
+      // ex is font-relative, converts via pixels
+      assert(result.value > 0);
+    });
+  });
+
   describe("proportionality", () => {
     it("should scale proportionally", () => {
       const result1 = convertToVh(Units.Pixels, 100);
@@ -99,6 +115,26 @@ describe("convertToVh", () => {
       const result2 = convertToVh(Units.Vh, 100);
       assert(result2.ok);
       assertEquals(result2.value, 100);
+    });
+  });
+
+  describe("ratio-based units", () => {
+    it("should return -1 for Golden ratio unit", () => {
+      const result = convertToVh(Units.Golden, 10);
+      assert(result.ok);
+      assertEquals(result.value, -1);
+    });
+
+    it("should return -1 for Root2 ratio unit", () => {
+      const result = convertToVh(Units.Root2, 10);
+      assert(result.ok);
+      assertEquals(result.value, -1);
+    });
+
+    it("should return -1 for SixteenNine ratio unit", () => {
+      const result = convertToVh(Units.SixteenNine, 10);
+      assert(result.ok);
+      assertEquals(result.value, -1);
     });
   });
 });

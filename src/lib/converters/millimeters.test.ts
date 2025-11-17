@@ -2,7 +2,7 @@ import { describe, it } from "jsr:@std/testing/bdd";
 import { assertEquals, assertAlmostEquals, assert } from "jsr:@std/assert";
 import { convertToMillimeters } from '@/lib/converters/millimeters.ts';
 import { Units } from '@/lib/units.ts';
-import { PPI } from '@/lib/constants.ts';
+import { PPI, FONT_SIZE, CH_TO_EM_RATIO, EX_TO_EM_RATIO, VIEWPORT_WIDTH, VIEWPORT_HEIGHT } from '@/lib/constants.ts';
 import { ConversionErrorKind } from './result.ts';
 
 describe('convertToMillimeters', () => {
@@ -72,6 +72,85 @@ describe('convertToMillimeters', () => {
       const result2 = convertToMillimeters(Units.Millimeters, 25.4);
       assert(result2.ok);
       assertAlmostEquals(result2.value, 25.4, 0.1);
+    });
+  });
+
+  describe('font-based units', () => {
+    it('should convert Ch to millimeters via pixels', () => {
+      const result = convertToMillimeters(Units.Ch, 1);
+      assert(result.ok);
+      const expectedPixels = FONT_SIZE * CH_TO_EM_RATIO;
+      const expectedMm = (expectedPixels / PPI) * 25.4;
+      assertAlmostEquals(result.value, expectedMm, 0.1);
+    });
+
+    it('should convert Ex to millimeters via pixels', () => {
+      const result = convertToMillimeters(Units.Ex, 1);
+      assert(result.ok);
+      const expectedPixels = FONT_SIZE * EX_TO_EM_RATIO;
+      const expectedMm = (expectedPixels / PPI) * 25.4;
+      assertAlmostEquals(result.value, expectedMm, 0.1);
+    });
+
+    it('should convert Rems to millimeters via pixels', () => {
+      const result = convertToMillimeters(Units.Rems, 1);
+      assert(result.ok);
+      const expectedMm = (FONT_SIZE / PPI) * 25.4;
+      assertAlmostEquals(result.value, expectedMm, 0.1);
+    });
+  });
+
+  describe('viewport-based units', () => {
+    it('should convert Vh to millimeters via pixels', () => {
+      const result = convertToMillimeters(Units.Vh, 1);
+      assert(result.ok);
+      const expectedPixels = VIEWPORT_HEIGHT / 100;
+      const expectedMm = (expectedPixels / PPI) * 25.4;
+      assertAlmostEquals(result.value, expectedMm, 0.1);
+    });
+
+    it('should convert Vw to millimeters via pixels', () => {
+      const result = convertToMillimeters(Units.Vw, 1);
+      assert(result.ok);
+      const expectedPixels = VIEWPORT_WIDTH / 100;
+      const expectedMm = (expectedPixels / PPI) * 25.4;
+      assertAlmostEquals(result.value, expectedMm, 0.1);
+    });
+
+    it('should convert Vmin to millimeters via pixels', () => {
+      const result = convertToMillimeters(Units.Vmin, 1);
+      assert(result.ok);
+      const expectedPixels = Math.min(VIEWPORT_WIDTH, VIEWPORT_HEIGHT) / 100;
+      const expectedMm = (expectedPixels / PPI) * 25.4;
+      assertAlmostEquals(result.value, expectedMm, 0.1);
+    });
+
+    it('should convert Vmax to millimeters via pixels', () => {
+      const result = convertToMillimeters(Units.Vmax, 1);
+      assert(result.ok);
+      const expectedPixels = Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT) / 100;
+      const expectedMm = (expectedPixels / PPI) * 25.4;
+      assertAlmostEquals(result.value, expectedMm, 0.1);
+    });
+  });
+
+  describe('ratio-based units', () => {
+    it('should return -1 for Golden ratio unit', () => {
+      const result = convertToMillimeters(Units.Golden, 10);
+      assert(result.ok);
+      assertEquals(result.value, -1);
+    });
+
+    it('should return -1 for Root2 ratio unit', () => {
+      const result = convertToMillimeters(Units.Root2, 10);
+      assert(result.ok);
+      assertEquals(result.value, -1);
+    });
+
+    it('should return -1 for SixteenNine ratio unit', () => {
+      const result = convertToMillimeters(Units.SixteenNine, 10);
+      assert(result.ok);
+      assertEquals(result.value, -1);
     });
   });
 });

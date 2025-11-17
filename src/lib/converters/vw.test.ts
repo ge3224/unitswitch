@@ -101,4 +101,24 @@ describe("convertToVw", () => {
       assertEquals(result2.value, 100);
     });
   });
+
+  describe("ratio-based units", () => {
+    it("should return -1 for Golden ratio unit", () => {
+      const result = convertToVw(Units.Golden, 10);
+      assert(result.ok);
+      assertEquals(result.value, -1);
+    });
+
+    it("should return -1 for Root2 ratio unit", () => {
+      const result = convertToVw(Units.Root2, 10);
+      assert(result.ok);
+      assertEquals(result.value, -1);
+    });
+
+    it("should return -1 for SixteenNine ratio unit", () => {
+      const result = convertToVw(Units.SixteenNine, 10);
+      assert(result.ok);
+      assertEquals(result.value, -1);
+    });
+  });
 });
