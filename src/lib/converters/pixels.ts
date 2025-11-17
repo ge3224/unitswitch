@@ -1,5 +1,6 @@
 import type { Converter } from "@/lib/converters/index.ts";
 import {
+  assertNever,
   ConversionErrorKind,
   Err,
   Ok,
@@ -27,7 +28,14 @@ export const convertToPixels: Converter = function convertToPixels(
     );
   }
 
-  const { ppi, fontSize } = configState.get();
+  const {
+    ppi,
+    fontSize,
+    chToEmRatio,
+    exToEmRatio,
+    viewportWidth,
+    viewportHeight,
+  } = configState.get();
 
   switch (from) {
     case Units.Centimeters:
@@ -46,11 +54,27 @@ export const convertToPixels: Converter = function convertToPixels(
       return Ok(Math.ceil(input * (ppi / 72)));
     case Units.Rems:
       return Ok(Math.ceil(input * fontSize));
-    default:
-      return Err(
-        ConversionErrorKind.UnsupportedUnit,
-        `Unsupported unit conversion to pixels: ${from}`,
-        { unit: from },
+    case Units.Ch:
+      return Ok(Math.ceil(input * fontSize * chToEmRatio));
+    case Units.Ex:
+      return Ok(Math.ceil(input * fontSize * exToEmRatio));
+    case Units.Vh:
+      return Ok(Math.ceil(input * (viewportHeight / 100)));
+    case Units.Vw:
+      return Ok(Math.ceil(input * (viewportWidth / 100)));
+    case Units.Vmin:
+      return Ok(
+        Math.ceil(input * (Math.min(viewportWidth, viewportHeight) / 100)),
       );
+    case Units.Vmax:
+      return Ok(
+        Math.ceil(input * (Math.max(viewportWidth, viewportHeight) / 100)),
+      );
+    case Units.Golden:
+    case Units.Root2:
+    case Units.SixteenNine:
+      return Ok(-1); // Cannot convert ratio-based unit to pixels
+    default:
+      return assertNever(from);
   }
 };

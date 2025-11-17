@@ -1,5 +1,6 @@
 import type { Converter } from "@/lib/converters/index.ts";
 import {
+  assertNever,
   ConversionErrorKind,
   Err,
   Ok,
@@ -64,11 +65,11 @@ export const convertToEx: Converter = function convertToEx(
       );
     case Units.Vw:
       return Ok(((input / 100) * viewportWidth) / exInPixels);
+    case Units.Golden:
+    case Units.Root2:
+    case Units.SixteenNine:
+      return Ok(-1);
     default:
-      return Err(
-        ConversionErrorKind.UnsupportedUnit,
-        `Unsupported unit conversion to ex: ${from}`,
-        { unit: from },
-      );
+      return assertNever(from);
   }
 };

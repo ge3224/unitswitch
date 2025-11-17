@@ -1,5 +1,6 @@
 import type { Converter } from "@/lib/converters/index.ts";
 import {
+  assertNever,
   ConversionErrorKind,
   Err,
   Ok,
@@ -27,7 +28,14 @@ export const convertToPoints: Converter = function convertToPoints(
     );
   }
 
-  const { ppi, fontSize } = configState.get();
+  const {
+    ppi,
+    fontSize,
+    chToEmRatio,
+    exToEmRatio,
+    viewportWidth,
+    viewportHeight,
+  } = configState.get();
 
   function pixelsToPoints(px: number): number {
     return px * (72 / ppi);
@@ -50,11 +58,27 @@ export const convertToPoints: Converter = function convertToPoints(
       return Ok(input);
     case Units.Rems:
       return Ok(pixelsToPoints(input * fontSize));
-    default:
-      return Err(
-        ConversionErrorKind.UnsupportedUnit,
-        `Unsupported unit conversion to points: ${from}`,
-        { unit: from },
+    case Units.Ch:
+      return Ok(pixelsToPoints(input * fontSize * chToEmRatio));
+    case Units.Ex:
+      return Ok(pixelsToPoints(input * fontSize * exToEmRatio));
+    case Units.Vh:
+      return Ok(pixelsToPoints(input * (viewportHeight / 100)));
+    case Units.Vw:
+      return Ok(pixelsToPoints(input * (viewportWidth / 100)));
+    case Units.Vmin:
+      return Ok(
+        pixelsToPoints(input * (Math.min(viewportWidth, viewportHeight) / 100)),
       );
+    case Units.Vmax:
+      return Ok(
+        pixelsToPoints(input * (Math.max(viewportWidth, viewportHeight) / 100)),
+      );
+    case Units.Golden:
+    case Units.Root2:
+    case Units.SixteenNine:
+      return Ok(-1);
+    default:
+      return assertNever(from);
   }
 };

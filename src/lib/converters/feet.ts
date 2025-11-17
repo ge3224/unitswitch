@@ -1,5 +1,6 @@
 import type { Converter } from "@/lib/converters/index.ts";
 import {
+  assertNever,
   ConversionErrorKind,
   Err,
   Ok,
@@ -27,7 +28,14 @@ export const convertToFeet: Converter = function convertToFeet(
     );
   }
 
-  const { ppi, fontSize } = configState.get();
+  const {
+    ppi,
+    fontSize,
+    chToEmRatio,
+    exToEmRatio,
+    viewportWidth,
+    viewportHeight,
+  } = configState.get();
 
   switch (from) {
     case Units.Centimeters:
@@ -46,11 +54,27 @@ export const convertToFeet: Converter = function convertToFeet(
       return Ok(input / 72 / 12);
     case Units.Rems:
       return Ok((input * fontSize) / (12 * ppi));
-    default:
-      return Err(
-        ConversionErrorKind.UnsupportedUnit,
-        `Unsupported unit conversion to feet: ${from}`,
-        { unit: from },
+    case Units.Ch:
+      return Ok((input * fontSize * chToEmRatio) / (12 * ppi));
+    case Units.Ex:
+      return Ok((input * fontSize * exToEmRatio) / (12 * ppi));
+    case Units.Vh:
+      return Ok((input * (viewportHeight / 100)) / (12 * ppi));
+    case Units.Vw:
+      return Ok((input * (viewportWidth / 100)) / (12 * ppi));
+    case Units.Vmin:
+      return Ok(
+        (input * (Math.min(viewportWidth, viewportHeight) / 100)) / (12 * ppi),
       );
+    case Units.Vmax:
+      return Ok(
+        (input * (Math.max(viewportWidth, viewportHeight) / 100)) / (12 * ppi),
+      );
+    case Units.Golden:
+    case Units.Root2:
+    case Units.SixteenNine:
+      return Ok(-1);
+    default:
+      return assertNever(from);
   }
 };

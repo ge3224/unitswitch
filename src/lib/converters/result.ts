@@ -53,11 +53,11 @@ export function Ok<T>(value: T): Result<T> {
 export function Err(
   kind: ConversionErrorKind,
   message: string,
-  details?: { unit?: string; input?: number }
+  details?: { unit?: string; input?: number },
 ): Result<never> {
   return {
     ok: false,
-    error: { kind, message, ...details }
+    error: { kind, message, ...details },
   };
 }
 
@@ -82,4 +82,12 @@ export function map<T, U>(result: Result<T>, fn: (value: T) => U): Result<U> {
     return Ok(fn(result.value));
   }
   return result;
+}
+
+export function assertNever(value: never): Result<never> {
+  return Err(
+    ConversionErrorKind.UnsupportedUnit,
+    `Internal error: unhandled unit type: ${value}`,
+    { unit: value },
+  );
 }

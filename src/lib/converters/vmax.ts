@@ -1,5 +1,6 @@
 import type { Converter } from "@/lib/converters/index.ts";
 import {
+  assertNever,
   ConversionErrorKind,
   Err,
   Ok,
@@ -62,11 +63,11 @@ export const convertToVmax: Converter = function convertToVmax(
       );
     case Units.Vw:
       return Ok((input * viewportWidth) / viewportMax);
+    case Units.Golden:
+    case Units.Root2:
+    case Units.SixteenNine:
+      return Ok(-1);
     default:
-      return Err(
-        ConversionErrorKind.UnsupportedUnit,
-        `Unsupported unit conversion to vmax: ${from}`,
-        { unit: from },
-      );
+      return assertNever(from);
   }
 };

@@ -1,5 +1,6 @@
 import type { Unit } from "@/lib/units.ts";
 import type { Result } from "@/lib/converters/result.ts";
+import { ConversionErrorKind, Err } from "@/lib/converters/result.ts";
 
 import { convertToCentimeters } from "@/lib/converters/centimeters.ts";
 import { convertToCh } from "@/lib/converters/ch.ts";
@@ -23,6 +24,14 @@ import { convertToVw } from "@/lib/converters/vw.ts";
  * Type signature for unit converter functions
  */
 export type Converter = (from: Unit, input: number) => Result<number>;
+
+export function assertNever(value: never): Result<never> {
+  return Err(
+    ConversionErrorKind.UnsupportedUnit, // reuse existing error kind
+    `Internal error: unhandled unit type: ${value}`,
+    { unit: value },
+  );
+}
 
 export {
   convertToCentimeters,

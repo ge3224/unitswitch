@@ -1,5 +1,6 @@
 import type { Converter } from "@/lib/converters/index.ts";
 import {
+  assertNever,
   ConversionErrorKind,
   Err,
   Ok,
@@ -20,7 +21,14 @@ export const convertToPicas: Converter = function convertToPicas(
     );
   }
 
-  const { ppi, fontSize } = configState.get();
+  const {
+    ppi,
+    fontSize,
+    chToEmRatio,
+    exToEmRatio,
+    viewportWidth,
+    viewportHeight,
+  } = configState.get();
 
   /**
    * Converts a value from pixels to picas based on a specified DPI (dots per inch).
@@ -45,11 +53,27 @@ export const convertToPicas: Converter = function convertToPicas(
       return Ok(input * 0.0833);
     case Units.Rems:
       return Ok(_pixelsToPicas(input * fontSize));
-    default:
-      return Err(
-        ConversionErrorKind.UnsupportedUnit,
-        `Unsupported unit conversion to picas: ${from}`,
-        { unit: from },
+    case Units.Ch:
+      return Ok(_pixelsToPicas(input * fontSize * chToEmRatio));
+    case Units.Ex:
+      return Ok(_pixelsToPicas(input * fontSize * exToEmRatio));
+    case Units.Vh:
+      return Ok(_pixelsToPicas(input * (viewportHeight / 100)));
+    case Units.Vw:
+      return Ok(_pixelsToPicas(input * (viewportWidth / 100)));
+    case Units.Vmin:
+      return Ok(
+        _pixelsToPicas(input * (Math.min(viewportWidth, viewportHeight) / 100)),
       );
+    case Units.Vmax:
+      return Ok(
+        _pixelsToPicas(input * (Math.max(viewportWidth, viewportHeight) / 100)),
+      );
+    case Units.Golden:
+    case Units.Root2:
+    case Units.SixteenNine:
+      return Ok(-1);
+    default:
+      return assertNever(from);
   }
 };

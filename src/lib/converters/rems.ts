@@ -1,5 +1,6 @@
 import type { Converter } from "@/lib/converters/index.ts";
 import {
+  assertNever,
   ConversionErrorKind,
   Err,
   Ok,
@@ -20,7 +21,14 @@ export const convertToRems: Converter = function convertToRems(
     );
   }
 
-  const { ppi, fontSize } = configState.get();
+  const {
+    ppi,
+    fontSize,
+    chToEmRatio,
+    exToEmRatio,
+    viewportWidth,
+    viewportHeight,
+  } = configState.get();
 
   switch (from) {
     case Units.Centimeters:
@@ -39,11 +47,23 @@ export const convertToRems: Converter = function convertToRems(
       return Ok((input / 72) * (ppi / fontSize));
     case Units.Rems:
       return Ok(input);
+    case Units.Ch:
+      return Ok(input * chToEmRatio);
+    case Units.Ex:
+      return Ok(input * exToEmRatio);
+    case Units.Vh:
+      return Ok((input * (viewportHeight / 100)) / fontSize);
+    case Units.Vw:
+      return Ok((input * (viewportWidth / 100)) / fontSize);
+    case Units.Vmin:
+      return Ok((input * (Math.min(viewportWidth, viewportHeight) / 100)) / fontSize);
+    case Units.Vmax:
+      return Ok((input * (Math.max(viewportWidth, viewportHeight) / 100)) / fontSize);
+    case Units.Golden:
+    case Units.Root2:
+    case Units.SixteenNine:
+      return Ok(-1);
     default:
-      return Err(
-        ConversionErrorKind.UnsupportedUnit,
-        `Unsupported unit conversion to rems: ${from}`,
-        { unit: from },
-      );
+      return assertNever(from);
   }
 };

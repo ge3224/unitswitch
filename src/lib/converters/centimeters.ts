@@ -1,5 +1,6 @@
 import type { Converter } from "@/lib/converters/index.ts";
 import {
+  assertNever,
   ConversionErrorKind,
   Err,
   Ok,
@@ -20,7 +21,14 @@ export const convertToCentimeters: Converter = function convertToCentimeters(
     );
   }
 
-  const { ppi, fontSize } = configState.get();
+  const {
+    ppi,
+    fontSize,
+    chToEmRatio,
+    exToEmRatio,
+    viewportWidth,
+    viewportHeight,
+  } = configState.get();
 
   switch (from) {
     case Units.Centimeters:
@@ -39,11 +47,27 @@ export const convertToCentimeters: Converter = function convertToCentimeters(
       return Ok(input * (2.54 / 72));
     case Units.Rems:
       return Ok(((input * fontSize) / ppi) * 2.54);
-    default:
-      return Err(
-        ConversionErrorKind.UnsupportedUnit,
-        `Unsupported unit conversion to centimeters: ${from}`,
-        { unit: from },
+    case Units.Ch:
+      return Ok(((input * fontSize * chToEmRatio) / ppi) * 2.54);
+    case Units.Ex:
+      return Ok(((input * fontSize * exToEmRatio) / ppi) * 2.54);
+    case Units.Vh:
+      return Ok(((input * (viewportHeight / 100)) / ppi) * 2.54);
+    case Units.Vw:
+      return Ok(((input * (viewportWidth / 100)) / ppi) * 2.54);
+    case Units.Vmin:
+      return Ok(
+        ((input * (Math.min(viewportWidth, viewportHeight) / 100)) / ppi) * 2.54,
       );
+    case Units.Vmax:
+      return Ok(
+        ((input * (Math.max(viewportWidth, viewportHeight) / 100)) / ppi) * 2.54,
+      );
+    case Units.Golden:
+    case Units.Root2:
+    case Units.SixteenNine:
+      return Ok(-1);
+    default:
+      return assertNever(from);
   }
 };

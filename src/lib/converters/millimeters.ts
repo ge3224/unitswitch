@@ -1,5 +1,6 @@
 import type { Converter } from "@/lib/converters/index.ts";
 import {
+  assertNever,
   ConversionErrorKind,
   Err,
   Ok,
@@ -20,7 +21,14 @@ export const convertToMillimeters: Converter = function convertToMillimeters(
     );
   }
 
-  const { ppi, fontSize } = configState.get();
+  const {
+    ppi,
+    fontSize,
+    chToEmRatio,
+    exToEmRatio,
+    viewportWidth,
+    viewportHeight,
+  } = configState.get();
 
   /**
    * Converts a value from pixels to millimetres based on a specified DPI (dots per inch).
@@ -46,11 +54,27 @@ export const convertToMillimeters: Converter = function convertToMillimeters(
       return Ok(input * 0.352778);
     case Units.Rems:
       return Ok(pixelsToMillimeters(input * fontSize));
-    default:
-      return Err(
-        ConversionErrorKind.UnsupportedUnit,
-        `Unsupported unit conversion to millimeters: ${from}`,
-        { unit: from },
+    case Units.Ch:
+      return Ok(pixelsToMillimeters(input * fontSize * chToEmRatio));
+    case Units.Ex:
+      return Ok(pixelsToMillimeters(input * fontSize * exToEmRatio));
+    case Units.Vh:
+      return Ok(pixelsToMillimeters(input * (viewportHeight / 100)));
+    case Units.Vw:
+      return Ok(pixelsToMillimeters(input * (viewportWidth / 100)));
+    case Units.Vmin:
+      return Ok(
+        pixelsToMillimeters(input * (Math.min(viewportWidth, viewportHeight) / 100)),
       );
+    case Units.Vmax:
+      return Ok(
+        pixelsToMillimeters(input * (Math.max(viewportWidth, viewportHeight) / 100)),
+      );
+    case Units.Golden:
+    case Units.Root2:
+    case Units.SixteenNine:
+      return Ok(-1);
+    default:
+      return assertNever(from);
   }
 };
