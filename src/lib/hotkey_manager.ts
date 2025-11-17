@@ -97,12 +97,3 @@ export function registerHotkeyHandler(
     }
   };
 }
-
-/**
- * Reset the hotkey manager state (for testing only)
- * @internal
- */
-export function __resetForTesting(): void {
-  handlers.clear();
-  initialized.set(false);
-}
