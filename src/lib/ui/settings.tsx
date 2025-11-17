@@ -3,7 +3,7 @@ import {
   createDomFragment,
   createRef,
 } from "@pkg/just-jsx/src/index.ts";
-import { hotkeyManager } from "@/lib/hotkey_manager.ts";
+import { registerHotkeyHandler } from "@/lib/hotkey_manager.ts";
 import { CloseIcon } from "@/lib/ui/icons.tsx";
 import { configState, DEFAULT_CONFIG, resetConfig } from "@/lib/config.ts";
 import type { AppConfig, ThemePreference } from "@/lib/config.ts";
@@ -126,20 +126,21 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
   }
 
   // Global Escape listener to close panel
-  const handleGlobalEscape: (e: KeyboardEvent) => void = function handleGlobalEscape(e: KeyboardEvent): void {
-    if (
-      e.key === "Escape" && panelRef.current &&
-      panelRef.current.style.transform === "translateX(0px)"
-    ) {
-      e.preventDefault();
-      closeModal();
-    }
-  };
+  const handleGlobalEscape: (e: KeyboardEvent) => void =
+    function handleGlobalEscape(e: KeyboardEvent): void {
+      if (
+        e.key === "Escape" && panelRef.current &&
+        panelRef.current.style.transform === "translateX(0px)"
+      ) {
+        e.preventDefault();
+        closeModal();
+      }
+    };
   globalThis.addEventListener("keydown", handleGlobalEscape);
 
   // Register hotkey
   if (hotkey) {
-    hotkeyManager.register(hotkey, openModal, "ctrl");
+    registerHotkeyHandler(hotkey, openModal, "ctrl");
   }
 
   // Call onMount callback with openModal function
@@ -169,7 +170,9 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
         <div class="border-b border-app-green-600 dark:border-app-green-700 px-6 py-4 bg-app-green-900/20 dark:bg-transparent">
           <div class="flex items-start justify-between">
             <div>
-              <h2 class="text-lg font-bold text-white dark:text-app-gray-300">Settings</h2>
+              <h2 class="text-lg font-bold text-white dark:text-app-gray-300">
+                Settings
+              </h2>
               <div class="mt-1 text-sm text-app-gray-200">
                 Configure CSS unit conversion parameters
               </div>
@@ -188,9 +191,13 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
         </div>
 
         {/* Body */}
-        <form ref={formRef} onsubmit={function handleFormSubmit(e: Event): void {
-          onSubmit(e);
-        }} class="flex flex-col h-full">
+        <form
+          ref={formRef}
+          onsubmit={function handleFormSubmit(e: Event): void {
+            onSubmit(e);
+          }}
+          class="flex flex-col h-full"
+        >
           <div class="px-6 py-4 space-y-4 flex-1 overflow-y-auto">
             {/* Theme Section */}
             <div class="space-y-3">

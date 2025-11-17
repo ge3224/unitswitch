@@ -1,6 +1,14 @@
-import { describe, it } from "jsr:@std/testing/bdd";
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  it,
+} from "jsr:@std/testing/bdd";
 import { assertEquals } from "jsr:@std/assert";
-import { createHotkeyManager } from "@/lib/hotkey_manager.ts";
+import { registerHotkeyHandler } from "@/lib/hotkey_manager.ts";
+import { newSimpleState } from "@pkg/simple-state/src/index.ts";
 
 // Mock globalThis for testing
 const mockGlobalThis = () => {
@@ -45,118 +53,156 @@ const createKeyboardEvent = (
   } as KeyboardEvent;
 };
 
-describe("hotkeyManager", () => {
-  describe("registration", () => {
-    it("should register and trigger handler for single keys", () => {
-      const originalAddEventListener = globalThis.addEventListener;
-      const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
+describe("hotkey_manager", () => {
+  const mock = mockGlobalThis();
+  let originalAddEventListener: typeof globalThis.addEventListener;
+  const cleanups: (() => void)[] = [];
 
-      const manager = createHotkeyManager();
+  beforeAll(() => {
+    originalAddEventListener = globalThis.addEventListener;
+    globalThis.addEventListener = mock
+      .addEventListener as typeof globalThis.addEventListener;
+  });
+
+  afterEach(() => {
+    for (const cleanup of cleanups) {
+      cleanup();
+    }
+    cleanups.length = 0;
+  });
+
+  afterAll(() => {
+    globalThis.addEventListener = originalAddEventListener;
+  });
+
+  describe("cleanup", () => {
+    it("should remove handler via cleanup function", () => {
       let called = false;
-
-      manager.register("p", () => {
+      const cleanup = registerHotkeyHandler("p", () => {
         called = true;
       });
+      cleanup();
+
+      mock.dispatchEvent(createKeyboardEvent("p"));
+      assertEquals(called, false);
+    });
+
+    it("should be case insensitive for cleanup", () => {
+      let called = false;
+      const cleanup = registerHotkeyHandler("P", () => {
+        called = true;
+      });
+      cleanup();
+
+      mock.dispatchEvent(createKeyboardEvent("p"));
+      assertEquals(called, false);
+    });
+
+    it("should cleanup ctrl handlers correctly", () => {
+      let called = false;
+      const cleanup = registerHotkeyHandler("k", () => {
+        called = true;
+      }, "ctrl");
+      cleanup();
+
+      mock.dispatchEvent(createKeyboardEvent("k", { ctrlKey: true }));
+      assertEquals(called, false);
+    });
+
+    it("should only remove specific handler when multiple registered", () => {
+      let firstCalled = false;
+      let secondCalled = false;
+
+      const cleanup1 = registerHotkeyHandler("p", () => {
+        firstCalled = true;
+      });
+      const cleanup2 = registerHotkeyHandler("p", () => {
+        secondCalled = true;
+      });
+      cleanups.push(cleanup2);
+
+      cleanup1();
+
+      mock.dispatchEvent(createKeyboardEvent("p"));
+      assertEquals(firstCalled, false);
+      assertEquals(secondCalled, true);
+    });
+  });
+
+  describe("registration", () => {
+    it("should register and trigger handler for single keys", () => {
+      let called = false;
+      const cleanup = registerHotkeyHandler("p", () => {
+        called = true;
+      });
+      cleanups.push(cleanup);
 
       const event = createKeyboardEvent("p");
       mock.dispatchEvent(event);
-
       assertEquals(called, true);
-      globalThis.addEventListener = originalAddEventListener;
     });
 
     it("should not trigger when modifier keys are pressed", () => {
-      const originalAddEventListener = globalThis.addEventListener;
-      const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
-
-      const manager = createHotkeyManager();
       let called = false;
-
-      manager.register("p", () => {
+      const cleanup = registerHotkeyHandler("p", () => {
         called = true;
       });
+      cleanups.push(cleanup);
 
       const event = createKeyboardEvent("p", { ctrlKey: true });
       mock.dispatchEvent(event);
-
       assertEquals(called, false);
-      globalThis.addEventListener = originalAddEventListener;
     });
 
     it("should support Ctrl key when specified", () => {
-      const originalAddEventListener = globalThis.addEventListener;
-      const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
-
-      const manager = createHotkeyManager();
       let called = false;
-
-      manager.register("k", () => {
+      const cleanup = registerHotkeyHandler("k", () => {
         called = true;
       }, "ctrl");
+      cleanups.push(cleanup);
 
       const event = createKeyboardEvent("k", { ctrlKey: true });
       mock.dispatchEvent(event);
-
       assertEquals(called, true);
-      globalThis.addEventListener = originalAddEventListener;
     });
 
     it("should support Alt key when specified", () => {
-      const originalAddEventListener = globalThis.addEventListener;
-      const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
-
-      const manager = createHotkeyManager();
       let called = false;
-
-      manager.register("m", () => {
+      const cleanup = registerHotkeyHandler("m", () => {
         called = true;
       }, "alt");
+      cleanups.push(cleanup);
 
       const event = createKeyboardEvent("m", { altKey: true });
       mock.dispatchEvent(event);
-
       assertEquals(called, true);
-      globalThis.addEventListener = originalAddEventListener;
     });
 
     it("should be case insensitive", () => {
-      const originalAddEventListener = globalThis.addEventListener;
-      const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
-
-      const manager = createHotkeyManager();
       let called = false;
-
-      manager.register("P", () => {
+      const cleanup = registerHotkeyHandler("P", () => {
         called = true;
       });
+      cleanups.push(cleanup);
 
       const event = createKeyboardEvent("p");
       mock.dispatchEvent(event);
-
       assertEquals(called, true);
-      globalThis.addEventListener = originalAddEventListener;
     });
 
     it("should handle multiple registrations", () => {
-      const originalAddEventListener = globalThis.addEventListener;
-      const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
-
-      const manager = createHotkeyManager();
       let pCalled = false;
       let rCalled = false;
 
-      manager.register("p", () => {
+      const cleanup1 = registerHotkeyHandler("p", () => {
         pCalled = true;
       });
-      manager.register("r", () => {
+      cleanups.push(cleanup1);
+
+      const cleanup2 = registerHotkeyHandler("r", () => {
         rCalled = true;
       });
+      cleanups.push(cleanup2);
 
       mock.dispatchEvent(createKeyboardEvent("p"));
       assertEquals(pCalled, true);
@@ -166,126 +212,45 @@ describe("hotkeyManager", () => {
       mock.dispatchEvent(createKeyboardEvent("r"));
       assertEquals(pCalled, false);
       assertEquals(rCalled, true);
-
-      globalThis.addEventListener = originalAddEventListener;
     });
 
-    it("should overwrite existing handler for same key", () => {
-      const originalAddEventListener = globalThis.addEventListener;
-      const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
-
-      const manager = createHotkeyManager();
+    it("should call BOTH handlers when same key registered twice", () => {
       let firstCalled = false;
       let secondCalled = false;
 
-      manager.register("p", () => {
+      const cleanup1 = registerHotkeyHandler("p", () => {
         firstCalled = true;
       });
-      manager.register("p", () => {
+      cleanups.push(cleanup1);
+
+      const cleanup2 = registerHotkeyHandler("p", () => {
         secondCalled = true;
       });
+      cleanups.push(cleanup2);
 
       mock.dispatchEvent(createKeyboardEvent("p"));
-
-      assertEquals(firstCalled, false);
+      assertEquals(firstCalled, true);
       assertEquals(secondCalled, true);
-
-      globalThis.addEventListener = originalAddEventListener;
     });
   });
 
   describe("event prevention", () => {
     it("should prevent default when handler exists", () => {
-      const originalAddEventListener = globalThis.addEventListener;
-      const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
-
-      const manager = createHotkeyManager();
-      manager.register("p", () => {});
+      const cleanup = registerHotkeyHandler("p", () => {});
+      cleanups.push(cleanup);
 
       const event = createKeyboardEvent("p");
       mock.dispatchEvent(event);
-
       assertEquals(event.defaultPrevented, true);
-      globalThis.addEventListener = originalAddEventListener;
     });
 
     it("should not prevent default for unregistered keys", () => {
-      const originalAddEventListener = globalThis.addEventListener;
-      const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
-
-      const manager = createHotkeyManager();
-      manager.register("p", () => {});
+      const cleanup = registerHotkeyHandler("p", () => {});
+      cleanups.push(cleanup);
 
       const event = createKeyboardEvent("x");
       mock.dispatchEvent(event);
-
       assertEquals(event.defaultPrevented, false);
-      globalThis.addEventListener = originalAddEventListener;
     });
   });
-
-  describe("unregistration", () => {
-    it("should remove handler", () => {
-      const originalAddEventListener = globalThis.addEventListener;
-      const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
-
-      const manager = createHotkeyManager();
-      let called = false;
-
-      manager.register("p", () => {
-        called = true;
-      });
-      manager.unregister("p");
-
-      mock.dispatchEvent(createKeyboardEvent("p"));
-      assertEquals(called, false);
-
-      globalThis.addEventListener = originalAddEventListener;
-    });
-
-    it("should be case insensitive", () => {
-      const originalAddEventListener = globalThis.addEventListener;
-      const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
-
-      const manager = createHotkeyManager();
-      let called = false;
-
-      manager.register("p", () => {
-        called = true;
-      });
-      manager.unregister("P");
-
-      mock.dispatchEvent(createKeyboardEvent("p"));
-      assertEquals(called, false);
-
-      globalThis.addEventListener = originalAddEventListener;
-    });
-
-    it("should unregister ctrl handlers correctly", () => {
-      const originalAddEventListener = globalThis.addEventListener;
-      const mock = mockGlobalThis();
-      globalThis.addEventListener = mock.addEventListener as typeof globalThis.addEventListener;
-
-      const manager = createHotkeyManager();
-      let called = false;
-
-      manager.register("k", () => {
-        called = true;
-      }, "ctrl");
-      manager.unregister("k", "ctrl");
-
-      mock.dispatchEvent(createKeyboardEvent("k", { ctrlKey: true }));
-      assertEquals(called, false);
-
-      globalThis.addEventListener = originalAddEventListener;
-    });
-  });
-
-  // Note: Input focus detection tests are skipped because DOM classes (HTMLInputElement, etc.)
-  // are not available in Deno's test environment. This functionality is tested manually in the browser.
 });

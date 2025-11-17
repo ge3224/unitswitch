@@ -2,7 +2,7 @@ import { CloseIcon } from "@/lib/ui/icons.tsx";
 import { UserSubmissionCallback } from "@/lib/types.ts";
 import { abbreviations, UNIT_ABBREVIATIONS } from "@/lib/units.ts";
 import { createDomElement, createRef } from "@pkg/just-jsx/src/index.ts";
-import { hotkeyManager } from "@/lib/hotkey_manager.ts";
+import { registerHotkeyHandler } from "@/lib/hotkey_manager.ts";
 
 const DISPLAY_BLOCK = "block";
 const DISPLAY_NONE = "none";
@@ -290,7 +290,7 @@ export default function Modal({
   globalThis.addEventListener("keydown", handleGlobalEscape);
 
   if (hotkey) {
-    hotkeyManager.register(hotkey, function hotkeyHandlerModal() {
+    registerHotkeyHandler(hotkey, function hotkeyHandlerModal() {
       if (inputRef.current && modalRef.current) {
         inputRef.current.value = "";
         modalRef.current.style.display = DISPLAY_BLOCK;

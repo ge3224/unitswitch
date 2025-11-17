@@ -1,7 +1,7 @@
 import { Unit } from "@/lib/units.ts";
 import { ViewInputState } from "@/lib/types.ts";
 import { createDomElement, createRef } from "@pkg/just-jsx/src/index.ts";
-import { hotkeyManager } from "@/lib/hotkey_manager.ts";
+import { registerHotkeyHandler } from "@/lib/hotkey_manager.ts";
 import { newSimpleState } from "@pkg/simple-state/src/index.ts";
 import { renderConversion as renderConversionValue } from "@/lib/render.ts";
 import { toast } from "@/lib/ui/toast.tsx";
@@ -73,7 +73,9 @@ export default function Conversion({
     const handleCopySuccess: () => void = function handleCopySuccess(): void {
       toast.success("Copied!");
     };
-    const handleCopyError: (err: Error) => void = function handleCopyError(err: Error): void {
+    const handleCopyError: (err: Error) => void = function handleCopyError(
+      err: Error,
+    ): void {
       console.warn("Failed to copy to clipboard:", err);
       toast.error("Failed to copy to clipboard");
     };
@@ -96,7 +98,7 @@ export default function Conversion({
   }
 
   function registerCopyHotkey(element: HTMLDivElement) {
-    hotkeyManager.register(hotkey, function onKeyDownCopyHotkey() {
+    registerHotkeyHandler(hotkey, function onKeyDownCopyHotkey() {
       copyToClipboard();
 
       element.style.boxShadow = HOTKEY_RING_SHADOW;
@@ -129,9 +131,12 @@ export default function Conversion({
         <div class="mx-2 lg:my-auto lg:hidden">
           {detail
             ? (
-              <div class="flex w-6 justify-center" onclick={function handleDetailsClick(e: Event): void {
-                onClickDetails(e);
-              }}>
+              <div
+                class="flex w-6 justify-center"
+                onclick={function handleDetailsClick(e: Event): void {
+                  onClickDetails(e);
+                }}
+              >
                 <PlusIcon ref={plusIconRef} />
                 <MinusIcon ref={minusIconRef} />
               </div>
