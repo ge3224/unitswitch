@@ -34,7 +34,7 @@ import {
   convertToVmin,
   convertToVw,
 } from "@/lib/converters/index.ts";
-import { unwrapOr } from "@/lib/converters/result.ts";
+import { Result } from "@/lib/converters/result.ts";
 import { newSimpleState, SimpleState } from "@pkg/simple-state/src/index.ts";
 import { configState } from "@/lib/config.ts";
 import { lastInputState } from "@/lib/last_input.ts";
@@ -114,36 +114,33 @@ export function App(): Node {
   const inputState = newSimpleState<number>(lastInput.amount);
   const unitState = newSimpleState<Unit>(lastInput.unit);
 
-  const conversionStates = new Map<Unit, SimpleState<number>>();
+  const conversionStates = new Map<Unit, SimpleState<Result<number>>>();
 
   for (const config of CONVERSIONS) {
     const result = config.converter(unitState.get(), inputState.get());
-    const initialValue = unwrapOr(result, -1);
-    const state = newSimpleState<number>(initialValue);
+    // const initialValue = unwrapOr(result, -1);
+    const state = newSimpleState<Result<number>>(result);
     conversionStates.set(config.unit, state);
   }
 
   inputState.subscribe(function inputCallback(newInput: number): void {
     for (const config of CONVERSIONS) {
       const result = config.converter(unitState.get(), newInput);
-      const value = unwrapOr(result, -1);
-      conversionStates.get(config.unit)?.set(value);
+      conversionStates.get(config.unit)?.set(result);
     }
   });
 
   unitState.subscribe(function unitCallback(newUnit: Unit): void {
     for (const config of CONVERSIONS) {
       const result = config.converter(newUnit, inputState.get());
-      const value = unwrapOr(result, -1);
-      conversionStates.get(config.unit)?.set(value);
+      conversionStates.get(config.unit)?.set(result);
     }
   });
 
   configState.subscribe(function configCallback(): void {
     for (const config of CONVERSIONS) {
       const result = config.converter(unitState.get(), inputState.get());
-      const value = unwrapOr(result, -1);
-      conversionStates.get(config.unit)?.set(value);
+      conversionStates.get(config.unit)?.set(result);
     }
   });
 

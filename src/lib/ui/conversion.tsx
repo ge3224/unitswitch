@@ -1,3 +1,4 @@
+import { Result } from "@/lib/converters/result.ts";
 import { Unit } from "@/lib/units.ts";
 import { ViewInputState } from "@/lib/types.ts";
 import { createDomElement, createRef } from "@pkg/just-jsx/src/index.ts";
@@ -25,7 +26,7 @@ export default function Conversion({
   hotkey,
   detail,
 }: {
-  conversion: ViewInputState<number>;
+  conversion: ViewInputState<Result<number>>;
   to: Unit;
   hotkey: string;
   detail?: JSX.Element;
@@ -40,11 +41,16 @@ export default function Conversion({
   let timerId: number | null = null;
 
   conversion.subscribe(
-    function updateConversionValue(newConversionValue: number): void {
+    function updateConversionValue(newConversionValue: Result<number>): void {
       if (conversionValueRef.current) {
-        conversionValueRef.current.textContent = renderConversionValue(
-          newConversionValue,
-        );
+        const rendered = renderConversionValue(newConversionValue);
+        conversionValueRef.current.textContent = rendered.result;
+
+        if (rendered.errorMessage) {
+          conversionValueRef.current.title = rendered.errorMessage;
+        } else {
+          conversionValueRef.current.title = "";
+        }
       }
     },
   );
@@ -70,18 +76,24 @@ export default function Conversion({
   });
 
   function copyToClipboard(): void {
-    const handleCopySuccess: () => void = function handleCopySuccess(): void {
-      toast.success("Copied!");
-    };
-    const handleCopyError: (err: Error) => void = function handleCopyError(
-      err: Error,
-    ): void {
-      console.warn("Failed to copy to clipboard:", err);
-      toast.error("Failed to copy to clipboard");
-    };
-    navigator.clipboard.writeText(conversion.get().toString())
-      .then(handleCopySuccess)
-      .catch(handleCopyError);
+    const result = conversion.get();
+    if (!result.ok) {
+      toast.error(
+        `Cannot copy unavailable conversion: ${result.error.message}`,
+      );
+      return;
+    }
+
+    navigator.clipboard.writeText(result.value.toString())
+      .then(function handleCopySuccess(): void {
+        toast.success("Copied!");
+      })
+      .catch(function handleCopyError(
+        err: Error,
+      ): void {
+        console.warn("Failed to copy to clipboard:", err);
+        toast.error("Failed to copy to clipboard");
+      });
   }
 
   function onClickCopyButton(e: Event): void {
@@ -162,7 +174,7 @@ export default function Conversion({
             <CopyIconSvg />
           </span>
           <span ref={conversionValueRef}>
-            {renderConversionValue(conversion.get())}
+            {renderConversionValue(conversion.get()).result}
           </span>
         </div>
         <div class="ml-2 mr-auto font-bold text-app-black dark:text-app-black lg:my-auto text-sm lg:text-base">

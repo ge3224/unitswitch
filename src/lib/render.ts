@@ -1,4 +1,5 @@
-import { roundToDecimal } from '@/lib/round_number.ts';
+import { Result } from "@/lib/converters/result.ts";
+import { roundToDecimal } from "@/lib/round_number.ts";
 
 /**
  * Options for rendering conversion values.
@@ -12,25 +13,48 @@ export interface RenderOptions {
   special?: (value: number) => string | null;
 }
 
+export interface RenderResult {
+  result: string;
+  errorMessage?: string;
+}
+
 /**
  * Renders a converted value as a string for display.
  */
 export const renderConversion = function renderConversion(
-  value: number,
-  options: RenderOptions = {}
-): string {
-  if (value < 0) return "N/A";
+  result: Result<number>,
+  options: RenderOptions = {},
+): RenderResult {
+  if (!result.ok) {
+    const err = result.error;
+    console.error("Conversion error:", {
+      kind: err.kind,
+      message: err.message,
+      unit: err.unit,
+      input: err.input,
+    });
+
+    return { result: "⚠️ N/A", errorMessage: err.message };
+  }
+
+  const value = result.value;
+
+  if (value < 0) return { result: "N/A" };
 
   // Check for special cases first
   if (options.special) {
     const specialResult = options.special(value);
     if (specialResult !== null) {
       if (specialResult === "") {
-        console.warn(`Special handler returned empty string for value ${value}`);
+        console.warn(
+          `Special handler returned empty string for value ${value}`,
+        );
       }
-      return specialResult;
+      return { result: specialResult };
     }
-    console.warn(`Special handler did not handle value ${value}, using default rendering`);
+    console.warn(
+      `Special handler did not handle value ${value}, using default rendering`,
+    );
   }
 
   const rounded = options.decimals !== undefined
@@ -40,5 +64,5 @@ export const renderConversion = function renderConversion(
   const str = rounded.toString();
   const maxLength = options.maxLength ?? 8;
 
-  return str.length < maxLength ? str : str.slice(0, 6) + "..";
-}
+  return { result: str.length < maxLength ? str : str.slice(0, 6) + ".." };
+};
