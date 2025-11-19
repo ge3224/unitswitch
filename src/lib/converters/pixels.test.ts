@@ -144,40 +144,40 @@ describe('convertToPixels', () => {
       // 1vh = viewportHeight / 100 = 1080 / 100 = 10.8px
       const result = convertToPixels(Units.Vh, 1);
       assert(result.ok);
-      assertEquals(result.value, Math.ceil(VIEWPORT_HEIGHT / 100));
+      assertEquals(result.value, Math.round(VIEWPORT_HEIGHT / 100));
     });
 
     it('should convert Vw to pixels', () => {
       // 1vw = viewportWidth / 100 = 1920 / 100 = 19.2px
       const result = convertToPixels(Units.Vw, 1);
       assert(result.ok);
-      assertEquals(result.value, Math.ceil(VIEWPORT_WIDTH / 100));
+      assertEquals(result.value, Math.round(VIEWPORT_WIDTH / 100));
     });
 
     it('should convert Vmin to pixels', () => {
       // 1vmin = min(1920, 1080) / 100 = 1080 / 100 = 10.8px
       const result = convertToPixels(Units.Vmin, 1);
       assert(result.ok);
-      assertEquals(result.value, Math.ceil(Math.min(VIEWPORT_WIDTH, VIEWPORT_HEIGHT) / 100));
+      assertEquals(result.value, Math.round(Math.min(VIEWPORT_WIDTH, VIEWPORT_HEIGHT) / 100));
     });
 
     it('should convert Vmax to pixels', () => {
       // 1vmax = max(1920, 1080) / 100 = 1920 / 100 = 19.2px
       const result = convertToPixels(Units.Vmax, 1);
       assert(result.ok);
-      assertEquals(result.value, Math.ceil(Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT) / 100));
+      assertEquals(result.value, Math.round(Math.max(VIEWPORT_WIDTH, VIEWPORT_HEIGHT) / 100));
     });
 
     it('should convert 100vh to viewport height', () => {
       const result = convertToPixels(Units.Vh, 100);
       assert(result.ok);
-      assertEquals(result.value, Math.ceil(VIEWPORT_HEIGHT));
+      assertEquals(result.value, Math.round(VIEWPORT_HEIGHT));
     });
 
     it('should convert 100vw to viewport width', () => {
       const result = convertToPixels(Units.Vw, 100);
       assert(result.ok);
-      assertEquals(result.value, Math.ceil(VIEWPORT_WIDTH));
+      assertEquals(result.value, Math.round(VIEWPORT_WIDTH));
     });
   });
 

@@ -34,7 +34,7 @@ export const convertToEx: Converter = function convertToEx(
 
   switch (from) {
     case Units.Centimeters:
-      return Ok((input * 0.3937008 * ppi) / exInPixels);
+      return Ok((input / 2.54 * ppi) / exInPixels);
     case Units.Ch:
       return Ok((input * chToEmRatio) / exToEmRatio);
     case Units.Ex:

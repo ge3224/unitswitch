@@ -38,19 +38,19 @@ export const convertToPicas: Converter = function convertToPicas(
   }
   switch (from) {
     case Units.Centimeters:
-      return Ok(input * 2.362204724);
+      return Ok(input * (6 / 2.54));
     case Units.Feet:
       return Ok(input * 72);
     case Units.Inches:
       return Ok(input * 6);
     case Units.Millimeters:
-      return Ok(input * 0.236220472);
+      return Ok(input * (6 / 25.4));
     case Units.Picas:
       return Ok(input);
     case Units.Pixels:
       return Ok(_pixelsToPicas(input));
     case Units.Points:
-      return Ok(input * 0.0833);
+      return Ok(input / 12);
     case Units.Rems:
       return Ok(_pixelsToPicas(input * fontSize));
     case Units.Ch:

@@ -32,13 +32,13 @@ export const convertToInches: Converter = function convertToInches(
 
   switch (from) {
     case Units.Centimeters:
-      return Ok(input * 0.393701);
+      return Ok(input / 2.54);
     case Units.Feet:
       return Ok(input * 12);
     case Units.Inches:
       return Ok(input);
     case Units.Millimeters:
-      return Ok(input * 0.0393701);
+      return Ok(input / 25.4);
     case Units.Picas:
       return Ok(input / 6);
     case Units.Pixels:

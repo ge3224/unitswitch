@@ -39,36 +39,36 @@ export const convertToPixels: Converter = function convertToPixels(
 
   switch (from) {
     case Units.Centimeters:
-      return Ok(Math.ceil(input * (ppi / 2.54)));
+      return Ok(Math.round(input * (ppi / 2.54)));
     case Units.Feet:
-      return Ok(Math.ceil(input * 12 * ppi));
+      return Ok(Math.round(input * 12 * ppi));
     case Units.Inches:
-      return Ok(Math.ceil(input * ppi));
+      return Ok(Math.round(input * ppi));
     case Units.Millimeters:
-      return Ok(Math.ceil(input * (ppi / 25.4)));
+      return Ok(Math.round(input * (ppi / 25.4)));
     case Units.Picas:
-      return Ok(Math.ceil(input * (1 / 6) * ppi));
+      return Ok(Math.round(input * (1 / 6) * ppi));
     case Units.Pixels:
-      return Ok(Math.ceil(input));
+      return Ok(Math.round(input));
     case Units.Points:
-      return Ok(Math.ceil(input * (ppi / 72)));
+      return Ok(Math.round(input * (ppi / 72)));
     case Units.Rems:
-      return Ok(Math.ceil(input * fontSize));
+      return Ok(Math.round(input * fontSize));
     case Units.Ch:
-      return Ok(Math.ceil(input * fontSize * chToEmRatio));
+      return Ok(Math.round(input * fontSize * chToEmRatio));
     case Units.Ex:
-      return Ok(Math.ceil(input * fontSize * exToEmRatio));
+      return Ok(Math.round(input * fontSize * exToEmRatio));
     case Units.Vh:
-      return Ok(Math.ceil(input * (viewportHeight / 100)));
+      return Ok(Math.round(input * (viewportHeight / 100)));
     case Units.Vw:
-      return Ok(Math.ceil(input * (viewportWidth / 100)));
+      return Ok(Math.round(input * (viewportWidth / 100)));
     case Units.Vmin:
       return Ok(
-        Math.ceil(input * (Math.min(viewportWidth, viewportHeight) / 100)),
+        Math.round(input * (Math.min(viewportWidth, viewportHeight) / 100)),
       );
     case Units.Vmax:
       return Ok(
-        Math.ceil(input * (Math.max(viewportWidth, viewportHeight) / 100)),
+        Math.round(input * (Math.max(viewportWidth, viewportHeight) / 100)),
       );
     case Units.Golden:
     case Units.Root2:

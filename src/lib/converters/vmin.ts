@@ -34,7 +34,7 @@ export const convertToVmin: Converter = function convertToVmin(
 
   switch (from) {
     case Units.Centimeters:
-      return Ok(((input * 0.3937008 * ppi) / viewportMin) * 100);
+      return Ok(((input / 2.54 * ppi) / viewportMin) * 100);
     case Units.Ch:
       return Ok(((input * chToEmRatio * fontSize) / viewportMin) * 100);
     case Units.Ex:

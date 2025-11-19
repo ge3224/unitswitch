@@ -33,7 +33,7 @@ export const convertToVw: Converter = function convertToVw(
 
   switch (from) {
     case Units.Centimeters:
-      return Ok(((input * 0.3937008 * ppi) / viewportWidth) * 100);
+      return Ok(((input / 2.54 * ppi) / viewportWidth) * 100);
     case Units.Ch:
       return Ok(((input * chToEmRatio * fontSize) / viewportWidth) * 100);
     case Units.Ex:

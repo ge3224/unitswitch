@@ -33,7 +33,7 @@ export const convertToCh: Converter = function convertToCh(
 
   switch (from) {
     case Units.Centimeters:
-      return Ok((input * 0.3937008 * ppi) / chInPixels);
+      return Ok((input / 2.54 * ppi) / chInPixels);
     case Units.Ch:
       return Ok(input);
     case Units.Ex:

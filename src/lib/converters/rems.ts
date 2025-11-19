@@ -32,7 +32,7 @@ export const convertToRems: Converter = function convertToRems(
 
   switch (from) {
     case Units.Centimeters:
-      return Ok((input * 0.3937008 * ppi) / fontSize);
+      return Ok((input / 2.54 * ppi) / fontSize);
     case Units.Feet:
       return Ok((input * 12 * ppi) / fontSize);
     case Units.Inches:
