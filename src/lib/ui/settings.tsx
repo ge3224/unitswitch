@@ -158,11 +158,16 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
         }}
         class="fixed left-0 top-0 z-40 h-screen w-full bg-app-black/50 dark:bg-black/70 transition-opacity"
         style={{ display: "none" }}
+        role="presentation"
+        aria-hidden="true"
       />
 
       {/* Side Panel */}
       <div
         ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="settings-title"
         class="fixed right-0 top-0 z-50 h-screen w-full sm:w-96 flex flex-col border-l border-app-green-600 dark:border-app-green-700 bg-app-black dark:bg-app-green-900 shadow-2xl transform transition-transform duration-300"
         style={{ transform: "translateX(100%)" }}
       >
@@ -170,7 +175,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
         <div class="border-b border-app-green-600 dark:border-app-green-700 px-6 py-4 bg-app-green-900/20 dark:bg-transparent">
           <div class="flex items-start justify-between">
             <div>
-              <h2 class="text-lg font-bold text-white dark:text-app-gray-300">
+              <h2 id="settings-title" class="text-lg font-bold text-white dark:text-app-gray-300">
                 Settings
               </h2>
               <div class="mt-1 text-sm text-app-gray-200">
@@ -251,10 +256,11 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
               </h3>
               <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <label class="block text-xs text-app-gray-200 mb-1">
+                  <label htmlFor="viewport-width" class="block text-xs text-app-gray-200 mb-1">
                     Width (px)
                   </label>
                   <input
+                    id="viewport-width"
                     ref={viewportWidthRef}
                     type="number"
                     min="1"
@@ -264,10 +270,11 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                   />
                 </div>
                 <div>
-                  <label class="block text-xs text-app-gray-200 mb-1">
+                  <label htmlFor="viewport-height" class="block text-xs text-app-gray-200 mb-1">
                     Height (px)
                   </label>
                   <input
+                    id="viewport-height"
                     ref={viewportHeightRef}
                     type="number"
                     min="1"
@@ -283,10 +290,11 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
             <div class="space-y-3">
               <h3 class="text-sm font-semibold text-app-green-400">Font</h3>
               <div>
-                <label class="block text-xs text-app-gray-200 mb-1">
+                <label htmlFor="font-size" class="block text-xs text-app-gray-200 mb-1">
                   Base Font Size (px)
                 </label>
                 <input
+                  id="font-size"
                   ref={fontSizeRef}
                   type="number"
                   min="1"
@@ -297,10 +305,11 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
               </div>
               <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <label class="block text-xs text-app-gray-200 mb-1">
+                  <label htmlFor="ch-em-ratio" class="block text-xs text-app-gray-200 mb-1">
                     ch/em Ratio
                   </label>
                   <input
+                    id="ch-em-ratio"
                     ref={chToEmRatioRef}
                     type="number"
                     min="0.01"
@@ -311,10 +320,11 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                   />
                 </div>
                 <div>
-                  <label class="block text-xs text-app-gray-200 mb-1">
+                  <label htmlFor="ex-em-ratio" class="block text-xs text-app-gray-200 mb-1">
                     ex/em Ratio
                   </label>
                   <input
+                    id="ex-em-ratio"
                     ref={exToEmRatioRef}
                     type="number"
                     min="0.01"
@@ -333,10 +343,11 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                 Display
               </h3>
               <div>
-                <label class="block text-xs text-app-gray-200 mb-1">
+                <label htmlFor="ppi" class="block text-xs text-app-gray-200 mb-1">
                   Pixels Per Inch (PPI)
                 </label>
                 <input
+                  id="ppi"
                   ref={ppiRef}
                   type="number"
                   min="1"

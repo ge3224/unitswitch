@@ -37,6 +37,7 @@ export default function Conversion({
   const detailsPanelRef = createRef<HTMLDivElement>();
   const minusIconRef = createRef<SVGElement>();
   const plusIconRef = createRef<SVGElement>();
+  const detailsButtonRef = createRef<HTMLButtonElement>();
 
   let timerId: number | null = null;
 
@@ -72,6 +73,11 @@ export default function Conversion({
       plusIconRef.current.style.display = show
         ? DISPLAY_NONE
         : DISPLAY_INLINE_BLOCK;
+    }
+
+    if (detailsButtonRef.current) {
+      detailsButtonRef.current.setAttribute("aria-label", show ? "Hide details" : "Show details");
+      detailsButtonRef.current.setAttribute("aria-expanded", show.toString());
     }
   });
 
@@ -143,18 +149,23 @@ export default function Conversion({
         <div class="mx-2 lg:my-auto lg:hidden">
           {detail
             ? (
-              <div
-                class="flex w-6 justify-center"
+              <button
+                type="button"
+                ref={detailsButtonRef}
+                class="flex w-6 justify-center bg-transparent border-none p-0 cursor-pointer"
+                aria-label="Show details"
+                aria-expanded="false"
+                aria-controls={`details-${to.toString()}`}
                 onclick={function handleDetailsClick(e: Event): void {
                   onClickDetails(e);
                 }}
               >
                 <PlusIcon ref={plusIconRef} />
                 <MinusIcon ref={minusIconRef} />
-              </div>
+              </button>
             )
             : (
-              <div class="flex w-6 justify-center">
+              <div class="flex w-6 justify-center" aria-hidden="true">
                 <GrayPlusIcon />
               </div>
             )}
@@ -164,15 +175,17 @@ export default function Conversion({
           class="w-32 border-l border-r border-app-green-600 dark:border-app-green-700 bg-app-green-100 dark:bg-app-green-800 px-2.5 py-1.5 text-sm font-bold text-app-green-500 dark:text-app-green-300 lg:flex lg:items-center lg:border-l-0 lg:text-base"
           id={`to-${to.toString()}`}
         >
-          <span
-            class="mr-2 cursor-pointer"
+          <button
+            type="button"
+            class="mr-2 cursor-pointer bg-transparent border-none p-0"
             title="Click to copy the converted value to the clipboard"
+            aria-label="Copy converted value to clipboard"
             onclick={function handleCopyClick(e: Event): void {
               onClickCopyButton(e);
             }}
           >
             <CopyIconSvg />
-          </span>
+          </button>
           <span ref={conversionValueRef}>
             {renderConversionValue(conversion.get()).result}
           </span>
@@ -192,6 +205,7 @@ export default function Conversion({
       {detail &&
         (
           <div
+            id={`details-${to.toString()}`}
             ref={detailsPanelRef}
             class="hidden border-b border-app-green-600 dark:border-app-green-700 p-2.5 lg:block lg:border-x lg:text-xs dark:text-app-gray-200"
           >

@@ -9,7 +9,10 @@ export default function Logo() {
         viewBox="0 0 67 46"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-labelledby="logo-title"
       >
+        <title id="logo-title">UnitSwitch logo</title>
         <path
           d="M26.0972 23.1105L17.0444 7.15912L1 16.2646L10.0527 32.2161"
           fill="#4EBD85"

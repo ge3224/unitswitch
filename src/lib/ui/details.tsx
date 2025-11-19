@@ -17,20 +17,22 @@ export function DetailsRemsEms() {
     fontSizeTextNode.textContent = `${config.fontSize}px`;
   });
 
-  const handleRootHintTouch = function handleRootHintTouch(): void {
+  const handleRootHintClick = function handleRootHintClick(): void {
     toast.success("rem is relative to the root element's font size, while em is relative to the parent element's font size", 4000);
   };
 
   return (
     <div class="text-app-black dark:text-app-gray-200">
       Based on a{" "}
-      <span
-        class="cursor-help border-b border-dotted border-app-gray-200 dark:border-app-gray-300 hover:border-app-green-400 hover:text-app-green-500 transition-colors"
+      <button
+        type="button"
+        class="cursor-help border-b border-dotted border-app-gray-200 dark:border-app-gray-300 hover:border-app-green-400 hover:text-app-green-500 transition-colors bg-transparent p-0 font-inherit"
         title="rem is relative to the root element's font size, while em is relative to the parent element's font size"
-        ontouchend={handleRootHintTouch}
+        aria-label="Click for explanation of root font size"
+        onclick={handleRootHintClick}
       >
         root*
-      </span>{" "}
+      </button>{" "}
       font size of <span class="font-bold">{fontSizeTextNode}</span>
     </div>
   );

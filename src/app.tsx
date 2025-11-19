@@ -177,6 +177,7 @@ export function App(): Node {
           type="button"
           class="absolute lg:fixed top-2 right-2 lg:top-4 lg:right-4 z-30 cursor-pointer rounded-full p-3 text-app-gray-200 dark:text-app-green-300 transition-all hover:bg-app-green-600 dark:hover:bg-app-green-700 hover:text-white hover:shadow-lg hover:scale-110 active:scale-95"
           title="Settings (Ctrl+/)"
+          aria-label="Open settings (Ctrl+/)"
           onClick={function handleSettingsClick(): void {
             openSettingsFn?.();
           }}

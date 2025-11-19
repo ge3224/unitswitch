@@ -23,6 +23,8 @@ export default function UserInput({
     <div
       class="col-span-5 mb-0 mt-1 h-4 text-xs text-pink-500 dark:text-pink-400"
       id="amount-error"
+      role="alert"
+      aria-live="polite"
     >
       {warningState.get()}
     </div>

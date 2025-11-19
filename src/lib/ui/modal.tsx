@@ -138,6 +138,9 @@ export default function Modal({
     if (suggestionsDropdownRef.current) {
       suggestionsDropdownRef.current.style.display = DISPLAY_NONE;
     }
+    if (inputRef.current) {
+      inputRef.current.setAttribute("aria-expanded", "false");
+    }
   }
 
   function updateSuggestions(query: string): void {
@@ -161,6 +164,10 @@ export default function Modal({
       if (suggestionsDropdownRef.current) {
         suggestionsDropdownRef.current.style.display = DISPLAY_BLOCK;
       }
+      if (inputRef.current) {
+        inputRef.current.setAttribute("aria-expanded", "true");
+        inputRef.current.setAttribute("aria-activedescendant", `suggestion-${selectedSuggestionIndex}`);
+      }
     } else {
       hideSuggestions();
     }
@@ -176,6 +183,9 @@ export default function Modal({
     const renderSuggestion: (unit: UnitAbbreviation, index: number) => void =
       function renderSuggestion(unit: UnitAbbreviation, index: number): void {
         const div = document.createElement("div");
+        div.setAttribute("role", "option");
+        div.setAttribute("aria-selected", (index === selectedSuggestionIndex).toString());
+        div.id = `suggestion-${index}`;
         div.className =
           `px-4 py-2.5 cursor-pointer flex items-center justify-between transition-colors ${
             index === selectedSuggestionIndex
@@ -257,10 +267,16 @@ export default function Modal({
         filteredSuggestions.length - 1,
       );
       renderSuggestions();
+      if (inputRef.current) {
+        inputRef.current.setAttribute("aria-activedescendant", `suggestion-${selectedSuggestionIndex}`);
+      }
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       selectedSuggestionIndex = Math.max(selectedSuggestionIndex - 1, 0);
       renderSuggestions();
+      if (inputRef.current) {
+        inputRef.current.setAttribute("aria-activedescendant", `suggestion-${selectedSuggestionIndex}`);
+      }
     } else if (e.key === "Enter" && selectedSuggestionIndex >= 0) {
       e.preventDefault();
       const selected = filteredSuggestions[selectedSuggestionIndex];
@@ -340,13 +356,20 @@ export default function Modal({
     <div
       ref={modalRef}
       class="fixed left-0 top-0 z-10 hidden h-screen w-full bg-app-black/70 dark:bg-black/80"
+      role="presentation"
+      aria-hidden="true"
     >
-      <div class="fixed inset-x-4 top-1/4 sm:inset-x-1/4 lg:inset-x-1/3 flex flex-col rounded-md border border-app-green-600 dark:border-app-green-700 bg-app-black dark:bg-app-green-900 shadow-lg shadow-app-black dark:shadow-black @container">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        class="fixed inset-x-4 top-1/4 sm:inset-x-1/4 lg:inset-x-1/3 flex flex-col rounded-md border border-app-green-600 dark:border-app-green-700 bg-app-black dark:bg-app-green-900 shadow-lg shadow-app-black dark:shadow-black @container"
+      >
         {/* Header */}
         <div class="border-b border-app-green-600 dark:border-app-green-700 px-6 py-4">
           <div class="flex items-start justify-between">
             <div>
-              <label class="text-lg font-bold text-white">
+              <label id="modal-title" class="text-lg font-bold text-white">
                 Enter a value and unit
               </label>
               <div class="mt-1 text-sm text-app-gray-200">
@@ -379,12 +402,18 @@ export default function Modal({
           <div class="px-6 py-4">
             <div class="relative">
               <input
+                id="modal-input"
                 ref={inputRef}
                 class="w-full rounded-sm border border-transparent dark:border-app-green-700 bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-base outline-none focus:ring-2 focus:ring-app-green-600"
                 type="text"
                 name="name"
                 placeholder="e.g., 100:px or 2:rem"
                 data-testid="modal-input"
+                aria-labelledby="modal-title"
+                aria-autocomplete="list"
+                aria-controls="suggestions-dropdown"
+                aria-expanded="false"
+                role="combobox"
                 oninput={function handleInputChange(): void {
                   onInputChange();
                 }}
@@ -412,7 +441,9 @@ export default function Modal({
                 </svg>
               </button>
               <div
+                id="suggestions-dropdown"
                 ref={suggestionsDropdownRef}
+                role="listbox"
                 class="absolute left-0 top-full mt-1 w-full rounded-sm border border-app-green-600 dark:border-app-green-700 bg-app-black dark:bg-app-green-900 shadow-lg"
                 style={{ display: "none", "z-index": "100" }}
               />
