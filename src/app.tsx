@@ -123,25 +123,23 @@ export function App(): Node {
     conversionStates.set(config.unit, state);
   }
 
-  inputState.subscribe(function inputCallback(newInput: number): void {
+  function updateConversions(unit: Unit, input: number): void {
     for (const config of CONVERSIONS) {
-      const result = config.converter(unitState.get(), newInput);
+      const result = config.converter(unit, input);
       conversionStates.get(config.unit)?.set(result);
     }
+  }
+
+  inputState.subscribe(function inputCallback(newInput: number): void {
+    updateConversions(unitState.get(), newInput);
   });
 
   unitState.subscribe(function unitCallback(newUnit: Unit): void {
-    for (const config of CONVERSIONS) {
-      const result = config.converter(newUnit, inputState.get());
-      conversionStates.get(config.unit)?.set(result);
-    }
+    updateConversions(newUnit, inputState.get());
   });
 
   configState.subscribe(function configCallback(): void {
-    for (const config of CONVERSIONS) {
-      const result = config.converter(unitState.get(), inputState.get());
-      conversionStates.get(config.unit)?.set(result);
-    }
+    updateConversions(unitState.get(), inputState.get());
   });
 
   inputState.subscribe(function saveInputCallback(newAmount: number): void {
