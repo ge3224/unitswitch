@@ -1,4 +1,4 @@
-import { Result } from "@/lib/converters/result.ts";
+import { Result } from "@/lib/result.ts";
 import { Unit } from "@/lib/units.ts";
 import { ViewInputState } from "@/lib/types.ts";
 import { createDomElement, createRef } from "@pkg/just-jsx/src/index.ts";
@@ -76,7 +76,10 @@ export default function Conversion({
     }
 
     if (detailsButtonRef.current) {
-      detailsButtonRef.current.setAttribute("aria-label", show ? "Hide details" : "Show details");
+      detailsButtonRef.current.setAttribute(
+        "aria-label",
+        show ? "Hide details" : "Show details",
+      );
       detailsButtonRef.current.setAttribute("aria-expanded", show.toString());
     }
   });

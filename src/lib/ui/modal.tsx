@@ -3,6 +3,7 @@ import { UserSubmissionCallback } from "@/lib/types.ts";
 import { abbreviations, UNIT_ABBREVIATIONS } from "@/lib/units.ts";
 import { createDomElement, createRef } from "@pkg/just-jsx/src/index.ts";
 import { registerHotkeyHandler } from "@/lib/hotkey_manager.ts";
+import { validateConversionInput } from "@/lib/validation.ts";
 
 const DISPLAY_BLOCK = "block";
 const DISPLAY_NONE = "none";
@@ -329,7 +330,11 @@ export default function Modal({
     const split = inputValue.split(":");
     const num = parseFloat(split[0]);
 
-    if (Number.isNaN(num)) {
+    // Validate the input value
+    const validation = validateConversionInput(num);
+    if (!validation.ok) {
+      // Could optionally show error message here
+      console.warn("Invalid conversion input:", validation.error.message);
       onClickCloseModal();
       return;
     }
@@ -348,7 +353,7 @@ export default function Modal({
       return;
     }
 
-    callback(num, unit);
+    callback(validation.value, unit);
     onClickCloseModal();
   }
 

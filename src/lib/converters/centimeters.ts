@@ -1,11 +1,12 @@
 import type { Converter } from "@/lib/converters/index.ts";
+import { validateConverterInput } from "@/lib/converters/index.ts";
 import {
   assertNever,
-  ConversionErrorKind,
+  AppErrorKind,
   Err,
   Ok,
   type Result,
-} from "@/lib/converters/result.ts";
+} from "@/lib/result.ts";
 import { configState } from "@/lib/config.ts";
 import { type Unit, Units } from "@/lib/units.ts";
 
@@ -13,12 +14,10 @@ export const convertToCentimeters: Converter = function convertToCentimeters(
   from: Unit,
   input: number,
 ): Result<number> {
-  if (input < 0) {
-    return Err(
-      ConversionErrorKind.NegativeInput,
-      "Input value cannot be negative",
-      { input, unit: from },
-    );
+  // Validate input
+  const validationError = validateConverterInput(input, from);
+  if (validationError) {
+    return validationError;
   }
 
   const {
@@ -57,11 +56,13 @@ export const convertToCentimeters: Converter = function convertToCentimeters(
       return Ok(((input * (viewportWidth / 100)) / ppi) * 2.54);
     case Units.Vmin:
       return Ok(
-        ((input * (Math.min(viewportWidth, viewportHeight) / 100)) / ppi) * 2.54,
+        ((input * (Math.min(viewportWidth, viewportHeight) / 100)) / ppi) *
+          2.54,
       );
     case Units.Vmax:
       return Ok(
-        ((input * (Math.max(viewportWidth, viewportHeight) / 100)) / ppi) * 2.54,
+        ((input * (Math.max(viewportWidth, viewportHeight) / 100)) / ppi) *
+          2.54,
       );
     case Units.Golden:
     case Units.Root2:

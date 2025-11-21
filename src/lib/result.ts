@@ -1,34 +1,36 @@
 /**
- * Result type for converter functions
+ * Result type for application functions
  * Inspired by Rust's Result<T, E> pattern
  *
- * Provides a type-safe way to handle conversion errors without exceptions
+ * Provides a type-safe way to handle errors without exceptions
  */
 
 /**
  * Result type - either success (Ok) with a value, or failure (Err) with an error
  */
-export type Result<T, E = ConversionError> =
+export type Result<T, E = AppError> =
   | { ok: true; value: T }
   | { ok: false; error: E };
 
 /**
- * Kinds of errors that can occur during unit conversion
+ * Kinds of errors that can occur in the application
  */
-export enum ConversionErrorKind {
+export enum AppErrorKind {
   /** Input value is negative (not allowed for measurements) */
   NegativeInput = "NegativeInput",
   /** Unit type is not supported by this converter */
   UnsupportedUnit = "UnsupportedUnit",
-  /** Input value is invalid (NaN, Infinity, etc.) */
+  /** Input value is invalid (NaN, Infinity, out of range, etc.) */
   InvalidInput = "InvalidInput",
+  /** Configuration value is invalid */
+  InvalidConfig = "InvalidConfig",
 }
 
 /**
- * Detailed error information for conversion failures
+ * Detailed error information for application failures
  */
-export type ConversionError = {
-  kind: ConversionErrorKind;
+export type AppError = {
+  kind: AppErrorKind;
   message: string;
   unit?: string;
   input?: number;
@@ -48,10 +50,10 @@ export function Ok<T>(value: T): Result<T> {
  * Creates a failed Result with error details
  *
  * @example
- * return Err(ConversionErrorKind.NegativeInput, "Value cannot be negative", { input: -5 });
+ * return Err(AppErrorKind.NegativeInput, "Value cannot be negative", { input: -5 });
  */
 export function Err(
-  kind: ConversionErrorKind,
+  kind: AppErrorKind,
   message: string,
   details?: { unit?: string; input?: number },
 ): Result<never> {
@@ -86,7 +88,7 @@ export function map<T, U>(result: Result<T>, fn: (value: T) => U): Result<U> {
 
 export function assertNever(value: never): Result<never> {
   return Err(
-    ConversionErrorKind.UnsupportedUnit,
+    AppErrorKind.UnsupportedUnit,
     `Internal error: unhandled unit type: ${value}`,
     { unit: value },
   );

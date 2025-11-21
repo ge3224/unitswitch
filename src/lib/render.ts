@@ -1,4 +1,4 @@
-import { Result } from "@/lib/converters/result.ts";
+import { Result } from "@/lib/result.ts";
 import { roundToDecimal } from "@/lib/round_number.ts";
 
 /**

@@ -1,6 +1,6 @@
 import type { Unit } from "@/lib/units.ts";
-import type { Result } from "@/lib/converters/result.ts";
-import { ConversionErrorKind, Err } from "@/lib/converters/result.ts";
+import type { Result } from "@/lib/result.ts";
+import { AppErrorKind, Err } from "@/lib/result.ts";
 
 import { convertToCentimeters } from "@/lib/converters/centimeters.ts";
 import { convertToCh } from "@/lib/converters/ch.ts";
@@ -25,9 +25,36 @@ import { convertToVw } from "@/lib/converters/vw.ts";
  */
 export type Converter = (from: Unit, input: number) => Result<number>;
 
+/**
+ * Validates converter input for common issues (NaN, Infinity, negative values)
+ * Returns an error Result if validation fails, null if validation passes
+ */
+export function validateConverterInput(
+  input: number,
+  unit: Unit,
+): Result<never> | null {
+  if (!isFinite(input) || isNaN(input)) {
+    return Err(
+      AppErrorKind.InvalidInput,
+      "Input must be a finite number",
+      { input, unit },
+    );
+  }
+
+  if (input < 0) {
+    return Err(
+      AppErrorKind.NegativeInput,
+      "Input value cannot be negative",
+      { input, unit },
+    );
+  }
+
+  return null;
+}
+
 export function assertNever(value: never): Result<never> {
   return Err(
-    ConversionErrorKind.UnsupportedUnit, // reuse existing error kind
+    AppErrorKind.UnsupportedUnit, // reuse existing error kind
     `Internal error: unhandled unit type: ${value}`,
     { unit: value },
   );

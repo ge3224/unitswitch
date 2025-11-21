@@ -3,10 +3,19 @@ import {
   createDomFragment,
   createRef,
 } from "@pkg/just-jsx/src/index.ts";
+import { newSimpleState } from "@pkg/simple-state/src/index.ts";
 import { registerHotkeyHandler } from "@/lib/hotkey_manager.ts";
 import { CloseIcon } from "@/lib/ui/icons.tsx";
 import { configState, DEFAULT_CONFIG, resetConfig } from "@/lib/config.ts";
 import type { AppConfig, ThemePreference } from "@/lib/config.ts";
+import {
+  validateViewportWidth,
+  validateViewportHeight,
+  validateFontSize,
+  validatePpi,
+  validateChToEmRatio,
+  validateExToEmRatio,
+} from "@/lib/validation.ts";
 
 const DISPLAY_BLOCK = "block";
 const DISPLAY_NONE = "none";
@@ -20,6 +29,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
   const panelRef = createRef<HTMLDivElement>();
   const backdropRef = createRef<HTMLDivElement>();
   const formRef = createRef<HTMLFormElement>();
+  const errorMessageRef = createRef<HTMLDivElement>();
 
   const viewportWidthRef = createRef<HTMLInputElement>();
   const viewportHeightRef = createRef<HTMLInputElement>();
@@ -33,8 +43,13 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
     system: createRef<HTMLInputElement>(),
   };
 
+  const errorState = newSimpleState<string | null>(null);
+
   function openModal(): void {
     if (panelRef.current && formRef.current && backdropRef.current) {
+      // Clear any previous errors
+      errorState.set(null);
+
       // Load current config values into form
       const config = configState.get();
       if (viewportWidthRef.current) {
@@ -90,34 +105,54 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
   function onSubmit(e: Event): void {
     e.preventDefault();
 
+    // Clear any previous error
+    errorState.set(null);
+
     // Get selected theme
     let selectedTheme: ThemePreference = "system";
     if (themeRefs.light.current?.checked) selectedTheme = "light";
     else if (themeRefs.dark.current?.checked) selectedTheme = "dark";
     else if (themeRefs.system.current?.checked) selectedTheme = "system";
 
+    // Parse input values
+    const viewportWidth = parseFloat(viewportWidthRef.current?.value || "1920");
+    const viewportHeight = parseFloat(viewportHeightRef.current?.value || "1080");
+    const fontSize = parseFloat(fontSizeRef.current?.value || "16");
+    const ppi = parseFloat(ppiRef.current?.value || "96");
+    const chToEmRatio = parseFloat(chToEmRatioRef.current?.value || "0.5");
+    const exToEmRatio = parseFloat(exToEmRatioRef.current?.value || "0.5");
+
+    // Validate all inputs
+    const validations = [
+      validateViewportWidth(viewportWidth),
+      validateViewportHeight(viewportHeight),
+      validateFontSize(fontSize),
+      validatePpi(ppi),
+      validateChToEmRatio(chToEmRatio),
+      validateExToEmRatio(exToEmRatio),
+    ];
+
+    // Check for first error
+    for (const result of validations) {
+      if (!result.ok) {
+        errorState.set(result.error.message);
+        return;
+      }
+    }
+
+    // All validations passed, save config
     const newConfig: AppConfig = {
-      viewportWidth: parseFloat(viewportWidthRef.current?.value || "1920"),
-      viewportHeight: parseFloat(viewportHeightRef.current?.value || "1080"),
-      fontSize: parseFloat(fontSizeRef.current?.value || "16"),
-      ppi: parseFloat(ppiRef.current?.value || "96"),
-      chToEmRatio: parseFloat(chToEmRatioRef.current?.value || "0.5"),
-      exToEmRatio: parseFloat(exToEmRatioRef.current?.value || "0.5"),
+      viewportWidth,
+      viewportHeight,
+      fontSize,
+      ppi,
+      chToEmRatio,
+      exToEmRatio,
       theme: selectedTheme,
     };
 
-    // Validate all values are positive numbers
-    if (
-      newConfig.viewportWidth > 0 &&
-      newConfig.viewportHeight > 0 &&
-      newConfig.fontSize > 0 &&
-      newConfig.ppi > 0 &&
-      newConfig.chToEmRatio > 0 &&
-      newConfig.exToEmRatio > 0
-    ) {
-      configState.set(newConfig);
-      closeModal();
-    }
+    configState.set(newConfig);
+    closeModal();
   }
 
   function onReset(): void {
@@ -204,6 +239,16 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
           class="flex flex-col h-full"
         >
           <div class="px-6 py-4 space-y-4 flex-1 overflow-y-auto">
+            {/* Error Message */}
+            {errorState.get() && (
+              <div
+                ref={errorMessageRef}
+                class="rounded-sm border border-red-600 bg-red-900/20 px-3 py-2 text-sm text-red-400"
+                role="alert"
+              >
+                {errorState.get()}
+              </div>
+            )}
             {/* Theme Section */}
             <div class="space-y-3">
               <h3 class="text-sm font-semibold text-app-green-400">
@@ -264,6 +309,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                     ref={viewportWidthRef}
                     type="number"
                     min="1"
+                    max="7680"
                     step="1"
                     class="w-full rounded-sm border border-transparent dark:border-app-green-700 bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                     placeholder={DEFAULT_CONFIG.viewportWidth.toString()}
@@ -278,6 +324,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                     ref={viewportHeightRef}
                     type="number"
                     min="1"
+                    max="4320"
                     step="1"
                     class="w-full rounded-sm border border-transparent dark:border-app-green-700 bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                     placeholder={DEFAULT_CONFIG.viewportHeight.toString()}
@@ -298,6 +345,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                   ref={fontSizeRef}
                   type="number"
                   min="1"
+                  max="500"
                   step="0.1"
                   class="w-full rounded-sm border border-transparent dark:border-app-green-700 bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                   placeholder={DEFAULT_CONFIG.fontSize.toString()}
@@ -351,6 +399,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
                   ref={ppiRef}
                   type="number"
                   min="1"
+                  max="800"
                   step="1"
                   class="w-full rounded-sm border border-transparent dark:border-app-green-700 bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-app-green-600"
                   placeholder={DEFAULT_CONFIG.ppi.toString()}

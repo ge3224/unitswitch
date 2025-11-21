@@ -34,7 +34,7 @@ import {
   convertToVmin,
   convertToVw,
 } from "@/lib/converters/index.ts";
-import { Result } from "@/lib/converters/result.ts";
+import { Result } from "@/lib/result.ts";
 import { newSimpleState, SimpleState } from "@pkg/simple-state/src/index.ts";
 import { configState } from "@/lib/config.ts";
 import { lastInputState } from "@/lib/last_input.ts";

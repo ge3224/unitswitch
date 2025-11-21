@@ -1,9 +1,9 @@
 import { describe, it } from "jsr:@std/testing/bdd";
-import { assertEquals, assertAlmostEquals, assert } from "jsr:@std/assert";
+import { assert, assertAlmostEquals, assertEquals } from "jsr:@std/assert";
 import { convertToEx } from "@/lib/converters/ex.ts";
 import { Units } from "@/lib/units.ts";
 import { EX_TO_EM_RATIO, FONT_SIZE } from "@/lib/constants.ts";
-import { ConversionErrorKind } from './result.ts';
+import { AppErrorKind } from "@/lib/result.ts";
 
 const EX_IN_PIXELS = EX_TO_EM_RATIO * FONT_SIZE;
 
@@ -60,11 +60,11 @@ describe("convertToEx", () => {
     it("should return Err for negative inputs", () => {
       const result1 = convertToEx(Units.Pixels, -1);
       assert(!result1.ok);
-      assertEquals(result1.error.kind, ConversionErrorKind.NegativeInput);
+      assertEquals(result1.error.kind, AppErrorKind.NegativeInput);
 
       const result2 = convertToEx(Units.Ex, -5);
       assert(!result2.ok);
-      assertEquals(result2.error.kind, ConversionErrorKind.NegativeInput);
+      assertEquals(result2.error.kind, AppErrorKind.NegativeInput);
     });
 
     it("should handle zero correctly", () => {

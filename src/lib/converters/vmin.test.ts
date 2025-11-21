@@ -1,9 +1,9 @@
 import { describe, it } from "jsr:@std/testing/bdd";
-import { assertEquals, assertAlmostEquals, assert } from "jsr:@std/assert";
+import { assert, assertAlmostEquals, assertEquals } from "jsr:@std/assert";
 import { convertToVmin } from "@/lib/converters/vmin.ts";
 import { Units } from "@/lib/units.ts";
 import { FONT_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH } from "@/lib/constants.ts";
-import { ConversionErrorKind } from './result.ts';
+import { AppErrorKind } from "@/lib/result.ts";
 
 const VIEWPORT_MIN = Math.min(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
@@ -69,11 +69,11 @@ describe("convertToVmin", () => {
     it("should return Err for negative inputs", () => {
       const result1 = convertToVmin(Units.Pixels, -1);
       assert(!result1.ok);
-      assertEquals(result1.error.kind, ConversionErrorKind.NegativeInput);
+      assertEquals(result1.error.kind, AppErrorKind.NegativeInput);
 
       const result2 = convertToVmin(Units.Vmin, -5);
       assert(!result2.ok);
-      assertEquals(result2.error.kind, ConversionErrorKind.NegativeInput);
+      assertEquals(result2.error.kind, AppErrorKind.NegativeInput);
     });
 
     it("should handle zero correctly", () => {

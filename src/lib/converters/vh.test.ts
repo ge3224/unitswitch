@@ -1,9 +1,9 @@
 import { describe, it } from "jsr:@std/testing/bdd";
-import { assertEquals, assertAlmostEquals, assert } from "jsr:@std/assert";
+import { assert, assertAlmostEquals, assertEquals } from "jsr:@std/assert";
 import { convertToVh } from "@/lib/converters/vh.ts";
 import { Units } from "@/lib/units.ts";
 import { FONT_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH } from "@/lib/constants.ts";
-import { ConversionErrorKind } from './result.ts';
+import { AppErrorKind } from "@/lib/result.ts";
 
 describe("convertToVh", () => {
   describe("known constants", () => {
@@ -88,11 +88,11 @@ describe("convertToVh", () => {
     it("should return Err for negative inputs", () => {
       const result1 = convertToVh(Units.Pixels, -1);
       assert(!result1.ok);
-      assertEquals(result1.error.kind, ConversionErrorKind.NegativeInput);
+      assertEquals(result1.error.kind, AppErrorKind.NegativeInput);
 
       const result2 = convertToVh(Units.Vh, -5);
       assert(!result2.ok);
-      assertEquals(result2.error.kind, ConversionErrorKind.NegativeInput);
+      assertEquals(result2.error.kind, AppErrorKind.NegativeInput);
     });
 
     it("should handle zero correctly", () => {

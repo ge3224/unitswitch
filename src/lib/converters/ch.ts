@@ -1,10 +1,6 @@
 import type { Converter } from "@/lib/converters/index.ts";
-import {
-  ConversionErrorKind,
-  Err,
-  Ok,
-  type Result,
-} from "@/lib/converters/result.ts";
+import { validateConverterInput } from "@/lib/converters/index.ts";
+import { AppErrorKind, Err, Ok, type Result } from "@/lib/result.ts";
 import { configState } from "@/lib/config.ts";
 import { type Unit, Units } from "@/lib/units.ts";
 
@@ -19,16 +15,21 @@ export const convertToCh: Converter = function convertToCh(
   from: Unit,
   input: number,
 ): Result<number> {
-  if (input < 0) {
-    return Err(
-      ConversionErrorKind.NegativeInput,
-      "Input value cannot be negative",
-      { input, unit: from },
-    );
+  // Validate input
+  const validationError = validateConverterInput(input, from);
+  if (validationError) {
+    return validationError;
   }
 
   const config = configState.get();
-  const { viewportWidth, viewportHeight, fontSize, ppi, chToEmRatio, exToEmRatio } = config;
+  const {
+    viewportWidth,
+    viewportHeight,
+    fontSize,
+    ppi,
+    chToEmRatio,
+    exToEmRatio,
+  } = config;
   const chInPixels = chToEmRatio * fontSize;
 
   switch (from) {
@@ -70,7 +71,7 @@ export const convertToCh: Converter = function convertToCh(
       return Ok(-1);
     default:
       return Err(
-        ConversionErrorKind.UnsupportedUnit,
+        AppErrorKind.UnsupportedUnit,
         `Unsupported unit conversion to ch: ${from}`,
         { unit: from },
       );

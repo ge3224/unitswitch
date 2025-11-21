@@ -1,10 +1,5 @@
 import type { Converter } from "@/lib/converters/index.ts";
-import {
-  ConversionErrorKind,
-  Err,
-  Ok,
-  type Result,
-} from "@/lib/converters/result.ts";
+import { AppErrorKind, Err, Ok, type Result } from "@/lib/result.ts";
 import type { Unit } from "@/lib/units.ts";
 
 export const convertToSixteenNine: Converter = function convertToSixteenNine(
@@ -13,7 +8,7 @@ export const convertToSixteenNine: Converter = function convertToSixteenNine(
 ): Result<number> {
   if (input < 0) {
     return Err(
-      ConversionErrorKind.NegativeInput,
+      AppErrorKind.NegativeInput,
       "Input value cannot be negative",
       { input, unit: from },
     );

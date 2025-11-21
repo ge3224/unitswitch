@@ -2,6 +2,7 @@ import { createDomElement, createRef } from "@pkg/just-jsx/src/index.ts";
 import { newSimpleState } from "@pkg/simple-state/src/index.ts";
 import { isUnit, Unit, Units } from "@/lib/units.ts";
 import { UserSubmissionCallback, ViewInputState } from "@/lib/types.ts";
+import { validateConversionInput } from "@/lib/validation.ts";
 
 export default function UserInput({
   input,
@@ -67,22 +68,23 @@ export default function UserInput({
     unitState.set(text as Unit);
   }
 
-  function toggleWarning(show: boolean): void {
-    if (show) {
-      warningState.set("Please type a number.");
-      return;
-    }
-    warningState.set("");
-  }
-
   function onSubmit(e: Event): void {
     e.preventDefault();
     const num = parseFloat(amountState.get());
-    const invalid = Number.isNaN(num);
 
-    toggleWarning(invalid);
+    // Validate the input
+    const validation = validateConversionInput(num);
 
-    if (!invalid) callback(num, unitState.get());
+    if (!validation.ok) {
+      warningState.set(validation.error.message);
+      return;
+    }
+
+    // Clear any previous warnings
+    warningState.set("");
+
+    // Pass validated value to callback
+    callback(validation.value, unitState.get());
   }
 
   return (

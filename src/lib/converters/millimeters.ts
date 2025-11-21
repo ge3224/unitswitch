@@ -1,11 +1,12 @@
 import type { Converter } from "@/lib/converters/index.ts";
+import { validateConverterInput } from "@/lib/converters/index.ts";
 import {
   assertNever,
-  ConversionErrorKind,
+  AppErrorKind,
   Err,
   Ok,
   type Result,
-} from "@/lib/converters/result.ts";
+} from "@/lib/result.ts";
 import { type Unit, Units } from "@/lib/units.ts";
 import { configState } from "@/lib/config.ts";
 
@@ -13,12 +14,10 @@ export const convertToMillimeters: Converter = function convertToMillimeters(
   from: Unit,
   input: number,
 ): Result<number> {
-  if (input < 0) {
-    return Err(
-      ConversionErrorKind.NegativeInput,
-      "Input value cannot be negative",
-      { input, unit: from },
-    );
+  // Validate input
+  const validationError = validateConverterInput(input, from);
+  if (validationError) {
+    return validationError;
   }
 
   const {
@@ -64,11 +63,15 @@ export const convertToMillimeters: Converter = function convertToMillimeters(
       return Ok(pixelsToMillimeters(input * (viewportWidth / 100)));
     case Units.Vmin:
       return Ok(
-        pixelsToMillimeters(input * (Math.min(viewportWidth, viewportHeight) / 100)),
+        pixelsToMillimeters(
+          input * (Math.min(viewportWidth, viewportHeight) / 100),
+        ),
       );
     case Units.Vmax:
       return Ok(
-        pixelsToMillimeters(input * (Math.max(viewportWidth, viewportHeight) / 100)),
+        pixelsToMillimeters(
+          input * (Math.max(viewportWidth, viewportHeight) / 100),
+        ),
       );
     case Units.Golden:
     case Units.Root2:

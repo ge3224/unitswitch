@@ -7,6 +7,14 @@ import {
   VIEWPORT_HEIGHT,
   VIEWPORT_WIDTH,
 } from "@/lib/constants.ts";
+import {
+  validateViewportWidth,
+  validateViewportHeight,
+  validateFontSize,
+  validatePpi,
+  validateChToEmRatio,
+  validateExToEmRatio,
+} from "@/lib/validation.ts";
 
 /**
  * Theme preference options
@@ -56,7 +64,7 @@ function loadConfig(): AppConfig {
     const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (stored) {
       const parsed = JSON.parse(stored);
-      // Validate all required fields exist
+      // Validate all required fields exist and are correct types
       if (
         typeof parsed.viewportWidth === "number" &&
         typeof parsed.viewportHeight === "number" &&
@@ -65,6 +73,26 @@ function loadConfig(): AppConfig {
         typeof parsed.chToEmRatio === "number" &&
         typeof parsed.exToEmRatio === "number"
       ) {
+        // Validate ranges
+        const validations = [
+          validateViewportWidth(parsed.viewportWidth),
+          validateViewportHeight(parsed.viewportHeight),
+          validateFontSize(parsed.fontSize),
+          validatePpi(parsed.ppi),
+          validateChToEmRatio(parsed.chToEmRatio),
+          validateExToEmRatio(parsed.exToEmRatio),
+        ];
+
+        // Check if any validation failed
+        const hasError = validations.some((result) => !result.ok);
+        if (hasError) {
+          console.warn(
+            "Stored config has invalid values, using defaults:",
+            validations.filter((r) => !r.ok).map((r) => r.ok ? null : r.error.message),
+          );
+          return { ...DEFAULT_CONFIG };
+        }
+
         // Add theme if it's missing from stored config (backwards compatibility)
         return {
           ...parsed,
