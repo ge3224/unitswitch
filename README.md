@@ -1,6 +1,6 @@
 <div align="center">
 
-![UnitSwitch Logo](./public/logo.png)
+# ![UnitSwitch Logo](./public/logo.png) UnitSwitch
 
 [![GitHub Release](https://img.shields.io/github/v/release/ge3224/unitswitch?style=flat-square&color=4EBD85)](https://github.com/ge3224/unitswitch/releases)
 [![License](https://img.shields.io/github/license/ge3224/unitswitch?style=flat-square&color=4EBD85)](./LICENSE)
