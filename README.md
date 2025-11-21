@@ -1,9 +1,6 @@
 <div align="center">
 
-<div align="center" style="display: flex; align-items: center; justify-content: center;">
-  <img src="./public/logo.png" alt="UnitSwitch Logo">
-  <h1 style="margin: 0 0 0 12px;">UnitSwitch</h1>
-</div>
+# ![UnitSwitch Logo](./public/logo.png) UnitSwitch
 
 [![GitHub Release](https://img.shields.io/github/v/release/ge3224/unitswitch?style=flat-square&color=4EBD85)](https://github.com/ge3224/unitswitch/releases)
 [![License](https://img.shields.io/github/license/ge3224/unitswitch?style=flat-square&color=4EBD85)](./LICENSE)
