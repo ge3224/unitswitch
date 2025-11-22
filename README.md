@@ -4,9 +4,8 @@
 
 [![GitHub Release](https://img.shields.io/github/v/release/ge3224/unitswitch?style=flat-square&color=4EBD85)](https://github.com/ge3224/unitswitch/releases)
 [![License](https://img.shields.io/github/license/ge3224/unitswitch?style=flat-square&color=4EBD85)](./LICENSE)
-[![Tests](https://img.shields.io/badge/tests-passing-4EBD85?style=flat-square)](https://github.com/ge3224/unitswitch)
-[![Zero Dependencies](https://img.shields.io/badge/dependencies-0-4EBD85?style=flat-square)](https://github.com/ge3224/unitswitch)
-[![Vanilla JS](https://img.shields.io/badge/runtime-vanilla_js-4EBD85?style=flat-square&logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+![Tests](https://img.shields.io/badge/tests-passing-4EBD85?style=flat-square)
+![Zero Dependencies](https://img.shields.io/badge/dependencies-0-4EBD85?style=flat-square)
 
 </div>
 
