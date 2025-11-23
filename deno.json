@@ -5,6 +5,7 @@
     "preview": "deno run -A npm:vite preview",
     "test": "deno test",
     "test:watch": "deno test --watch",
+    "test:e2e": "deno test --allow-net --allow-run --allow-env --allow-read --allow-write testing/e2e/*.spec.ts",
     "typecheck": "deno run -A npm:typescript/tsc"
   },
   "imports": {
