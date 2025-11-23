@@ -347,14 +347,14 @@ export default function Modal({
       return;
     }
 
-    const unit = abbreviations(unitInput);
+    const unitResult = abbreviations(unitInput);
 
-    if (!unit) {
+    if (!unitResult.ok) {
       onClickCloseModal();
       return;
     }
 
-    callback(validation.value, unit);
+    callback(validation.value, unitResult.value);
     onClickCloseModal();
   }
 

@@ -1,3 +1,5 @@
+import { AppErrorKind, Err, Ok, type Result } from "./result.ts";
+
 /**
  * Enum representing various units.
  */
@@ -47,47 +49,51 @@ export const UNIT_ABBREVIATIONS = [
  * Converts an abbreviation to the corresponding Unit value.
  *
  * @param input - The abbreviation to convert.
- * @returns The corresponding Unit value or null if the abbreviation is not recognized.
+ * @returns Result containing the corresponding Unit value, or an error if the abbreviation is not recognized.
  */
-export function abbreviations(input: string): Unit | null {
+export function abbreviations(input: string): Result<Unit> {
   switch (input) {
     case "ch":
-      return Units.Ch;
+      return Ok(Units.Ch);
     case "cm":
-      return Units.Centimeters;
+      return Ok(Units.Centimeters);
     case "ex":
-      return Units.Ex;
+      return Ok(Units.Ex);
     case "ft":
-      return Units.Feet;
+      return Ok(Units.Feet);
     case "in":
-      return Units.Inches;
+      return Ok(Units.Inches);
     case "mm":
-      return Units.Millimeters;
+      return Ok(Units.Millimeters);
     case "pc":
-      return Units.Picas;
+      return Ok(Units.Picas);
     case "px":
-      return Units.Pixels;
+      return Ok(Units.Pixels);
     case "pt":
-      return Units.Points;
+      return Ok(Units.Points);
     case "rem":
-      return Units.Rems;
+      return Ok(Units.Rems);
     case "vh":
-      return Units.Vh;
+      return Ok(Units.Vh);
     case "vmax":
-      return Units.Vmax;
+      return Ok(Units.Vmax);
     case "vmin":
-      return Units.Vmin;
+      return Ok(Units.Vmin);
     case "vw":
-      return Units.Vw;
+      return Ok(Units.Vw);
     default:
-      return null;
+      return Err(
+        AppErrorKind.InvalidInput,
+        `Unrecognized unit abbreviation: "${input}"`,
+        { unit: input },
+      );
   }
 }
 
 export function isUnit(value: string | Unit): boolean {
   if (typeof value === "string") {
     // If value is a string, check if it's a valid abbreviation.
-    return abbreviations(value) !== null ||
+    return abbreviations(value).ok ||
       Object.values(Units).includes(value as Unit);
   } else if (Object.values(Units).includes(value)) {
     // If value is a Unit enum value, it's always valid.
