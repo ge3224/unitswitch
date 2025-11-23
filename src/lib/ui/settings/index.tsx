@@ -6,6 +6,7 @@ import {
 import { newSimpleState } from "@pkg/simple-state/src/index.ts";
 import { registerHotkeyHandler } from "@/lib/hotkey_manager.ts";
 import { CloseIcon } from "@/lib/ui/icons.tsx";
+import { UI, A11Y } from "@/lib/strings/index.ts";
 import SettingsForm from "./SettingsForm.tsx";
 
 const DISPLAY_BLOCK = "block";
@@ -112,10 +113,10 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
           <div class="flex items-start justify-between">
             <div>
               <h2 id="settings-title" class="text-lg font-bold text-white dark:text-app-gray-300">
-                Settings
+                {UI.sections.settings}
               </h2>
               <div class="mt-1 text-sm text-app-gray-200">
-                Configure CSS unit conversion parameters
+                {UI.settings.subtitle}
               </div>
             </div>
             <button
@@ -124,7 +125,7 @@ export default function Settings({ hotkey, onMount }: SettingsProps) {
               onClick={function handleCloseClick(): void {
                 closeModal();
               }}
-              aria-label="Close panel"
+              aria-label={A11Y.buttons.closePanel}
             >
               <CloseIcon />
             </button>

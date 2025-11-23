@@ -6,6 +6,7 @@ import { registerHotkeyHandler } from "@/lib/hotkey_manager.ts";
 import { newSimpleState } from "@pkg/simple-state/src/index.ts";
 import { renderConversion as renderConversionValue } from "@/lib/render.ts";
 import { toast } from "@/lib/ui/toast.tsx";
+import { A11Y, NOTIFICATIONS } from "@/lib/strings/index.ts";
 import {
   CopyIconSvg,
   GrayPlusIcon,
@@ -78,7 +79,7 @@ export default function Conversion({
     if (detailsButtonRef.current) {
       detailsButtonRef.current.setAttribute(
         "aria-label",
-        show ? "Hide details" : "Show details",
+        show ? "Hide details" : A11Y.buttons.showDetails,
       );
       detailsButtonRef.current.setAttribute("aria-expanded", show.toString());
     }
@@ -87,21 +88,19 @@ export default function Conversion({
   function copyToClipboard(): void {
     const result = conversion.get();
     if (!result.ok) {
-      toast.error(
-        `Cannot copy unavailable conversion: ${result.error.message}`,
-      );
+      toast.error(NOTIFICATIONS.error.cannotCopyUnavailable(result.error.message));
       return;
     }
 
     navigator.clipboard.writeText(result.value.toString())
       .then(function handleCopySuccess(): void {
-        toast.success("Copied!");
+        toast.success(NOTIFICATIONS.success.copied);
       })
       .catch(function handleCopyError(
         err: Error,
       ): void {
         console.warn("Failed to copy to clipboard:", err);
-        toast.error("Failed to copy to clipboard");
+        toast.error(NOTIFICATIONS.error.copyFailed);
       });
   }
 
@@ -156,7 +155,7 @@ export default function Conversion({
                 type="button"
                 ref={detailsButtonRef}
                 class="flex w-6 justify-center bg-transparent border-none p-0 cursor-pointer"
-                aria-label="Show details"
+                aria-label={A11Y.buttons.showDetails}
                 aria-expanded="false"
                 aria-controls={`details-${to.toString()}`}
                 onclick={function handleDetailsClick(e: Event): void {
@@ -181,8 +180,8 @@ export default function Conversion({
           <button
             type="button"
             class="mr-2 cursor-pointer bg-transparent border-none p-0"
-            title="Click to copy the converted value to the clipboard"
-            aria-label="Copy converted value to clipboard"
+            title={A11Y.titles.copyValue}
+            aria-label={A11Y.buttons.copyToClipboard}
             onclick={function handleCopyClick(e: Event): void {
               onClickCopyButton(e);
             }}

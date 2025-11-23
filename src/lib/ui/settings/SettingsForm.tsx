@@ -11,6 +11,7 @@ import {
   validateChToEmRatio,
   validateExToEmRatio,
 } from "@/lib/validation.ts";
+import { UI } from "@/lib/strings/index.ts";
 import SettingsField from "./SettingsField.tsx";
 import ThemeSelector from "./ThemeSelector.tsx";
 
@@ -150,12 +151,12 @@ export default function SettingsForm({
         {/* Viewport Section */}
         <div class="space-y-3">
           <h3 class="text-sm font-semibold text-app-green-400">
-            Viewport
+            {UI.sections.viewport}
           </h3>
           <div class="grid grid-cols-2 gap-3">
             <SettingsField
               id="viewport-width"
-              label="Width (px)"
+              label={UI.settings.viewport.width}
               type="number"
               min="1"
               max="7680"
@@ -165,7 +166,7 @@ export default function SettingsForm({
             />
             <SettingsField
               id="viewport-height"
-              label="Height (px)"
+              label={UI.settings.viewport.height}
               type="number"
               min="1"
               max="4320"
@@ -178,10 +179,10 @@ export default function SettingsForm({
 
         {/* Font Section */}
         <div class="space-y-3">
-          <h3 class="text-sm font-semibold text-app-green-400">Font</h3>
+          <h3 class="text-sm font-semibold text-app-green-400">{UI.sections.font}</h3>
           <SettingsField
             id="font-size"
-            label="Base Font Size (px)"
+            label={UI.settings.font.baseFontSize}
             type="number"
             min="1"
             max="500"
@@ -192,7 +193,7 @@ export default function SettingsForm({
           <div class="grid grid-cols-2 gap-3">
             <SettingsField
               id="ch-em-ratio"
-              label="ch/em Ratio"
+              label={UI.settings.font.chEmRatio}
               type="number"
               min="0.01"
               max="1"
@@ -202,7 +203,7 @@ export default function SettingsForm({
             />
             <SettingsField
               id="ex-em-ratio"
-              label="ex/em Ratio"
+              label={UI.settings.font.exEmRatio}
               type="number"
               min="0.01"
               max="1"
@@ -216,11 +217,11 @@ export default function SettingsForm({
         {/* Screen Resolution */}
         <div class="space-y-3">
           <h3 class="text-sm font-semibold text-app-green-400">
-            Display
+            {UI.sections.display}
           </h3>
           <SettingsField
             id="ppi"
-            label="Pixels Per Inch (PPI)"
+            label={UI.settings.display.ppi}
             type="number"
             min="1"
             max="800"
@@ -240,7 +241,7 @@ export default function SettingsForm({
             onReset();
           }}
         >
-          Reset to Defaults
+          {UI.buttons.resetToDefaults}
         </button>
         <div class="flex gap-2">
           <button
@@ -250,13 +251,13 @@ export default function SettingsForm({
               onClose();
             }}
           >
-            Cancel
+            {UI.buttons.cancel}
           </button>
           <button
             type="submit"
             class="cursor-pointer rounded-sm border border-app-green-200 dark:border-app-green-400 bg-app-green-300 dark:bg-app-green-600 px-3 py-1.5 text-sm font-medium text-app-black dark:text-white transition-colors hover:bg-app-green-400"
           >
-            Save
+            {UI.buttons.save}
           </button>
         </div>
       </div>

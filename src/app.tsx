@@ -6,6 +6,7 @@ import Modal from "@/lib/ui/modal.tsx";
 import Settings from "@/lib/ui/settings/index.tsx";
 import UserInput from "@/lib/ui/user_input.tsx";
 import { SettingsIcon } from "@/lib/ui/icons.tsx";
+import { A11Y } from "@/lib/strings/index.ts";
 import {
   DetailsGoldenRatio,
   DetailsPixels,
@@ -174,8 +175,8 @@ export function App(): Node {
         <button
           type="button"
           class="absolute lg:fixed top-2 right-2 lg:top-4 lg:right-4 z-30 cursor-pointer rounded-full p-3 text-app-gray-200 dark:text-app-green-300 transition-all hover:bg-app-green-600 dark:hover:bg-app-green-700 hover:text-white hover:shadow-lg hover:scale-110 active:scale-95"
-          title="Settings (Ctrl+/)"
-          aria-label="Open settings (Ctrl+/)"
+          title={A11Y.titles.settings}
+          aria-label={A11Y.buttons.openSettings}
           onClick={function handleSettingsClick(): void {
             openSettingsFn?.();
           }}

@@ -4,6 +4,7 @@ import { abbreviations, UNIT_ABBREVIATIONS } from "@/lib/units.ts";
 import { createDomElement, createRef } from "@pkg/just-jsx/src/index.ts";
 import { registerHotkeyHandler } from "@/lib/hotkey_manager.ts";
 import { validateConversionInput } from "@/lib/validation.ts";
+import { UI, A11Y } from "@/lib/strings/index.ts";
 
 const DISPLAY_BLOCK = "block";
 const DISPLAY_NONE = "none";
@@ -16,7 +17,7 @@ function ArrowUpIcon() {
     <svg
       width="15"
       height="15"
-      aria-label="Arrow up"
+      aria-label={A11Y.icons.arrowUp}
       role="img"
       viewBox="0 0 15 15"
     >
@@ -38,7 +39,7 @@ function ArrowDownIcon() {
     <svg
       width="15"
       height="15"
-      aria-label="Arrow down"
+      aria-label={A11Y.icons.arrowDown}
       role="img"
       viewBox="0 0 15 15"
     >
@@ -60,7 +61,7 @@ function EnterIcon() {
     <svg
       width="15"
       height="15"
-      aria-label="Enter key"
+      aria-label={A11Y.icons.enterKey}
       role="img"
       viewBox="0 0 15 15"
     >
@@ -82,7 +83,7 @@ function EscapeIcon() {
     <svg
       width="15"
       height="15"
-      aria-label="Escape key"
+      aria-label={A11Y.icons.escapeKey}
       role="img"
       viewBox="0 0 15 15"
     >
@@ -375,12 +376,12 @@ export default function Modal({
           <div class="flex items-start justify-between">
             <div>
               <label id="modal-title" class="text-lg font-bold text-white">
-                Enter a value and unit
+                {UI.modal.title}
               </label>
               <div class="mt-1 text-sm text-app-gray-200">
-                Format:{" "}
+                {UI.modal.formatLabel}{" "}
                 <span class="text-app-green-400">
-                  <code>value:unit</code>
+                  <code>{UI.modal.formatExample}</code>
                 </span>
               </div>
             </div>
@@ -390,7 +391,7 @@ export default function Modal({
               onClick={function handleCloseClick(): void {
                 onClickCloseModal();
               }}
-              aria-label="Close modal"
+              aria-label={A11Y.buttons.closeModal}
             >
               <CloseIcon />
             </button>
@@ -412,7 +413,7 @@ export default function Modal({
                 class="w-full rounded-sm border border-transparent dark:border-app-green-700 bg-app-gray-100 dark:bg-app-gray-800 dark:text-white px-3 py-2 text-base outline-none focus:ring-2 focus:ring-app-green-600"
                 type="text"
                 name="name"
-                placeholder="e.g., 100:px or 2:rem"
+                placeholder={UI.modal.placeholder}
                 data-testid="modal-input"
                 aria-labelledby="modal-title"
                 aria-autocomplete="list"
@@ -432,8 +433,8 @@ export default function Modal({
                 onClick={function handleClearClick(): void {
                   onClickClearInput();
                 }}
-                aria-label="Clear input"
-                title="Clear"
+                aria-label={A11Y.buttons.clearInput}
+                title={A11Y.titles.clear}
               >
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                   <path
@@ -488,13 +489,13 @@ export default function Modal({
                   onClickCloseModal();
                 }}
               >
-                Cancel
+                {UI.buttons.cancel}
               </button>
               <button
                 type="submit"
                 class="cursor-pointer rounded-sm border border-app-green-200 dark:border-app-green-400 bg-app-green-300 dark:bg-app-green-600 px-3 py-1 text-sm font-medium text-app-black dark:text-white transition-colors hover:bg-app-green-400"
               >
-                Submit
+                {UI.buttons.save}
               </button>
             </div>
           </div>

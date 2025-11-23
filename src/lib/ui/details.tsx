@@ -8,6 +8,7 @@ import {
 import { ViewInputState } from "@/lib/types.ts";
 import { configState } from "@/lib/config.ts";
 import { toast } from "@/lib/ui/toast.tsx";
+import { A11Y } from "@/lib/strings/index.ts";
 
 export function DetailsRemsEms() {
   const fontSize = configState.get().fontSize;
@@ -18,7 +19,7 @@ export function DetailsRemsEms() {
   });
 
   const handleRootHintClick = function handleRootHintClick(): void {
-    toast.success("rem is relative to the root element's font size, while em is relative to the parent element's font size", 4000);
+    toast.success(A11Y.titles.remExplanation, 4000);
   };
 
   return (
@@ -27,8 +28,8 @@ export function DetailsRemsEms() {
       <button
         type="button"
         class="cursor-help border-b border-dotted border-app-gray-200 dark:border-app-gray-300 hover:border-app-green-400 hover:text-app-green-500 transition-colors bg-transparent p-0 font-inherit"
-        title="rem is relative to the root element's font size, while em is relative to the parent element's font size"
-        aria-label="Click for explanation of root font size"
+        title={A11Y.titles.remExplanation}
+        aria-label={A11Y.titles.remExplanationButton}
         onclick={handleRootHintClick}
       >
         root*

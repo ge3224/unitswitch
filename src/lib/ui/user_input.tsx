@@ -3,6 +3,7 @@ import { newSimpleState } from "@pkg/simple-state/src/index.ts";
 import { isUnit, Unit, Units } from "@/lib/units.ts";
 import { UserSubmissionCallback, ViewInputState } from "@/lib/types.ts";
 import { validateConversionInput } from "@/lib/validation.ts";
+import { UI, A11Y } from "@/lib/strings/index.ts";
 
 export default function UserInput({
   input,
@@ -94,7 +95,7 @@ export default function UserInput({
       }}>
         <fieldset class="col-span-3">
           <label class="text-sm dark:text-app-green-300" htmlFor="unit_amount">
-            Amount:
+            {UI.labels.amount}
           </label>
           <input
             ref={amountInput}
@@ -105,7 +106,7 @@ export default function UserInput({
               onChangeAmount(e);
             }}
             value={amountState.get()}
-            aria-label="Amount"
+            aria-label={A11Y.inputs.amount}
             aria-describedby="amount-error"
           />
         </fieldset>
@@ -114,7 +115,7 @@ export default function UserInput({
             class="col-span-2 text-sm dark:text-app-green-300"
             htmlFor="unit_select"
           >
-            Unit:
+            {UI.labels.unit}
           </label>
           <select
             ref={unitSelect}
@@ -125,7 +126,7 @@ export default function UserInput({
               onChangeUnit(e);
             }}
             value={unitState.get().toString()}
-            aria-label="Unit"
+            aria-label={A11Y.inputs.unit}
           >
             {Object.values(Units).map(function renderUnitOption(unit: Unit, index: number): JSX.Element {
               return (
@@ -140,20 +141,20 @@ export default function UserInput({
           <input
             class="w-1/3 cursor-pointer rounded-sm bg-app-black dark:bg-app-green-600 p-1 font-bold text-white shadow transition delay-150 duration-300 ease-in-out hover:bg-app-green-500 dark:hover:bg-app-green-500 hover:bg-none focus:outline-none focus:ring focus:ring-app-green-200 dark:focus:ring-app-green-500 active:bg-cyan-800 dark:active:bg-cyan-700 active:transition-none"
             type="submit"
-            value="Convert"
+            value={UI.buttons.convert}
           />
           <div class="hidden lg:flex items-center gap-1 scale-[0.75] origin-left">
             <kbd
               class="inline-flex items-center justify-center px-1.5 h-6 rounded-sm border border-app-gray-200 dark:border-app-gray-300 bg-white dark:bg-app-gray-800 shadow-sm font-mono text-xs text-app-gray-200 dark:text-app-gray-300 cursor-default hover:border-app-green-400 hover:text-app-green-400"
-              title="Press Ctrl+K for quick keyboard conversions"
+              title={A11Y.titles.quickKeyboard}
             >
-              Ctrl
+              {UI.keyboard.ctrl}
             </kbd>
             <kbd
               class="inline-flex items-center justify-center w-6 h-6 rounded-sm border border-app-gray-200 dark:border-app-gray-300 bg-white dark:bg-app-gray-800 shadow-sm font-mono text-xs text-app-gray-200 dark:text-app-gray-300 cursor-default hover:border-app-green-400 hover:text-app-green-400"
-              title="Press Ctrl+K for quick keyboard conversions"
+              title={A11Y.titles.quickKeyboard}
             >
-              K
+              {UI.keyboard.k}
             </kbd>
           </div>
         </fieldset>
