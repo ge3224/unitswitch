@@ -7,155 +7,19 @@ import Settings from "@/lib/ui/settings/index.tsx";
 import UserInput from "@/lib/ui/user_input.tsx";
 import { SettingsIcon } from "@/lib/ui/icons.tsx";
 import { A11Y } from "@/lib/strings/index.ts";
-import {
-  DetailsGoldenRatio,
-  DetailsPixels,
-  DetailsRemsEms,
-  DetailsRootTwo,
-  DetailsSixteenNine,
-} from "@/lib/ui/details.tsx";
-import { Unit, Units } from "@/lib/units.ts";
-import type { Converter } from "@/lib/converters/index.ts";
-import {
-  convertToCentimeters,
-  convertToCh,
-  convertToEx,
-  convertToFeet,
-  convertToGoldenRatio,
-  convertToInches,
-  convertToMillimeters,
-  convertToPicas,
-  convertToPixels,
-  convertToPoints,
-  convertToRems,
-  convertToRootTwo,
-  convertToSixteenNine,
-  convertToVh,
-  convertToVmax,
-  convertToVmin,
-  convertToVw,
-} from "@/lib/converters/index.ts";
-import { Result } from "@/lib/result.ts";
-import { newSimpleState, SimpleState } from "@pkg/simple-state/src/index.ts";
-import { configState } from "@/lib/config.ts";
+import { Unit } from "@/lib/units.ts";
+import { CONVERSIONS, ConversionConfig } from "@/lib/conversions/config.tsx";
+import { newConversionStateManager } from "@/lib/state/conversion_state.ts";
 import { lastInputState } from "@/lib/last_input.ts";
 
-type ConversionConfig = {
-  unit: Unit;
-  converter: Converter;
-  hotkey: string;
-  detail?: (input: SimpleState<number>) => JSX.Element;
+type AppProps = {
+  conversions?: ConversionConfig[];
 };
 
-const detailPixels: () => JSX.Element = function detailPixels(): JSX.Element {
-  return <DetailsPixels />;
-};
-
-const detailRemsEms: () => JSX.Element = function detailRemsEms(): JSX.Element {
-  return <DetailsRemsEms />;
-};
-
-const CONVERSIONS: ConversionConfig[] = [
-  {
-    unit: Units.Pixels,
-    converter: convertToPixels,
-    hotkey: "p",
-    detail: detailPixels,
-  },
-  {
-    unit: Units.Rems,
-    converter: convertToRems,
-    hotkey: "r",
-    detail: detailRemsEms,
-  },
-  { unit: Units.Millimeters, converter: convertToMillimeters, hotkey: "m" },
-  { unit: Units.Centimeters, converter: convertToCentimeters, hotkey: "c" },
-  { unit: Units.Points, converter: convertToPoints, hotkey: "e" },
-  { unit: Units.Picas, converter: convertToPicas, hotkey: "a" },
-  { unit: Units.Inches, converter: convertToInches, hotkey: "i" },
-  { unit: Units.Feet, converter: convertToFeet, hotkey: "f" },
-  { unit: Units.Vw, converter: convertToVw, hotkey: "w" },
-  { unit: Units.Vh, converter: convertToVh, hotkey: "h" },
-  { unit: Units.Vmin, converter: convertToVmin, hotkey: "j" },
-  { unit: Units.Vmax, converter: convertToVmax, hotkey: "x" },
-  { unit: Units.Ch, converter: convertToCh, hotkey: "q" },
-  { unit: Units.Ex, converter: convertToEx, hotkey: "z" },
-  {
-    unit: Units.Golden,
-    converter: convertToGoldenRatio,
-    hotkey: "g",
-    detail: function detailGoldenRatio(
-      input: SimpleState<number>,
-    ): JSX.Element {
-      return <DetailsGoldenRatio input={input} />;
-    },
-  },
-  {
-    unit: Units.Root2,
-    converter: convertToRootTwo,
-    hotkey: "t",
-    detail: function detailRootTwo(input: SimpleState<number>): JSX.Element {
-      return <DetailsRootTwo input={input} />;
-    },
-  },
-  {
-    unit: Units.SixteenNine,
-    converter: convertToSixteenNine,
-    hotkey: "s",
-    detail: function detailSixteenNine(
-      input: SimpleState<number>,
-    ): JSX.Element {
-      return <DetailsSixteenNine input={input} />;
-    },
-  },
-];
-
-export function App(): Node {
+export function App({ conversions = CONVERSIONS }: AppProps = {}): Node {
   const lastInput = lastInputState.get();
-  const inputState = newSimpleState<number>(lastInput.amount);
-  const unitState = newSimpleState<Unit>(lastInput.unit);
-
-  const conversionStates = new Map<Unit, SimpleState<Result<number>>>();
-
-  for (const config of CONVERSIONS) {
-    const result = config.converter(unitState.get(), inputState.get());
-    // const initialValue = unwrapOr(result, -1);
-    const state = newSimpleState<Result<number>>(result);
-    conversionStates.set(config.unit, state);
-  }
-
-  function updateConversions(unit: Unit, input: number): void {
-    for (const config of CONVERSIONS) {
-      const result = config.converter(unit, input);
-      conversionStates.get(config.unit)?.set(result);
-    }
-  }
-
-  inputState.subscribe(function inputCallback(newInput: number): void {
-    updateConversions(unitState.get(), newInput);
-  });
-
-  unitState.subscribe(function unitCallback(newUnit: Unit): void {
-    updateConversions(newUnit, inputState.get());
-  });
-
-  configState.subscribe(function configCallback(): void {
-    updateConversions(unitState.get(), inputState.get());
-  });
-
-  inputState.subscribe(function saveInputCallback(newAmount: number): void {
-    lastInputState.set({
-      amount: newAmount,
-      unit: unitState.get(),
-    });
-  });
-
-  unitState.subscribe(function saveUnitCallback(newUnit: Unit): void {
-    lastInputState.set({
-      amount: inputState.get(),
-      unit: newUnit,
-    });
-  });
+  const { inputState, unitState, conversionStates } =
+    newConversionStateManager(conversions, lastInput.amount, lastInput.unit);
 
   function handleSubmit(value: number, unit: Unit): void {
     inputState.set(value);
@@ -193,7 +57,7 @@ export function App(): Node {
           />
         </div>
 
-        {CONVERSIONS.map((config) => (
+        {conversions.map((config) => (
           <Conversion
             conversion={conversionStates.get(config.unit)!}
             to={config.unit}
