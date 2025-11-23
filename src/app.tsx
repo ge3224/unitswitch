@@ -3,7 +3,7 @@ import { createDomElement } from "@pkg/just-jsx/src/index.ts";
 import Conversion from "@/lib/ui/conversion.tsx";
 import Logo from "@/lib/ui/logo.tsx";
 import Modal from "@/lib/ui/modal.tsx";
-import Settings from "@/lib/ui/settings.tsx";
+import Settings from "@/lib/ui/settings/index.tsx";
 import UserInput from "@/lib/ui/user_input.tsx";
 import { SettingsIcon } from "@/lib/ui/icons.tsx";
 import {

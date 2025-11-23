@@ -5,7 +5,7 @@
  * compatible with just-jsx components in tests.
  */
 
-import { DOMParser, DocumentFragment, Node } from "https://deno.land/x/deno_dom@v0.1.56/deno-dom-wasm.ts";
+import { DocumentFragment, DOMParser, Node } from "@b-fuze/deno-dom/wasm";
 
 /**
  * Polyfill for deno-dom's missing createElementNS for SVG
@@ -14,11 +14,10 @@ import { DOMParser, DocumentFragment, Node } from "https://deno.land/x/deno_dom@
  * This polyfill creates regular elements with appropriate namespaceURI.
  */
 function polyfillCreateElementNS() {
-  const originalCreateElement = (globalThis.document as any).createElement.bind(
-    globalThis.document,
-  );
+  const doc = globalThis.document as unknown as Document;
+  const originalCreateElement = doc.createElement.bind(doc);
 
-  (globalThis.document as any).createElementNS = function (
+  (doc as unknown as Record<string, unknown>).createElementNS = function (
     namespaceURI: string,
     qualifiedName: string,
   ) {
@@ -44,11 +43,12 @@ function polyfillCreateElementNS() {
  * with the element's style attribute.
  */
 function polyfillStyleProperty() {
-  const originalCreateElement = (globalThis.document as any).createElement.bind(
-    globalThis.document,
-  );
+  const doc = globalThis.document as unknown as Document;
+  const originalCreateElement = doc.createElement.bind(doc);
 
-  (globalThis.document as any).createElement = function (tagName: string) {
+  (doc as unknown as Record<string, unknown>).createElement = function (
+    tagName: string,
+  ) {
     const element = originalCreateElement(tagName);
 
     // deno-dom elements don't have a proper style object, we need to add one
@@ -143,10 +143,14 @@ export function setupDOM(): void {
 
   // Add HTML element constructors for instanceof checks (needed by hotkey manager)
   // @ts-ignore - Add HTMLInputElement for instanceof checks
+  // deno-lint-ignore no-explicit-any
   globalThis.HTMLInputElement = (doc.createElement("input") as any).constructor;
   // @ts-ignore - Add HTMLTextAreaElement for instanceof checks
-  globalThis.HTMLTextAreaElement = (doc.createElement("textarea") as any).constructor;
+  // deno-lint-ignore no-explicit-any
+  globalThis.HTMLTextAreaElement =
+    (doc.createElement("textarea") as any).constructor;
   // @ts-ignore - Add HTMLElement for instanceof checks
+  // deno-lint-ignore no-explicit-any
   globalThis.HTMLElement = (doc.createElement("div") as any).constructor;
 
   // Apply polyfills

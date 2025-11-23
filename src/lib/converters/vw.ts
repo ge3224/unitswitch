@@ -2,8 +2,6 @@ import type { Converter } from "@/lib/converters/index.ts";
 import { validateConverterInput } from "@/lib/converters/index.ts";
 import {
   assertNever,
-  AppErrorKind,
-  Err,
   Ok,
   type Result,
 } from "@/lib/result.ts";
