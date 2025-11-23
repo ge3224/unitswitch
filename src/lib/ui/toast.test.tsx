@@ -1,7 +1,7 @@
 import { assertEquals, assertExists } from "jsr:@std/assert@^1.0.0";
 import { afterEach, beforeEach, describe, it } from "jsr:@std/testing@^1.0.0/bdd";
 import { FakeTime } from "jsr:@std/testing@^1.0.0/time";
-import { setupDOM } from "@/lib/testing/dom_setup.ts";
+import { setupDOM } from "@/lib/__tests__/utils/dom_setup.ts";
 import { showToast, toast } from "./toast.tsx";
 
 describe("Toast Component", () => {

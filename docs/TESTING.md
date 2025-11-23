@@ -55,7 +55,7 @@ deno test path/to/test.ts   # Specific file
 **Total:** 34 test suites, 583 test steps
 
 ### 2. End-to-End Tests (Astral)
-**Location:** `testing/e2e/*.spec.ts`
+**Location:** `tests/*.spec.ts`
 
 **Purpose:** Real browser testing of user workflows
 
@@ -103,7 +103,7 @@ Provides:
 
 **Usage:**
 ```typescript
-import { setupDOM } from "@/lib/testing/dom_setup.ts";
+import { setupDOM } from "@/lib/__tests__/utils/dom_setup.ts";
 import { FakeTime } from "jsr:@std/testing@^1.0.0/time";
 
 describe("My Component", () => {
@@ -193,16 +193,19 @@ unitswitch/
 │   │   ├── ui/
 │   │   │   ├── toast.tsx
 │   │   │   └── toast.test.tsx        # Component tests
-│   │   └── testing/
-│   │       ├── dom_setup.ts          # Shared test utilities
-│   │       └── README.md             # Unit test guide
-├── testing/
-│   └── e2e/
-│       ├── conversion.spec.ts        # E2E test specs
-│       ├── keyboard-shortcuts.spec.ts
-│       ├── accessibility.spec.ts
-│       ├── settings.spec.ts
-│       └── README.md                 # E2E test guide
+│   │   └── __tests__/
+│   │       ├── integration/          # Integration tests
+│   │       │   ├── hotkey_manager_integration.test.tsx
+│   │       │   └── state_integration.test.tsx
+│   │       └── utils/
+│   │           ├── dom_setup.ts      # Shared test utilities
+│   │           └── README.md         # Unit test guide
+├── tests/
+│   ├── conversion.spec.ts            # Browser test specs
+│   ├── keyboard-shortcuts.spec.ts
+│   ├── accessibility.spec.ts
+│   ├── settings.spec.ts
+│   └── README.md                     # Browser test guide
 └── docs/
     └── TESTING.md                    # This file
 ```
@@ -216,7 +219,7 @@ unitswitch/
 ```typescript
 import { assertEquals, assertExists } from "jsr:@std/assert@^1.0.0";
 import { beforeEach, describe, it } from "jsr:@std/testing@^1.0.0/bdd";
-import { setupDOM } from "@/lib/testing/dom_setup.ts";
+import { setupDOM } from "@/lib/__tests__/utils/dom_setup.ts";
 import { createDomElement } from "@pkg/just-jsx/src/index.ts";
 ```
 3. Write focused tests for the component
@@ -224,7 +227,7 @@ import { createDomElement } from "@pkg/just-jsx/src/index.ts";
 
 ### Adding an E2E Test
 
-1. Create `feature.spec.ts` in `testing/e2e/`
+1. Create `feature.spec.ts` in `tests/`
 2. Import Astral:
 ```typescript
 import { launch } from "https://deno.land/x/astral/mod.ts";

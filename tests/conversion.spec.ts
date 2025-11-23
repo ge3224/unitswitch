@@ -20,7 +20,7 @@ async function waitForElement(page: Page, selector: string, timeout = 5000, poll
 // deno task dev
 //
 // To run these tests:
-// deno test --allow-net --allow-run --allow-env --allow-read --allow-write testing/e2e/conversion.astral.test.ts
+// deno test --allow-net --allow-run --allow-env --allow-read --allow-write tests/conversion.spec.ts
 
 Deno.test("Unit Conversion - should display the UnitSwitch logo and title", async () => {
   let browser;

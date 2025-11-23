@@ -2,7 +2,7 @@ import { assertEquals, assertExists } from "jsr:@std/assert@^1.0.0";
 import { afterEach, beforeEach, describe, it } from "jsr:@std/testing@^1.0.0/bdd";
 import { FakeTime } from "jsr:@std/testing@^1.0.0/time";
 import { createDomElement } from "@pkg/just-jsx/src/index.ts";
-import { setupDOM } from "@/lib/testing/dom_setup.ts";
+import { setupDOM } from "@/lib/__tests__/utils/dom_setup.ts";
 import Settings from "./settings/index.tsx";
 
 describe("Settings Component", () => {

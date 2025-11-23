@@ -11,7 +11,7 @@ deno task test:e2e
 
 ### Run specific test file
 ```bash
-deno test --allow-net --allow-run --allow-env --allow-read --allow-write testing/e2e/conversion.spec.ts
+deno test --allow-net --allow-run --allow-env --allow-read --allow-write tests/conversion.spec.ts
 ```
 
 ### Run with visible browser (for debugging)

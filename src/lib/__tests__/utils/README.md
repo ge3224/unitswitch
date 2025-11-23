@@ -9,7 +9,7 @@ The `dom_setup.ts` module provides utilities for testing UI components with deno
 ### Quick Start
 
 ```typescript
-import { setupDOM } from "@/lib/testing/dom_setup.ts";
+import { setupDOM } from "@/lib/__tests__/utils/dom_setup.ts";
 import { beforeEach, describe, it } from "jsr:@std/testing@^1.0.0/bdd";
 import { FakeTime } from "jsr:@std/testing@^1.0.0/time";
 import { assertEquals } from "jsr:@std/assert@^1.0.0";

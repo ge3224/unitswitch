@@ -22,7 +22,7 @@ import {
   it,
 } from "jsr:@std/testing@^1.0.0/bdd";
 import { FakeTime } from "jsr:@std/testing@^1.0.0/time";
-import { setupDOM } from "@/lib/testing/dom_setup.ts";
+import { setupDOM } from "@/lib/__tests__/utils/dom_setup.ts";
 import { createDomElement } from "@pkg/just-jsx/src/index.ts";
 import { registerHotkeyHandler } from "@/lib/hotkey_manager.ts";
 
