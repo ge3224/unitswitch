@@ -24,6 +24,8 @@ export enum AppErrorKind {
   InvalidInput = "InvalidInput",
   /** Configuration value is invalid */
   InvalidConfig = "InvalidConfig",
+  /** localStorage operation failed */
+  StorageError = "StorageError",
 }
 
 /**

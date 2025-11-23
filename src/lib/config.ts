@@ -15,6 +15,9 @@ import {
   validateChToEmRatio,
   validateExToEmRatio,
 } from "@/lib/validation.ts";
+import { AppErrorKind, Err, Ok, type Result } from "@/lib/result.ts";
+import { toast } from "@/lib/ui/toast.tsx";
+import { NOTIFICATIONS } from "@/lib/strings/notifications.ts";
 
 /**
  * Theme preference options
@@ -59,7 +62,7 @@ export const DEFAULT_CONFIG: AppConfig = {
 /**
  * Load configuration from local storage
  */
-function loadConfig(): AppConfig {
+function loadConfig(): Result<AppConfig> {
   try {
     const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (stored) {
@@ -86,46 +89,64 @@ function loadConfig(): AppConfig {
         // Check if any validation failed
         const hasError = validations.some((result) => !result.ok);
         if (hasError) {
+          const errorMessages = validations
+            .filter((r) => !r.ok)
+            .map((r) => r.ok ? null : r.error.message);
           console.warn(
             "Stored config has invalid values, using defaults:",
-            validations.filter((r) => !r.ok).map((r) => r.ok ? null : r.error.message),
+            errorMessages,
           );
-          return { ...DEFAULT_CONFIG };
+          toast.info(NOTIFICATIONS.config.loadFailed);
+          return Ok({ ...DEFAULT_CONFIG });
         }
 
         // Add theme if it's missing from stored config (backwards compatibility)
-        return {
+        return Ok({
           ...parsed,
           theme: parsed.theme || "system",
-        };
+        });
       }
     }
   } catch (error) {
     console.warn("Failed to load config from localStorage:", error);
+    toast.info(NOTIFICATIONS.config.loadFailed);
+    return Err(
+      AppErrorKind.StorageError,
+      `Failed to load config: ${error instanceof Error ? error.message : String(error)}`,
+    );
   }
-  return { ...DEFAULT_CONFIG };
+  return Ok({ ...DEFAULT_CONFIG });
 }
 
 /**
  * Save configuration to local storage
  */
-function saveConfig(config: AppConfig): void {
+function saveConfig(config: AppConfig): Result<void> {
   try {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(config));
+    return Ok(undefined);
   } catch (error) {
     console.warn("Failed to save config to localStorage:", error);
+    toast.error(NOTIFICATIONS.config.saveFailed);
+    return Err(
+      AppErrorKind.StorageError,
+      `Failed to save config: ${error instanceof Error ? error.message : String(error)}`,
+    );
   }
 }
 
 /**
  * Global configuration state
  */
+const loadResult = loadConfig();
 export const configState: SimpleState<AppConfig> = newSimpleState<AppConfig>(
-  loadConfig(),
+  loadResult.ok ? loadResult.value : DEFAULT_CONFIG,
 );
 
 // Subscribe to save changes to localStorage
 const handleConfigSave: (newConfig: AppConfig) => void = function handleConfigSave(newConfig: AppConfig): void {
+  // saveConfig now returns Result, but we handle errors internally with toast
+  // so we just need to call it and ignore the return value
   saveConfig(newConfig);
 };
 configState.subscribe(handleConfigSave);
