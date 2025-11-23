@@ -330,19 +330,19 @@ describe("State Management Integration", () => {
       document.body.appendChild(resetBtn);
 
       // Simulate clicks (deno-dom doesn't have .click(), so call onclick directly)
-      incrementBtn.onclick?.({} as MouseEvent);
+      incrementBtn.onclick?.({} as PointerEvent);
       await Promise.resolve();
       assertEquals(display.textContent, "Count: 1");
 
-      incrementBtn.onclick?.({} as MouseEvent);
+      incrementBtn.onclick?.({} as PointerEvent);
       await Promise.resolve();
       assertEquals(display.textContent, "Count: 2");
 
-      decrementBtn.onclick?.({} as MouseEvent);
+      decrementBtn.onclick?.({} as PointerEvent);
       await Promise.resolve();
       assertEquals(display.textContent, "Count: 1");
 
-      resetBtn.onclick?.({} as MouseEvent);
+      resetBtn.onclick?.({} as PointerEvent);
       await Promise.resolve();
       assertEquals(display.textContent, "Count: 0");
     });
