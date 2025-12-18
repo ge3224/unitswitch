@@ -15,7 +15,7 @@ In addition to its practical function, the project is an exploration in framewor
 
 ## Demo
 
-![Demo Video](./public/demo.mp4)
+![Demo Video](https://github.com/user-attachments/assets/18d9037d-2e41-466f-92c8-8dabf94221f7)
 
 ## Features
 
