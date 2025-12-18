@@ -2,7 +2,7 @@
 
 # ![UnitSwitch Logo](./public/logo.png) UnitSwitch
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-unitswitch.jacobbenison.com-4EBD85?style=flat-square)](https://unitswitch.jacobbenison.com)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-View-4EBD85?style=flat-square)](https://unitswitch.jacobbenison.com)
 [![GitHub Release](https://img.shields.io/github/v/release/ge3224/unitswitch?style=flat-square&color=4EBD85)](https://github.com/ge3224/unitswitch/releases)
 [![License](https://img.shields.io/github/license/ge3224/unitswitch?style=flat-square&color=4EBD85)](./LICENSE)
 ![GitHub branch check runs](https://img.shields.io/github/check-runs/ge3224/unitswitch/main?style=flat-square&color=4EBD85)
@@ -15,7 +15,7 @@ In addition to its practical function, the project is an exploration in framewor
 
 ## Demo
 
-![Demo Video](https://github.com/user-attachments/assets/18d9037d-2e41-466f-92c8-8dabf94221f7)
+https://github.com/user-attachments/assets/18d9037d-2e41-466f-92c8-8dabf94221f7
 
 ## Features
 
