@@ -2,38 +2,43 @@
 
 # ![UnitSwitch Logo](./public/logo.png) UnitSwitch
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-unitswitch.jacobbenison.com-4EBD85?style=flat-square)](https://unitswitch.jacobbenison.com)
 [![GitHub Release](https://img.shields.io/github/v/release/ge3224/unitswitch?style=flat-square&color=4EBD85)](https://github.com/ge3224/unitswitch/releases)
 [![License](https://img.shields.io/github/license/ge3224/unitswitch?style=flat-square&color=4EBD85)](./LICENSE)
-![Tests](https://img.shields.io/badge/tests-passing-4EBD85?style=flat-square)
-![Zero Dependencies](https://img.shields.io/badge/dependencies-0-4EBD85?style=flat-square)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/ge3224/unitswitch/main?style=flat-square&color=4EBD85)
 
 </div>
 
-## Overview
+UnitSwitch is a web-based converter for units of measurement common in web development and UX design. It supports point-and-click and keyboard-driven workflows.
 
-A simple unit converter for web developers. Supports CSS length units, viewport units, typography units, and design proportions. Includes keyboard shortcuts for quick copying.
+In addition to its practical function, the project is an exploration in framework-free UI development.
+
+## Demo
+
+![Demo Video](./public/demo.mp4)
 
 ## Features
 
-### Core Conversion
+- **14 unit types** - including CSS lengths (px, rem, em) and viewport units (vw, vh, vmin, vmax)
+- **Bidirectional conversion** - enter a value in any of the supported units, see conversions to all others
+- **One-click clipboard copy**
+- **Keyboard shortcuts** - Ctrl+K to launch keyboard workflow, letter keys to copy specific units (p for px, r for rem, etc.)
+- **Design ratios** - calculates corresponding lengths (Golden Ratio, Root 2, 16:9)
+- **Customizable settings** - adjust base font size, viewport dimensions, PPI, and character ratios
 
-- **18 Unit Types:** CSS length units (px, rem, mm, cm, pt, pc, in, ft), viewport units (vw, vh, vmin, vmax), typography units (ch, ex), and design proportions (Golden Ratio, Root 2, 16:9)
-- **Real-time Bidirectional Conversion:** Convert from any unit to any other instantly
-- **One-Click Copy:** Quickly copy any converted value to clipboard with visual feedback
-- **Precision Rounding:** All conversions rounded to 3 decimal places for practical use
+**Browser Support:** Modern browsers (Chrome, Firefox, Safari, Edge)
 
-### Customization
+## Technical Overview
 
-- **Dark Mode:** Choose between Light, Dark, or System theme (follows OS preference)
-- **Configurable Settings:** Customize viewport dimensions, base font size, PPI, and character ratios
-- **Persistent Preferences:** All settings and last conversion saved to localStorage
+This implementation prioritizes shipping minimal, auditable code to the browser. Core runtime functionality uses vendored solutions rather than npm packages, reducing supply-chain risk and keeping dependencies transparent and stable.
 
-### User Experience
+Build tooling provides compile-time ergonomics without runtime cost.
 
-- **Responsive Design:** Optimized layouts for desktop, tablet, and mobile devices
-- **Detailed Information:** Expandable panels showing calculation breakdowns for key units
-- **Touch-Friendly:** Mobile-optimized with touch-friendly controls
-- **Toast Notifications:** Clear feedback for all copy actions
+- **Build**: Deno + Vite with TypeScript (strict mode)
+- **UI**: Custom JSX factory functions ([`just-jsx`](https://github.com/ge3224/just-jsx)) + Tailwind CSS
+- **State**: Custom reactive state library ([`simple-state`](https://github.com/ge3224/simple-state)) with pub/sub pattern
+- **Patterns**: Rust-inspired Result<T, E> for error handling, declarative validation
+- **Zero npm dependencies**
 
 ## Getting Started
 
@@ -42,11 +47,11 @@ UnitSwitch is built with Deno. Follow these steps to run locally:
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/your-username/unitswitch.git
+   git clone https://github.com/ge3224/unitswitch.git
    cd unitswitch
    ```
 
-2. **Install Deno:** If you don't have Deno installed, the build script will handle it, or install manually from [deno.land](https://deno.land/).
+2. **Install Deno:** If you don't have Deno installed, visit [deno.land](https://deno.land/) for installation instructions.
 
 3. **Start the Development Server:**
 
@@ -63,26 +68,6 @@ deno task build
 ```
 
 The optimized build will be output to the `dist/` directory.
-
-## Usage
-
-1. **Enter a Value:** Type any number into the input field
-2. **Select Your Unit:** Choose the unit you're converting from using the dropdown
-3. **View Conversions:** All other units update automatically in the grid
-4. **Copy Results:** Click any conversion to copy it, or use keyboard shortcuts (hover to see the hotkey)
-5. **Quick Convert:** Press `Ctrl+K` for fast modal-based conversions
-6. **Customize:** Press `Ctrl+/` to adjust settings like viewport size, base font size, and theme
-
-## Technologies Used
-
-UnitSwitch leverages modern, lightweight technologies:
-
-- **Deno:** Modern TypeScript runtime with built-in tooling
-- **Custom JSX Runtime:** Lightweight JSX implementation (no React dependency)
-- **Vite + Rolldown:** Lightning-fast build tool and bundler
-- **Tailwind CSS v4:** Utility-first CSS framework with Vite plugin
-- **TypeScript:** Strict type checking for reliability
-- **Custom State Management:** Minimal reactive state library
 
 ## Author
 
