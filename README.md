@@ -38,7 +38,6 @@ Build tooling provides compile-time ergonomics without runtime cost.
 - **UI**: Custom JSX factory functions ([`just-jsx`](https://github.com/ge3224/just-jsx)) + Tailwind CSS
 - **State**: Custom reactive state library ([`simple-state`](https://github.com/ge3224/simple-state)) with pub/sub pattern
 - **Patterns**: Rust-inspired Result<T, E> for error handling, declarative validation
-- **Zero npm dependencies**
 
 ## Getting Started
 
